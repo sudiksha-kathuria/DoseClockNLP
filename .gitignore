@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+*.pyc
+venv/
+.venv/
+
+# SQLite database (auto-created on first run)
+backend/schedules.db
+
+# Cached generated speech (auto-created on first run)
+frontend/static/audio/*.mp3
+!frontend/static/audio/.gitkeep
+
+# OS
+.DS_Store

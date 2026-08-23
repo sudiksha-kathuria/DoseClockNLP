@@ -1,0 +1,628 @@
+/* ==========================================================================
+   DoseClock - shared design system
+   A calm, dark "bedside table at night" palette with one warm accent.
+   Variables live here so both pages (form + clock) stay in sync.
+   ========================================================================== */
+
+:root {
+  /* Palette */
+  --bg: #10131a;              /* deep navy background */
+  --bg-glow: #1a2130;         /* faint radial glow behind the clock */
+  --surface: #1a1f2b;         /* card background */
+  --surface-raised: #222839;  /* inputs, hover states */
+  --border: #2a3142;          /* subtle, low-contrast borders */
+  --accent: #ff9466;          /* warm coral/amber - primary action + clock */
+  --accent-soft: rgba(255, 148, 102, 0.16);
+  --success: #6bcf9a;         /* soft green for the "Taken" confirmation */
+  --text-primary: #f4f1ee;
+  --text-secondary: #9aa1b2;
+  --text-muted: #616a7d;
+
+  /* Spacing scale */
+  --space-xs: 0.4rem;
+  --space-sm: 0.8rem;
+  --space-md: 1.6rem;
+  --space-lg: 2.4rem;
+  --space-xl: 3.6rem;
+
+  /* Shape + motion */
+  --radius-sm: 12px;
+  --radius-md: 20px;
+  --radius-lg: 32px;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1); /* calm ease-out, no bounce */
+  --shadow-card: 0 20px 60px -20px rgba(0, 0, 0, 0.6);
+
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter",
+    "Helvetica Neue", Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+button {
+  font-family: inherit;
+}
+
+/* ==========================================================================
+   Reusable card
+   ========================================================================== */
+
+.card {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-xl) var(--space-lg);
+}
+
+/* ==========================================================================
+   Add-medicine form (index.html)
+   ========================================================================== */
+
+.page-form {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-lg) var(--space-md);
+}
+
+.form-card {
+  width: 100%;
+  max-width: 440px;
+}
+
+.form-header {
+  text-align: center;
+  margin-bottom: var(--space-lg);
+}
+
+.form-header .brand {
+  color: var(--accent);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.form-header h1 {
+  font-size: 1.6rem;
+  font-weight: 600;
+  margin-top: var(--space-xs);
+}
+
+.form-header p {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin-top: var(--space-xs);
+}
+
+.field-group {
+  margin-bottom: var(--space-md);
+}
+
+.field-group label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-xs);
+  letter-spacing: 0.02em;
+}
+
+.field-group input[type="text"],
+.field-group input[type="number"],
+.field-group input[type="time"],
+.field-group select {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-family: inherit;
+  transition: border-color 200ms var(--ease), box-shadow 200ms var(--ease);
+}
+
+.field-group input::placeholder {
+  color: var(--text-muted);
+}
+
+.field-group input:focus,
+.field-group select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-soft);
+}
+
+/* Multiple time-of-day rows */
+.times-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.time-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.time-row input[type="time"] {
+  flex: 1;
+}
+
+.remove-time {
+  flex-shrink: 0;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--surface-raised);
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 150ms var(--ease), color 150ms var(--ease);
+}
+
+.remove-time:hover {
+  background: #3a2430;
+  color: #ff8a80;
+}
+
+.add-time {
+  margin-top: var(--space-xs);
+  background: none;
+  border: 1px dashed var(--border);
+  color: var(--accent);
+  padding: 0.6rem 1rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  transition: border-color 150ms var(--ease), background 150ms var(--ease);
+}
+
+.add-time:hover {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.submit-btn {
+  width: 100%;
+  margin-top: var(--space-sm);
+  padding: 1rem;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: var(--accent);
+  color: #1a1108;
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 200ms var(--ease), box-shadow 200ms var(--ease), filter 150ms var(--ease);
+}
+
+.submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px -8px var(--accent-soft);
+  filter: brightness(1.05);
+}
+
+.submit-btn:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.form-footer {
+  text-align: center;
+  margin-top: var(--space-md);
+}
+
+.form-footer a {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  text-decoration: none;
+  border-bottom: 1px dashed var(--border);
+}
+
+.form-footer a:hover {
+  color: var(--accent);
+}
+
+.form-error {
+  color: #ff8a80;
+  font-size: 0.85rem;
+  margin-top: var(--space-sm);
+  min-height: 1.2em;
+}
+
+/* ==========================================================================
+   Clock view (clock.html)
+   ========================================================================== */
+
+.page-clock {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-lg) var(--space-md);
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Idle "breathing" clock ------------------------------------------------- */
+
+.idle-view {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  transition: opacity 250ms var(--ease), transform 250ms var(--ease);
+}
+
+.idle-view.hidden {
+  display: none;
+}
+
+.clock-glow-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Soft pulsing glow behind the clock - signals "alive", not distracting */
+.clock-glow-wrap::before {
+  content: "";
+  position: absolute;
+  width: min(80vw, 420px);
+  height: min(80vw, 420px);
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--accent-soft) 0%, transparent 70%);
+  animation: breathe 5s ease-in-out infinite;
+  z-index: 0;
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    transform: scale(0.92);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+}
+
+.clock-face {
+  position: relative;
+  z-index: 1;
+  font-size: clamp(3.5rem, 16vw, 7.5rem);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  text-align: center;
+}
+
+.clock-meridiem {
+  font-size: 0.35em;
+  vertical-align: super;
+  color: var(--text-secondary);
+  margin-left: 0.15em;
+}
+
+.clock-date {
+  margin-top: var(--space-sm);
+  color: var(--text-secondary);
+  font-size: 1rem;
+  letter-spacing: 0.03em;
+}
+
+/* Today's schedule drawer ------------------------------------------------ */
+
+.schedule-drawer {
+  margin-top: var(--space-xl);
+  width: 100%;
+  max-width: 420px;
+}
+
+.schedule-toggle {
+  width: 100%;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  padding: var(--space-sm);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+}
+
+.schedule-toggle .chevron {
+  transition: transform 200ms var(--ease);
+  display: inline-block;
+}
+
+.schedule-drawer.open .chevron {
+  transform: rotate(180deg);
+}
+
+.schedule-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 300ms var(--ease);
+}
+
+.schedule-drawer.open .schedule-list {
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.schedule-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.7rem var(--space-sm);
+  border-bottom: 1px solid var(--border);
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.schedule-list li span.med-name {
+  color: var(--text-primary);
+}
+
+.schedule-empty {
+  text-align: center;
+  color: var(--text-muted);
+  padding: var(--space-sm);
+  font-size: 0.9rem;
+}
+
+/* Alarm view -------------------------------------------------------------- */
+
+.alarm-view {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  max-width: 420px;
+}
+
+.alarm-view.visible {
+  display: flex;
+  animation: alarm-in 320ms var(--ease);
+}
+
+@keyframes alarm-in {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.alarm-icon {
+  font-size: 2.6rem;
+  animation: alarm-in 320ms var(--ease);
+}
+
+.alarm-label {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-top: var(--space-md);
+}
+
+.alarm-medicine-name {
+  font-size: clamp(1.8rem, 7vw, 2.6rem);
+  font-weight: 700;
+  margin-top: var(--space-xs);
+  opacity: 0;
+  animation: fade-up 320ms var(--ease) 80ms forwards;
+}
+
+.alarm-actions {
+  display: flex;
+  gap: var(--space-sm);
+  width: 100%;
+  margin-top: var(--space-xl);
+}
+
+.alarm-btn {
+  flex: 1;
+  padding: 1.4rem 1rem;
+  border-radius: var(--radius-md);
+  border: none;
+  font-size: 1.15rem;
+  font-weight: 700;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: transform 120ms var(--ease), box-shadow 200ms var(--ease), filter 150ms var(--ease);
+}
+
+.alarm-btn.taken {
+  background: var(--success);
+  color: #0e1f16;
+  animation: fade-up 320ms var(--ease) 160ms forwards;
+}
+
+.alarm-btn.snooze {
+  background: var(--surface-raised);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  animation: fade-up 320ms var(--ease) 240ms forwards;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Satisfying tap response */
+.alarm-btn:active {
+  transform: scale(0.94);
+}
+
+.alarm-btn.taken:hover {
+  filter: brightness(1.08);
+}
+
+.mic-indicator {
+  margin-top: var(--space-md);
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 1.4em;
+}
+
+.mic-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: mic-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes mic-pulse {
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Success flash after "Taken" --------------------------------------------- */
+
+.success-flash {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.success-flash.visible {
+  display: flex;
+  animation: alarm-in 280ms var(--ease);
+}
+
+.checkmark-circle {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.checkmark-circle svg {
+  width: 52px;
+  height: 52px;
+}
+
+.checkmark-circle path {
+  fill: none;
+  stroke: var(--success);
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+  animation: draw-check 420ms var(--ease) forwards;
+}
+
+@keyframes draw-check {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.success-flash p {
+  color: var(--text-secondary);
+  font-size: 1rem;
+}
+
+/* Toast (used for "added" + "snoozed" confirmations) ---------------------- */
+
+.toast {
+  position: fixed;
+  bottom: var(--space-lg);
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  padding: 0.8rem 1.4rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 250ms var(--ease), transform 250ms var(--ease);
+  box-shadow: var(--shadow-card);
+}
+
+.toast.visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ==========================================================================
+   Responsive
+   ========================================================================== */
+
+@media (max-width: 480px) {
+  .card {
+    padding: var(--space-lg) var(--space-md);
+  }
+
+  .alarm-actions {
+    flex-direction: column;
+  }
+}

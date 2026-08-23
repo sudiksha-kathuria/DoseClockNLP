@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+  <title>DoseClock</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+<body>
+  <main class="page-clock">
+
+    <!-- Idle view: the big breathing clock + today's schedule drawer -->
+    <section class="idle-view" id="idle-view">
+      <div class="clock-glow-wrap">
+        <h1 class="clock-face" id="clock-face">--:--<span class="clock-meridiem" id="clock-meridiem"></span></h1>
+      </div>
+      <p class="clock-date" id="clock-date"></p>
+
+      <div class="schedule-drawer" id="schedule-drawer">
+        <button type="button" class="schedule-toggle" id="schedule-toggle">
+          Today's doses <span class="chevron">&#9662;</span>
+        </button>
+        <ul class="schedule-list">
+          {% for row in schedule %}
+            <li>
+              <span class="med-name">{{ row.medicine_name }}</span>
+              <span>{{ row.time }}</span>
+            </li>
+          {% else %}
+            <li class="schedule-empty" style="display:list-item; border:none;">No active reminders yet</li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <div class="form-footer" style="margin-top: var(--space-lg);">
+        <a href="{{ url_for('index') }}">+ Add another medicine</a>
+      </div>
+    </section>
+
+    <!-- Alarm view: shown when /check_reminders reports a due reminder -->
+    <section class="alarm-view" id="alarm-view">
+      <div class="alarm-icon">&#128276;</div>
+      <p class="alarm-label">Reminder</p>
+      <h2 class="alarm-medicine-name" id="alarm-medicine-name"></h2>
+
+      <div class="alarm-actions">
+        <button type="button" class="alarm-btn taken" id="taken-btn">Taken</button>
+        <button type="button" class="alarm-btn snooze" id="snooze-btn">Snooze</button>
+      </div>
+
+      <p class="mic-indicator" id="mic-indicator"></p>
+    </section>
+
+    <!-- Success flash: shown briefly after "Taken", then fades back to idle -->
+    <section class="success-flash" id="success-flash">
+      <div class="checkmark-circle">
+        <svg viewBox="0 0 24 24"><path d="M4 12.5l5 5 11-11" /></svg>
+      </div>
+      <p>Nicely done.</p>
+    </section>
+
+    <audio id="reminder-audio" preload="none"></audio>
+  </main>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="{{ url_for('static', filename='js/clock.js') }}"></script>
+</body>
+</html>
