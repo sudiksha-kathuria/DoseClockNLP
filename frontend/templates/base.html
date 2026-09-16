@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+  <title>{% block title %}DoseClock{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+<body>
+  {% if current_user %}
+  <nav class="tv-nav">
+    <a class="tv-brand" href="{{ url_for('clock') }}">
+      <span class="dot"></span>
+      <span class="wordmark">DoseClock</span>
+    </a>
+    <div class="tv-nav-links">
+      <a href="{{ url_for('clock') }}" class="{{ 'active' if request.endpoint == 'clock' }}">Clock</a>
+      <a href="{{ url_for('index') }}" class="{{ 'active' if request.endpoint == 'index' }}">Add medicine</a>
+      <a href="{{ url_for('logs') }}" class="{{ 'active' if request.endpoint == 'logs' }}">Logs</a>
+    </div>
+    <div class="tv-nav-user">
+      <span class="greeting">Hi, <strong>{{ current_user.display_name }}</strong></span>
+      <form action="{{ url_for('logout') }}" method="post">
+        <button type="submit" class="logout-btn">Log out</button>
+      </form>
+    </div>
+  </nav>
+  {% endif %}
+
+  <main class="tv-main">
+    {% block content %}{% endblock %}
+  </main>
+
+  <div class="toast" id="toast"></div>
+
+  {% block scripts %}{% endblock %}
+</body>
+</html>
