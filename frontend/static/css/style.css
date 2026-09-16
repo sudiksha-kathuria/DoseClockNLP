@@ -1,6 +1,6 @@
 /* ==========================================================================
-   DoseClock — design system
-   Theme: a warm, basic "TV show title card" look — four colours only:
+   DoseClock design system
+   Theme: a warm, basic "TV show title card" look. Four colours only:
    black, beige, white, pink. Every screen fills the whole viewport
    (no floating card lost in empty space) and every interactive target
    is oversized on purpose: DoseClock is used by people who may not be
@@ -87,7 +87,7 @@ a {
 }
 
 /* ==========================================================================
-   Top nav — the "channel bar". Persistent, full width, on every screen
+   Top nav, the "channel bar". Persistent, full width, on every screen
    that follows login, so the whole app never loses its sense of place.
    ========================================================================== */
 
@@ -308,7 +308,7 @@ select.big-input {
 }
 
 /* ==========================================================================
-   Auth screens (login / signup) — full-bleed split screen
+   Auth screens (login / signup), full-bleed split screen
    ========================================================================== */
 
 .auth-shell {
@@ -442,7 +442,7 @@ select.big-input {
 }
 
 /* ==========================================================================
-   Add-medicine screen — two-pane, full height
+   Add-medicine screen, two-pane, full height
    ========================================================================== */
 
 .add-shell {
@@ -592,7 +592,7 @@ select.big-input {
 }
 
 /* ==========================================================================
-   Clock screen — the kiosk. Idle clock + huge-target alarm.
+   Clock screen, the kiosk. Idle clock plus huge-target alarm.
    ========================================================================== */
 
 .clock-shell {
@@ -713,7 +713,7 @@ select.big-input {
   pointer-events: none;
 }
 
-/* Alarm view — huge, unmissable targets ----------------------------------
+/* Alarm view: huge, unmissable targets ----------------------------------
    Each button occupies roughly half the stage: a deliberate accessibility
    choice so an imprecise tap, a shaking hand, or a single-switch press
    (see HARDWARE.md) still lands. */
@@ -853,7 +853,7 @@ select.big-input {
 
 /* Single-switch scanning highlight: the button currently "selected" by
    the auto-advancing scan cycle, confirmable with one press of any
-   switch mapped to Space/Enter — see HARDWARE.md, "Accessible input". */
+   switch mapped to Space/Enter, see HARDWARE.md, "Accessible input". */
 .alarm-btn.scan-highlight {
   border-color: var(--pink);
   box-shadow: 0 0 0 6px var(--pink-soft), 0 20px 50px -18px rgba(0, 0, 0, 0.6);
@@ -986,7 +986,7 @@ select.big-input {
 }
 
 /* ==========================================================================
-   Logs screen — full-width history table + hardware pairing
+   Logs screen, full-width history table plus hardware pairing
    ========================================================================== */
 
 .logs-shell {
