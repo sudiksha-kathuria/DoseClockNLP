@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block title %}DoseClock — Logs{% endblock %}
+{% block content %}
+<div class="logs-shell">
+  <div class="logs-header">
+    <div>
+      <h1>Dose history</h1>
+      <p class="subhead">Every dose you've marked Taken, kept under your account.</p>
+    </div>
+    <form class="logs-filter" method="get" action="{{ url_for('logs') }}">
+      <label for="medicine" style="color: var(--on-light-muted); font-weight: 600; font-size: 0.9rem;">Medicine</label>
+      <select name="medicine" id="medicine" onchange="this.form.submit()">
+        <option value="" {{ "selected" if not selected_medicine }}>All medicines</option>
+        {% for name in medicine_names %}
+          <option value="{{ name }}" {{ "selected" if selected_medicine == name }}>{{ name }}</option>
+        {% endfor %}
+      </select>
+    </form>
+  </div>
+
+  <div class="logs-grid">
+    <div class="logs-table-card">
+      {% if history %}
+        <table class="logs-table">
+          <thead>
+            <tr>
+              <th>Medicine</th>
+              <th>Scheduled for</th>
+              <th>Taken at</th>
+              <th>Language</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in history %}
+              <tr>
+                <td>{{ row.medicine_name }}</td>
+                <td>{{ row.scheduled_time }}</td>
+                <td>{{ row.taken_at[:16].replace("T", " ") }}</td>
+                <td><span class="pill">{{ row.language }}</span></td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% else %}
+        <p class="logs-empty">
+          No doses logged {{ "for " + selected_medicine if selected_medicine else "" }} yet.<br />
+          Once you mark a reminder as Taken, it shows up here.
+        </p>
+      {% endif %}
+    </div>
+
+    <div class="logs-side">
+      <div class="side-card">
+        <h2>Pair a hardware button</h2>
+        <p>
+          For anyone who can't reliably tap a screen, pair a bedside
+          button or adaptive switch receiver. Full wiring, sensor choices,
+          and firmware are documented in <strong>HARDWARE.md</strong> in
+          the repo.
+        </p>
+
+        {% if devices %}
+          <ul class="device-list">
+            {% for device in devices %}
+              <li>
+                <span class="device-name">{{ device.name }}</span>
+                <span class="device-token">{{ device.token }}</span>
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+
+        <form class="pair-form" method="post" action="{{ url_for('pair_device') }}">
+          <input type="text" name="name" placeholder="e.g. Bedside button" maxlength="60" />
+          <button type="submit">Pair</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
