@@ -1,35 +1,136 @@
 """
 app.py
 ------
-DoseClock's Flask application. Six routes, matching the brief exactly:
+DoseClock's Flask application.
 
-    GET  /                render the add-medicine form
-    GET  /clock            render the full-screen clock / alarm view
-    POST /add_medicine     save a new medicine schedule
-    GET  /check_reminders  polled by the frontend every ~15-20s
+    GET  /                render the add-medicine form            (login required)
+    GET  /clock            render the full-screen clock/alarm view (login required)
+    GET  /logs             render the dedicated dose-history screen (login required)
+    GET  /signup           create an account
+    POST /signup
+    GET  /login            sign in
+    POST /login
+    POST /logout
+    POST /add_medicine     save a new medicine schedule            (login required)
+    GET  /check_reminders  polled by the frontend every ~15-20s    (login required)
     POST /mark_taken       log a dose, decrement days if it was the last of the day
     POST /mark_snooze      re-fire the same reminder in 5 minutes
+    POST /pair_device      mint a token for a piece of paired hardware
+    POST /api/device/action   called by paired hardware instead of a browser
 
 The frontend lives in ../frontend (templates/ and static/) so the two
 halves of the project stay in separate, clearly-named folders.
 """
 
 import os
-from datetime import datetime
+import secrets
+from functools import wraps
 
-from flask import Flask, render_template, request, jsonify, redirect, url_for
+from flask import Flask, render_template, request, jsonify, redirect, url_for, session
 
 import database
 import scheduler as reminder_scheduler
 import tts
 
 FRONTEND_DIR = os.path.join(os.path.dirname(__file__), "..", "frontend")
+SECRET_KEY_PATH = os.path.join(os.path.dirname(__file__), ".secret_key")
+
+
+def _load_or_create_secret_key():
+    """
+    Flask signs session cookies with this key. Generating a fresh random
+    key on every process start would silently log every account out each
+    time the dev server restarts or reloads, so it's persisted to a local
+    file instead (gitignored - it must never be committed).
+    """
+    if os.path.exists(SECRET_KEY_PATH):
+        with open(SECRET_KEY_PATH, "r") as f:
+            return f.read().strip()
+    key = secrets.token_hex(32)
+    with open(SECRET_KEY_PATH, "w") as f:
+        f.write(key)
+    return key
+
 
 app = Flask(
     __name__,
     template_folder=os.path.join(FRONTEND_DIR, "templates"),
     static_folder=os.path.join(FRONTEND_DIR, "static"),
 )
+app.secret_key = _load_or_create_secret_key()
+
+
+def login_required(view):
+    """Redirect to /login instead of serving a page/API call with no session."""
+    @wraps(view)
+    def wrapped(*args, **kwargs):
+        if "user_id" not in session:
+            if request.path.startswith("/check_reminders") or request.method == "POST":
+                return jsonify({"error": "not logged in"}), 401
+            return redirect(url_for("login"))
+        return view(*args, **kwargs)
+    return wrapped
+
+
+@app.context_processor
+def inject_current_user():
+    """Every template can read `current_user` for the nav bar's greeting, with no per-route wiring."""
+    if "user_id" in session:
+        return {"current_user": database.get_user_by_id(session["user_id"])}
+    return {"current_user": None}
+
+
+# ---------------------------------------------------------------------------
+# Auth
+# ---------------------------------------------------------------------------
+
+@app.route("/signup", methods=["GET", "POST"])
+def signup():
+    if "user_id" in session:
+        return redirect(url_for("clock"))
+
+    error = None
+    if request.method == "POST":
+        username = (request.form.get("username") or "").strip().lower()
+        display_name = (request.form.get("display_name") or "").strip()
+        password = request.form.get("password") or ""
+
+        if not username or not display_name or len(password) < 4:
+            error = "Fill in every field - password needs at least 4 characters."
+        else:
+            user = database.create_user(username, password, display_name)
+            if user is None:
+                error = "That username is already taken."
+            else:
+                session["user_id"] = user["id"]
+                return redirect(url_for("index"))
+
+    return render_template("signup.html", error=error)
+
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if "user_id" in session:
+        return redirect(url_for("clock"))
+
+    error = None
+    if request.method == "POST":
+        username = (request.form.get("username") or "").strip().lower()
+        password = request.form.get("password") or ""
+        user = database.verify_user(username, password)
+        if user is None:
+            error = "Wrong username or password."
+        else:
+            session["user_id"] = user["id"]
+            return redirect(url_for("clock"))
+
+    return render_template("login.html", error=error)
+
+
+@app.route("/logout", methods=["POST"])
+def logout():
+    session.clear()
+    return redirect(url_for("login"))
 
 
 # ---------------------------------------------------------------------------
@@ -37,23 +138,53 @@ app = Flask(
 # ---------------------------------------------------------------------------
 
 @app.route("/")
+@login_required
 def index():
-    """Add-medicine form."""
-    return render_template("index.html", languages=tts.LANGUAGES)
+    """Add-medicine form, with today's schedule alongside it."""
+    schedule = database.get_active_medicines(session["user_id"])
+    return render_template("index.html", languages=tts.LANGUAGES, schedule=schedule)
 
 
 @app.route("/clock")
+@login_required
 def clock():
     """Full-screen clock + today's upcoming doses."""
-    today_schedule = database.get_active_medicines()
+    today_schedule = database.get_active_medicines(session["user_id"])
     return render_template("clock.html", schedule=today_schedule)
 
 
+@app.route("/logs")
+@login_required
+def logs():
+    """Dedicated dose-history screen, optionally filtered to one medicine."""
+    medicine_filter = request.args.get("medicine") or None
+    history = database.get_dose_history(session["user_id"], medicine_filter)
+    medicine_names = database.get_distinct_medicine_names(session["user_id"])
+    devices = database.get_devices(session["user_id"])
+    return render_template(
+        "logs.html",
+        history=history,
+        medicine_names=medicine_names,
+        selected_medicine=medicine_filter,
+        devices=devices,
+    )
+
+
+@app.route("/pair_device", methods=["POST"])
+@login_required
+def pair_device():
+    """Mint a new hardware pairing token (see HARDWARE.md) and show it once on the Logs screen."""
+    name = (request.form.get("name") or "Bedside button").strip()[:60]
+    database.create_device_token(session["user_id"], name)
+    return redirect(url_for("logs"))
+
+
 # ---------------------------------------------------------------------------
-# API
+# API - browser
 # ---------------------------------------------------------------------------
 
 @app.route("/add_medicine", methods=["POST"])
+@login_required
 def add_medicine():
     """
     Accepts JSON: { medicine_name, times: ['08:00', '20:00'], days, language }
@@ -77,14 +208,15 @@ def add_medicine():
     except (TypeError, ValueError):
         return jsonify({"error": "days must be a positive number"}), 400
 
-    database.add_medicine(medicine_name, times, days, language)
+    database.add_medicine(session["user_id"], medicine_name, times, days, language)
     return jsonify({"success": True})
 
 
 @app.route("/check_reminders")
+@login_required
 def check_reminders():
-    """Polled by the frontend. Returns the oldest currently-ringing reminder, if any."""
-    due = database.get_due_reminder()
+    """Polled by the frontend. Returns the oldest reminder ringing for *this* user, if any."""
+    due = database.get_due_reminder(session["user_id"])
     if due is None:
         return jsonify({"due": False})
 
@@ -99,15 +231,12 @@ def check_reminders():
     )
 
 
-@app.route("/mark_taken", methods=["POST"])
-def mark_taken():
-    """Log the dose, silence the alarm, and count the day off if it was the last dose today."""
-    data = request.get_json(silent=True) or {}
-    medicine_id = data.get("id")
+def _perform_mark_taken(medicine_id):
+    """
+    Shared by /mark_taken and the hardware bridge: log the dose, silence
+    the alarm, and count the day off if this was the last dose of the day.
+    """
     row = database.get_medicine(medicine_id)
-    if row is None:
-        return jsonify({"error": "reminder not found"}), 404
-
     database.log_dose(medicine_id)
     database.clear_due(medicine_id)
     reminder_scheduler.cancel_snooze(medicine_id)  # in case Taken beat a pending snooze
@@ -119,22 +248,69 @@ def mark_taken():
     if is_final_dose:
         database.decrement_group_days(row["group_id"])
 
-    updated = database.get_medicine(medicine_id)
+    return database.get_medicine(medicine_id)
+
+
+@app.route("/mark_taken", methods=["POST"])
+@login_required
+def mark_taken():
+    """Log the dose, silence the alarm, and count the day off if it was the last dose today."""
+    data = request.get_json(silent=True) or {}
+    medicine_id = data.get("id")
+    row = database.get_medicine(medicine_id, user_id=session["user_id"])
+    if row is None:
+        return jsonify({"error": "reminder not found"}), 404
+
+    updated = _perform_mark_taken(medicine_id)
     return jsonify({"success": True, "days_remaining": updated["days_remaining"] if updated else 0})
 
 
 @app.route("/mark_snooze", methods=["POST"])
+@login_required
 def mark_snooze():
     """Silence the alarm now, re-ring the exact same reminder in 5 minutes."""
     data = request.get_json(silent=True) or {}
     medicine_id = data.get("id")
-    row = database.get_medicine(medicine_id)
+    row = database.get_medicine(medicine_id, user_id=session["user_id"])
     if row is None:
         return jsonify({"error": "reminder not found"}), 404
 
     database.clear_due(medicine_id)
     reminder_scheduler.schedule_snooze(medicine_id)
     return jsonify({"success": True})
+
+
+# ---------------------------------------------------------------------------
+# API - paired hardware (see HARDWARE.md)
+# A wireless bedside button, adaptive switch receiver, or other paired
+# device has no browser and no session cookie, so it authenticates with a
+# long-lived per-device token instead and acts on whichever reminder is
+# currently due for the user that token is paired with.
+# ---------------------------------------------------------------------------
+
+@app.route("/api/device/action", methods=["POST"])
+def device_action():
+    data = request.get_json(silent=True) or {}
+    token = data.get("token")
+    action = data.get("action")
+
+    user_id = database.get_user_id_for_token(token) if token else None
+    if user_id is None:
+        return jsonify({"error": "unknown or missing device token"}), 401
+    if action not in ("taken", "snooze"):
+        return jsonify({"error": "action must be 'taken' or 'snooze'"}), 400
+
+    due = database.get_due_reminder(user_id)
+    if due is None:
+        return jsonify({"error": "no reminder is currently due"}), 404
+
+    if action == "taken":
+        _perform_mark_taken(due["id"])
+    else:
+        database.clear_due(due["id"])
+        reminder_scheduler.schedule_snooze(due["id"])
+
+    return jsonify({"success": True, "medicine_name": due["medicine_name"]})
 
 
 # ---------------------------------------------------------------------------
