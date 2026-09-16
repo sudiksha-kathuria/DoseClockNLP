@@ -2,13 +2,13 @@
 
 A talking, multilingual medicine reminder clock. Log in, add a medicine
 and the times you take it, and DoseClock speaks a reminder out loud (in
-English, Hindi, Tamil, Telugu, Kannada, or Bengali) when it's due —
-answer with a tap, a spoken word, or a single button press (see
+English, Hindi, Tamil, Telugu, Kannada, or Bengali) when it's due.
+Answer with a tap, a spoken word, or a single button press (see
 [`HARDWARE.md`](HARDWARE.md) for why that matters).
 
 DoseClock only ever says: **"It's time to take your [medicine name]."**
-It does not diagnose, recommend dosages, or check drug interactions —
-see [Out of scope](#out-of-scope).
+It does not diagnose, recommend dosages, or check drug interactions.
+See [Out of scope](#out-of-scope).
 
 ## Accounts
 
@@ -24,16 +24,16 @@ for why this needed care.
 |---|---|
 | `/signup`, `/login` | Create or open an account |
 | `/` | Add a medicine reminder, with today's line-up alongside it |
-| `/clock` | The full-screen kiosk clock and alarm — what runs all day |
+| `/clock` | The full-screen kiosk clock and alarm, what runs all day |
 | `/logs` | Dedicated dose-history screen, filterable by medicine, plus hardware pairing |
 
 ## Accessibility & hardware
 
 The old two-tiny-buttons design didn't work for patients who can't
-move. The fix is the **DoseClock Switch Hub** — a bedside ESP32 with a
+move. The fix is the **DoseClock Switch Hub**, a bedside ESP32 with a
 standard accessibility-switch jack, so any switch matched to whatever
 movement a patient still has (a paddle, a pillow switch, a sip-and-puff
-breath switch) can confirm a dose — documented in full, with parts list
+breath switch) can confirm a dose. Documented in full, with parts list
 and build steps, in **[`HARDWARE.md`](HARDWARE.md)** and
 **[`hardware/README.md`](hardware/README.md)**, along with why infants
 are a different (non-hardware) problem entirely.
@@ -77,14 +77,14 @@ python app.py
 ```
 
 Open **http://localhost:5050** in your browser. You'll land on
-`/login` — create an account, and you're taken straight to the clock.
+`/login`. Create an account, and you're taken straight to the clock.
 
 > Port **5050** is used instead of Flask's default 5000 because macOS's
 > AirPlay Receiver occupies 5000 on most Macs.
 
 The SQLite database (`backend/schedules.db`), the session-signing key
 (`backend/.secret_key`), and the audio cache (`frontend/static/audio/`)
-are all created automatically the first time you run the app — nothing
+are all created automatically the first time you run the app, nothing
 to set up by hand. None of the three are committed to git.
 
 ## Using it
@@ -92,12 +92,12 @@ to set up by hand. None of the three are committed to git.
 1. Sign up or log in.
 2. Add a medicine: its name, one or more times of day, how many days the
    course lasts, and a voice language.
-3. You're redirected to `/clock` — a full-screen clock with today's
+3. You're redirected to `/clock`, a full-screen clock with today's
    doses alongside it. It quietly polls the server every ~17 seconds.
 4. When a reminder is due, DoseClock speaks it aloud and shows two huge
    buttons: **Taken** and **Snooze**. Respond by tapping, by saying
    "taken"/"snooze" (or the equivalent word in the reminder's language,
-   Chrome recommended), or by pressing Space/Enter — including from a
+   Chrome recommended), or by pressing Space/Enter, including from a
    paired single-switch accessibility device (see `HARDWARE.md`).
 5. **Taken** logs the dose and, once the *last* scheduled time for that
    day has been taken, counts the day off the course. **Snooze**
@@ -115,7 +115,7 @@ to set up by hand. None of the three are committed to git.
 - The `/check_reminders` endpoint, polled by the browser, returns
   whichever reminder is currently ringing **for the logged-in account
   only**.
-- **Snooze** doesn't create a new database row — it schedules a one-off
+- **Snooze** doesn't create a new database row. It schedules a one-off
   APScheduler job, keyed to that reminder's id, that re-rings it five
   minutes later.
 
@@ -131,14 +131,14 @@ fix commit in the git history:
   unlocking the `<audio>` element on the very first tap/keypress
   anywhere on the page.
 - **Adding accounts meant every existing query needed an owner check.**
-  The original schema had no concept of a user — any reminder id could
+  The original schema had no concept of a user, so any reminder id could
   be marked taken by anyone. Retrofitting `user_id` meant re-checking
   every route, not just adding a `users` table; it's easy to add login
   *pages* and forget to actually scope the *data* behind them.
 - **The scheduler runs globally; the API must not.** APScheduler ticks
   once a minute across *every* account's reminders (it has no concept of
   "who's logged in"), but `/check_reminders` must only ever return the
-  current session's own reminder — otherwise one user's screen could
+  current session's own reminder, otherwise one user's screen could
   show another user's alarm. Two very similar-looking functions
   (`get_all_active_medicines` vs. `get_active_medicines(user_id)`) exist
   specifically so it's obvious at the call site which one is safe to use
@@ -149,7 +149,7 @@ fix commit in the git history:
   reload. Fixed by persisting the key to a local, gitignored file.
 - **The palette constraint (black/beige/white/pink only, no other
   colours) had to double as the error/success/accent system**, not just
-  decoration — worth flagging because a strict palette can quietly fail
+  decoration. Worth flagging because a strict palette can quietly fail
   contrast for exactly the elderly users this app is for if accent
   colours are chosen for looks before checking contrast against both the
   black and the beige backgrounds they sit on.
@@ -158,7 +158,7 @@ fix commit in the git history:
 
 - **Working solo/small on auth:** it's easy to protect *pages* with a
   login redirect and forget to protect the *JSON API routes* the pages
-  call — an unauthenticated `POST /add_medicine` is just as much a hole
+  call. An unauthenticated `POST /add_medicine` is just as much a hole
   as an unauthenticated `/`. Every state-changing route needs its own
   check, not just the page that links to it.
 - **Secrets and generated files reaching GitHub:** `schedules.db`
@@ -172,7 +172,7 @@ fix commit in the git history:
   teammate's commit.
 - **Commit messages that just describe the diff** ("update files",
   "fix bug") instead of the problem being fixed make it hard to find
-  *why* a change happened later — especially relevant here since several
+  *why* a change happened later, especially relevant here since several
   of the fixes above (audio autoplay, session key persistence, per-user
   scoping) are exactly the kind of thing you want to grep commit history
   for in six months.
@@ -189,14 +189,14 @@ By design, DoseClock does **not**:
 - Diagnose symptoms or give medical advice.
 - Recommend, validate, or check dosages.
 - Check drug interactions.
-- Look up medicine names against any external database or API — the
+- Look up medicine names against any external database or API. The
   name you type is stored and spoken back exactly as-is, as a label.
 
 ## Tech stack
 
 - **Backend:** Python, Flask (sessions + werkzeug password hashing),
   APScheduler, gTTS, SQLite
-- **Frontend:** plain HTML/CSS/JS — no build tooling, no frameworks
+- **Frontend:** plain HTML/CSS/JS, no build tooling, no frameworks
 - **Hardware:** ESP32 firmware for the DoseClock Switch Hub (a bedside
-  unit with a standard accessibility-switch jack) — see `hardware/` and
+  unit with a standard accessibility-switch jack), see `hardware/` and
   `HARDWARE.md`
