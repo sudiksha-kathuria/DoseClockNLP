@@ -8,6 +8,10 @@
  *      listens (optionally) for a spoken "taken"/"snooze" via the Web
  *      Speech API. The Taken/Snooze buttons always work regardless of
  *      whether speech recognition is available or understood anything.
+ *   4. Runs a single-switch "scan" over Taken/Snooze and confirms
+ *      whichever one is highlighted on Space/Enter, so a single adaptive
+ *      switch (or just a keyboard) is enough to respond - no precise tap
+ *      or reach required. See /HARDWARE.md.
  */
 
 // ---------------------------------------------------------------------------
@@ -28,10 +32,38 @@ const snoozeBtn = document.getElementById("snooze-btn");
 const micIndicator = document.getElementById("mic-indicator");
 const reminderAudio = document.getElementById("reminder-audio");
 
-const scheduleDrawer = document.getElementById("schedule-drawer");
-const scheduleToggle = document.getElementById("schedule-toggle");
+const soundHint = document.getElementById("sound-hint");
 
 const toast = document.getElementById("toast");
+
+// ---------------------------------------------------------------------------
+// Audio unlock
+// Browsers refuse to play audio with sound until the page has received a
+// real user gesture (click/tap/key). Since reminders fire from a
+// background poll with no gesture of their own, the very first tap
+// anywhere on this page "unlocks" the <audio> element by playing (then
+// immediately pausing) a silent clip - after that, script-triggered
+// playback works normally for the rest of the visit.
+// ---------------------------------------------------------------------------
+
+const SILENT_CLIP = "data:audio/wav;base64,UklGRiUAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQEAAACA";
+let audioUnlocked = false;
+
+function unlockAudio() {
+  if (audioUnlocked) return;
+  audioUnlocked = true;
+  reminderAudio.src = SILENT_CLIP;
+  reminderAudio
+    .play()
+    .then(() => reminderAudio.pause())
+    .catch(() => {
+      /* some browsers still refuse this - Taken/Snooze buttons remain the reliable path */
+    });
+  soundHint.classList.add("hidden");
+  ["click", "touchstart", "keydown"].forEach((evt) => document.removeEventListener(evt, unlockAudio));
+}
+
+["click", "touchstart", "keydown"].forEach((evt) => document.addEventListener(evt, unlockAudio));
 
 // ---------------------------------------------------------------------------
 // Live clock
@@ -55,14 +87,6 @@ function tickClock() {
 
 tickClock();
 setInterval(tickClock, 1000);
-
-// ---------------------------------------------------------------------------
-// Today's schedule drawer
-// ---------------------------------------------------------------------------
-
-scheduleToggle.addEventListener("click", () => {
-  scheduleDrawer.classList.toggle("open");
-});
 
 // ---------------------------------------------------------------------------
 // Toast helper
@@ -157,6 +181,58 @@ function startRecognition(language) {
 }
 
 // ---------------------------------------------------------------------------
+// Single-switch scanning
+// Auto-highlights Taken, then Snooze, then back, on a slow loop. Anyone
+// who can trigger exactly one input - a single adaptive switch (wired or
+// Bluetooth, they all emit Space/Enter by default), a keyboard, or just
+// a tap on whichever button is glowing - can confirm a reminder without
+// ever needing to aim at a specific target. See /HARDWARE.md.
+// ---------------------------------------------------------------------------
+
+const SCAN_INTERVAL_MS = 2200;
+const scanButtons = [takenBtn, snoozeBtn];
+let scanIndex = 0;
+let scanTimer = null;
+
+function applyScanHighlight() {
+  scanButtons.forEach((btn, i) => btn.classList.toggle("scan-highlight", i === scanIndex));
+}
+
+function startScanning() {
+  scanIndex = 0;
+  applyScanHighlight();
+  scanTimer = setInterval(() => {
+    scanIndex = (scanIndex + 1) % scanButtons.length;
+    applyScanHighlight();
+  }, SCAN_INTERVAL_MS);
+}
+
+function stopScanning() {
+  clearInterval(scanTimer);
+  scanTimer = null;
+  scanButtons.forEach((btn) => btn.classList.remove("scan-highlight"));
+}
+
+function confirmScanSelection() {
+  if (scanIndex === 0) {
+    handleTaken();
+  } else {
+    handleSnooze();
+  }
+}
+
+// Space/Enter is the default output of virtually every commercial
+// single-switch accessibility device, so this one listener is all that's
+// needed to support them - no pairing or extra code per device.
+document.addEventListener("keydown", (event) => {
+  if (!currentReminder) return;
+  if (event.code === "Space" || event.code === "Enter") {
+    event.preventDefault();
+    confirmScanSelection();
+  }
+});
+
+// ---------------------------------------------------------------------------
 // Showing / hiding the alarm
 // ---------------------------------------------------------------------------
 
@@ -165,12 +241,21 @@ function showAlarm(reminder) {
   idleView.classList.add("hidden");
   alarmMedicineName.textContent = reminder.medicine_name;
   alarmView.classList.add("visible");
+  startScanning();
 
-  // Autoplay the reminder audio. Some browsers block audio that isn't
-  // tied to a user gesture; if so, the Taken/Snooze buttons still work.
+  // Play the reminder audio. If the page was tapped at least once already
+  // (see the audio-unlock block above), this plays with sound straight
+  // away. If it's still blocked for some reason, fall back to a tappable
+  // prompt - the Taken/Snooze buttons remain fully usable either way.
   reminderAudio.src = reminder.audio_url;
   reminderAudio.play().catch(() => {
-    /* autoplay blocked - silently ignored, buttons remain usable */
+    micIndicator.innerHTML = '<span class="mic-dot"></span> Tap here to hear the reminder';
+    micIndicator.style.cursor = "pointer";
+    micIndicator.onclick = () => {
+      reminderAudio.play().catch(() => {});
+      micIndicator.onclick = null;
+      micIndicator.style.cursor = "";
+    };
   });
 
   startRecognition(reminder.language);
@@ -179,17 +264,19 @@ function showAlarm(reminder) {
 function hideAlarm() {
   alarmView.classList.remove("visible");
   stopRecognition();
+  stopScanning();
   currentReminder = null;
   idleView.classList.remove("hidden");
 }
 
 function showSuccessThenIdle() {
   alarmView.classList.remove("visible");
+  stopScanning();
   successFlash.classList.add("visible");
   setTimeout(() => {
     successFlash.classList.remove("visible");
     idleView.classList.remove("hidden");
-    // Refresh so the "today's doses" drawer reflects the updated schedule.
+    // Refresh so the "today's doses" sidebar reflects the updated schedule.
     window.location.reload();
   }, 900);
 }
@@ -202,6 +289,7 @@ async function handleTaken() {
   if (!currentReminder) return;
   const id = currentReminder.id;
   stopRecognition();
+  stopScanning();
   currentReminder = null; // prevent double-fire from a lingering voice result
   try {
     await fetch("/mark_taken", {
@@ -219,6 +307,7 @@ async function handleSnooze() {
   if (!currentReminder) return;
   const id = currentReminder.id;
   stopRecognition();
+  stopScanning();
   currentReminder = null;
   try {
     await fetch("/mark_snooze", {
