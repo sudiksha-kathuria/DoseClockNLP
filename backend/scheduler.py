@@ -43,7 +43,7 @@ def _check_due_reminders():
     current_time = now.strftime("%H:%M")
     current_minute_key = now.strftime("%Y-%m-%d %H:%M")
 
-    for row in database.get_active_medicines():
+    for row in database.get_all_active_medicines():
         if row["time"] != current_time:
             continue
         already_fired_this_minute = (
