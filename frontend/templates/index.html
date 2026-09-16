@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}DoseClock — Add a medicine{% endblock %}
+{% block title %}DoseClock: Add a medicine{% endblock %}
 {% block content %}
 <div class="add-shell">
   <section class="add-form-pane">
@@ -63,7 +63,7 @@
           <span class="med-time">{{ row.time }}</span>
         </li>
       {% else %}
-        <li class="preview-empty" style="display:list-item;">Nothing scheduled yet — add your first reminder.</li>
+        <li class="preview-empty" style="display:list-item;">Nothing scheduled yet. Add your first reminder.</li>
       {% endfor %}
     </ul>
   </aside>
