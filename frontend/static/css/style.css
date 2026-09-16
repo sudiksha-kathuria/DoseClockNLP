@@ -1,39 +1,56 @@
 /* ==========================================================================
-   DoseClock - shared design system
-   A calm, dark "bedside table at night" palette with one warm accent.
-   Variables live here so both pages (form + clock) stay in sync.
+   DoseClock — design system
+   Theme: a warm, basic "TV show title card" look — four colours only:
+   black, beige, white, pink. Every screen fills the whole viewport
+   (no floating card lost in empty space) and every interactive target
+   is oversized on purpose: DoseClock is used by people who may not be
+   able to move precisely, or much at all. See /HARDWARE.md.
    ========================================================================== */
 
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap");
+
 :root {
-  /* Palette */
-  --bg: #10131a;              /* deep navy background */
-  --bg-glow: #1a2130;         /* faint radial glow behind the clock */
-  --surface: #1a1f2b;         /* card background */
-  --surface-raised: #222839;  /* inputs, hover states */
-  --border: #2a3142;          /* subtle, low-contrast borders */
-  --accent: #ff9466;          /* warm coral/amber - primary action + clock */
-  --accent-soft: rgba(255, 148, 102, 0.16);
-  --success: #6bcf9a;         /* soft green for the "Taken" confirmation */
-  --text-primary: #f4f1ee;
-  --text-secondary: #9aa1b2;
-  --text-muted: #616a7d;
+  /* ---- The four-colour palette ------------------------------------- */
+  --black: #16130f;
+  --black-soft: #221d16;
+  --black-raised: #2c2419;
+  --beige: #f1e4c9;
+  --beige-deep: #e3d0a4;
+  --white: #fffaf0;
+  --pink: #e8456f;
+  --pink-deep: #c22f56;
+  --pink-soft: rgba(232, 69, 111, 0.16);
 
-  /* Spacing scale */
-  --space-xs: 0.4rem;
-  --space-sm: 0.8rem;
-  --space-md: 1.6rem;
-  --space-lg: 2.4rem;
-  --space-xl: 3.6rem;
+  /* Semantic aliases (kept to only the four colours above) */
+  --bg: var(--black);
+  --surface: var(--black-soft);
+  --surface-raised: var(--black-raised);
+  --on-dark: var(--white);
+  --on-dark-muted: #cbbfa9;
+  --on-light: var(--black);
+  --on-light-muted: #5a4f3c;
+  --border-dark: #3a3021;
+  --border-light: var(--beige-deep);
+  --accent: var(--pink);
+  --accent-strong: var(--pink-deep);
 
-  /* Shape + motion */
-  --radius-sm: 12px;
-  --radius-md: 20px;
-  --radius-lg: 32px;
-  --ease: cubic-bezier(0.22, 1, 0.36, 1); /* calm ease-out, no bounce */
-  --shadow-card: 0 20px 60px -20px rgba(0, 0, 0, 0.6);
+  /* Spacing */
+  --space-2xs: 0.35rem;
+  --space-xs: 0.6rem;
+  --space-sm: 1rem;
+  --space-md: 1.75rem;
+  --space-lg: 2.75rem;
+  --space-xl: 4rem;
 
-  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter",
-    "Helvetica Neue", Arial, sans-serif;
+  --nav-h: 4.75rem;
+  --radius-sm: 14px;
+  --radius-md: 22px;
+  --radius-lg: 34px;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --shadow-card: 0 20px 50px -20px rgba(0, 0, 0, 0.55);
+
+  --font-display: "Fraunces", Georgia, serif;
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
 }
 
 * {
@@ -47,10 +64,11 @@ body {
 
 body {
   margin: 0;
-  background: var(--bg);
-  color: var(--text-primary);
+  background: var(--black);
+  color: var(--on-dark);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
 h1,
@@ -64,57 +82,155 @@ button {
   font-family: inherit;
 }
 
-/* ==========================================================================
-   Reusable card
-   ========================================================================== */
-
-.card {
-  background: var(--surface);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-card);
-  padding: var(--space-xl) var(--space-lg);
+a {
+  color: inherit;
 }
 
 /* ==========================================================================
-   Add-medicine form (index.html)
+   Top nav — the "channel bar". Persistent, full width, on every screen
+   that follows login, so the whole app never loses its sense of place.
    ========================================================================== */
 
-.page-form {
-  min-height: 100vh;
+.tv-nav {
+  height: var(--nav-h);
+  width: 100%;
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  padding: 0 var(--space-lg);
+  background: var(--black);
+  border-bottom: 3px solid var(--pink);
+  position: relative;
+  z-index: 20;
+}
+
+.tv-brand {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.tv-brand .dot {
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+  background: var(--pink);
+  display: inline-block;
+  box-shadow: 0 0 0 4px var(--pink-soft);
+}
+
+.tv-brand .wordmark {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.4rem;
+  color: var(--white);
+  letter-spacing: 0.01em;
+}
+
+.tv-nav-links {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  flex: 1;
   justify-content: center;
-  padding: var(--space-lg) var(--space-md);
 }
 
-.form-card {
-  width: 100%;
-  max-width: 440px;
-}
-
-.form-header {
-  text-align: center;
-  margin-bottom: var(--space-lg);
-}
-
-.form-header .brand {
-  color: var(--accent);
-  font-size: 1rem;
+.tv-nav-links a {
+  text-decoration: none;
+  color: var(--on-dark-muted);
   font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font-size: 0.95rem;
+  padding: 0.6rem 1.1rem;
+  border-radius: 999px;
+  transition: background 150ms var(--ease), color 150ms var(--ease);
+  white-space: nowrap;
 }
 
-.form-header h1 {
-  font-size: 1.6rem;
-  font-weight: 600;
-  margin-top: var(--space-xs);
+.tv-nav-links a:hover {
+  color: var(--white);
+  background: var(--black-raised);
 }
 
-.form-header p {
-  color: var(--text-secondary);
+.tv-nav-links a.active {
+  color: var(--black);
+  background: var(--pink);
+}
+
+.tv-nav-user {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  flex-shrink: 0;
+}
+
+.tv-nav-user .greeting {
+  color: var(--on-dark-muted);
   font-size: 0.9rem;
-  margin-top: var(--space-xs);
+  white-space: nowrap;
+}
+
+.tv-nav-user .greeting strong {
+  color: var(--white);
+}
+
+.logout-btn {
+  background: transparent;
+  border: 1.5px solid var(--border-dark);
+  color: var(--on-dark-muted);
+  padding: 0.55rem 1rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 150ms var(--ease), color 150ms var(--ease);
+}
+
+.logout-btn:hover {
+  border-color: var(--pink);
+  color: var(--white);
+}
+
+.tv-main {
+  min-height: calc(100vh - var(--nav-h));
+  width: 100%;
+}
+
+/* ==========================================================================
+   Shared bits
+   ========================================================================== */
+
+.eyebrow {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.big-input,
+select.big-input {
+  width: 100%;
+  padding: 1rem 1.15rem;
+  background: var(--white);
+  border: 2px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  color: var(--black);
+  font-size: 1.1rem;
+  font-family: inherit;
+  transition: border-color 150ms var(--ease), box-shadow 150ms var(--ease);
+}
+
+.big-input::placeholder {
+  color: #8a7d63;
+}
+
+.big-input:focus {
+  outline: none;
+  border-color: var(--pink);
+  box-shadow: 0 0 0 4px var(--pink-soft);
 }
 
 .field-group {
@@ -123,40 +239,244 @@ button {
 
 .field-group label {
   display: block;
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--on-light-muted);
   margin-bottom: var(--space-xs);
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
 }
 
-.field-group input[type="text"],
-.field-group input[type="number"],
-.field-group input[type="time"],
-.field-group select {
-  width: 100%;
-  padding: 0.85rem 1rem;
-  background: var(--surface-raised);
-  border: 1px solid var(--border);
+.pink-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1.05rem 1.6rem;
+  border: none;
   border-radius: var(--radius-sm);
-  color: var(--text-primary);
+  background: var(--pink);
+  color: var(--black);
+  font-size: 1.05rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 150ms var(--ease), box-shadow 150ms var(--ease), filter 150ms var(--ease);
+}
+
+.pink-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px -10px var(--pink-soft);
+  filter: brightness(1.04);
+}
+
+.pink-btn:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.form-error {
+  color: var(--pink);
+  background: var(--pink-soft);
+  border: 1.5px solid var(--pink);
+  padding: 0.8rem 1rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-top: var(--space-sm);
+}
+
+.toast {
+  position: fixed;
+  bottom: var(--space-lg);
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--white);
+  border: 2px solid var(--black);
+  color: var(--black);
+  padding: 0.9rem 1.5rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+  font-weight: 600;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 250ms var(--ease), transform 250ms var(--ease);
+  box-shadow: var(--shadow-card);
+  z-index: 100;
+}
+
+.toast.visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ==========================================================================
+   Auth screens (login / signup) — full-bleed split screen
+   ========================================================================== */
+
+.auth-shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+}
+
+.auth-hero {
+  background: var(--black);
+  color: var(--white);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: var(--space-xl) var(--space-lg);
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.028) 0px,
+      rgba(255, 255, 255, 0.028) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+  pointer-events: none;
+}
+
+.auth-hero .tv-brand .wordmark {
+  font-size: 1.6rem;
+}
+
+.auth-hero .hero-ring {
+  width: min(60%, 320px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 3px solid var(--pink);
+  margin: var(--space-xl) auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  box-shadow: 0 0 0 14px rgba(232, 69, 111, 0.08);
+}
+
+.auth-hero .hero-ring::before {
+  content: "";
+  position: absolute;
+  inset: 22px;
+  border-radius: 50%;
+  border: 1.5px dashed var(--border-dark);
+}
+
+.auth-hero .hero-ring .hero-glyph {
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 6vw, 4rem);
+  color: var(--pink);
+  font-weight: 700;
+}
+
+.auth-hero .hero-copy {
+  text-align: center;
+  color: var(--on-dark-muted);
+  font-size: 1.05rem;
+  line-height: 1.6;
+  max-width: 32ch;
+  margin: 0 auto;
+}
+
+.auth-hero .hero-tag {
+  text-align: center;
+  font-size: 0.78rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--on-dark-muted);
+}
+
+.auth-panel {
+  background: var(--beige);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-xl) var(--space-lg);
+}
+
+.auth-form-wrap {
+  width: 100%;
+  max-width: 460px;
+}
+
+.auth-form-wrap h1 {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 3.4vw, 2.4rem);
+  color: var(--black);
+  margin-bottom: var(--space-2xs);
+}
+
+.auth-form-wrap .subhead {
+  color: var(--on-light-muted);
   font-size: 1rem;
-  font-family: inherit;
-  transition: border-color 200ms var(--ease), box-shadow 200ms var(--ease);
+  margin-bottom: var(--space-lg);
 }
 
-.field-group input::placeholder {
-  color: var(--text-muted);
+.auth-form-wrap form {
+  margin-top: var(--space-md);
 }
 
-.field-group input:focus,
-.field-group select:focus {
-  outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 4px var(--accent-soft);
+.auth-submit {
+  width: 100%;
+  margin-top: var(--space-sm);
 }
 
-/* Multiple time-of-day rows */
+.auth-switch {
+  margin-top: var(--space-md);
+  text-align: center;
+  color: var(--on-light-muted);
+  font-size: 0.95rem;
+}
+
+.auth-switch a {
+  color: var(--pink-deep);
+  font-weight: 700;
+  text-decoration: none;
+  border-bottom: 2px solid var(--pink-deep);
+}
+
+/* ==========================================================================
+   Add-medicine screen — two-pane, full height
+   ========================================================================== */
+
+.add-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.85fr);
+  min-height: calc(100vh - var(--nav-h));
+}
+
+.add-form-pane {
+  background: var(--beige);
+  padding: var(--space-xl) var(--space-lg);
+  display: flex;
+  align-items: center;
+}
+
+.add-form-inner {
+  width: 100%;
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+.add-form-inner h1 {
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 3.4vw, 2.6rem);
+  color: var(--black);
+}
+
+.add-form-inner .subhead {
+  color: var(--on-light-muted);
+  margin-top: var(--space-2xs);
+  margin-bottom: var(--space-lg);
+  font-size: 1.05rem;
+}
+
 .times-list {
   display: flex;
   flex-direction: column;
@@ -175,102 +495,136 @@ button {
 
 .remove-time {
   flex-shrink: 0;
-  width: 2.4rem;
-  height: 2.4rem;
+  width: 3rem;
+  height: 3rem;
   border-radius: 50%;
-  border: 1px solid var(--border);
-  background: var(--surface-raised);
-  color: var(--text-secondary);
-  font-size: 1.1rem;
+  border: 2px solid var(--border-light);
+  background: var(--white);
+  color: var(--on-light-muted);
+  font-size: 1.3rem;
   line-height: 1;
   cursor: pointer;
-  transition: background 150ms var(--ease), color 150ms var(--ease);
+  transition: background 150ms var(--ease), color 150ms var(--ease), border-color 150ms var(--ease);
 }
 
 .remove-time:hover {
-  background: #3a2430;
-  color: #ff8a80;
+  background: var(--pink);
+  color: var(--black);
+  border-color: var(--pink);
 }
 
 .add-time {
   margin-top: var(--space-xs);
   background: none;
-  border: 1px dashed var(--border);
-  color: var(--accent);
-  padding: 0.6rem 1rem;
+  border: 2px dashed var(--border-light);
+  color: var(--pink-deep);
+  padding: 0.8rem 1rem;
   border-radius: var(--radius-sm);
-  font-size: 0.9rem;
-  font-weight: 600;
+  font-size: 0.95rem;
+  font-weight: 700;
   cursor: pointer;
   width: 100%;
   transition: border-color 150ms var(--ease), background 150ms var(--ease);
 }
 
 .add-time:hover {
-  border-color: var(--accent);
-  background: var(--accent-soft);
+  border-color: var(--pink);
+  background: var(--pink-soft);
 }
 
-.submit-btn {
-  width: 100%;
-  margin-top: var(--space-sm);
-  padding: 1rem;
-  border: none;
+.add-preview-pane {
+  background: var(--black);
+  color: var(--white);
+  padding: var(--space-xl) var(--space-lg);
+  overflow-y: auto;
+}
+
+.add-preview-pane .eyebrow {
+  display: block;
+  margin-bottom: var(--space-2xs);
+}
+
+.add-preview-pane h2 {
+  font-family: var(--font-display);
+  font-size: 1.9rem;
+  margin-bottom: var(--space-lg);
+}
+
+.preview-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.preview-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  background: var(--black-soft);
+  border: 1.5px solid var(--border-dark);
   border-radius: var(--radius-sm);
-  background: var(--accent);
-  color: #1a1108;
-  font-size: 1.05rem;
+  padding: 1rem 1.25rem;
+}
+
+.preview-list .med-name {
   font-weight: 700;
-  cursor: pointer;
-  transition: transform 200ms var(--ease), box-shadow 200ms var(--ease), filter 150ms var(--ease);
+  font-size: 1.05rem;
 }
 
-.submit-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 24px -8px var(--accent-soft);
-  filter: brightness(1.05);
+.preview-list .med-time {
+  font-variant-numeric: tabular-nums;
+  color: var(--pink);
+  font-weight: 700;
+  font-size: 1.1rem;
 }
 
-.submit-btn:active {
-  transform: translateY(0) scale(0.98);
-}
-
-.form-footer {
+.preview-empty {
+  color: var(--on-dark-muted);
+  border: 1.5px dashed var(--border-dark);
+  border-radius: var(--radius-sm);
+  padding: var(--space-lg);
   text-align: center;
-  margin-top: var(--space-md);
-}
-
-.form-footer a {
-  color: var(--text-secondary);
-  font-size: 0.85rem;
-  text-decoration: none;
-  border-bottom: 1px dashed var(--border);
-}
-
-.form-footer a:hover {
-  color: var(--accent);
-}
-
-.form-error {
-  color: #ff8a80;
-  font-size: 0.85rem;
-  margin-top: var(--space-sm);
-  min-height: 1.2em;
+  line-height: 1.6;
 }
 
 /* ==========================================================================
-   Clock view (clock.html)
+   Clock screen — the kiosk. Idle clock + huge-target alarm.
    ========================================================================== */
 
-.page-clock {
-  min-height: 100vh;
+.clock-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 26%);
+  min-height: calc(100vh - var(--nav-h));
+}
+
+.clock-stage {
+  position: relative;
+  background: var(--black);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: var(--space-lg) var(--space-md);
-  position: relative;
-  overflow-x: hidden;
+  overflow: hidden;
+  padding: var(--space-lg);
+}
+
+.clock-stage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.022) 0px,
+      rgba(255, 255, 255, 0.022) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+  pointer-events: none;
 }
 
 /* Idle "breathing" clock ------------------------------------------------- */
@@ -280,7 +634,9 @@ button {
   flex-direction: column;
   align-items: center;
   width: 100%;
-  transition: opacity 250ms var(--ease), transform 250ms var(--ease);
+  position: relative;
+  z-index: 1;
+  transition: opacity 250ms var(--ease);
 }
 
 .idle-view.hidden {
@@ -294,14 +650,13 @@ button {
   justify-content: center;
 }
 
-/* Soft pulsing glow behind the clock - signals "alive", not distracting */
 .clock-glow-wrap::before {
   content: "";
   position: absolute;
-  width: min(80vw, 420px);
-  height: min(80vw, 420px);
+  width: min(60vw, 520px);
+  height: min(60vw, 520px);
   border-radius: 50%;
-  background: radial-gradient(circle, var(--accent-soft) 0%, transparent 70%);
+  background: radial-gradient(circle, var(--pink-soft) 0%, transparent 70%);
   animation: breathe 5s ease-in-out infinite;
   z-index: 0;
 }
@@ -321,95 +676,47 @@ button {
 .clock-face {
   position: relative;
   z-index: 1;
-  font-size: clamp(3.5rem, 16vw, 7.5rem);
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  color: var(--accent);
+  font-size: clamp(4.5rem, 13vw, 10rem);
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  color: var(--white);
   font-variant-numeric: tabular-nums;
   line-height: 1;
   text-align: center;
 }
 
 .clock-meridiem {
-  font-size: 0.35em;
+  font-size: 0.3em;
   vertical-align: super;
-  color: var(--text-secondary);
-  margin-left: 0.15em;
+  color: var(--pink);
+  margin-left: 0.2em;
 }
 
 .clock-date {
   margin-top: var(--space-sm);
-  color: var(--text-secondary);
-  font-size: 1rem;
-  letter-spacing: 0.03em;
+  color: var(--on-dark-muted);
+  font-size: 1.2rem;
+  letter-spacing: 0.02em;
 }
 
-/* Today's schedule drawer ------------------------------------------------ */
-
-.schedule-drawer {
-  margin-top: var(--space-xl);
-  width: 100%;
-  max-width: 420px;
-}
-
-.schedule-toggle {
-  width: 100%;
-  background: none;
-  border: none;
-  color: var(--text-muted);
+.sound-hint {
+  margin-top: var(--space-xs);
+  color: var(--on-dark-muted);
+  opacity: 0.7;
   font-size: 0.85rem;
-  padding: var(--space-sm);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.4rem;
+  letter-spacing: 0.02em;
+  transition: opacity 400ms var(--ease);
 }
 
-.schedule-toggle .chevron {
-  transition: transform 200ms var(--ease);
-  display: inline-block;
+.sound-hint.hidden {
+  opacity: 0;
+  pointer-events: none;
 }
 
-.schedule-drawer.open .chevron {
-  transform: rotate(180deg);
-}
-
-.schedule-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 300ms var(--ease);
-}
-
-.schedule-drawer.open .schedule-list {
-  max-height: 320px;
-  overflow-y: auto;
-}
-
-.schedule-list li {
-  display: flex;
-  justify-content: space-between;
-  padding: 0.7rem var(--space-sm);
-  border-bottom: 1px solid var(--border);
-  color: var(--text-secondary);
-  font-size: 0.9rem;
-}
-
-.schedule-list li span.med-name {
-  color: var(--text-primary);
-}
-
-.schedule-empty {
-  text-align: center;
-  color: var(--text-muted);
-  padding: var(--space-sm);
-  font-size: 0.9rem;
-}
-
-/* Alarm view -------------------------------------------------------------- */
+/* Alarm view — huge, unmissable targets ----------------------------------
+   Each button occupies roughly half the stage: a deliberate accessibility
+   choice so an imprecise tap, a shaking hand, or a single-switch press
+   (see HARDWARE.md) still lands. */
 
 .alarm-view {
   display: none;
@@ -417,7 +724,9 @@ button {
   align-items: center;
   text-align: center;
   width: 100%;
-  max-width: 420px;
+  height: 100%;
+  position: relative;
+  z-index: 1;
 }
 
 .alarm-view.visible {
@@ -428,7 +737,7 @@ button {
 @keyframes alarm-in {
   from {
     opacity: 0;
-    transform: scale(0.92);
+    transform: scale(0.97);
   }
   to {
     opacity: 1;
@@ -436,95 +745,47 @@ button {
   }
 }
 
+.alarm-top {
+  flex: 0 0 auto;
+  padding-top: var(--space-lg);
+}
+
 .alarm-icon {
-  font-size: 2.6rem;
-  animation: alarm-in 320ms var(--ease);
+  font-size: 2.8rem;
 }
 
 .alarm-label {
-  color: var(--text-secondary);
-  font-size: 0.9rem;
-  letter-spacing: 0.08em;
+  color: var(--pink);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  margin-top: var(--space-md);
+  margin-top: var(--space-sm);
 }
 
 .alarm-medicine-name {
-  font-size: clamp(1.8rem, 7vw, 2.6rem);
-  font-weight: 700;
-  margin-top: var(--space-xs);
-  opacity: 0;
-  animation: fade-up 320ms var(--ease) 80ms forwards;
-}
-
-.alarm-actions {
-  display: flex;
-  gap: var(--space-sm);
-  width: 100%;
-  margin-top: var(--space-xl);
-}
-
-.alarm-btn {
-  flex: 1;
-  padding: 1.4rem 1rem;
-  border-radius: var(--radius-md);
-  border: none;
-  font-size: 1.15rem;
-  font-weight: 700;
-  cursor: pointer;
-  opacity: 0;
-  transform: translateY(12px);
-  transition: transform 120ms var(--ease), box-shadow 200ms var(--ease), filter 150ms var(--ease);
-}
-
-.alarm-btn.taken {
-  background: var(--success);
-  color: #0e1f16;
-  animation: fade-up 320ms var(--ease) 160ms forwards;
-}
-
-.alarm-btn.snooze {
-  background: var(--surface-raised);
-  color: var(--text-primary);
-  border: 1px solid var(--border);
-  animation: fade-up 320ms var(--ease) 240ms forwards;
-}
-
-@keyframes fade-up {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Satisfying tap response */
-.alarm-btn:active {
-  transform: scale(0.94);
-}
-
-.alarm-btn.taken:hover {
-  filter: brightness(1.08);
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 6vw, 3.6rem);
+  color: var(--white);
+  margin-top: var(--space-2xs);
 }
 
 .mic-indicator {
-  margin-top: var(--space-md);
-  font-size: 0.8rem;
-  color: var(--text-muted);
+  margin-top: var(--space-sm);
+  font-size: 0.9rem;
+  color: var(--on-dark-muted);
   display: flex;
   align-items: center;
-  gap: 0.4rem;
+  justify-content: center;
+  gap: 0.5rem;
   min-height: 1.4em;
 }
 
 .mic-dot {
-  width: 8px;
-  height: 8px;
+  width: 9px;
+  height: 9px;
   border-radius: 50%;
-  background: var(--accent);
+  background: var(--pink);
   animation: mic-pulse 1.4s ease-in-out infinite;
 }
 
@@ -538,13 +799,76 @@ button {
   }
 }
 
-/* Success flash after "Taken" --------------------------------------------- */
+.alarm-actions {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-md);
+  width: 100%;
+  padding: var(--space-md) var(--space-lg) var(--space-lg);
+}
+
+.alarm-btn {
+  border-radius: var(--radius-lg);
+  border: 4px solid transparent;
+  font-size: clamp(1.4rem, 3vw, 2.1rem);
+  font-weight: 800;
+  font-family: var(--font-display);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  transition: transform 120ms var(--ease), box-shadow 200ms var(--ease), filter 150ms var(--ease), border-color 150ms var(--ease);
+}
+
+.alarm-btn .key-hint {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.alarm-btn.taken {
+  background: var(--beige);
+  color: var(--black);
+}
+
+.alarm-btn.snooze {
+  background: var(--black-soft);
+  color: var(--white);
+  border-color: var(--border-dark);
+}
+
+.alarm-btn:active {
+  transform: scale(0.97);
+}
+
+.alarm-btn.taken:hover {
+  filter: brightness(1.03);
+}
+
+/* Single-switch scanning highlight: the button currently "selected" by
+   the auto-advancing scan cycle, confirmable with one press of any
+   switch mapped to Space/Enter — see HARDWARE.md, "Accessible input". */
+.alarm-btn.scan-highlight {
+  border-color: var(--pink);
+  box-shadow: 0 0 0 6px var(--pink-soft), 0 20px 50px -18px rgba(0, 0, 0, 0.6);
+  transform: scale(1.015);
+}
+
+/* Success flash ------------------------------------------------------------ */
 
 .success-flash {
   display: none;
   flex-direction: column;
   align-items: center;
   gap: var(--space-md);
+  position: relative;
+  z-index: 1;
 }
 
 .success-flash.visible {
@@ -553,23 +877,24 @@ button {
 }
 
 .checkmark-circle {
-  width: 96px;
-  height: 96px;
+  width: 110px;
+  height: 110px;
   border-radius: 50%;
-  background: var(--accent-soft);
+  background: var(--pink-soft);
+  border: 3px solid var(--pink);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .checkmark-circle svg {
-  width: 52px;
-  height: 52px;
+  width: 56px;
+  height: 56px;
 }
 
 .checkmark-circle path {
   fill: none;
-  stroke: var(--success);
+  stroke: var(--pink);
   stroke-width: 4;
   stroke-linecap: round;
   stroke-linejoin: round;
@@ -585,44 +910,330 @@ button {
 }
 
 .success-flash p {
-  color: var(--text-secondary);
-  font-size: 1rem;
+  font-family: var(--font-display);
+  color: var(--white);
+  font-size: 1.3rem;
 }
 
-/* Toast (used for "added" + "snoozed" confirmations) ---------------------- */
+/* Today's-doses side panel ------------------------------------------------- */
 
-.toast {
-  position: fixed;
-  bottom: var(--space-lg);
-  left: 50%;
-  transform: translateX(-50%) translateY(20px);
-  background: var(--surface-raised);
-  border: 1px solid var(--border);
-  color: var(--text-primary);
-  padding: 0.8rem 1.4rem;
+.clock-sidebar {
+  background: var(--beige);
+  padding: var(--space-lg) var(--space-md);
+  overflow-y: auto;
+  border-left: 3px solid var(--pink);
+}
+
+.clock-sidebar h2 {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  color: var(--black);
+  margin-bottom: var(--space-md);
+}
+
+.sidebar-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.sidebar-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 0.9rem 1rem;
   border-radius: var(--radius-sm);
-  font-size: 0.9rem;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 250ms var(--ease), transform 250ms var(--ease);
-  box-shadow: var(--shadow-card);
+  background: var(--white);
+  border: 1.5px solid var(--border-light);
 }
 
-.toast.visible {
-  opacity: 1;
-  transform: translateX(-50%) translateY(0);
+.sidebar-list .med-name {
+  color: var(--black);
+  font-weight: 700;
+}
+
+.sidebar-list .med-time {
+  color: var(--pink-deep);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.sidebar-empty {
+  color: var(--on-light-muted);
+  text-align: center;
+  padding: var(--space-md);
+  font-size: 0.95rem;
+}
+
+.sidebar-cta {
+  display: block;
+  margin-top: var(--space-md);
+  text-align: center;
+  text-decoration: none;
+  color: var(--pink-deep);
+  font-weight: 700;
+  border: 2px dashed var(--border-light);
+  border-radius: var(--radius-sm);
+  padding: 0.9rem;
+}
+
+.sidebar-cta:hover {
+  border-color: var(--pink);
+}
+
+/* ==========================================================================
+   Logs screen — full-width history table + hardware pairing
+   ========================================================================== */
+
+.logs-shell {
+  background: var(--beige);
+  min-height: calc(100vh - var(--nav-h));
+  padding: var(--space-lg);
+}
+
+.logs-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+}
+
+.logs-header h1 {
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 3.2vw, 2.5rem);
+  color: var(--black);
+}
+
+.logs-header .subhead {
+  color: var(--on-light-muted);
+  margin-top: var(--space-2xs);
+}
+
+.logs-filter {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.logs-filter select {
+  padding: 0.7rem 1rem;
+  border-radius: var(--radius-sm);
+  border: 2px solid var(--border-light);
+  background: var(--white);
+  color: var(--black);
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.logs-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 340px);
+  gap: var(--space-lg);
+  align-items: start;
+}
+
+.logs-table-card {
+  background: var(--white);
+  border-radius: var(--radius-md);
+  border: 1.5px solid var(--border-light);
+  overflow: hidden;
+}
+
+.logs-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.logs-table th {
+  text-align: left;
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--on-light-muted);
+  padding: 1rem 1.4rem;
+  background: var(--beige-deep);
+}
+
+.logs-table td {
+  padding: 1.1rem 1.4rem;
+  border-top: 1px solid var(--border-light);
+  font-size: 1rem;
+  color: var(--black);
+}
+
+.logs-table tr:nth-child(even) td {
+  background: #faf3e2;
+}
+
+.logs-table .pill {
+  display: inline-block;
+  background: var(--pink-soft);
+  color: var(--pink-deep);
+  font-weight: 700;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.65rem;
+  border-radius: 999px;
+}
+
+.logs-empty {
+  padding: var(--space-xl);
+  text-align: center;
+  color: var(--on-light-muted);
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.logs-side {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.side-card {
+  background: var(--black);
+  color: var(--white);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+}
+
+.side-card h2 {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  margin-bottom: var(--space-xs);
+}
+
+.side-card p {
+  color: var(--on-dark-muted);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.device-list {
+  list-style: none;
+  margin: var(--space-sm) 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.device-list li {
+  background: var(--black-soft);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-sm);
+  padding: 0.8rem 1rem;
+  font-size: 0.85rem;
+}
+
+.device-list .device-name {
+  font-weight: 700;
+  color: var(--white);
+}
+
+.device-list .device-token {
+  display: block;
+  margin-top: 0.3rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.78rem;
+  color: var(--pink);
+  word-break: break-all;
+}
+
+.pair-form {
+  display: flex;
+  gap: var(--space-xs);
+  margin-top: var(--space-sm);
+}
+
+.pair-form input {
+  flex: 1;
+  padding: 0.75rem 0.9rem;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--border-dark);
+  background: var(--black-soft);
+  color: var(--white);
+  font-size: 0.9rem;
+}
+
+.pair-form input::placeholder {
+  color: var(--on-dark-muted);
+}
+
+.pair-form button {
+  flex-shrink: 0;
+  padding: 0.75rem 1.1rem;
+  border-radius: var(--radius-sm);
+  border: none;
+  background: var(--pink);
+  color: var(--black);
+  font-weight: 700;
+  cursor: pointer;
 }
 
 /* ==========================================================================
    Responsive
    ========================================================================== */
 
-@media (max-width: 480px) {
-  .card {
-    padding: var(--space-lg) var(--space-md);
+@media (max-width: 900px) {
+  .auth-shell,
+  .add-shell,
+  .clock-shell,
+  .logs-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .auth-hero {
+    padding: var(--space-lg);
+  }
+
+  .clock-sidebar {
+    border-left: none;
+    border-top: 3px solid var(--pink);
   }
 
   .alarm-actions {
-    flex-direction: column;
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 700px) {
+  .tv-nav {
+    flex-wrap: wrap;
+    height: auto;
+    min-height: var(--nav-h);
+    padding: var(--space-xs) var(--space-sm);
+    row-gap: var(--space-xs);
+  }
+
+  .tv-nav-links {
+    order: 3;
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .tv-nav-links a {
+    padding: 0.5rem 0.85rem;
+    font-size: 0.88rem;
+  }
+}
+
+@media (max-width: 560px) {
+  .tv-nav {
+    padding: var(--space-xs) var(--space-sm);
+  }
+
+  .add-form-pane,
+  .auth-panel,
+  .logs-shell {
+    padding: var(--space-lg) var(--space-sm);
   }
 }
