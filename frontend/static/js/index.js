@@ -19,6 +19,16 @@ function showToast(message) {
   setTimeout(() => toast.classList.remove("visible"), 2200);
 }
 
+function showFormError(message) {
+  if (!message) {
+    formError.style.display = "none";
+    formError.textContent = "";
+    return;
+  }
+  formError.textContent = message;
+  formError.style.display = "block";
+}
+
 function makeTimeRow(value) {
   const row = document.createElement("div");
   row.className = "time-row";
@@ -59,7 +69,7 @@ addTimeBtn.addEventListener("click", () => {
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
-  formError.textContent = "";
+  showFormError(null);
 
   const medicineName = document.getElementById("medicine_name").value.trim();
   const days = document.getElementById("days").value;
@@ -75,7 +85,7 @@ form.addEventListener("submit", async (event) => {
     const result = await response.json();
 
     if (!response.ok) {
-      formError.textContent = result.error || "Something went wrong. Please try again.";
+      showFormError(result.error || "Something went wrong. Please try again.");
       return;
     }
 
@@ -84,6 +94,6 @@ form.addEventListener("submit", async (event) => {
       window.location.href = "/clock";
     }, 600);
   } catch (err) {
-    formError.textContent = "Could not reach the server. Please try again.";
+    showFormError("Could not reach the server. Please try again.");
   }
 });

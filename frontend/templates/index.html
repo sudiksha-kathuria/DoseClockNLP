@@ -1,24 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
-  <title>DoseClock - Add Medicine</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
-</head>
-<body>
-  <main class="page-form">
-    <section class="card form-card">
-      <div class="form-header">
-        <div class="brand">DoseClock</div>
-        <h1>Add a medicine reminder</h1>
-        <p>We'll call it out loud, right on time.</p>
-      </div>
+{% extends "base.html" %}
+{% block title %}DoseClock — Add a medicine{% endblock %}
+{% block content %}
+<div class="add-shell">
+  <section class="add-form-pane">
+    <div class="add-form-inner">
+      <span class="eyebrow">New reminder</span>
+      <h1>Add a medicine</h1>
+      <p class="subhead">We'll call it out loud, in your language, right on time.</p>
 
       <form id="medicine-form">
         <div class="field-group">
           <label for="medicine_name">Medicine name</label>
           <input
+            class="big-input"
             type="text"
             id="medicine_name"
             name="medicine_name"
@@ -32,7 +26,7 @@
           <label>Time(s) of day</label>
           <div class="times-list" id="times-list">
             <div class="time-row">
-              <input type="time" name="times" value="08:00" required />
+              <input class="big-input" type="time" name="times" value="08:00" required />
               <button type="button" class="remove-time" aria-label="Remove time" title="Remove">&times;</button>
             </div>
           </div>
@@ -41,30 +35,40 @@
 
         <div class="field-group">
           <label for="days">Course length (days)</label>
-          <input type="number" id="days" name="days" min="1" value="7" required />
+          <input class="big-input" type="number" id="days" name="days" min="1" value="7" required />
         </div>
 
         <div class="field-group">
           <label for="language">Voice reminder language</label>
-          <select id="language" name="language" required>
+          <select class="big-input" id="language" name="language" required>
             {% for code, label in languages %}
               <option value="{{ code }}">{{ label }}</option>
             {% endfor %}
           </select>
         </div>
 
-        <button type="submit" class="submit-btn">Save reminder</button>
-        <p class="form-error" id="form-error"></p>
+        <button type="submit" class="pink-btn auth-submit">Save reminder</button>
+        <p class="form-error" id="form-error" style="display:none;"></p>
       </form>
+    </div>
+  </section>
 
-      <div class="form-footer">
-        <a href="{{ url_for('clock') }}">Skip to clock &rarr;</a>
-      </div>
-    </section>
-  </main>
-
-  <div class="toast" id="toast"></div>
-
-  <script src="{{ url_for('static', filename='js/index.js') }}"></script>
-</body>
-</html>
+  <aside class="add-preview-pane">
+    <span class="eyebrow">Up next</span>
+    <h2>Today's line-up</h2>
+    <ul class="preview-list">
+      {% for row in schedule %}
+        <li>
+          <span class="med-name">{{ row.medicine_name }}</span>
+          <span class="med-time">{{ row.time }}</span>
+        </li>
+      {% else %}
+        <li class="preview-empty" style="display:list-item;">Nothing scheduled yet — add your first reminder.</li>
+      {% endfor %}
+    </ul>
+  </aside>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/index.js') }}"></script>
+{% endblock %}
