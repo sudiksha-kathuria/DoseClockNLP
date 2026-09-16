@@ -1,54 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
-  <title>DoseClock</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
-</head>
-<body>
-  <main class="page-clock">
+{% extends "base.html" %}
+{% block title %}DoseClock — Clock{% endblock %}
+{% block content %}
+<div class="clock-shell">
+  <section class="clock-stage">
 
-    <!-- Idle view: the big breathing clock + today's schedule drawer -->
+    <!-- Idle view: the big breathing clock -->
     <section class="idle-view" id="idle-view">
       <div class="clock-glow-wrap">
         <h1 class="clock-face" id="clock-face">--:--<span class="clock-meridiem" id="clock-meridiem"></span></h1>
       </div>
       <p class="clock-date" id="clock-date"></p>
-
-      <div class="schedule-drawer" id="schedule-drawer">
-        <button type="button" class="schedule-toggle" id="schedule-toggle">
-          Today's doses <span class="chevron">&#9662;</span>
-        </button>
-        <ul class="schedule-list">
-          {% for row in schedule %}
-            <li>
-              <span class="med-name">{{ row.medicine_name }}</span>
-              <span>{{ row.time }}</span>
-            </li>
-          {% else %}
-            <li class="schedule-empty" style="display:list-item; border:none;">No active reminders yet</li>
-          {% endfor %}
-        </ul>
-      </div>
-
-      <div class="form-footer" style="margin-top: var(--space-lg);">
-        <a href="{{ url_for('index') }}">+ Add another medicine</a>
-      </div>
+      <p class="sound-hint" id="sound-hint">Tap anywhere to enable spoken reminders</p>
     </section>
 
-    <!-- Alarm view: shown when /check_reminders reports a due reminder -->
+    <!-- Alarm view: shown when /check_reminders reports a due reminder.
+         Buttons are deliberately huge - see /HARDWARE.md - and also
+         respond to Space/Enter so any single-switch adaptive device
+         (already mapped to those keys by its own firmware) can confirm
+         whichever action is currently highlighted by the scan cycle. -->
     <section class="alarm-view" id="alarm-view">
-      <div class="alarm-icon">&#128276;</div>
-      <p class="alarm-label">Reminder</p>
-      <h2 class="alarm-medicine-name" id="alarm-medicine-name"></h2>
-
-      <div class="alarm-actions">
-        <button type="button" class="alarm-btn taken" id="taken-btn">Taken</button>
-        <button type="button" class="alarm-btn snooze" id="snooze-btn">Snooze</button>
+      <div class="alarm-top">
+        <div class="alarm-icon">&#128276;</div>
+        <p class="alarm-label">Reminder</p>
+        <h2 class="alarm-medicine-name" id="alarm-medicine-name"></h2>
+        <p class="mic-indicator" id="mic-indicator"></p>
       </div>
 
-      <p class="mic-indicator" id="mic-indicator"></p>
+      <div class="alarm-actions">
+        <button type="button" class="alarm-btn taken" id="taken-btn">
+          Taken
+          <span class="key-hint">tap, say "taken", or press Space</span>
+        </button>
+        <button type="button" class="alarm-btn snooze" id="snooze-btn">
+          Snooze
+          <span class="key-hint">tap, say "snooze", or press Space</span>
+        </button>
+      </div>
     </section>
 
     <!-- Success flash: shown briefly after "Taken", then fades back to idle -->
@@ -60,10 +47,24 @@
     </section>
 
     <audio id="reminder-audio" preload="none"></audio>
-  </main>
+  </section>
 
-  <div class="toast" id="toast"></div>
-
-  <script src="{{ url_for('static', filename='js/clock.js') }}"></script>
-</body>
-</html>
+  <aside class="clock-sidebar">
+    <h2>Today's doses</h2>
+    <ul class="sidebar-list">
+      {% for row in schedule %}
+        <li>
+          <span class="med-name">{{ row.medicine_name }}</span>
+          <span class="med-time">{{ row.time }}</span>
+        </li>
+      {% else %}
+        <li class="sidebar-empty">No active reminders yet</li>
+      {% endfor %}
+    </ul>
+    <a class="sidebar-cta" href="{{ url_for('index') }}">+ Add another medicine</a>
+  </aside>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/clock.js') }}"></script>
+{% endblock %}
