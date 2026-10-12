@@ -1,60 +1,115 @@
 {% extends "base.html" %}
-{% block title %}DoseClock: Dashboard{% endblock %}
+{% block title %}DoseClock · Dashboard{% endblock %}
+
 {% block content %}
 <div class="dash-shell">
 
-  <header class="dash-header">
-    <p class="dash-date">{{ today }}</p>
-    <h1>Your adherence</h1>
-  </header>
+  <!-- ── top date bar ───────────────────────────────────────────────── -->
+  <div class="dash-datebar">
+    <span class="eyebrow" id="dash-date"></span>
+    <span class="eyebrow" style="color:var(--on-light-muted);font-weight:400;">Last 30 days</span>
+  </div>
 
-  <div class="stat-grid">
-    <div class="stat-card">
-      <span class="stat-value">{{ stats.active_count }}</span>
-      <span class="stat-label">Medicines active</span>
+  <!-- ── hero row: ring + 3 stat tiles ─────────────────────────────── -->
+  <div class="dash-hero">
+
+    <!-- adherence ring -->
+    <div class="dash-ring-card">
+      <p class="dash-card-label">Overall adherence</p>
+      <div class="ring-wrap">
+        <svg class="ring-svg" viewBox="0 0 120 120">
+          <circle class="ring-bg" cx="60" cy="60" r="52" />
+          <circle class="ring-fill" cx="60" cy="60" r="52" stroke-dasharray="326.73"
+            stroke-dashoffset="{{ 326.73 - (326.73 * adherence_pct / 100) | round(2) }}" />
+        </svg>
+        <div class="ring-inner">
+          <span class="ring-pct">{{ adherence_pct }}<sup>%</sup></span>
+        </div>
+      </div>
+      <p class="ring-sub">of scheduled doses taken</p>
     </div>
-    <div class="stat-card">
-      <span class="stat-value">{{ stats.week_taken }}</span>
-      <span class="stat-label">Doses taken this week</span>
-    </div>
-    <div class="stat-card">
-      <span class="stat-value">{{ overall_pct }}%</span>
-      <span class="stat-label">Overall adherence</span>
-    </div>
-    <div class="stat-card">
-      <span class="stat-value">{{ streak }}</span>
-      <span class="stat-label">Current streak (days)</span>
+
+    <!-- stat tiles -->
+    <div class="dash-tiles">
+
+      <div class="stat-tile">
+        <div class="stat-icon">💊</div>
+        <div class="stat-body">
+          <span class="stat-val">{{ active_count }}</span>
+          <span class="stat-lbl">Medicines active</span>
+        </div>
+      </div>
+
+      <div class="stat-tile">
+        <div class="stat-icon">✅</div>
+        <div class="stat-body">
+          <span class="stat-val">{{ doses_this_week }}</span>
+          <span class="stat-lbl">Doses taken this week</span>
+        </div>
+      </div>
+
+      <div class="stat-tile streak-tile {% if streak >= 7 %}streak-hot{% endif %}">
+        <div class="stat-icon">🔥</div>
+        <div class="stat-body">
+          <span class="stat-val">{{ streak }}</span>
+          <span class="stat-lbl">Day streak</span>
+        </div>
+        {% if streak >= 7 %}
+        <span class="streak-badge">On fire!</span>
+        {% endif %}
+      </div>
+
     </div>
   </div>
 
-  <div class="dash-body">
-    <h2>Per-medicine breakdown</h2>
-
-    {% if adherence_data %}
-      <div class="med-adherence-list">
-        {% for med in adherence_data %}
-          <div class="med-adherence-item">
-            <div class="med-adherence-top">
-              <a class="med-adherence-name" href="{{ url_for('medicine_detail', group_id=med.group_id) }}">{{ med.medicine_name }}</a>
-              <span class="med-adherence-meta">
-                {% if med.active %}
-                  {{ med.days_remaining }} day{{ 's' if med.days_remaining != 1 }} remaining &bull; {{ med.times | join(', ') }}
-                {% else %}
-                  Course complete &bull; {{ med.times | join(', ') }}
-                {% endif %}
-              </span>
-              <span class="med-adherence-pct">{{ med.adherence }}%</span>
-            </div>
-            <div class="progress-track">
-              <div class="progress-fill" style="width: {{ med.adherence }}%;"></div>
-            </div>
-          </div>
-        {% endfor %}
+  <!-- ── weekly heatmap ─────────────────────────────────────────────── -->
+  <div class="dash-section">
+    <p class="dash-section-title">This week</p>
+    <div class="heatmap-row">
+      {% for day in heatmap %}
+      <div class="heatmap-cell {% if day.done %}done{% endif %}">
+        <span class="heatmap-day">{{ day.label }}</span>
+        <div class="heatmap-dot"></div>
       </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- ── per-medicine breakdown ─────────────────────────────────────── -->
+  <div class="dash-section">
+    <p class="dash-section-title">Per-medicine breakdown <span style="font-weight:400;color:var(--on-light-muted)">(last
+        30 days)</span></p>
+
+    {% if per_med %}
+    <div class="med-breakdown-list">
+      {% for m in per_med %}
+      <div class="med-breakdown-row">
+        <div class="med-breakdown-meta">
+          <span class="med-breakdown-name">{{ m.name }}</span>
+          <span class="med-breakdown-sub">{{ m.days_remaining }} days remaining · {{ m.time }}</span>
+        </div>
+        <div class="med-breakdown-bar-wrap">
+          <div class="med-breakdown-bar" data-pct="{{ m.pct }}"></div>
+        </div>
+        <span class="med-breakdown-pct">{{ m.pct }}%</span>
+      </div>
+      {% endfor %}
+    </div>
     {% else %}
-      <p class="dash-empty">No medicines added yet. <a href="{{ url_for('index') }}" style="color:var(--mauve);font-weight:700;">Add your first reminder.</a></p>
+    <p class="dash-empty">No active medicines yet. <a href="{{ url_for('index') }}">Add one</a> to start tracking.</p>
     {% endif %}
   </div>
 
 </div>
+
+<script>
+  const d = new Date();
+  const opts = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+  document.getElementById('dash-date').textContent = d.toLocaleDateString('en-IN', opts);
+
+  // Apply progress-bar widths from data-pct (avoids Jinja inside style attrs)
+  document.querySelectorAll('.med-breakdown-bar[data-pct]').forEach(function(el) {
+    el.style.width = el.dataset.pct + '%';
+  });
+</script>
 {% endblock %}

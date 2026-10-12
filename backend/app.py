@@ -190,31 +190,6 @@ def clock():
     return render_template("clock.html", grouped_schedule=list(grouped.values()))
 
 
-@app.route("/dashboard")
-@login_required
-def dashboard():
-    """Adherence stats and per-medicine progress bars."""
-    user_id = session["user_id"]
-    stats = database.get_dashboard_stats(user_id)
-    adherence_data = database.get_adherence_data(user_id)
-    streak = database.get_current_streak(user_id)
-
-    # Overall adherence: weighted average across all groups
-    total_taken = sum(m["taken"] for m in adherence_data)
-    total_sched = sum(m["total_scheduled"] for m in adherence_data)
-    overall_pct = round(total_taken / total_sched * 100) if total_sched > 0 else 0
-    overall_pct = min(overall_pct, 100)
-
-    return render_template(
-        "dashboard.html",
-        stats=stats,
-        adherence_data=adherence_data,
-        streak=streak,
-        overall_pct=overall_pct,
-        today=date.today().strftime("%A, %d %B %Y"),
-    )
-
-
 @app.route("/medicine/<group_id>")
 @login_required
 def medicine_detail(group_id):
@@ -294,7 +269,77 @@ def export_csv():
     response.headers["Content-Disposition"] = f'attachment; filename="{filename}"'
     return response
 
+@app.route("/dashboard")
+@login_required
+def dashboard():
+    from datetime import datetime, timedelta
 
+    user_id = session["user_id"]
+    history = database.get_dose_history(user_id)
+    medicines = database.get_active_medicines(user_id)
+
+    today = datetime.now().date()
+    week = [(today - timedelta(days=i)) for i in range(6, -1, -1)]
+    taken_dates = set()
+    for row in history:
+        try:
+            taken_dates.add(datetime.fromisoformat(row["taken_at"]).date())
+        except Exception:
+            pass
+
+    heatmap = [
+        {"label": d.strftime("%a"), "date": d.isoformat(), "done": d in taken_dates}
+        for d in week
+    ]
+
+    thirty_ago = today - timedelta(days=29)
+    doses_in_30 = sum(
+        1 for row in history
+        if datetime.fromisoformat(row["taken_at"]).date() >= thirty_ago
+    )
+    expected_30 = max(len(medicines) * 30, 1)
+    adherence_pct = min(round(doses_in_30 / expected_30 * 100), 100)
+
+    streak = 0
+    check = today
+    while check in taken_dates:
+        streak += 1
+        check -= timedelta(days=1)
+
+    doses_this_week = sum(1 for d in taken_dates if d >= week[0])
+
+    med_counts = {}
+    for row in history:
+        if datetime.fromisoformat(row["taken_at"]).date() >= thirty_ago:
+            name = row["medicine_name"]
+            med_counts[name] = med_counts.get(name, 0) + 1
+
+    per_med = []
+    seen = set()
+    for m in medicines:
+        name = m["medicine_name"]
+        if name not in seen:
+            seen.add(name)
+            taken = med_counts.get(name, 0)
+            pct = min(round(taken / 30 * 100), 100)
+            per_med.append({
+                "name": name,
+                "time": m["time"],
+                "days_remaining": m["days_remaining"],
+                "taken_30": taken,
+                "pct": pct,
+            })
+
+    return render_template(
+        "dashboard.html",
+        heatmap=heatmap,
+        adherence_pct=adherence_pct,
+        streak=streak,
+        doses_this_week=doses_this_week,
+        active_count=len(medicines),
+        per_med=per_med,
+    )
+    
 @app.route("/logs")
 @login_required
 def logs(paired_token=None):

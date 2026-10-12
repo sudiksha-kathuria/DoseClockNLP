@@ -1,39 +1,32 @@
 /* ==========================================================================
    DoseClock design system
-   Theme: a warm "sunset" palette — five colours: dark brown, mauve,
-   dusty pink, peach, and cream. Every screen fills the whole viewport
-   (no floating card lost in empty space, no unnecessary scroll) and every
-   interactive target is oversized on purpose: DoseClock is used by people
-   who may not be able to move precisely, or much at all. See /HARDWARE.md.
+   Palette: warm cream / purple / dusty-pink / peach
    ========================================================================== */
 
-/* No external font imports — Fraunces replaced with Georgia, Inter replaced with system-ui stack */
-
 :root {
-  /* ---- The five-colour sunset palette --------------------------------- */
-  --brown:       #493129;
-  --brown-soft:  #5a3f35;
-  --brown-raised:#6b4e43;
-  --mauve:       #8b597b;
-  --pink:        #efa3a0;
-  --pink-deep:   #d4807d;
-  --pink-soft:   rgba(239, 163, 160, 0.18);
-  --peach:       #ffdec7;
-  --cream:       #ffeedd;
-  --white:       #fff8f2;
+  --dark-brown: #493129;
+  --purple: #8b597b;
+  --purple-deep: #6b4260;
+  --purple-soft: rgba(139, 89, 123, 0.14);
+  --dusty-pink: #efa3a0;
+  --dusty-soft: rgba(239, 163, 160, 0.22);
+  --peach: #ffdec7;
+  --peach-deep: #f5c9a8;
+  --cream: #fbeede;
+  --cream-deep: #f3e2ce;
+  --white: #ffffff;
 
-  /* Semantic aliases (kept to only the palette above) */
-  --bg:              var(--brown);
-  --surface:         var(--brown-soft);
-  --surface-raised:  var(--brown-raised);
-  --on-dark:         var(--cream);
-  --on-dark-muted:   #d4bfb3;
-  --on-light:        var(--brown);
-  --on-light-muted:  #6b5148;
-  --border-dark:     #6b4e43;
-  --border-light:    #f0c9a8;
-  --accent:          var(--mauve);
-  --accent-strong:   #724668;
+  /* Semantic */
+  --bg: var(--cream);
+  --surface: var(--white);
+  --surface-raised: var(--peach);
+  --on-light: var(--dark-brown);
+  --on-light-muted: #7a5c4a;
+  --on-dark: var(--white);
+  --border: var(--peach-deep);
+  --border-strong: var(--dusty-pink);
+  --accent: var(--purple);
+  --accent-strong: var(--purple-deep);
 
   /* Spacing */
   --space-2xs: 0.35rem;
@@ -48,9 +41,10 @@
   --radius-md: 22px;
   --radius-lg: 34px;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
-  --shadow-card: 0 20px 50px -20px rgba(73, 49, 41, 0.45);
+  --shadow-card: 0 8px 32px -8px rgba(73, 49, 41, 0.13);
+  --shadow-sm: 0 2px 10px -2px rgba(73, 49, 41, 0.1);
 
-  --font-display: Georgia, serif;
+  --font-display: Georgia, "Times New Roman", serif;
   --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
 }
 
@@ -65,8 +59,8 @@ body {
 
 body {
   margin: 0;
-  background: var(--brown);
-  color: var(--on-dark);
+  background: var(--cream);
+  color: var(--on-light);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
@@ -88,8 +82,7 @@ a {
 }
 
 /* ==========================================================================
-   Top nav, the "channel bar". Persistent, full width, on every screen
-   that follows login, so the whole app never loses its sense of place.
+   Nav
    ========================================================================== */
 
 .tv-nav {
@@ -100,8 +93,8 @@ a {
   justify-content: space-between;
   gap: var(--space-md);
   padding: 0 var(--space-lg);
-  background: var(--brown);
-  border-bottom: 3px solid var(--mauve);
+  background: var(--dark-brown);
+  border-bottom: 3px solid var(--purple);
   position: relative;
   z-index: 20;
 }
@@ -118,16 +111,16 @@ a {
   width: 0.6rem;
   height: 0.6rem;
   border-radius: 50%;
-  background: var(--mauve);
+  background: var(--dusty-pink);
   display: inline-block;
-  box-shadow: 0 0 0 4px rgba(139, 89, 123, 0.2);
+  box-shadow: 0 0 0 4px var(--dusty-soft);
 }
 
 .tv-brand .wordmark {
   font-family: var(--font-display);
   font-weight: 700;
   font-size: 1.4rem;
-  color: var(--cream);
+  color: var(--white);
   letter-spacing: 0.01em;
 }
 
@@ -141,7 +134,7 @@ a {
 
 .tv-nav-links a {
   text-decoration: none;
-  color: var(--on-dark-muted);
+  color: rgba(255, 255, 255, 0.65);
   font-weight: 600;
   font-size: 0.95rem;
   padding: 0.6rem 1.1rem;
@@ -151,13 +144,13 @@ a {
 }
 
 .tv-nav-links a:hover {
-  color: var(--cream);
-  background: var(--brown-raised);
+  color: var(--white);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .tv-nav-links a.active {
-  color: var(--cream);
-  background: var(--mauve);
+  color: var(--dark-brown);
+  background: var(--dusty-pink);
 }
 
 .tv-nav-user {
@@ -168,19 +161,19 @@ a {
 }
 
 .tv-nav-user .greeting {
-  color: var(--on-dark-muted);
+  color: rgba(255, 255, 255, 0.6);
   font-size: 0.9rem;
   white-space: nowrap;
 }
 
 .tv-nav-user .greeting strong {
-  color: var(--cream);
+  color: var(--white);
 }
 
 .logout-btn {
   background: transparent;
-  border: 1.5px solid var(--border-dark);
-  color: var(--on-dark-muted);
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  color: rgba(255, 255, 255, 0.65);
   padding: 0.55rem 1rem;
   border-radius: 999px;
   font-size: 0.85rem;
@@ -190,18 +183,17 @@ a {
 }
 
 .logout-btn:hover {
-  border-color: var(--mauve);
-  color: var(--cream);
+  border-color: var(--dusty-pink);
+  color: var(--white);
 }
 
 .tv-main {
-  height: calc(100vh - var(--nav-h));
+  min-height: calc(100vh - var(--nav-h));
   width: 100%;
-  overflow: hidden;
 }
 
 /* ==========================================================================
-   Shared bits
+   Shared
    ========================================================================== */
 
 .eyebrow {
@@ -209,7 +201,7 @@ a {
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--purple);
 }
 
 .big-input,
@@ -217,22 +209,22 @@ select.big-input {
   width: 100%;
   padding: 1rem 1.15rem;
   background: var(--white);
-  border: 2px solid var(--border-light);
+  border: 2px solid var(--border);
   border-radius: var(--radius-sm);
-  color: var(--brown);
-  font-size: 1.1rem;
+  color: var(--dark-brown);
+  font-size: 1.05rem;
   font-family: inherit;
   transition: border-color 150ms var(--ease), box-shadow 150ms var(--ease);
 }
 
 .big-input::placeholder {
-  color: #8a7d63;
+  color: #b89a84;
 }
 
 .big-input:focus {
   outline: none;
-  border-color: var(--mauve);
-  box-shadow: 0 0 0 4px rgba(139, 89, 123, 0.18);
+  border-color: var(--purple);
+  box-shadow: 0 0 0 4px var(--purple-soft);
 }
 
 .field-group {
@@ -256,17 +248,17 @@ select.big-input {
   padding: 1.05rem 1.6rem;
   border: none;
   border-radius: var(--radius-sm);
-  background: var(--mauve);
-  color: var(--cream);
+  background: var(--purple);
+  color: var(--white);
   font-size: 1.05rem;
-  font-weight: 800;
+  font-weight: 700;
   cursor: pointer;
   transition: transform 150ms var(--ease), box-shadow 150ms var(--ease), filter 150ms var(--ease);
 }
 
 .pink-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 14px 28px -10px rgba(139, 89, 123, 0.35);
+  box-shadow: 0 14px 28px -10px var(--purple-soft);
   filter: brightness(1.08);
 }
 
@@ -275,9 +267,9 @@ select.big-input {
 }
 
 .form-error {
-  color: #a03030;
-  background: rgba(160, 48, 48, 0.1);
-  border: 1.5px solid #a03030;
+  color: var(--purple-deep);
+  background: var(--dusty-soft);
+  border: 1.5px solid var(--dusty-pink);
   padding: 0.8rem 1rem;
   border-radius: var(--radius-sm);
   font-size: 0.9rem;
@@ -290,9 +282,8 @@ select.big-input {
   bottom: var(--space-lg);
   left: 50%;
   transform: translateX(-50%) translateY(20px);
-  background: var(--white);
-  border: 2px solid var(--brown);
-  color: var(--brown);
+  background: var(--dark-brown);
+  color: var(--white);
   padding: 0.9rem 1.5rem;
   border-radius: var(--radius-sm);
   font-size: 0.95rem;
@@ -310,19 +301,18 @@ select.big-input {
 }
 
 /* ==========================================================================
-   Auth screens (login / signup), full-bleed split screen
+   Auth screens
    ========================================================================== */
 
 .auth-shell {
-  height: 100vh;
+  min-height: 100vh;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
-  overflow: hidden;
 }
 
 .auth-hero {
-  background: var(--brown);
-  color: var(--cream);
+  background: var(--dark-brown);
+  color: var(--white);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -335,14 +325,11 @@ select.big-input {
   content: "";
   position: absolute;
   inset: 0;
-  background:
-    repeating-linear-gradient(
-      to bottom,
-      rgba(255, 255, 255, 0.028) 0px,
-      rgba(255, 255, 255, 0.028) 1px,
+  background: repeating-linear-gradient(to bottom,
+      rgba(255, 255, 255, 0.025) 0px,
+      rgba(255, 255, 255, 0.025) 1px,
       transparent 1px,
-      transparent 3px
-    );
+      transparent 3px);
   pointer-events: none;
 }
 
@@ -354,13 +341,13 @@ select.big-input {
   width: min(60%, 320px);
   aspect-ratio: 1;
   border-radius: 50%;
-  border: 3px solid var(--mauve);
+  border: 3px solid var(--dusty-pink);
   margin: var(--space-xl) auto;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
-  box-shadow: 0 0 0 14px rgba(139, 89, 123, 0.1);
+  box-shadow: 0 0 0 14px rgba(239, 163, 160, 0.1);
 }
 
 .auth-hero .hero-ring::before {
@@ -368,19 +355,19 @@ select.big-input {
   position: absolute;
   inset: 22px;
   border-radius: 50%;
-  border: 1.5px dashed var(--border-dark);
+  border: 1.5px dashed rgba(255, 255, 255, 0.15);
 }
 
 .auth-hero .hero-ring .hero-glyph {
   font-family: var(--font-display);
   font-size: clamp(2.6rem, 6vw, 4rem);
-  color: var(--mauve);
+  color: var(--dusty-pink);
   font-weight: 700;
 }
 
 .auth-hero .hero-copy {
   text-align: center;
-  color: var(--on-dark-muted);
+  color: rgba(255, 255, 255, 0.6);
   font-size: 1.05rem;
   line-height: 1.6;
   max-width: 32ch;
@@ -392,16 +379,15 @@ select.big-input {
   font-size: 0.78rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--on-dark-muted);
+  color: rgba(255, 255, 255, 0.4);
 }
 
 .auth-panel {
-  background: var(--peach);
+  background: var(--cream);
   display: flex;
   align-items: center;
   justify-content: center;
   padding: var(--space-xl) var(--space-lg);
-  overflow-y: auto;
 }
 
 .auth-form-wrap {
@@ -412,7 +398,7 @@ select.big-input {
 .auth-form-wrap h1 {
   font-family: var(--font-display);
   font-size: clamp(1.8rem, 3.4vw, 2.4rem);
-  color: var(--brown);
+  color: var(--dark-brown);
   margin-bottom: var(--space-2xs);
 }
 
@@ -439,29 +425,27 @@ select.big-input {
 }
 
 .auth-switch a {
-  color: var(--accent-strong);
+  color: var(--purple);
   font-weight: 700;
   text-decoration: none;
-  border-bottom: 2px solid var(--accent-strong);
+  border-bottom: 2px solid var(--purple);
 }
 
 /* ==========================================================================
-   Add-medicine screen, two-pane, full height
+   Add-medicine screen
    ========================================================================== */
 
 .add-shell {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 0.85fr);
-  height: calc(100vh - var(--nav-h));
-  overflow: hidden;
+  min-height: calc(100vh - var(--nav-h));
 }
 
 .add-form-pane {
-  background: var(--peach);
-  padding: var(--space-lg) var(--space-lg);
+  background: var(--cream);
+  padding: var(--space-xl) var(--space-lg);
   display: flex;
   align-items: center;
-  overflow-y: auto;
 }
 
 .add-form-inner {
@@ -473,7 +457,7 @@ select.big-input {
 .add-form-inner h1 {
   font-family: var(--font-display);
   font-size: clamp(1.9rem, 3.4vw, 2.6rem);
-  color: var(--brown);
+  color: var(--dark-brown);
 }
 
 .add-form-inner .subhead {
@@ -504,7 +488,7 @@ select.big-input {
   width: 3rem;
   height: 3rem;
   border-radius: 50%;
-  border: 2px solid var(--border-light);
+  border: 2px solid var(--border);
   background: var(--white);
   color: var(--on-light-muted);
   font-size: 1.3rem;
@@ -514,16 +498,16 @@ select.big-input {
 }
 
 .remove-time:hover {
-  background: var(--mauve);
-  color: var(--cream);
-  border-color: var(--mauve);
+  background: var(--dusty-pink);
+  color: var(--dark-brown);
+  border-color: var(--dusty-pink);
 }
 
 .add-time {
   margin-top: var(--space-xs);
   background: none;
-  border: 2px dashed var(--border-light);
-  color: var(--accent-strong);
+  border: 2px dashed var(--border);
+  color: var(--purple);
   padding: 0.8rem 1rem;
   border-radius: var(--radius-sm);
   font-size: 0.95rem;
@@ -534,20 +518,21 @@ select.big-input {
 }
 
 .add-time:hover {
-  border-color: var(--mauve);
-  background: rgba(139, 89, 123, 0.1);
+  border-color: var(--purple);
+  background: var(--purple-soft);
 }
 
 .add-preview-pane {
-  background: var(--brown);
-  color: var(--cream);
-  padding: var(--space-lg) var(--space-lg);
+  background: var(--dark-brown);
+  color: var(--white);
+  padding: var(--space-xl) var(--space-lg);
   overflow-y: auto;
 }
 
 .add-preview-pane .eyebrow {
   display: block;
   margin-bottom: var(--space-2xs);
+  color: var(--dusty-pink);
 }
 
 .add-preview-pane h2 {
@@ -570,8 +555,8 @@ select.big-input {
   align-items: center;
   justify-content: space-between;
   gap: var(--space-sm);
-  background: var(--brown-soft);
-  border: 1.5px solid var(--border-dark);
+  background: rgba(255, 255, 255, 0.07);
+  border: 1.5px solid rgba(255, 255, 255, 0.1);
   border-radius: var(--radius-sm);
   padding: 1rem 1.25rem;
 }
@@ -583,14 +568,14 @@ select.big-input {
 
 .preview-list .med-time {
   font-variant-numeric: tabular-nums;
-  color: var(--pink);
+  color: var(--dusty-pink);
   font-weight: 700;
   font-size: 1.1rem;
 }
 
 .preview-empty {
-  color: var(--on-dark-muted);
-  border: 1.5px dashed var(--border-dark);
+  color: rgba(255, 255, 255, 0.45);
+  border: 1.5px dashed rgba(255, 255, 255, 0.15);
   border-radius: var(--radius-sm);
   padding: var(--space-lg);
   text-align: center;
@@ -598,19 +583,18 @@ select.big-input {
 }
 
 /* ==========================================================================
-   Clock screen, the kiosk. Idle clock plus huge-target alarm.
+   Clock screen
    ========================================================================== */
 
 .clock-shell {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(280px, 26%);
-  height: calc(100vh - var(--nav-h));
-  overflow: hidden;
+  min-height: calc(100vh - var(--nav-h));
 }
 
 .clock-stage {
   position: relative;
-  background: var(--brown);
+  background: var(--dark-brown);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -623,18 +607,13 @@ select.big-input {
   content: "";
   position: absolute;
   inset: 0;
-  background:
-    repeating-linear-gradient(
-      to bottom,
-      rgba(255, 255, 255, 0.022) 0px,
-      rgba(255, 255, 255, 0.022) 1px,
+  background: repeating-linear-gradient(to bottom,
+      rgba(255, 255, 255, 0.018) 0px,
+      rgba(255, 255, 255, 0.018) 1px,
       transparent 1px,
-      transparent 3px
-    );
+      transparent 3px);
   pointer-events: none;
 }
-
-/* Idle "breathing" clock ------------------------------------------------- */
 
 .idle-view {
   display: flex;
@@ -663,17 +642,19 @@ select.big-input {
   width: min(60vw, 520px);
   height: min(60vw, 520px);
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(139, 89, 123, 0.18) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(239, 163, 160, 0.18) 0%, transparent 70%);
   animation: breathe 5s ease-in-out infinite;
   z-index: 0;
 }
 
 @keyframes breathe {
+
   0%,
   100% {
     transform: scale(0.92);
     opacity: 0.6;
   }
+
   50% {
     transform: scale(1.05);
     opacity: 1;
@@ -686,7 +667,7 @@ select.big-input {
   font-size: clamp(4.5rem, 13vw, 10rem);
   font-weight: 800;
   letter-spacing: 0.01em;
-  color: var(--cream);
+  color: var(--white);
   font-variant-numeric: tabular-nums;
   line-height: 1;
   text-align: center;
@@ -695,21 +676,20 @@ select.big-input {
 .clock-meridiem {
   font-size: 0.3em;
   vertical-align: super;
-  color: var(--mauve);
+  color: var(--dusty-pink);
   margin-left: 0.2em;
 }
 
 .clock-date {
   margin-top: var(--space-sm);
-  color: var(--on-dark-muted);
+  color: rgba(255, 255, 255, 0.55);
   font-size: 1.2rem;
   letter-spacing: 0.02em;
 }
 
 .sound-hint {
   margin-top: var(--space-xs);
-  color: var(--on-dark-muted);
-  opacity: 0.7;
+  color: rgba(255, 255, 255, 0.4);
   font-size: 0.85rem;
   letter-spacing: 0.02em;
   transition: opacity 400ms var(--ease);
@@ -720,10 +700,7 @@ select.big-input {
   pointer-events: none;
 }
 
-/* Alarm view: huge, unmissable targets ----------------------------------
-   Each button occupies roughly half the stage: a deliberate accessibility
-   choice so an imprecise tap, a shaking hand, or a single-switch press
-   (see HARDWARE.md) still lands. */
+/* Alarm view */
 
 .alarm-view {
   display: none;
@@ -746,6 +723,7 @@ select.big-input {
     opacity: 0;
     transform: scale(0.97);
   }
+
   to {
     opacity: 1;
     transform: scale(1);
@@ -762,7 +740,7 @@ select.big-input {
 }
 
 .alarm-label {
-  color: var(--mauve);
+  color: var(--dusty-pink);
   font-size: 1rem;
   font-weight: 700;
   letter-spacing: 0.12em;
@@ -773,14 +751,14 @@ select.big-input {
 .alarm-medicine-name {
   font-family: var(--font-display);
   font-size: clamp(2.2rem, 6vw, 3.6rem);
-  color: var(--cream);
+  color: var(--white);
   margin-top: var(--space-2xs);
 }
 
 .mic-indicator {
   margin-top: var(--space-sm);
   font-size: 0.9rem;
-  color: var(--on-dark-muted);
+  color: rgba(255, 255, 255, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -792,15 +770,17 @@ select.big-input {
   width: 9px;
   height: 9px;
   border-radius: 50%;
-  background: var(--mauve);
+  background: var(--dusty-pink);
   animation: mic-pulse 1.4s ease-in-out infinite;
 }
 
 @keyframes mic-pulse {
+
   0%,
   100% {
     opacity: 0.3;
   }
+
   50% {
     opacity: 1;
   }
@@ -840,14 +820,14 @@ select.big-input {
 }
 
 .alarm-btn.taken {
-  background: var(--peach);
-  color: var(--brown);
+  background: var(--purple);
+  color: var(--white);
 }
 
 .alarm-btn.snooze {
-  background: var(--brown-soft);
-  color: var(--cream);
-  border-color: var(--border-dark);
+  background: var(--peach);
+  color: var(--dark-brown);
+  border-color: var(--peach-deep);
 }
 
 .alarm-btn:active {
@@ -855,19 +835,16 @@ select.big-input {
 }
 
 .alarm-btn.taken:hover {
-  filter: brightness(1.03);
+  filter: brightness(1.08);
 }
 
-/* Single-switch scanning highlight: the button currently "selected" by
-   the auto-advancing scan cycle, confirmable with one press of any
-   switch mapped to Space/Enter, see HARDWARE.md, "Accessible input". */
 .alarm-btn.scan-highlight {
-  border-color: var(--mauve);
-  box-shadow: 0 0 0 6px rgba(139, 89, 123, 0.25), 0 20px 50px -18px rgba(0, 0, 0, 0.6);
+  border-color: var(--dusty-pink);
+  box-shadow: 0 0 0 6px var(--dusty-soft), 0 20px 50px -18px rgba(73, 49, 41, 0.3);
   transform: scale(1.015);
 }
 
-/* Success flash ------------------------------------------------------------ */
+/* Success flash */
 
 .success-flash {
   display: none;
@@ -887,8 +864,8 @@ select.big-input {
   width: 110px;
   height: 110px;
   border-radius: 50%;
-  background: rgba(139, 89, 123, 0.15);
-  border: 3px solid var(--mauve);
+  background: var(--purple-soft);
+  border: 3px solid var(--purple);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -901,7 +878,7 @@ select.big-input {
 
 .checkmark-circle path {
   fill: none;
-  stroke: var(--mauve);
+  stroke: var(--purple);
   stroke-width: 4;
   stroke-linecap: round;
   stroke-linejoin: round;
@@ -918,23 +895,23 @@ select.big-input {
 
 .success-flash p {
   font-family: var(--font-display);
-  color: var(--cream);
+  color: var(--white);
   font-size: 1.3rem;
 }
 
-/* Today's-doses side panel ------------------------------------------------- */
+/* Clock sidebar */
 
 .clock-sidebar {
-  background: var(--peach);
+  background: var(--cream);
   padding: var(--space-lg) var(--space-md);
   overflow-y: auto;
-  border-left: 3px solid var(--mauve);
+  border-left: 3px solid var(--purple);
 }
 
 .clock-sidebar h2 {
   font-family: var(--font-display);
   font-size: 1.4rem;
-  color: var(--brown);
+  color: var(--dark-brown);
   margin-bottom: var(--space-md);
 }
 
@@ -955,16 +932,17 @@ select.big-input {
   padding: 0.9rem 1rem;
   border-radius: var(--radius-sm);
   background: var(--white);
-  border: 1.5px solid var(--border-light);
+  border: 1.5px solid var(--border);
+  box-shadow: var(--shadow-sm);
 }
 
 .sidebar-list .med-name {
-  color: var(--brown);
+  color: var(--dark-brown);
   font-weight: 700;
 }
 
 .sidebar-list .med-time {
-  color: var(--accent-strong);
+  color: var(--purple);
   font-weight: 700;
   font-variant-numeric: tabular-nums;
 }
@@ -981,28 +959,27 @@ select.big-input {
   margin-top: var(--space-md);
   text-align: center;
   text-decoration: none;
-  color: var(--accent-strong);
+  color: var(--purple);
   font-weight: 700;
-  border: 2px dashed var(--border-light);
+  border: 2px dashed var(--border);
   border-radius: var(--radius-sm);
   padding: 0.9rem;
+  transition: border-color 150ms var(--ease), background 150ms var(--ease);
 }
 
 .sidebar-cta:hover {
-  border-color: var(--mauve);
+  border-color: var(--purple);
+  background: var(--purple-soft);
 }
 
 /* ==========================================================================
-   Logs screen, full-width history table plus hardware pairing
+   Logs screen
    ========================================================================== */
 
 .logs-shell {
-  background: var(--peach);
-  height: calc(100vh - var(--nav-h));
+  background: var(--cream);
+  min-height: calc(100vh - var(--nav-h));
   padding: var(--space-lg);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
 }
 
 .logs-header {
@@ -1011,14 +988,13 @@ select.big-input {
   align-items: flex-end;
   justify-content: space-between;
   gap: var(--space-md);
-  margin-bottom: var(--space-md);
-  flex-shrink: 0;
+  margin-bottom: var(--space-lg);
 }
 
 .logs-header h1 {
   font-family: var(--font-display);
   font-size: clamp(1.9rem, 3.2vw, 2.5rem);
-  color: var(--brown);
+  color: var(--dark-brown);
 }
 
 .logs-header .subhead {
@@ -1035,9 +1011,9 @@ select.big-input {
 .logs-filter select {
   padding: 0.7rem 1rem;
   border-radius: var(--radius-sm);
-  border: 2px solid var(--border-light);
+  border: 2px solid var(--border);
   background: var(--white);
-  color: var(--brown);
+  color: var(--dark-brown);
   font-size: 0.95rem;
   font-weight: 600;
 }
@@ -1047,16 +1023,14 @@ select.big-input {
   grid-template-columns: minmax(0, 1fr) minmax(280px, 340px);
   gap: var(--space-lg);
   align-items: start;
-  flex: 1;
-  min-height: 0;
 }
 
 .logs-table-card {
   background: var(--white);
   border-radius: var(--radius-md);
-  border: 1.5px solid var(--border-light);
-  overflow-y: auto;
-  max-height: 100%;
+  border: 1.5px solid var(--border);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
 }
 
 .logs-table {
@@ -1071,27 +1045,24 @@ select.big-input {
   text-transform: uppercase;
   color: var(--on-light-muted);
   padding: 1rem 1.4rem;
-  background: var(--cream);
-  position: sticky;
-  top: 0;
-  z-index: 2;
+  background: var(--peach);
 }
 
 .logs-table td {
   padding: 1.1rem 1.4rem;
-  border-top: 1px solid var(--border-light);
+  border-top: 1px solid var(--border);
   font-size: 1rem;
-  color: var(--brown);
+  color: var(--dark-brown);
 }
 
 .logs-table tr:nth-child(even) td {
-  background: #fff4e8;
+  background: var(--cream);
 }
 
 .logs-table .pill {
   display: inline-block;
-  background: rgba(139, 89, 123, 0.12);
-  color: var(--accent-strong);
+  background: var(--purple-soft);
+  color: var(--purple-deep);
   font-weight: 700;
   font-size: 0.78rem;
   letter-spacing: 0.04em;
@@ -1115,10 +1086,11 @@ select.big-input {
 }
 
 .side-card {
-  background: var(--brown);
-  color: var(--cream);
+  background: var(--dark-brown);
+  color: var(--white);
   border-radius: var(--radius-md);
   padding: var(--space-md);
+  box-shadow: var(--shadow-card);
 }
 
 .side-card h2 {
@@ -1128,7 +1100,7 @@ select.big-input {
 }
 
 .side-card p {
-  color: var(--on-dark-muted);
+  color: rgba(255, 255, 255, 0.6);
   font-size: 0.9rem;
   line-height: 1.6;
 }
@@ -1143,8 +1115,8 @@ select.big-input {
 }
 
 .device-list li {
-  background: var(--brown-soft);
-  border: 1px solid var(--border-dark);
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: var(--radius-sm);
   padding: 0.8rem 1rem;
   font-size: 0.85rem;
@@ -1152,7 +1124,7 @@ select.big-input {
 
 .device-list .device-name {
   font-weight: 700;
-  color: var(--cream);
+  color: var(--white);
 }
 
 .device-list .device-token {
@@ -1160,7 +1132,7 @@ select.big-input {
   margin-top: 0.3rem;
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 0.78rem;
-  color: var(--pink);
+  color: var(--dusty-pink);
   word-break: break-all;
 }
 
@@ -1174,14 +1146,14 @@ select.big-input {
   flex: 1;
   padding: 0.75rem 0.9rem;
   border-radius: var(--radius-sm);
-  border: 1.5px solid var(--border-dark);
-  background: var(--brown-soft);
-  color: var(--cream);
+  border: 1.5px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--white);
   font-size: 0.9rem;
 }
 
 .pair-form input::placeholder {
-  color: var(--on-dark-muted);
+  color: rgba(255, 255, 255, 0.4);
 }
 
 .pair-form button {
@@ -1189,10 +1161,15 @@ select.big-input {
   padding: 0.75rem 1.1rem;
   border-radius: var(--radius-sm);
   border: none;
-  background: var(--mauve);
-  color: var(--cream);
+  background: var(--purple);
+  color: var(--white);
   font-weight: 700;
   cursor: pointer;
+  transition: filter 150ms var(--ease);
+}
+
+.pair-form button:hover {
+  filter: brightness(1.1);
 }
 
 /* ==========================================================================
@@ -1200,28 +1177,12 @@ select.big-input {
    ========================================================================== */
 
 @media (max-width: 900px) {
+
   .auth-shell,
   .add-shell,
   .clock-shell,
   .logs-grid {
     grid-template-columns: 1fr;
-  }
-
-  .auth-shell,
-  .add-shell,
-  .clock-shell {
-    height: auto;
-    overflow: auto;
-  }
-
-  .tv-main {
-    height: auto;
-    overflow: auto;
-  }
-
-  .logs-shell {
-    height: auto;
-    overflow: auto;
   }
 
   .auth-hero {
@@ -1230,7 +1191,7 @@ select.big-input {
 
   .clock-sidebar {
     border-left: none;
-    border-top: 3px solid var(--mauve);
+    border-top: 3px solid var(--purple);
   }
 
   .alarm-actions {
@@ -1269,355 +1230,5 @@ select.big-input {
   .auth-panel,
   .logs-shell {
     padding: var(--space-lg) var(--space-sm);
-  }
-}
-
-/* ==========================================================================
-   Device token reveal (Fix 1 — logs.html)
-   ========================================================================== */
-
-.device-list li {
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--space-2xs);
-}
-
-.device-meta {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  gap: var(--space-sm);
-}
-
-.device-last-seen {
-  font-size: 0.8rem;
-  color: var(--on-dark-muted);
-}
-
-.reveal-token-btn {
-  background: none;
-  border: 1.5px solid var(--border-dark);
-  color: var(--on-dark-muted);
-  font-size: 0.78rem;
-  font-weight: 600;
-  padding: 0.2rem 0.6rem;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: border-color 150ms, color 150ms;
-}
-
-.reveal-token-btn:hover {
-  border-color: var(--mauve);
-  color: var(--cream);
-}
-
-.device-token-value {
-  font-family: monospace;
-  font-size: 0.75rem;
-  color: var(--on-dark-muted);
-  word-break: break-all;
-  display: none;
-  padding: var(--space-2xs) var(--space-xs);
-  background: rgba(0,0,0,0.18);
-  border-radius: 8px;
-  width: 100%;
-}
-
-.device-token-value.visible {
-  display: block;
-}
-
-/* Remove-medicine button in the index.html aside (Fix 2) */
-
-.remove-med-btn {
-  background: none;
-  border: 1.5px solid var(--border-dark);
-  color: var(--on-dark-muted);
-  font-size: 0.75rem;
-  font-weight: 700;
-  padding: 0.2rem 0.55rem;
-  border-radius: 8px;
-  cursor: pointer;
-  flex-shrink: 0;
-  transition: background 150ms, color 150ms, border-color 150ms;
-}
-
-.remove-med-btn:hover {
-  background: var(--pink);
-  color: var(--brown);
-  border-color: var(--pink);
-}
-
-/* ==========================================================================
-   Dashboard (/dashboard)
-   ========================================================================== */
-
-.dash-shell {
-  background: var(--cream);
-  min-height: calc(100vh - var(--nav-h));
-  overflow-y: auto;
-}
-
-.dash-header {
-  background: var(--brown);
-  color: var(--cream);
-  padding: var(--space-lg) var(--space-lg) var(--space-md);
-}
-
-.dash-header h1 {
-  font-family: var(--font-display);
-  font-size: clamp(1.9rem, 3.2vw, 2.6rem);
-  color: var(--cream);
-  margin: 0 0 var(--space-2xs);
-}
-
-.dash-header .dash-date {
-  color: var(--on-dark-muted);
-  font-size: 1rem;
-  margin: 0;
-}
-
-.stat-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: var(--space-md);
-  padding: var(--space-lg);
-}
-
-.stat-card {
-  background: var(--white);
-  border-radius: var(--radius-sm);
-  border: 1.5px solid var(--border-light);
-  border-left: 5px solid var(--mauve);
-  padding: var(--space-md);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2xs);
-}
-
-.stat-card .stat-value {
-  font-family: var(--font-display);
-  font-size: clamp(2rem, 3.5vw, 2.8rem);
-  font-weight: 700;
-  color: var(--brown);
-  line-height: 1;
-}
-
-.stat-card .stat-label {
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--on-light-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-}
-
-.dash-body {
-  padding: 0 var(--space-lg) var(--space-lg);
-}
-
-.dash-body h2 {
-  font-family: var(--font-display);
-  font-size: 1.5rem;
-  color: var(--brown);
-  margin-bottom: var(--space-md);
-}
-
-.med-adherence-list {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-md);
-}
-
-.med-adherence-item {
-  background: var(--white);
-  border-radius: var(--radius-sm);
-  border: 1.5px solid var(--border-light);
-  padding: var(--space-md);
-}
-
-.med-adherence-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-sm);
-  margin-bottom: var(--space-xs);
-  flex-wrap: wrap;
-}
-
-.med-adherence-name {
-  font-weight: 700;
-  font-size: 1.1rem;
-  color: var(--brown);
-  text-decoration: none;
-}
-
-.med-adherence-name:hover {
-  color: var(--mauve);
-}
-
-.med-adherence-meta {
-  font-size: 0.85rem;
-  color: var(--on-light-muted);
-}
-
-.med-adherence-pct {
-  font-weight: 800;
-  font-size: 1.1rem;
-  color: var(--mauve);
-  font-family: var(--font-display);
-}
-
-.progress-track {
-  height: 12px;
-  background: var(--peach);
-  border-radius: 99px;
-  overflow: hidden;
-}
-
-.progress-fill {
-  height: 100%;
-  background: var(--mauve);
-  border-radius: 99px;
-  transition: width 0.6s var(--ease);
-  min-width: 4px;
-}
-
-.dash-empty {
-  color: var(--on-light-muted);
-  font-size: 1rem;
-  padding: var(--space-lg) 0;
-}
-
-@media (max-width: 900px) {
-  .stat-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 560px) {
-  .stat-grid {
-    grid-template-columns: 1fr;
-    padding: var(--space-md);
-  }
-  .dash-body,
-  .dash-header {
-    padding-left: var(--space-md);
-    padding-right: var(--space-md);
-  }
-}
-
-/* ==========================================================================
-   Medicine detail (/medicine/<group_id>)
-   ========================================================================== */
-
-.detail-shell {
-  background: var(--cream);
-  min-height: calc(100vh - var(--nav-h));
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(280px, 380px);
-  overflow: hidden;
-}
-
-.detail-form-pane {
-  background: var(--peach);
-  padding: var(--space-lg);
-  overflow-y: auto;
-  display: flex;
-  align-items: flex-start;
-}
-
-.detail-form-inner {
-  width: 100%;
-  max-width: 480px;
-}
-
-.detail-form-inner h1 {
-  font-family: var(--font-display);
-  font-size: clamp(1.8rem, 3vw, 2.4rem);
-  color: var(--brown);
-  margin-bottom: var(--space-xs);
-}
-
-.detail-history-pane {
-  background: var(--brown);
-  color: var(--cream);
-  padding: var(--space-lg);
-  overflow-y: auto;
-}
-
-.detail-history-pane h2 {
-  font-family: var(--font-display);
-  font-size: 1.4rem;
-  color: var(--cream);
-  margin-bottom: var(--space-md);
-}
-
-.history-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.92rem;
-}
-
-.history-table th {
-  text-align: left;
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--on-dark-muted);
-  padding: 0.6rem 0.8rem;
-  border-bottom: 1px solid var(--border-dark);
-}
-
-.history-table td {
-  padding: 0.75rem 0.8rem;
-  border-bottom: 1px solid var(--border-dark);
-  color: var(--cream);
-  font-variant-numeric: tabular-nums;
-}
-
-.history-table tr:last-child td {
-  border-bottom: none;
-}
-
-.history-empty {
-  color: var(--on-dark-muted);
-  font-size: 0.92rem;
-  margin-top: var(--space-md);
-}
-
-.danger-btn {
-  display: inline-block;
-  padding: 1rem 1.6rem;
-  border: none;
-  border-radius: var(--radius-sm);
-  background: var(--pink);
-  color: var(--brown);
-  font-size: 1.05rem;
-  font-weight: 800;
-  cursor: pointer;
-  transition: filter 150ms, transform 150ms;
-  width: 100%;
-  text-align: center;
-  margin-top: var(--space-xs);
-}
-
-.danger-btn:hover {
-  filter: brightness(0.93);
-  transform: translateY(-1px);
-}
-
-.detail-btn-group {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-xs);
-  margin-top: var(--space-md);
-}
-
-@media (max-width: 900px) {
-  .detail-shell {
-    grid-template-columns: 1fr;
-    height: auto;
-    overflow: auto;
   }
 }

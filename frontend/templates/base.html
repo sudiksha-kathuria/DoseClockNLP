@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
   <title>{% block title %}DoseClock{% endblock %}</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
 </head>
+
 <body>
   {% if current_user %}
   <nav class="tv-nav">
@@ -36,4 +38,5 @@
 
   {% block scripts %}{% endblock %}
 </body>
+
 </html>
