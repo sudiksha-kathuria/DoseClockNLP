@@ -345,3 +345,125 @@ sequenceDiagram
 - Firmware, endpoint and wiring inspection establish implemented paths.
   Actual assembly, timing, network recovery and patient usability require
   physical test evidence; documentation commits do not establish those tests.
+
+## Hardware setup and device pairing
+
+This is a setup procedure for a disposable local demonstration. Its steps
+describe what an operator should do; they are not a record of an assembled
+or tested board. The more detailed parts guide remains in
+[`hardware/README.md`](hardware/README.md).
+
+### 1. Prepare the controller and switch
+
+Required parts are an ESP32 DevKit/WROOM-32 board, a compatible dry-contact
+accessibility switch, a 3.5mm mono jack, connection wire, an enclosure and
+a suitable USB power supply/cable. A separate visible LED is optional.
+
+| Connection | Destination |
+|---|---|
+| Jack tip | GPIO4 (`SWITCH_PIN`) |
+| Jack sleeve | GND |
+| Optional LED anode | GPIO2 through an approximately 220-ohm resistor |
+| Optional LED cathode | GND |
+| Board power | USB supply appropriate for the actual board |
+
+Disconnect power while wiring. Confirm the switch gives the expected
+contact closure and that the board pin labels match the GPIO numbers.
+The internal pull-up is configured by the sketch. Do not apply an external
+voltage to the switch input just because a device has a 3.5mm connector.
+
+### 2. Start the existing backend
+
+From the repository root, using an environment that already has
+`backend/requirements.txt` installed:
+
+```bash
+python3 backend/app.py
+```
+
+This direct-script entry point initializes SQLite and the scheduler and
+listens on `0.0.0.0:5050`. Importing the Flask object through a different
+launcher does not execute that initialization block. Keep the machine
+awake and the process running. Open `http://localhost:5050` on that machine
+to log in or create a disposable demonstration account.
+
+Find the host's LAN address, not `127.0.0.1` or `0.0.0.0`:
+
+| Host OS | Example address-discovery command |
+|---|---|
+| macOS, Wi-Fi commonly on en0 | `ipconfig getifaddr en0` (confirm the active interface) |
+| Linux | `hostname -I` (select the interface reachable by the ESP32) |
+| Windows | `ipconfig` (use the active adapter's IPv4 address) |
+
+Check `http://<host-lan-ip>:5050/login` from another device on the intended
+network. Local access alone does not prove the ESP32 can reach the host.
+Avoid guest networks that isolate clients and review the host firewall's
+port-5050 access. The IP can change after moving networks or renewing DHCP.
+
+### 3. Pair with the intended account
+
+1. Log in as the account whose reminders the switch should acknowledge.
+2. Open **Logs -> Pair a hardware button**, enter a descriptive name and
+   submit the Pair form.
+3. Copy the one-time token into a private local upload copy of the sketch.
+   `create_device_token` generates 16 random bytes represented by 32 hex
+   characters and saves their account association in `devices`.
+4. Redact the token in screenshots/video and do not put it in a commit.
+   The response is `Cache-Control: no-store`; a later Logs visit does not
+   display that token again.
+
+Pairing here means issuing a credential, not Bluetooth discovery or an
+automatic Wi-Fi provisioning handshake. A paired device has no browser
+login cookie. Choosing the wrong account at pairing time directs all its
+actions to that account's oldest due reminder.
+
+### 4. Configure and upload a private sketch copy
+
+Use the Arduino IDE with the Espressif ESP32 board package and select the
+board/USB port matching the actual hardware (for a WROOM-32 DevKit, an
+appropriate ESP32 Dev Module configuration). The package supplies
+`WiFi.h` and `HTTPClient.h`; this sketch does not require ArduinoJson.
+
+Keep the upload copy outside the repository in a sketch folder named
+`switch_hub`. Configure these existing constants in that copy only:
+
+| Constant | Local configuration |
+|---|---|
+| `WIFI_SSID` | Access-point name reachable by the board |
+| `WIFI_PASSWORD` | Access-point password; keep private |
+| `DOSECLOCK_HOST` | `http://<host-lan-ip>:5050` without an endpoint suffix |
+| `DEVICE_TOKEN` | Token copied from the intended account |
+
+Upload using a data-capable USB cable. Open Serial Monitor at **115200**
+baud. Successful Wi-Fi startup prints the ESP32's IP and gives three
+200-ms LED blinks. If it continually prints dots, Wi-Fi connection has not
+completed; the current setup loop has no timeout. USB can supply power
+after configuration, but a working network/backend remains necessary.
+
+### 5. Exercise the integration with dummy reminders
+
+Create a clearly labeled dummy medicine with a time a few minutes ahead
+of the backend clock. Use one due medicine per account for an unambiguous
+first test. Open `/clock`; enable audio through a real user gesture and
+verify that cached speech exists if spoken output is part of the demo.
+Startup warms existing schedule audio, but a newly added label is not
+automatically warmed, and the current TTS text remains a fixed English
+sentence even when a regional voice code is selected. Report the actual
+audio observed rather than assuming translation or offline fallback.
+
+When the dummy reminder is due:
+
+1. **Taken:** make a deliberate short closure longer than debounce but
+   below the short-press threshold, then release. Expect Serial Monitor
+   to show action `taken` and HTTP 200, followed by two slow blinks. Refresh
+   Logs and verify one new acknowledgment for the intended account.
+2. **Snooze:** use a separate due reminder, hold until the LED becomes
+   steady, then release. Expect `snooze` and HTTP 200. No Taken log should
+   be added; the persisted deadline is approximately five minutes ahead.
+   Wait for re-firing and the next eligible browser poll or refresh.
+3. Confirm the database/log change, not only the browser's success flash
+   or the LED. Keep the returned status and the timestamped log evidence.
+
+If no reminder is due, a valid press returns HTTP 404. That is a valid API
+response, not proof that wiring or Wi-Fi failed. See the communication
+test plan below before testing repeated presses or network failures.
