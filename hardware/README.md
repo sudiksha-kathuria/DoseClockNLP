@@ -79,7 +79,7 @@ tested, purpose-built product, not a first-time DIY part.
    "esp32").
 2. Fill in your Wi-Fi name/password and `DOSECLOCK_HOST` (the IP address
    and port, `5050`, of the machine running DoseClock's Flask server;
-   find the IP with `hostname -I` on Linux, `ipconfig` on Windows, or
+   find the IP with `ip -4 addr show scope global` on Linux, `ipconfig` on Windows, or
    `ipconfig getifaddr en0` on macOS). The address in the sketch is an
    example, not a fixed DoseClock address. Recheck the laptop IP when
    changing Wi-Fi networks or hotspots.

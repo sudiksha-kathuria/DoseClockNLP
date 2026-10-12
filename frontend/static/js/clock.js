@@ -3,7 +3,7 @@
  * --------
  * Drives the /clock page:
  *   1. Ticks a big, legible live clock every second.
- *   2. Polls /check_reminders every ~17s for a due reminder.
+ *   2. Polls /check_reminders every second, including during an alarm.
  *   3. When one fires: shows the alarm view, plays the gTTS audio, and
  *      listens (optionally) for a spoken "taken"/"snooze" via the Web
  *      Speech API. The Taken/Snooze buttons always work regardless of
@@ -128,6 +128,9 @@ const RECOGNITION_LANG = {
 
 let currentReminder = null; // { id, medicine_name, audio_url, language }
 let recognition = null;
+let actionInFlight = false;
+let pollInFlight = false;
+let actionGeneration = 0;
 
 function stopRecognition() {
   if (recognition) {
@@ -225,7 +228,8 @@ function confirmScanSelection() {
 // single-switch accessibility device, so this one listener is all that's
 // needed to support them - no pairing or extra code per device.
 document.addEventListener("keydown", (event) => {
-  if (!currentReminder) return;
+  if (!currentReminder || actionInFlight || event.repeat) return;
+  if (event.target.closest("input,select,textarea,button,a,summary")) return;
   if (event.code === "Space" || event.code === "Enter") {
     event.preventDefault();
     confirmScanSelection();
@@ -247,21 +251,32 @@ function showAlarm(reminder) {
   // (see the audio-unlock block above), this plays with sound straight
   // away. If it's still blocked for some reason, fall back to a tappable
   // prompt - the Taken/Snooze buttons remain fully usable either way.
-  reminderAudio.src = reminder.audio_url;
-  reminderAudio.play().catch(() => {
-    micIndicator.innerHTML = '<span class="mic-dot"></span> Tap here to hear the reminder';
-    micIndicator.style.cursor = "pointer";
-    micIndicator.onclick = () => {
-      reminderAudio.play().catch(() => {});
-      micIndicator.onclick = null;
-      micIndicator.style.cursor = "";
-    };
-  });
+  if (reminder.audio_url) {
+    reminderAudio.src = reminder.audio_url;
+    reminderAudio.play().catch(() => {
+      micIndicator.innerHTML = '<span class="mic-dot"></span> Tap here to hear the reminder';
+      micIndicator.style.cursor = "pointer";
+      micIndicator.onclick = () => {
+        reminderAudio.play().catch(() => {});
+        micIndicator.onclick = null;
+        micIndicator.style.cursor = "";
+      };
+    });
+  } else if (audioUnlocked && window.speechSynthesis && window.SpeechSynthesisUtterance) {
+    const speech = new window.SpeechSynthesisUtterance(`It's time to take your ${reminder.medicine_name}.`);
+    speech.lang = RECOGNITION_LANG[reminder.language] || "en-IN";
+    window.speechSynthesis.speak(speech);
+  }
 
   startRecognition(reminder.language);
 }
 
 function hideAlarm() {
+  reminderAudio.pause();
+  reminderAudio.currentTime = 0;
+  if (window.speechSynthesis) window.speechSynthesis.cancel();
+  micIndicator.onclick = null;
+  micIndicator.style.cursor = "";
   alarmView.classList.remove("visible");
   stopRecognition();
   stopScanning();
@@ -270,8 +285,8 @@ function hideAlarm() {
 }
 
 function showSuccessThenIdle() {
-  alarmView.classList.remove("visible");
-  stopScanning();
+  hideAlarm();
+  idleView.classList.add("hidden");
   successFlash.classList.add("visible");
   setTimeout(() => {
     successFlash.classList.remove("visible");
@@ -286,40 +301,51 @@ function showSuccessThenIdle() {
 // ---------------------------------------------------------------------------
 
 async function handleTaken() {
-  if (!currentReminder) return;
-  const id = currentReminder.id;
-  stopRecognition();
-  stopScanning();
-  currentReminder = null; // prevent double-fire from a lingering voice result
-  try {
-    await fetch("/mark_taken", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id }),
-    });
-  } catch (err) {
-    /* network hiccup - the reminder will simply show again on next poll */
-  }
-  showSuccessThenIdle();
+  return performAction("taken");
 }
 
 async function handleSnooze() {
-  if (!currentReminder) return;
-  const id = currentReminder.id;
+  return performAction("snooze");
+}
+
+async function performAction(action) {
+  if (!currentReminder || actionInFlight) return;
+  const reminder = currentReminder;
+  actionInFlight = true;
+  actionGeneration += 1;
+  scanButtons.forEach((button) => { button.disabled = true; });
   stopRecognition();
   stopScanning();
-  currentReminder = null;
   try {
-    await fetch("/mark_snooze", {
+    const response = await fetch(`/mark_${action}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id }),
+      body: JSON.stringify({ id: reminder.id, fired_at: reminder.fired_at }),
+      signal: AbortSignal.timeout(8000),
     });
+    if (response.status === 401) {
+      window.location.assign("/login");
+      return;
+    }
+    if (response.status === 409) {
+      hideAlarm();
+      showToast("This reminder has already been answered.");
+      return;
+    }
+    if (!response.ok) throw new Error("Action could not be saved");
+    if (action === "taken") showSuccessThenIdle();
+    else {
+      hideAlarm();
+      showToast("Snoozed for 5 minutes");
+    }
   } catch (err) {
-    /* network hiccup - fine, user can snooze again next time it rings */
+    micIndicator.textContent = "Could not save your response. Check the connection and try again.";
+    startScanning();
+  } finally {
+    actionInFlight = false;
+    scanButtons.forEach((button) => { button.disabled = false; });
+    pollReminders();
   }
-  showToast("Snoozed for 5 minutes");
-  hideAlarm();
 }
 
 takenBtn.addEventListener("click", handleTaken);
@@ -330,19 +356,29 @@ snoozeBtn.addEventListener("click", handleSnooze);
 // ---------------------------------------------------------------------------
 
 async function pollReminders() {
-  // Don't interrupt an alarm that's already showing.
-  if (currentReminder) return;
-
+  if (pollInFlight || actionInFlight) return;
+  pollInFlight = true;
+  const generation = actionGeneration;
   try {
-    const response = await fetch("/check_reminders");
-    const data = await response.json();
-    if (data.due) {
-      showAlarm(data);
+    const response = await fetch("/check_reminders", {
+      cache: "no-store", signal: AbortSignal.timeout(5000),
+    });
+    if (response.status === 401) {
+      window.location.assign("/login");
+      return;
     }
+    if (!response.ok) throw new Error("Connection unavailable");
+    const data = await response.json();
+    if (actionInFlight || generation !== actionGeneration) return;
+    if (currentReminder && (!data.due || data.id !== currentReminder.id ||
+        data.fired_at !== currentReminder.fired_at)) hideAlarm();
+    if (data.due && !currentReminder && !successFlash.classList.contains("visible")) showAlarm(data);
   } catch (err) {
     /* server unreachable this cycle - just try again next poll */
+  } finally {
+    pollInFlight = false;
   }
 }
 
 pollReminders();
-setInterval(pollReminders, 17000); // ~15-20s, per the brief
+setInterval(pollReminders, 1000);
