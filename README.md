@@ -467,3 +467,132 @@ When the dummy reminder is due:
 If no reminder is due, a valid press returns HTTP 404. That is a valid API
 response, not proof that wiring or Wi-Fi failed. See the communication
 test plan below before testing repeated presses or network failures.
+
+## Communication testing and troubleshooting
+
+The following checks are **proposed validation**, not completed physical
+test results. Record the date, actual board/core version, host, network,
+trial count, HTTP status, database before/after state and evidence filename
+when performing them. Use disposable accounts and dummy medicines. Keep
+one due medicine per account unless the test explicitly concerns multiple
+pending reminders. Do not use real patient schedules for fault injection.
+
+### Proposed benchmarks
+
+These acceptance targets are chosen for a local review demonstration.
+They have not been measured and are not product performance guarantees.
+
+| Requirement | Planned sample | Proposed acceptance target | Measurement |
+|---|---:|---|---|
+| Valid Taken correctness | 10 independently due dummy reminders | 10/10 intended reminders logged exactly once, owned by the paired account | Compare HTTP JSON, Logs and SQLite row counts before/after. |
+| Invalid-token isolation | 10 requests | 10/10 return 401; no medicine/dose-log changes | Use a deliberately invalid credential; compare state. |
+| HTTP response time on healthy LAN | 30 requests, each with a fresh due reminder | Median <= 500 ms and 95th percentile <= 1,000 ms | Time from POST start to response received; report all samples and failures. |
+| Snooze persistence/timing | 3 fresh reminders | No Taken log; stored deadline approximately 300 s after request; due re-fires within 2 s of deadline on an idle awake host | Record persisted timestamp and backend due state; include actual scheduler delay. |
+| Browser initial reminder visibility | 5 fresh page/due cycles | Visible within 20 s under an active foreground page and healthy LAN | Scheduler interval is 1 s and browser polling is 17 s; overhead makes this a target, not a proven bound. |
+| Press classification | 10 short, 10 confirmed hold, 10 intermediate-release trials | Correct action for each deliberate short/hold; no POST for intermediate releases | Observe switch waveform/timing where available, Serial action and database state. |
+| Outage feedback | 3 Wi-Fi loss and 3 backend-loss trials | No success feedback for a failed send; no fabricated Taken record | Record LED/Serial behavior and state; queued recovery is not implemented. |
+
+Use one consistent timer for HTTP duration. State whether the reported
+time includes LED feedback (the response-time target above does not).
+Sort the 30 durations and use a documented percentile method, such as the
+nearest-rank 95th percentile. Count timeout/transport failures separately;
+do not discard them to make the result look better. Proposed trial counts
+are not executed-trial counts: until run, record `0 executed / Not Tested`.
+
+### Functional test cases
+
+| ID | Setup and input | Expected current behavior | Observed result |
+|---|---|---|---|
+| C01 | Valid token; one due row; `taken` | 200, success JSON, one dose log, due/snooze cleared | Not Tested |
+| C02 | Unknown or absent token | 401; no acknowledgment | Not Tested |
+| C03 | Valid token; `action: "unknown"` | 400; no dose transition (token use may update last-seen) | Not Tested |
+| C04 | Physical short closure then release | Firmware sends `taken`; outcome follows C01 | Not Tested |
+| C05 | Physical hold until steady LED, then release | Firmware sends `snooze`; 200 if due, deadline persisted, no Taken log | Not Tested |
+| C06 | Backend stopped while Wi-Fi is connected | HTTP transport failure/non-200; five fast blinks; no successful log | Not Tested |
+| C07 | Wi-Fi disconnected before actuation | Eight fast blinks; no POST, no queued action | Not Tested |
+| C08 | Repeat Taken with only one due reminder | First succeeds; later sequential request normally returns 404; an overlapping selected action can return 409 | Not Tested |
+| C09 | Valid token but no currently due reminder | 404, including when active schedules exist but are not yet due | Not Tested |
+| C10 | Token for account A; only B has a due reminder | 404 for A; B's reminder/history unchanged | Not Tested |
+| C11 | Two due medicines; repeat identical token/action body | The next request may select the next medicine; occurrence-bound idempotency is not implemented | Not Tested |
+| C12 | Snooze, then restart backend before deadline | Persisted deadline remains and regular checks re-fire when reached | Not Tested |
+| C13 | Hardware Taken while browser alarm is showing | Database/log changes; manually refresh browser to reconcile current display | Not Tested |
+
+Keep failure diagnosis separate from application changes. A documentation
+correction is not a firmware/backend fix, and a test plan is not a pass
+record. If an acceptance target fails, report the actual sample and cause;
+retest only after a separately authorized change or configuration repair.
+
+### Software-only API demonstration
+
+This sends the same application message as the hub, but does **not** test
+GPIO, debounce, Wi-Fi association, uploaded firmware or LEDs. Run only on
+a disposable local demo account with the intended due reminder:
+
+```bash
+curl -i -X POST http://<host-lan-ip>:5050/api/device/action \
+  -H 'Content-Type: application/json' \
+  -d '{"token":"<replace-with-private-demo-token>","action":"taken"}'
+```
+
+To test Snooze, create another due dummy reminder and replace the action
+with `snooze`. To test invalid authentication, use a made-up token. The
+angle-bracket values are placeholders, not working credentials. Avoid
+recording a terminal command containing a real token; redact secrets from
+evidence and use locally prepared demo credentials.
+
+After a successful Taken, refresh `/logs` under the paired account. For
+an optional read-only SQLite check, if the SQLite CLI is installed:
+
+```bash
+sqlite3 'file:backend/schedules.db?mode=ro' \
+  "SELECT l.id, m.medicine_name, m.time, l.taken_at
+   FROM dose_log l JOIN medicines m ON m.id = l.medicine_id
+   JOIN users u ON u.id = m.user_id
+   WHERE u.username = 'review_demo'
+   ORDER BY l.id DESC LIMIT 10;"
+```
+
+Replace `review_demo` with the disposable account's username. For Snooze,
+inspect that account's `medicines.is_due` and `snoozed_until`; a dose-log
+row is not the expected Snooze outcome. Do not edit or delete the database
+to manufacture test results.
+
+The existing software suite contains two database tests and seven
+hardware-API tests. It requires the declared Python dependencies. Since
+importing `app` can create a session-key file, run it in an exported
+temporary checkout when preserving the original workspace:
+
+```bash
+DOSECLOCK_TEST_COPY="$(mktemp -d)"
+git archive HEAD | tar -x -C "$DOSECLOCK_TEST_COPY"
+(cd "$DOSECLOCK_TEST_COPY" && PYTHONDONTWRITEBYTECODE=1 \
+  python3 -m unittest discover -s tests -v)
+```
+
+The suite uses Flask's test client and disposable SQLite; it is not a
+physical ESP32 test. A missing dependency is a blocked run, not a pass.
+The current audio-failure test patches generation while firing reads only
+the cache, and the conflict test mocks a failed claim; neither establishes
+real synthesis failure recovery or real request-race coverage.
+
+### Troubleshooting by layer
+
+| Symptom | Check first | Interpretation / next step |
+|---|---|---|
+| Dots continue at boot | SSID/password, board-compatible Wi-Fi, AP availability | The setup loop is still waiting for association. No API exchange occurred. |
+| Local browser works; hub cannot connect | LAN IP, port 5050, guest/client isolation, firewall, host awake | `localhost` on the ESP32 is not the laptop. Confirm access from another LAN client. |
+| Negative HTTP result in Serial | Host process/address and network route | Transport failed before a normal HTTP response. Record the library error text. |
+| HTTP 401 | Token copied from the intended pairing response | Authentication failed; do not diagnose it as a GPIO fault. |
+| HTTP 400 | Exact lower-case action and valid JSON payload | Valid actions are `taken` and `snooze`; spelling/case matter. |
+| HTTP 404 | Due state and paired account | An active future schedule is not a due reminder; verify the backend clock and account. |
+| HTTP 409 | Another client/device resolving the selected firing | Re-read state before acting; blind retry is unsafe when other medicines are due. |
+| LED does not match Serial success | Actual GPIO2 LED wiring/polarity, resistor, visible placement | Serial/HTTP and database state can distinguish feedback wiring from an API problem. |
+| Hold never sends | Switch still closed or no confirmed hold | Actions are sent on release; an intermediate duration intentionally sends nothing. |
+| One press changes a different medicine | Multiple pending rows or wrong token owner | The API selects the oldest due row; isolate one pending medicine for the demo. |
+| Successful hardware action leaves browser alarm | Clock's current-alarm polling guard | Refresh Clock/Logs; database acknowledgment does not imply automatic browser reconciliation. |
+| No spoken audio | User gesture, cached path, actual file, TTS/network readiness | Do not treat missing audio as an HTTP/device fault. No generic offline speech fallback is included. |
+
+Evidence for a completed integration test should combine the HTTP/Serial
+result with an account-scoped state change. A photo establishes assembly;
+a screen showing a curl request establishes a simulated API exchange.
+Neither alone proves physical switch timing or independent medication use.
