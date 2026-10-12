@@ -79,7 +79,10 @@ tested, purpose-built product, not a first-time DIY part.
    "esp32").
 2. Fill in your Wi-Fi name/password and `DOSECLOCK_HOST` (the IP address
    and port, `5050`, of the machine running DoseClock's Flask server;
-   find the IP with `ipconfig getifaddr en0` on the Mac running it).
+   find the IP with `hostname -I` on Linux, `ipconfig` on Windows, or
+   `ipconfig getifaddr en0` on macOS). The address in the sketch is an
+   example, not a fixed DoseClock address. Recheck the laptop IP when
+   changing Wi-Fi networks or hotspots.
 3. In DoseClock, log in as the patient's account and go to
    **Logs → Pair a hardware button**. Name it (e.g. "Bedside switch"),
    submit, and copy the token it displays.
@@ -91,6 +94,29 @@ tested, purpose-built product, not a first-time DIY part.
    just wait for a real one), and press the switch. Serial Monitor
    should log the forwarded request and the DoseClock Logs screen should
    show the dose.
+
+Keep both devices on the same Wi-Fi network. Start Flask with
+`backend/.venv/bin/python backend/app.py` from the repository root; it
+listens on `0.0.0.0:5050`. Check `http://<laptop-lan-ip>:5050/` from the
+laptop before testing the switch. The laptop must stay awake and Flask
+must remain running. The ESP32 can use Wi-Fi without the laptop's USB
+data cable, but it still needs power from a USB wall adapter or another
+suitable supply. EN resets the ESP32; it does not erase the uploaded sketch.
+
+For the GPIO2 status LED, wire GPIO2/D2 through a roughly 220Ω resistor
+to the LED anode (long leg), then connect the cathode to GND. Connecting
+the LED to 3.3V instead makes it stay on without firmware control.
+
+The firmware sends `POST /api/device/action` with JSON keys `token` and
+`action`; action is `taken` for a short press or `snooze` for a confirmed
+hold. HTTP 200 means the action succeeded. HTTP 401 means the token is
+missing or unknown, HTTP 400 means the action is invalid, HTTP 404 means
+no reminder is due for that account, and HTTP 409 means the reminder was
+already answered. A negative status is a transport failure; Serial
+Monitor now prints its description. Use 115200 baud.
+
+Keep real Wi-Fi credentials and paired tokens in your local upload
+copy. Do not commit them to this repository.
 
 ## Placement
 

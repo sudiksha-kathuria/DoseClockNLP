@@ -94,6 +94,13 @@ def init_db():
         )
         """
     )
+    # Pre-account installations must retain their rows without exposing them
+    # to the first person who signs up. A caregiver can re-enter those doses.
+    columns = {row['name'] for row in conn.execute('PRAGMA table_info(medicines)')}
+    if 'user_id' not in columns:
+        conn.execute('ALTER TABLE medicines ADD COLUMN user_id INTEGER REFERENCES users(id)')
+    if 'snoozed_until' not in columns:
+        conn.execute('ALTER TABLE medicines ADD COLUMN snoozed_until TEXT')
     conn.commit()
     conn.close()
 
@@ -193,6 +200,8 @@ def get_all_active_medicines():
     return rows
 
 
+
+
 def get_medicine(medicine_id, user_id=None):
     """
     Look up one reminder row by id. Pass user_id from a route to make sure
@@ -226,11 +235,30 @@ def mark_fired(medicine_id, audio_path):
     """Flip a reminder into the 'ringing' state and remember when + what audio."""
     conn = get_db_connection()
     conn.execute(
-        "UPDATE medicines SET is_due = 1, last_fired_at = ?, audio_path = ? WHERE id = ?",
+        "UPDATE medicines SET is_due = 1, last_fired_at = ?, audio_path = ?, snoozed_until = NULL WHERE id = ?",
         (datetime.now().isoformat(), audio_path, medicine_id),
     )
     conn.commit()
     conn.close()
+
+
+def snooze_due(medicine_id, until, user_id=None, expected_fired_at=None):
+    """Atomically silence a due alarm and persist when to ring again."""
+    conn = get_db_connection()
+    try:
+        query = 'UPDATE medicines SET is_due = 0, snoozed_until = ? WHERE id = ? AND is_due = 1'
+        params = [until, medicine_id]
+        if user_id is not None:
+            query += ' AND user_id = ?'
+            params.append(user_id)
+        if expected_fired_at is not None:
+            query += ' AND last_fired_at = ?'
+            params.append(expected_fired_at)
+        updated = conn.execute(query, params).rowcount
+        conn.commit()
+        return bool(updated)
+    finally:
+        conn.close()
 
 
 def clear_due(medicine_id):
@@ -260,6 +288,34 @@ def log_dose(medicine_id):
     )
     conn.commit()
     conn.close()
+
+
+def acknowledge_due(medicine_id, user_id, expected_fired_at=None):
+    """Claim and log one due reminder in one transaction, including course update."""
+    conn = get_db_connection()
+    try:
+        conn.execute('BEGIN IMMEDIATE')
+        row = conn.execute(
+            'SELECT * FROM medicines WHERE id = ? AND user_id = ? AND is_due = 1',
+            (medicine_id, user_id),
+        ).fetchone()
+        if row is None or (expected_fired_at is not None and row['last_fired_at'] != expected_fired_at):
+            conn.rollback()
+            return None
+        conn.execute('UPDATE medicines SET is_due = 0, snoozed_until = NULL WHERE id = ?', (medicine_id,))
+        conn.execute('INSERT INTO dose_log (medicine_id, taken_at) VALUES (?, ?)',
+                     (medicine_id, datetime.now().isoformat()))
+        latest = conn.execute(
+            'SELECT MAX(time) FROM medicines WHERE group_id = ? AND days_remaining > 0',
+            (row['group_id'],),
+        ).fetchone()[0]
+        if row['time'] == latest:
+            conn.execute('UPDATE medicines SET days_remaining = MAX(days_remaining - 1, 0) WHERE group_id = ?',
+                         (row['group_id'],))
+        conn.commit()
+        return get_medicine(medicine_id, user_id)
+    finally:
+        conn.close()
 
 
 def decrement_group_days(group_id):

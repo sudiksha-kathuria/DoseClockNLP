@@ -36,7 +36,7 @@
 // ---- Configure before flashing --------------------------------------
 constexpr char WIFI_SSID[] = "your-wifi-name";
 constexpr char WIFI_PASSWORD[] = "your-wifi-password";
-constexpr char DOSECLOCK_HOST[] = "http://192.168.1.50:5050"; // the machine running app.py
+constexpr char DOSECLOCK_HOST[] = "http://192.168.1.50:5050"; // example only: replace with the laptop's current LAN IP
 constexpr char DEVICE_TOKEN[] = "paste-token-from-the-logs-screen";
 // -----------------------------------------------------------------------
 
@@ -62,6 +62,7 @@ void blinkLed(int times, int onMs) {
 
 void sendAction(const char *action) {
   if (WiFi.status() != WL_CONNECTED) {
+    Serial.println("Wi-Fi disconnected; no action sent.");
     blinkLed(8, 60); // fast blink = no network, nothing was sent
     return;
   }
@@ -72,6 +73,9 @@ void sendAction(const char *action) {
   String body = String("{\"token\":\"") + DEVICE_TOKEN + "\",\"action\":\"" + action + "\"}";
   int status = http.POST(body);
   Serial.printf("Sent '%s', server responded %d\n", action, status);
+  if (status < 0) {
+    Serial.printf("HTTP error: %s\n", HTTPClient::errorToString(status).c_str());
+  }
   http.end();
 
   // Confirmation feedback the patient (or a caregiver in the room) can
@@ -89,6 +93,7 @@ void setup() {
   Serial.begin(115200);
   pinMode(SWITCH_PIN, INPUT_PULLUP);
   pinMode(LED_PIN, OUTPUT);
+  digitalWrite(LED_PIN, LOW);
 
   WiFi.mode(WIFI_STA);
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
@@ -98,6 +103,8 @@ void setup() {
     Serial.print(".");
   }
   Serial.println(" connected.");
+  Serial.print("ESP32 IP: ");
+  Serial.println(WiFi.localIP());
   blinkLed(3, 200); // three blinks on boot = ready
 }
 

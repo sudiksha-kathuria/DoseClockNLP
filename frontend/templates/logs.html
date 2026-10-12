@@ -62,6 +62,19 @@
           the repo.
         </p>
 
+        {% if paired_token %}
+          <div class="pairing-result">
+            <h3>Button paired.</h3>
+            <p>Copy this token now. It is shown only once.</p>
+            <label for="paired-token">Device token</label>
+            <div class="pair-form">
+              <input id="paired-token" type="text" value="{{ paired_token }}" readonly spellcheck="false" />
+              <button id="copy-token" type="button">Copy token</button>
+            </div>
+            <p id="copy-status" role="status"></p>
+          </div>
+        {% endif %}
+
         {% if devices %}
           <ul class="device-list">
             {% for device in devices %}
@@ -75,22 +88,8 @@
                       Never used
                     {% endif %}
                   </span>
-                  <button
-                    type="button"
-                    class="reveal-token-btn"
-                    onclick="
-                      var t = this.nextElementSibling;
-                      if (t.classList.contains('visible')) {
-                        t.classList.remove('visible');
-                        this.textContent = 'Reveal token';
-                      } else {
-                        t.classList.add('visible');
-                        this.textContent = 'Hide token';
-                      }
-                    "
-                  >Reveal token</button>
+
                 </div>
-                <span class="device-token-value">{{ device.token }}</span>
               </li>
             {% endfor %}
           </ul>
@@ -105,3 +104,5 @@
   </div>
 </div>
 {% endblock %}
+
+{% block scripts %}<script src="{{ url_for('static', filename='js/logs.js') }}"></script>{% endblock %}

@@ -13,6 +13,7 @@ is no dosage information anywhere in this module.
 import os
 import re
 import hashlib
+import tempfile
 from gtts import gTTS
 
 # Languages offered in the form, mapped to gTTS's language codes.
@@ -49,6 +50,12 @@ def _cache_filename(medicine_name, language):
     return f"{language}_{_slugify(medicine_name)}_{digest}.mp3"
 
 
+def get_cached_audio(medicine_name, language):
+    filename = _cache_filename(medicine_name, language)
+    filepath = os.path.join(AUDIO_DIR, filename)
+    return f'audio/{filename}' if os.path.isfile(filepath) and os.path.getsize(filepath) > 0 else None
+
+
 def get_or_create_audio(medicine_name, language):
     """
     Return the audio filename (relative to static/audio/) for this
@@ -58,9 +65,16 @@ def get_or_create_audio(medicine_name, language):
     filename = _cache_filename(medicine_name, language)
     filepath = os.path.join(AUDIO_DIR, filename)
 
-    if not os.path.exists(filepath):
+    if not get_cached_audio(medicine_name, language):
         sentence = f"It's time to take your {medicine_name}."
-        speech = gTTS(text=sentence, lang=language)
-        speech.save(filepath)
+        speech = gTTS(text=sentence, lang=language, timeout=(3, 8))
+        fd, temporary = tempfile.mkstemp(dir=AUDIO_DIR, suffix='.mp3')
+        os.close(fd)
+        try:
+            speech.save(temporary)
+            os.replace(temporary, filepath)
+        finally:
+            if os.path.exists(temporary):
+                os.unlink(temporary)
 
     return f"audio/{filename}"

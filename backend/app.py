@@ -297,7 +297,7 @@ def export_csv():
 
 @app.route("/logs")
 @login_required
-def logs():
+def logs(paired_token=None):
     """Dedicated dose-history screen, optionally filtered to one medicine."""
     medicine_filter = request.args.get("medicine") or None
     history = database.get_dose_history(session["user_id"], medicine_filter)
@@ -309,6 +309,7 @@ def logs():
         medicine_names=medicine_names,
         selected_medicine=medicine_filter,
         devices=devices,
+        paired_token=paired_token,
     )
 
 
@@ -317,8 +318,10 @@ def logs():
 def pair_device():
     """Mint a new hardware pairing token (see HARDWARE.md) and show it once on the Logs screen."""
     name = (request.form.get("name") or "Bedside button").strip()[:60]
-    database.create_device_token(session["user_id"], name)
-    return redirect(url_for("logs"))
+    token = database.create_device_token(session["user_id"], name)
+    response = app.make_response(logs(paired_token=token))
+    response.headers["Cache-Control"] = "no-store"
+    return response
 
 
 # ---------------------------------------------------------------------------
@@ -385,30 +388,21 @@ def check_reminders():
             "due": True,
             "id": due["id"],
             "medicine_name": due["medicine_name"],
-            "audio_url": url_for("static", filename=due["audio_path"]),
+            "audio_url": url_for("static", filename=due["audio_path"]) if due["audio_path"] else None,
             "language": due["language"],
         }
     )
 
 
-def _perform_mark_taken(medicine_id):
+def _perform_mark_taken(medicine_id, user_id, expected_fired_at=None):
     """
     Shared by /mark_taken and the hardware bridge: log the dose, silence
     the alarm, and count the day off if this was the last dose of the day.
     """
-    row = database.get_medicine(medicine_id)
-    database.log_dose(medicine_id)
-    database.clear_due(medicine_id)
-    reminder_scheduler.cancel_snooze(medicine_id)  # in case Taken beat a pending snooze
-
-    # "Final dose of the day" = this row's time is the latest among the
-    # still-active times in its course.
-    group_rows = [r for r in database.get_group(row["group_id"]) if r["days_remaining"] > 0]
-    is_final_dose = bool(group_rows) and row["time"] == max(r["time"] for r in group_rows)
-    if is_final_dose:
-        database.decrement_group_days(row["group_id"])
-
-    return database.get_medicine(medicine_id)
+    updated = database.acknowledge_due(medicine_id, user_id, expected_fired_at)
+    if updated is not None:
+        reminder_scheduler.cancel_snooze(medicine_id)
+    return updated
 
 
 @app.route("/mark_taken", methods=["POST"])
@@ -421,7 +415,9 @@ def mark_taken():
     if row is None:
         return jsonify({"error": "reminder not found"}), 404
 
-    updated = _perform_mark_taken(medicine_id)
+    updated = _perform_mark_taken(medicine_id, session['user_id'], data.get('fired_at'))
+    if updated is None:
+        return jsonify({'error': 'reminder is no longer due'}), 409
     return jsonify({"success": True, "days_remaining": updated["days_remaining"] if updated else 0})
 
 
@@ -435,8 +431,8 @@ def mark_snooze():
     if row is None:
         return jsonify({"error": "reminder not found"}), 404
 
-    database.clear_due(medicine_id)
-    reminder_scheduler.schedule_snooze(medicine_id)
+    if not reminder_scheduler.schedule_snooze(medicine_id, session['user_id'], data.get('fired_at')):
+        return jsonify({'error': 'reminder is no longer due'}), 409
     return jsonify({"success": True})
 
 
@@ -465,10 +461,11 @@ def device_action():
         return jsonify({"error": "no reminder is currently due"}), 404
 
     if action == "taken":
-        _perform_mark_taken(due["id"])
+        if _perform_mark_taken(due['id'], user_id, due['last_fired_at']) is None:
+            return jsonify({'error': 'reminder is no longer due'}), 409
     else:
-        database.clear_due(due["id"])
-        reminder_scheduler.schedule_snooze(due["id"])
+        if not reminder_scheduler.schedule_snooze(due['id'], user_id, due['last_fired_at']):
+            return jsonify({'error': 'reminder is no longer due'}), 409
 
     return jsonify({"success": True, "medicine_name": due["medicine_name"]})
 
@@ -480,7 +477,7 @@ def device_action():
 if __name__ == "__main__":
     database.init_db()
 
-    DEBUG = True
+    DEBUG = False
 
     # Flask's debug reloader re-imports this module in a child process;
     # only start the scheduler in the process that's actually serving
@@ -489,4 +486,4 @@ if __name__ == "__main__":
         reminder_scheduler.init_scheduler()
 
     # Port 5050, not 5000: macOS's AirPlay Receiver squats on 5000.
-    app.run(debug=DEBUG, port=5050)
+    app.run(host="0.0.0.0", debug=DEBUG, port=5050)
