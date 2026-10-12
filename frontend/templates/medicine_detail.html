@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+{% block title %}DoseClock: {{ summary.medicine_name }}{% endblock %}
+{% block content %}
+<div class="detail-shell">
+
+  <!-- Left pane: edit form -->
+  <section class="detail-form-pane">
+    <div class="detail-form-inner">
+      <span class="eyebrow">Medicine detail</span>
+      <h1>{{ summary.medicine_name }}</h1>
+      <p class="subhead" style="color:var(--on-light-muted);margin-bottom:var(--space-md);">
+        Edit the name, times, language or days remaining, then save.
+      </p>
+
+      <form method="post" action="{{ url_for('medicine_edit', group_id=summary.group_id) }}">
+        <div class="field-group">
+          <label for="medicine_name">Medicine name</label>
+          <input
+            class="big-input"
+            type="text"
+            id="medicine_name"
+            name="medicine_name"
+            value="{{ summary.medicine_name }}"
+            required
+          />
+        </div>
+
+        <div class="field-group">
+          <label>Time(s) of day</label>
+          <div class="times-list" id="times-list">
+            {% for t in summary.times %}
+              <div class="time-row">
+                <input class="big-input" type="time" name="times" value="{{ t }}" required />
+                <button type="button" class="remove-time" aria-label="Remove time" title="Remove">&times;</button>
+              </div>
+            {% endfor %}
+          </div>
+          <button type="button" class="add-time" id="add-time-btn">+ Add another time</button>
+        </div>
+
+        <div class="field-group">
+          <label for="days_remaining">Days remaining</label>
+          <input
+            class="big-input"
+            type="number"
+            id="days_remaining"
+            name="days_remaining"
+            min="0"
+            value="{{ summary.days_remaining }}"
+            required
+          />
+        </div>
+
+        <div class="field-group">
+          <label for="language">Voice reminder language</label>
+          <select class="big-input" id="language" name="language" required>
+            {% for code, label in languages %}
+              <option value="{{ code }}" {{ 'selected' if code == summary.language }}>{{ label }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="detail-btn-group">
+          <button type="submit" class="pink-btn auth-submit">Save changes</button>
+        </div>
+      </form>
+
+      <!-- Delete form — separate POST to the delete endpoint -->
+      <form
+        method="post"
+        action="{{ url_for('medicine_group_delete', group_id=summary.group_id) }}"
+        onsubmit="return confirm('Remove {{ summary.medicine_name }} from your schedule?');"
+        style="margin-top:var(--space-xs);"
+      >
+        <button type="submit" class="danger-btn">Delete this medicine</button>
+      </form>
+
+      <p style="margin-top:var(--space-md);">
+        <a href="{{ url_for('index') }}" style="color:var(--accent-strong);font-weight:700;text-decoration:none;border-bottom:2px solid var(--accent-strong);">&larr; Back to schedule</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- Right pane: dose history -->
+  <aside class="detail-history-pane">
+    <h2>Recent doses</h2>
+    {% if history %}
+      <table class="history-table">
+        <thead>
+          <tr>
+            <th>Scheduled</th>
+            <th>Taken at</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in history %}
+            <tr>
+              <td>{{ row.scheduled_time }}</td>
+              <td>{{ row.taken_at[:16].replace('T', ' ') }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p class="history-empty">No doses logged for this medicine yet.</p>
+    {% endif %}
+  </aside>
+
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+  // Add/remove time-row behaviour (same pattern as index.html)
+  const timesList = document.getElementById('times-list');
+  const addTimeBtn = document.getElementById('add-time-btn');
+
+  function wireRemove(row) {
+    row.querySelector('.remove-time').addEventListener('click', () => {
+      if (timesList.children.length > 1) row.remove();
+    });
+  }
+
+  // Wire existing remove buttons
+  Array.from(timesList.querySelectorAll('.time-row')).forEach(wireRemove);
+
+  addTimeBtn.addEventListener('click', () => {
+    const row = document.createElement('div');
+    row.className = 'time-row';
+    const input = document.createElement('input');
+    input.className = 'big-input';
+    input.type = 'time';
+    input.name = 'times';
+    input.required = true;
+    input.value = '08:00';
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'remove-time';
+    btn.title = 'Remove';
+    btn.innerHTML = '&times;';
+    row.appendChild(input);
+    row.appendChild(btn);
+    timesList.appendChild(row);
+    wireRemove(row);
+  });
+</script>
+{% endblock %}

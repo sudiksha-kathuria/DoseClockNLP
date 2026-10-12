@@ -56,11 +56,17 @@
   <aside class="add-preview-pane">
     <span class="eyebrow">Up next</span>
     <h2>Today's line-up</h2>
-    <ul class="preview-list">
-      {% for row in schedule %}
-        <li>
-          <span class="med-name">{{ row.medicine_name }}</span>
-          <span class="med-time">{{ row.time }}</span>
+    <ul class="preview-list" id="preview-list">
+      {% for item in schedule %}
+        <li data-group="{{ item.group_id }}">
+          <a class="med-name" href="{{ url_for('medicine_detail', group_id=item.group_id) }}">{{ item.medicine_name }}</a>
+          <span class="med-time">{{ item.times | join(', ') }}</span>
+          <button
+            type="button"
+            class="remove-med-btn"
+            data-group="{{ item.group_id }}"
+            aria-label="Remove {{ item.medicine_name }}"
+          >Remove</button>
         </li>
       {% else %}
         <li class="preview-empty" style="display:list-item;">Nothing scheduled yet. Add your first reminder.</li>
@@ -71,4 +77,37 @@
 {% endblock %}
 {% block scripts %}
 <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+<script>
+  document.getElementById('preview-list').addEventListener('click', async function(e) {
+    const btn = e.target.closest('.remove-med-btn');
+    if (!btn) return;
+    const groupId = btn.dataset.group;
+    if (!groupId) return;
+    btn.disabled = true;
+    try {
+      const resp = await fetch('/delete_medicine', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: groupId }),
+      });
+      if (resp.ok) {
+        const li = document.querySelector(`li[data-group="${groupId}"]`);
+        if (li) li.remove();
+        // If list is now empty, show the empty message
+        const list = document.getElementById('preview-list');
+        if (list && list.querySelectorAll('li:not(.preview-empty)').length === 0) {
+          const empty = document.createElement('li');
+          empty.className = 'preview-empty';
+          empty.style.display = 'list-item';
+          empty.textContent = 'Nothing scheduled yet. Add your first reminder.';
+          list.appendChild(empty);
+        }
+      } else {
+        btn.disabled = false;
+      }
+    } catch (_) {
+      btn.disabled = false;
+    }
+  });
+</script>
 {% endblock %}

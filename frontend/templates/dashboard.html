@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}DoseClock: Dashboard{% endblock %}
+{% block content %}
+<div class="dash-shell">
+
+  <header class="dash-header">
+    <p class="dash-date">{{ today }}</p>
+    <h1>Your adherence</h1>
+  </header>
+
+  <div class="stat-grid">
+    <div class="stat-card">
+      <span class="stat-value">{{ stats.active_count }}</span>
+      <span class="stat-label">Medicines active</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-value">{{ stats.week_taken }}</span>
+      <span class="stat-label">Doses taken this week</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-value">{{ overall_pct }}%</span>
+      <span class="stat-label">Overall adherence</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-value">{{ streak }}</span>
+      <span class="stat-label">Current streak (days)</span>
+    </div>
+  </div>
+
+  <div class="dash-body">
+    <h2>Per-medicine breakdown</h2>
+
+    {% if adherence_data %}
+      <div class="med-adherence-list">
+        {% for med in adherence_data %}
+          <div class="med-adherence-item">
+            <div class="med-adherence-top">
+              <a class="med-adherence-name" href="{{ url_for('medicine_detail', group_id=med.group_id) }}">{{ med.medicine_name }}</a>
+              <span class="med-adherence-meta">
+                {% if med.active %}
+                  {{ med.days_remaining }} day{{ 's' if med.days_remaining != 1 }} remaining &bull; {{ med.times | join(', ') }}
+                {% else %}
+                  Course complete &bull; {{ med.times | join(', ') }}
+                {% endif %}
+              </span>
+              <span class="med-adherence-pct">{{ med.adherence }}%</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill" style="width: {{ med.adherence }}%;"></div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="dash-empty">No medicines added yet. <a href="{{ url_for('index') }}" style="color:var(--mauve);font-weight:700;">Add your first reminder.</a></p>
+    {% endif %}
+  </div>
+
+</div>
+{% endblock %}

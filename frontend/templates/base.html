@@ -17,6 +17,7 @@
       <a href="{{ url_for('clock') }}" class="{{ 'active' if request.endpoint == 'clock' }}">Clock</a>
       <a href="{{ url_for('index') }}" class="{{ 'active' if request.endpoint == 'index' }}">Add medicine</a>
       <a href="{{ url_for('logs') }}" class="{{ 'active' if request.endpoint == 'logs' }}">Logs</a>
+      <a href="{{ url_for('dashboard') }}" class="{{ 'active' if request.endpoint == 'dashboard' }}">Dashboard</a>
     </div>
     <div class="tv-nav-user">
       <span class="greeting">Hi, <strong>{{ current_user.display_name }}</strong></span>

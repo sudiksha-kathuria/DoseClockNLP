@@ -52,10 +52,10 @@
   <aside class="clock-sidebar">
     <h2>Today's doses</h2>
     <ul class="sidebar-list">
-      {% for row in schedule %}
+      {% for item in grouped_schedule %}
         <li>
-          <span class="med-name">{{ row.medicine_name }}</span>
-          <span class="med-time">{{ row.time }}</span>
+          <a class="med-name" href="{{ url_for('medicine_detail', group_id=item.group_id) }}">{{ item.medicine_name }}</a>
+          <span class="med-time">{{ item.times | join(', ') }}</span>
         </li>
       {% else %}
         <li class="sidebar-empty">No active reminders yet</li>

@@ -7,15 +7,18 @@
       <h1>Dose history</h1>
       <p class="subhead">Every dose you've marked Taken, kept under your account.</p>
     </div>
-    <form class="logs-filter" method="get" action="{{ url_for('logs') }}">
-      <label for="medicine" style="color: var(--on-light-muted); font-weight: 600; font-size: 0.9rem;">Medicine</label>
-      <select name="medicine" id="medicine" onchange="this.form.submit()">
-        <option value="" {{ "selected" if not selected_medicine }}>All medicines</option>
-        {% for name in medicine_names %}
-          <option value="{{ name }}" {{ "selected" if selected_medicine == name }}>{{ name }}</option>
-        {% endfor %}
-      </select>
-    </form>
+    <div style="display:flex;align-items:center;gap:var(--space-md);flex-wrap:wrap;">
+      <form class="logs-filter" method="get" action="{{ url_for('logs') }}">
+        <label for="medicine" style="color: var(--on-light-muted); font-weight: 600; font-size: 0.9rem;">Medicine</label>
+        <select name="medicine" id="medicine" onchange="this.form.submit()">
+          <option value="" {{ "selected" if not selected_medicine }}>All medicines</option>
+          {% for name in medicine_names %}
+            <option value="{{ name }}" {{ "selected" if selected_medicine == name }}>{{ name }}</option>
+          {% endfor %}
+        </select>
+      </form>
+      <a href="{{ url_for('export_csv') }}" style="font-weight:700;color:var(--accent-strong);font-size:0.95rem;text-decoration:none;border-bottom:2px solid var(--accent-strong);">Export CSV</a>
+    </div>
   </div>
 
   <div class="logs-grid">
@@ -63,8 +66,31 @@
           <ul class="device-list">
             {% for device in devices %}
               <li>
-                <span class="device-name">{{ device.name }}</span>
-                <span class="device-token">{{ device.token }}</span>
+                <div class="device-meta">
+                  <span class="device-name">{{ device.name }}</span>
+                  <span class="device-last-seen">
+                    {% if device.last_seen_at %}
+                      Last seen {{ device.last_seen_at[:10] }}
+                    {% else %}
+                      Never used
+                    {% endif %}
+                  </span>
+                  <button
+                    type="button"
+                    class="reveal-token-btn"
+                    onclick="
+                      var t = this.nextElementSibling;
+                      if (t.classList.contains('visible')) {
+                        t.classList.remove('visible');
+                        this.textContent = 'Reveal token';
+                      } else {
+                        t.classList.add('visible');
+                        this.textContent = 'Hide token';
+                      }
+                    "
+                  >Reveal token</button>
+                </div>
+                <span class="device-token-value">{{ device.token }}</span>
               </li>
             {% endfor %}
           </ul>

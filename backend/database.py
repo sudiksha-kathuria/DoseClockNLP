@@ -26,7 +26,7 @@ import sqlite3
 import os
 import uuid
 import secrets
-from datetime import datetime
+from datetime import datetime, timedelta, date
 from werkzeug.security import generate_password_hash, check_password_hash
 
 # schedules.db lives next to this file, inside backend/, and is created
@@ -351,3 +351,218 @@ def get_user_id_for_token(token):
         conn.commit()
     conn.close()
     return row["user_id"] if row else None
+
+
+# ---------------------------------------------------------------------------
+# Medicine group management (Fix 2 + New page 2)
+# ---------------------------------------------------------------------------
+
+def deactivate_group(group_id):
+    """Set days_remaining = 0 for every row in a medicine group (soft-delete)."""
+    conn = get_db_connection()
+    conn.execute(
+        "UPDATE medicines SET days_remaining = 0 WHERE group_id = ?",
+        (group_id,),
+    )
+    conn.commit()
+    conn.close()
+
+
+def get_group_summary(group_id, user_id):
+    """
+    Return a plain dict describing the medicine group, after verifying that it
+    belongs to user_id.  Returns None if the group doesn't exist or is owned
+    by someone else.
+    """
+    conn = get_db_connection()
+    rows = conn.execute(
+        "SELECT * FROM medicines WHERE group_id = ? AND user_id = ? ORDER BY time ASC",
+        (group_id, user_id),
+    ).fetchall()
+    conn.close()
+    if not rows:
+        return None
+    first = rows[0]
+    return {
+        "medicine_name": first["medicine_name"],
+        "language": first["language"],
+        "days_remaining": first["days_remaining"],
+        "times": [r["time"] for r in rows],
+        "group_id": group_id,
+    }
+
+
+def update_group(group_id, medicine_name, times, language, days_remaining):
+    """
+    Replace all time-slot rows for group_id with new values, keeping the
+    same group_id so dose-log history remains linked.
+    """
+    conn = get_db_connection()
+    existing = conn.execute(
+        "SELECT user_id FROM medicines WHERE group_id = ? LIMIT 1", (group_id,)
+    ).fetchone()
+    if existing is None:
+        conn.close()
+        return
+    user_id = existing["user_id"]
+    conn.execute("DELETE FROM medicines WHERE group_id = ?", (group_id,))
+    created_at = datetime.now().isoformat()
+    for t in times:
+        conn.execute(
+            """
+            INSERT INTO medicines
+                (user_id, group_id, medicine_name, time, days_remaining, language, created_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+            """,
+            (user_id, group_id, medicine_name, t, days_remaining, language, created_at),
+        )
+    conn.commit()
+    conn.close()
+
+
+def get_group_dose_history(group_id, limit=10):
+    """Last `limit` dose-log entries for every time-slot in this group."""
+    conn = get_db_connection()
+    rows = conn.execute(
+        """
+        SELECT dose_log.taken_at AS taken_at,
+               medicines.time    AS scheduled_time
+        FROM dose_log
+        JOIN medicines ON medicines.id = dose_log.medicine_id
+        WHERE medicines.group_id = ?
+        ORDER BY dose_log.taken_at DESC
+        LIMIT ?
+        """,
+        (group_id, limit),
+    ).fetchall()
+    conn.close()
+    return rows
+
+
+# ---------------------------------------------------------------------------
+# Dashboard stats (New page 1)
+# ---------------------------------------------------------------------------
+
+def get_adherence_data(user_id):
+    """
+    Return a list of dicts, one per distinct medicine group for this user,
+    with adherence statistics.
+    """
+    conn = get_db_connection()
+    groups = conn.execute(
+        """
+        SELECT group_id,
+               medicine_name,
+               language,
+               MIN(days_remaining) AS days_remaining,
+               COUNT(*)            AS times_count,
+               GROUP_CONCAT(time, ',') AS times_str
+        FROM medicines
+        WHERE user_id = ?
+        GROUP BY group_id, medicine_name, language
+        ORDER BY medicine_name COLLATE NOCASE
+        """,
+        (user_id,),
+    ).fetchall()
+
+    result = []
+    for g in groups:
+        taken_row = conn.execute(
+            """
+            SELECT COUNT(*) AS cnt
+            FROM dose_log
+            JOIN medicines ON medicines.id = dose_log.medicine_id
+            WHERE medicines.group_id = ?
+            """,
+            (g["group_id"],),
+        ).fetchone()
+        taken = taken_row["cnt"] if taken_row else 0
+        remaining_doses = g["days_remaining"] * g["times_count"]
+        total_scheduled = taken + remaining_doses
+        adherence = round(taken / total_scheduled * 100) if total_scheduled > 0 else 0
+        adherence = min(adherence, 100)
+        result.append(
+            {
+                "group_id": g["group_id"],
+                "medicine_name": g["medicine_name"],
+                "days_remaining": g["days_remaining"],
+                "times": g["times_str"].split(",") if g["times_str"] else [],
+                "taken": taken,
+                "total_scheduled": total_scheduled,
+                "adherence": adherence,
+                "active": g["days_remaining"] > 0,
+            }
+        )
+    conn.close()
+    return result
+
+
+def get_dashboard_stats(user_id):
+    """
+    Returns a dict with summary numbers for the four stat cards on /dashboard.
+    """
+    conn = get_db_connection()
+
+    active_count = conn.execute(
+        """
+        SELECT COUNT(DISTINCT group_id) AS cnt
+        FROM medicines
+        WHERE user_id = ? AND days_remaining > 0
+        """,
+        (user_id,),
+    ).fetchone()["cnt"]
+
+    week_ago = (datetime.now() - timedelta(days=7)).isoformat()
+    week_taken = conn.execute(
+        """
+        SELECT COUNT(*) AS cnt
+        FROM dose_log
+        JOIN medicines ON medicines.id = dose_log.medicine_id
+        WHERE medicines.user_id = ? AND dose_log.taken_at >= ?
+        """,
+        (user_id, week_ago),
+    ).fetchone()["cnt"]
+
+    conn.close()
+    return {"active_count": active_count, "week_taken": week_taken}
+
+
+def get_current_streak(user_id):
+    """
+    Count consecutive days (going backwards from today) on which this user
+    logged at least one dose.  Returns 0 if no doses were ever taken.
+    """
+    conn = get_db_connection()
+    rows = conn.execute(
+        """
+        SELECT DISTINCT DATE(dose_log.taken_at) AS taken_date
+        FROM dose_log
+        JOIN medicines ON medicines.id = dose_log.medicine_id
+        WHERE medicines.user_id = ?
+        ORDER BY taken_date DESC
+        """,
+        (user_id,),
+    ).fetchall()
+    conn.close()
+
+    if not rows:
+        return 0
+
+    taken_dates = {r["taken_date"] for r in rows}
+    today = date.today()
+    streak = 0
+
+    # Walk backwards from today; stop at the first gap.
+    check = today
+    while check.isoformat() in taken_dates:
+        streak += 1
+        check -= timedelta(days=1)
+
+    # If today has no dose yet, a streak from yesterday still counts.
+    if streak == 0:
+        check = today - timedelta(days=1)
+        while check.isoformat() in taken_dates:
+            streak += 1
+            check -= timedelta(days=1)
+
+    return streak

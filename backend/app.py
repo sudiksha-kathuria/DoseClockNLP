@@ -6,12 +6,18 @@ DoseClock's Flask application.
     GET  /                render the add-medicine form            (login required)
     GET  /clock            render the full-screen clock/alarm view (login required)
     GET  /logs             render the dedicated dose-history screen (login required)
+    GET  /dashboard        adherence stats and streak              (login required)
+    GET  /medicine/<gid>   detail / edit page for a medicine group (login required)
+    POST /medicine/<gid>/edit    replace a group's rows            (login required)
+    POST /medicine/<gid>/delete  deactivate a group                (login required)
+    GET  /export           download dose history as CSV            (login required)
     GET  /signup           create an account
     POST /signup
     GET  /login            sign in
     POST /login
     POST /logout
     POST /add_medicine     save a new medicine schedule            (login required)
+    POST /delete_medicine  deactivate a medicine group             (login required)
     GET  /check_reminders  polled by the frontend every ~15-20s    (login required)
     POST /mark_taken       log a dose, decrement days if it was the last of the day
     POST /mark_snooze      re-fire the same reminder in 5 minutes
@@ -22,11 +28,17 @@ The frontend lives in ../frontend (templates/ and static/) so the two
 halves of the project stay in separate, clearly-named folders.
 """
 
+import csv
+import io
 import os
 import secrets
+from datetime import date
 from functools import wraps
 
-from flask import Flask, render_template, request, jsonify, redirect, url_for, session
+from flask import (
+    Flask, render_template, request, jsonify,
+    redirect, url_for, session, make_response,
+)
 
 import database
 import scheduler as reminder_scheduler
@@ -141,16 +153,146 @@ def logout():
 @login_required
 def index():
     """Add-medicine form, with today's schedule alongside it."""
-    schedule = database.get_active_medicines(session["user_id"])
-    return render_template("index.html", languages=tts.LANGUAGES, schedule=schedule)
+    rows = database.get_active_medicines(session["user_id"])
+    # Group rows by group_id so the aside can show one Remove button per course
+    seen = {}
+    for row in rows:
+        gid = row["group_id"]
+        if gid not in seen:
+            seen[gid] = {
+                "medicine_name": row["medicine_name"],
+                "group_id": gid,
+                "times": [],
+            }
+        seen[gid]["times"].append(row["time"])
+    return render_template(
+        "index.html",
+        languages=tts.LANGUAGES,
+        schedule=list(seen.values()),
+    )
 
 
 @app.route("/clock")
 @login_required
 def clock():
-    """Full-screen clock + today's upcoming doses."""
-    today_schedule = database.get_active_medicines(session["user_id"])
-    return render_template("clock.html", schedule=today_schedule)
+    """Full-screen clock + today's upcoming doses, grouped by medicine name."""
+    rows = database.get_active_medicines(session["user_id"])
+    grouped = {}
+    for row in rows:
+        gid = row["group_id"]
+        if gid not in grouped:
+            grouped[gid] = {
+                "medicine_name": row["medicine_name"],
+                "group_id": gid,
+                "times": [],
+            }
+        grouped[gid]["times"].append(row["time"])
+    return render_template("clock.html", grouped_schedule=list(grouped.values()))
+
+
+@app.route("/dashboard")
+@login_required
+def dashboard():
+    """Adherence stats and per-medicine progress bars."""
+    user_id = session["user_id"]
+    stats = database.get_dashboard_stats(user_id)
+    adherence_data = database.get_adherence_data(user_id)
+    streak = database.get_current_streak(user_id)
+
+    # Overall adherence: weighted average across all groups
+    total_taken = sum(m["taken"] for m in adherence_data)
+    total_sched = sum(m["total_scheduled"] for m in adherence_data)
+    overall_pct = round(total_taken / total_sched * 100) if total_sched > 0 else 0
+    overall_pct = min(overall_pct, 100)
+
+    return render_template(
+        "dashboard.html",
+        stats=stats,
+        adherence_data=adherence_data,
+        streak=streak,
+        overall_pct=overall_pct,
+        today=date.today().strftime("%A, %d %B %Y"),
+    )
+
+
+@app.route("/medicine/<group_id>")
+@login_required
+def medicine_detail(group_id):
+    """Detail / edit page for a medicine group."""
+    summary = database.get_group_summary(group_id, session["user_id"])
+    if summary is None:
+        return redirect(url_for("index"))
+    history = database.get_group_dose_history(group_id, limit=10)
+    return render_template(
+        "medicine_detail.html",
+        summary=summary,
+        history=history,
+        languages=tts.LANGUAGES,
+    )
+
+
+@app.route("/medicine/<group_id>/edit", methods=["POST"])
+@login_required
+def medicine_edit(group_id):
+    """Replace a medicine group's rows with new values from the edit form."""
+    summary = database.get_group_summary(group_id, session["user_id"])
+    if summary is None:
+        return redirect(url_for("index"))
+
+    medicine_name = (request.form.get("medicine_name") or "").strip()
+    times = [t for t in request.form.getlist("times") if t]
+    language = request.form.get("language") or ""
+    valid_languages = {code for code, _ in tts.LANGUAGES}
+
+    try:
+        days_remaining = int(request.form.get("days_remaining") or 1)
+        if days_remaining < 0:
+            days_remaining = 0
+    except (TypeError, ValueError):
+        days_remaining = summary["days_remaining"]
+
+    if medicine_name and times and language in valid_languages:
+        database.update_group(group_id, medicine_name, times, language, days_remaining)
+
+    return redirect(url_for("medicine_detail", group_id=group_id))
+
+
+@app.route("/medicine/<group_id>/delete", methods=["POST"])
+@login_required
+def medicine_group_delete(group_id):
+    """Deactivate a medicine group from its detail page."""
+    summary = database.get_group_summary(group_id, session["user_id"])
+    if summary is not None:
+        database.deactivate_group(group_id)
+    return redirect(url_for("index"))
+
+
+@app.route("/export")
+@login_required
+def export_csv():
+    """Download the logged-in user's full dose history as a CSV file."""
+    user = database.get_user_by_id(session["user_id"])
+    history = database.get_dose_history(session["user_id"])
+
+    buf = io.StringIO()
+    writer = csv.writer(buf)
+    writer.writerow(["medicine_name", "scheduled_time", "taken_at", "language"])
+    for row in history:
+        writer.writerow([
+            row["medicine_name"],
+            row["scheduled_time"],
+            row["taken_at"],
+            row["language"],
+        ])
+
+    filename = "doseclock_history_{}_{}.csv".format(
+        user["username"],
+        date.today().isoformat(),
+    )
+    response = make_response(buf.getvalue())
+    response.headers["Content-Type"] = "text/csv"
+    response.headers["Content-Disposition"] = f'attachment; filename="{filename}"'
+    return response
 
 
 @app.route("/logs")
@@ -209,6 +351,24 @@ def add_medicine():
         return jsonify({"error": "days must be a positive number"}), 400
 
     database.add_medicine(session["user_id"], medicine_name, times, days, language)
+    return jsonify({"success": True})
+
+
+@app.route("/delete_medicine", methods=["POST"])
+@login_required
+def delete_medicine():
+    """
+    Accepts JSON: { "id": "<group_id>" }
+    Sets days_remaining = 0 for every row in that group, after verifying
+    it belongs to the logged-in user.
+    """
+    data = request.get_json(silent=True) or {}
+    group_id = data.get("id") or ""
+    # Verify ownership before deactivating
+    summary = database.get_group_summary(group_id, session["user_id"])
+    if summary is None:
+        return jsonify({"error": "medicine not found"}), 404
+    database.deactivate_group(group_id)
     return jsonify({"success": True})
 
 

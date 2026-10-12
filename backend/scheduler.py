@@ -79,7 +79,7 @@ def init_scheduler():
         scheduler.add_job(
             _check_due_reminders,
             trigger="interval",
-            minutes=1,
+            seconds=15,
             id="check_due_reminders",
             replace_existing=True,
         )
