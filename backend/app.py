@@ -336,7 +336,7 @@ def dashboard():
     # Count doses taken per group from the full history
     group_taken = {}
     for row in history:
-        gid = row.get("group_id")
+        gid = row["group_id"]
         if gid:
             group_taken[gid] = group_taken.get(gid, 0) + 1
 
