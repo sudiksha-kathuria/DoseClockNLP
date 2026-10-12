@@ -279,7 +279,9 @@ def dashboard():
     medicines = database.get_active_medicines(user_id)
 
     today = datetime.now().date()
-    week = [(today - timedelta(days=i)) for i in range(6, -1, -1)]
+    week_start = today - timedelta(days=6)
+
+    # Dates on which at least one dose was taken
     taken_dates = set()
     for row in history:
         try:
@@ -287,57 +289,85 @@ def dashboard():
         except Exception:
             pass
 
-    heatmap = [
-        {"label": d.strftime("%a"), "date": d.isoformat(), "done": d in taken_dates}
-        for d in week
-    ]
-
-    thirty_ago = today - timedelta(days=29)
-    doses_in_30 = sum(
+    # Doses taken this week (count of log rows, not just days)
+    doses_this_week = sum(
         1 for row in history
-        if datetime.fromisoformat(row["taken_at"]).date() >= thirty_ago
+        if datetime.fromisoformat(row["taken_at"]).date() >= week_start
     )
-    expected_30 = max(len(medicines) * 30, 1)
-    adherence_pct = min(round(doses_in_30 / expected_30 * 100), 100)
 
+    # Overall adherence: doses taken this week vs doses scheduled this week
+    active_groups = {}
+    for m in medicines:
+        gid = m["group_id"]
+        if gid not in active_groups:
+            active_groups[gid] = 0
+        active_groups[gid] += 1  # count time slots per group
+    expected_this_week = sum(slots * 7 for slots in active_groups.values())
+    adherence_pct = (
+        min(round(doses_this_week / expected_this_week * 100), 100)
+        if expected_this_week > 0 else 0
+    )
+
+    # Current streak: consecutive days going back from today
     streak = 0
     check = today
     while check in taken_dates:
         streak += 1
         check -= timedelta(days=1)
+    if streak == 0:  # if nothing today, check from yesterday
+        check = today - timedelta(days=1)
+        while check in taken_dates:
+            streak += 1
+            check -= timedelta(days=1)
 
-    doses_this_week = sum(1 for d in taken_dates if d >= week[0])
+    # Per-medicine: group by group_id, collect all times, compute adherence
+    groups = {}
+    for m in medicines:
+        gid = m["group_id"]
+        if gid not in groups:
+            groups[gid] = {
+                "name": m["medicine_name"],
+                "group_id": gid,
+                "days_remaining": m["days_remaining"],
+                "times": [],
+            }
+        groups[gid]["times"].append(m["time"])
 
-    med_counts = {}
+    # Count doses taken per group from the full history
+    group_taken = {}
     for row in history:
-        if datetime.fromisoformat(row["taken_at"]).date() >= thirty_ago:
-            name = row["medicine_name"]
-            med_counts[name] = med_counts.get(name, 0) + 1
+        gid = row.get("group_id")
+        if gid:
+            group_taken[gid] = group_taken.get(gid, 0) + 1
 
     per_med = []
-    seen = set()
-    for m in medicines:
-        name = m["medicine_name"]
-        if name not in seen:
-            seen.add(name)
-            taken = med_counts.get(name, 0)
-            pct = min(round(taken / 30 * 100), 100)
-            per_med.append({
-                "name": name,
-                "time": m["time"],
-                "days_remaining": m["days_remaining"],
-                "taken_30": taken,
-                "pct": pct,
-            })
+    for gid, g in groups.items():
+        slots = len(g["times"])
+        # scheduled = days already elapsed × slots (approximated as total - remaining)
+        # Use a simple measure: taken vs (taken + remaining doses)
+        taken = group_taken.get(gid, 0)
+        remaining_doses = g["days_remaining"] * slots
+        total = taken + remaining_doses
+        pct = min(round(taken / total * 100), 100) if total > 0 else 0
+        per_med.append({
+            "name": g["name"],
+            "group_id": gid,
+            "times": sorted(g["times"]),
+            "days_remaining": g["days_remaining"],
+            "pct": pct,
+        })
+
+    # Count distinct active medicine courses
+    active_count = len(groups)
 
     return render_template(
         "dashboard.html",
-        heatmap=heatmap,
         adherence_pct=adherence_pct,
         streak=streak,
         doses_this_week=doses_this_week,
-        active_count=len(medicines),
+        active_count=active_count,
         per_med=per_med,
+        today=today.strftime("%A, %d %B %Y"),
     )
     
 @app.route("/logs")

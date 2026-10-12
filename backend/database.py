@@ -343,7 +343,8 @@ def get_dose_history(user_id, medicine_name=None):
         SELECT dose_log.id AS id, dose_log.taken_at AS taken_at,
                medicines.medicine_name AS medicine_name,
                medicines.time AS scheduled_time,
-               medicines.language AS language
+               medicines.language AS language,
+               medicines.group_id AS group_id
         FROM dose_log
         JOIN medicines ON medicines.id = dose_log.medicine_id
         WHERE medicines.user_id = ?

@@ -1,115 +1,62 @@
 {% extends "base.html" %}
-{% block title %}DoseClock · Dashboard{% endblock %}
+{% block title %}DoseClock: Dashboard{% endblock %}
 
 {% block content %}
 <div class="dash-shell">
 
-  <!-- ── top date bar ───────────────────────────────────────────────── -->
-  <div class="dash-datebar">
-    <span class="eyebrow" id="dash-date"></span>
-    <span class="eyebrow" style="color:var(--on-light-muted);font-weight:400;">Last 30 days</span>
-  </div>
+  <!-- Header -->
+  <header class="dash-header">
+    <h1 class="dash-title">Your adherence</h1>
+    <p class="dash-date">{{ today }}</p>
+  </header>
 
-  <!-- ── hero row: ring + 3 stat tiles ─────────────────────────────── -->
-  <div class="dash-hero">
-
-    <!-- adherence ring -->
-    <div class="dash-ring-card">
-      <p class="dash-card-label">Overall adherence</p>
-      <div class="ring-wrap">
-        <svg class="ring-svg" viewBox="0 0 120 120">
-          <circle class="ring-bg" cx="60" cy="60" r="52" />
-          <circle class="ring-fill" cx="60" cy="60" r="52" stroke-dasharray="326.73"
-            stroke-dashoffset="{{ 326.73 - (326.73 * adherence_pct / 100) | round(2) }}" />
-        </svg>
-        <div class="ring-inner">
-          <span class="ring-pct">{{ adherence_pct }}<sup>%</sup></span>
-        </div>
-      </div>
-      <p class="ring-sub">of scheduled doses taken</p>
+  <!-- 4 stat cards in a row -->
+  <div class="dash-stat-row">
+    <div class="dash-stat-card">
+      <span class="dash-stat-value">{{ active_count }}</span>
+      <span class="dash-stat-label">Medicines active</span>
     </div>
-
-    <!-- stat tiles -->
-    <div class="dash-tiles">
-
-      <div class="stat-tile">
-        <div class="stat-icon">💊</div>
-        <div class="stat-body">
-          <span class="stat-val">{{ active_count }}</span>
-          <span class="stat-lbl">Medicines active</span>
-        </div>
-      </div>
-
-      <div class="stat-tile">
-        <div class="stat-icon">✅</div>
-        <div class="stat-body">
-          <span class="stat-val">{{ doses_this_week }}</span>
-          <span class="stat-lbl">Doses taken this week</span>
-        </div>
-      </div>
-
-      <div class="stat-tile streak-tile {% if streak >= 7 %}streak-hot{% endif %}">
-        <div class="stat-icon">🔥</div>
-        <div class="stat-body">
-          <span class="stat-val">{{ streak }}</span>
-          <span class="stat-lbl">Day streak</span>
-        </div>
-        {% if streak >= 7 %}
-        <span class="streak-badge">On fire!</span>
-        {% endif %}
-      </div>
-
+    <div class="dash-stat-card">
+      <span class="dash-stat-value">{{ doses_this_week }}</span>
+      <span class="dash-stat-label">Doses taken this week</span>
+    </div>
+    <div class="dash-stat-card">
+      <span class="dash-stat-value">{{ adherence_pct }}%</span>
+      <span class="dash-stat-label">Overall adherence</span>
+    </div>
+    <div class="dash-stat-card">
+      <span class="dash-stat-value">{{ streak }}</span>
+      <span class="dash-stat-label">Current streak (days)</span>
     </div>
   </div>
 
-  <!-- ── weekly heatmap ─────────────────────────────────────────────── -->
-  <div class="dash-section">
-    <p class="dash-section-title">This week</p>
-    <div class="heatmap-row">
-      {% for day in heatmap %}
-      <div class="heatmap-cell {% if day.done %}done{% endif %}">
-        <span class="heatmap-day">{{ day.label }}</span>
-        <div class="heatmap-dot"></div>
-      </div>
-      {% endfor %}
-    </div>
-  </div>
-
-  <!-- ── per-medicine breakdown ─────────────────────────────────────── -->
-  <div class="dash-section">
-    <p class="dash-section-title">Per-medicine breakdown <span style="font-weight:400;color:var(--on-light-muted)">(last
-        30 days)</span></p>
-
+  <!-- Per-medicine progress bars -->
+  <div class="dash-meds">
     {% if per_med %}
-    <div class="med-breakdown-list">
       {% for m in per_med %}
-      <div class="med-breakdown-row">
-        <div class="med-breakdown-meta">
-          <span class="med-breakdown-name">{{ m.name }}</span>
-          <span class="med-breakdown-sub">{{ m.days_remaining }} days remaining · {{ m.time }}</span>
+      <div class="dash-med-row">
+        <div class="dash-med-top">
+          <div class="dash-med-info">
+            <a class="dash-med-name" href="{{ url_for('medicine_detail', group_id=m.group_id) }}">{{ m.name }}</a>
+            <span class="dash-med-meta">{{ m.days_remaining }} day{{ 's' if m.days_remaining != 1 }} remaining &middot; {{ m.times | join(', ') }}</span>
+          </div>
+          <span class="dash-med-pct">{{ m.pct }}%</span>
         </div>
-        <div class="med-breakdown-bar-wrap">
-          <div class="med-breakdown-bar" data-pct="{{ m.pct }}"></div>
+        <div class="dash-bar-track">
+          <div class="dash-bar-fill" data-pct="{{ m.pct }}"></div>
         </div>
-        <span class="med-breakdown-pct">{{ m.pct }}%</span>
       </div>
       {% endfor %}
-    </div>
     {% else %}
-    <p class="dash-empty">No active medicines yet. <a href="{{ url_for('index') }}">Add one</a> to start tracking.</p>
+      <p class="dash-empty">No medicines added yet. <a href="{{ url_for('index') }}">Add your first reminder.</a></p>
     {% endif %}
   </div>
 
 </div>
 
 <script>
-  const d = new Date();
-  const opts = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
-  document.getElementById('dash-date').textContent = d.toLocaleDateString('en-IN', opts);
-
-  // Apply progress-bar widths from data-pct (avoids Jinja inside style attrs)
-  document.querySelectorAll('.med-breakdown-bar[data-pct]').forEach(function(el) {
-    el.style.width = el.dataset.pct + '%';
+  document.querySelectorAll('.dash-bar-fill[data-pct]').forEach(function(el) {
+    el.style.width = Math.min(Math.max(parseFloat(el.dataset.pct) || 0, 0), 100) + '%';
   });
 </script>
 {% endblock %}
