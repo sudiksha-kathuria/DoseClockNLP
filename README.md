@@ -77,7 +77,8 @@ python app.py
 ```
 
 Open **http://localhost:5050** in your browser. You'll land on
-`/login`. Create an account, and you're taken straight to the clock.
+`/login`. Signup opens the add-medicine page; an existing user's login opens
+the clock.
 
 > Port **5050** is used instead of Flask's default 5000 because macOS's
 > AirPlay Receiver occupies 5000 on most Macs.
@@ -107,17 +108,20 @@ to set up by hand. None of the three are committed to git.
 
 ## How the reminder loop works
 
-- **APScheduler** runs a job every minute inside the Flask process. It
-  compares every active reminder's stored time-of-day (across all
-  accounts) to the current clock time; on a match it generates (or
-  reuses a cached) mp3 via **gTTS** and flips that reminder to "ringing"
-  in the database.
+- **APScheduler** runs `_check_due_reminders` every second inside the
+  direct-script Flask process. It checks active rows across all accounts,
+  recovers eligible overdue times from today, and re-fires expired snoozes.
+  `fire_reminder` marks the row due immediately and uses an already cached
+  audio path when available. `init_scheduler` warms audio for schedules
+  present at startup; adding a new schedule does not itself enqueue speech
+  generation in the current implementation. Verify audio readiness before
+  demonstrating a spoken reminder.
 - The `/check_reminders` endpoint, polled by the browser, returns
   whichever reminder is currently ringing **for the logged-in account
   only**.
-- **Snooze** doesn't create a new database row. It schedules a one-off
-  APScheduler job, keyed to that reminder's id, that re-rings it five
-  minutes later.
+- **Snooze** clears `is_due` and stores `snoozed_until` five minutes in the
+  future on the same medicine row. The regular scheduler checks this
+  persisted deadline; it is not a newly created one-off scheduler job.
 
 ## Problems this ran into (and how they're fixed)
 
@@ -135,8 +139,8 @@ fix commit in the git history:
   be marked taken by anyone. Retrofitting `user_id` meant re-checking
   every route, not just adding a `users` table; it's easy to add login
   *pages* and forget to actually scope the *data* behind them.
-- **The scheduler runs globally; the API must not.** APScheduler ticks
-  once a minute across *every* account's reminders (it has no concept of
+- **The scheduler runs globally; the API must not.** APScheduler checks
+  *every* account's reminders (it has no concept of
   "who's logged in"), but `/check_reminders` must only ever return the
   current session's own reminder, otherwise one user's screen could
   show another user's alarm. Two very similar-looking functions
@@ -200,3 +204,144 @@ By design, DoseClock does **not**:
 - **Hardware:** ESP32 firmware for the DoseClock Switch Hub (a bedside
   unit with a standard accessibility-switch jack), see `hardware/` and
   `HARDWARE.md`
+
+## ESP32 Hardware-Software Integration
+
+The Switch Hub adds a physical acknowledgment input to the existing web
+application. An ESP32 is used because it combines Wi-Fi, GPIO input and a
+programmable controller in one board. The current sketch is a networked
+switch client, not a medication dispenser or standalone talking clock:
+the backend must be running, and the browser provides the reminder display
+and audio. An acknowledgment records a user's response; it does not verify
+that medication was swallowed.
+
+### Input and network layers
+
+The tip of the 3.5mm mono switch jack connects to GPIO4 and the sleeve to
+GND. `INPUT_PULLUP` makes an open contact read HIGH and a closed contact
+read LOW. Use a compatible dry-contact switch/interface; a matching plug
+alone does not establish electrical or patient suitability.
+
+`hardware/switch_hub.ino` uses these measured input thresholds:
+
+| Parameter | Value | Firmware behavior |
+|---|---:|---|
+| `DEBOUNCE_MS` | 50 ms | Contact must remain LOW after the initial delay. |
+| `SHORT_PRESS_MAX_MS` | 600 ms | A shorter measured press sends `taken` on release. |
+| `HOLD_CONFIRM_MS` | 1,500 ms | LED becomes steady during the hold; release sends `snooze`. |
+| Intermediate release | 600 ms to below confirmed hold | No action is guessed. |
+
+Timing starts after the debounce delay, so physical closure duration is
+slightly longer than the measured duration. A continuously held contact
+does not submit an action until released. GPIO2 is the configured feedback
+LED pin; confirm the actual board's LED wiring and polarity.
+
+The hub joins the configured access point in station mode. The ESP32 and
+Flask host need IP reachability, usually on the same local Wi-Fi network.
+Wi-Fi carries the IP packets; TCP carries the HTTP exchange to port 5050.
+HTTP was chosen to reuse Flask's existing request-response API without an
+additional message broker. JSON is the application payload format, not an
+authentication or encryption mechanism.
+
+### Device request and backend state changes
+
+The sketch sends `POST /api/device/action` with
+`Content-Type: application/json` and one of these bodies:
+
+```json
+{"token":"<paired-device-token>","action":"taken"}
+```
+
+```json
+{"token":"<paired-device-token>","action":"snooze"}
+```
+
+The device does not send a medicine ID or a browser session cookie.
+`device_action` in `backend/app.py` calls
+`database.get_user_id_for_token` to resolve the registered token's owner,
+then `database.get_due_reminder` to select that user's oldest due row.
+A valid token also updates `devices.last_seen_at`; this is an action-time
+record, not a periodic device heartbeat.
+
+For Taken, `_perform_mark_taken` calls `database.acknowledge_due`. Its
+`BEGIN IMMEDIATE` transaction checks ownership/due state, clears `is_due`
+and `snoozed_until`, and inserts a timestamp into `dose_log`. Acknowledging
+the group's latest stored time also decrements its `days_remaining`.
+This check is based on the time slot, not proof that every earlier dose
+was acknowledged. Browser `/mark_taken` uses the same internal helper.
+
+For Snooze, `scheduler.schedule_snooze` calls `database.snooze_due`, which
+clears `is_due` and persists the five-minute deadline. It adds no Taken
+log. The scheduler later marks the row due again. Both paths use SQLite;
+there is no database connection opened by the ESP32.
+
+### Response and browser visibility
+
+A successful device request returns HTTP 200 and JSON such as:
+
+```json
+{"success":true,"medicine_name":"Demo medicine"}
+```
+
+| HTTP status | Backend meaning |
+|---:|---|
+| 200 | Selected due reminder was acknowledged or snoozed. |
+| 400 | `action` is neither `taken` nor `snooze`, after token validation. |
+| 401 | Token is absent or unknown. |
+| 404 | No reminder is currently due for the token's owner. |
+| 409 | The selected firing changed or was resolved before its update. |
+
+The firmware checks HTTP status and logs it at 115200 baud. It does not
+parse `medicine_name` from the response. Two slow LED blinks indicate 200;
+five fast blinks indicate a rejected request or HTTP transport failure;
+eight fast blinks indicate Wi-Fi is disconnected and no request was sent.
+Three boot blinks indicate that Wi-Fi connected.
+
+The database changes immediately on success, but the browser does not
+receive a pushed update. `clock.js` normally polls `/check_reminders` every
+17 seconds and skips polling while its own alarm is visible. After an
+external device action, refresh the clock/logs to verify the persisted
+state; do not assume the displayed alarm was automatically reconciled.
+
+```mermaid
+sequenceDiagram
+    actor Patient
+    participant Hub as ESP32 Switch Hub
+    participant API as Flask device_action
+    participant DB as SQLite helpers
+    participant Scheduler as One-second scheduler
+    participant Browser as Clock / Logs
+    Patient->>Hub: Close then release switch
+    Hub->>Hub: Debounce and classify duration
+    Hub->>API: Wi-Fi / TCP / HTTP POST {token, action}
+    API->>DB: Resolve token owner and oldest due row
+    alt Taken
+        API->>DB: acknowledge_due (atomic claim and dose_log insert)
+    else Snooze
+        API->>DB: snooze_due (clear due, store now + 5 min)
+        Scheduler->>DB: Re-fire after persisted deadline
+    end
+    API-->>Hub: HTTP status + JSON result
+    Hub-->>Patient: Status-dependent LED pattern
+    Note over DB,Browser: Database is authoritative; no pushed browser update
+    Browser->>API: User refresh / next eligible reminder poll
+    API->>DB: Read reminder or history for browser account
+    API-->>Browser: Updated persisted state
+```
+
+### Integration boundaries
+
+- Token pairing identifies an account-authorized device; it is not a
+  cryptographic attestation of a particular physical board. Tokens are
+  long-lived, stored in the database and configured in the sketch.
+- The example uses plaintext HTTP on a local network. Treat the token as
+  a bearer secret, use disposable review accounts, and redact it from
+  recordings. Secure transport and token revocation are future work.
+- The API always chooses the oldest due medicine. Repeating the same
+  request when several medicines are due can acknowledge the next one;
+  the request has no occurrence/request ID for replay-safe retries.
+- Disconnected actions are not queued. The hub stores no local reminder
+  schedule and has no speaker output in the current firmware.
+- Firmware, endpoint and wiring inspection establish implemented paths.
+  Actual assembly, timing, network recovery and patient usability require
+  physical test evidence; documentation commits do not establish those tests.
