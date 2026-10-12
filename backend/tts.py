@@ -4,7 +4,7 @@ tts.py
 Generates the spoken reminder using gTTS and caches the mp3 on disk so
 the same medicine + language combination is never synthesized twice.
 
-The template is fixed on purpose: "It's time to take your [name]."
+Each supported language has a fixed reminder sentence.
 The medicine name is treated as an opaque label - it is only ever
 substituted into the sentence, never parsed, split, or acted on. There
 is no dosage information anywhere in this module.
@@ -26,6 +26,19 @@ LANGUAGES = [
     ("bn", "Bengali"),
 ]
 
+REMINDER_TEMPLATES = {
+    "en": "It's time to take your {name}.",
+    "hi": "आपकी {name} दवा लेने का समय हो गया है।",
+    "ta": "உங்கள் {name} மருந்தை எடுத்துக்கொள்ள வேண்டிய நேரம் வந்துவிட்டது.",
+    "te": "మీ {name} మందు తీసుకునే సమయం వచ్చింది.",
+    "kn": "ನಿಮ್ಮ {name} ಔಷಧಿ ತೆಗೆದುಕೊಳ್ಳುವ ಸಮಯವಾಗಿದೆ.",
+    "bn": "আপনার {name} ওষুধ খাওয়ার সময় হয়েছে।",
+}
+
+
+def reminder_text(medicine_name, language):
+    return REMINDER_TEMPLATES[language].format(name=medicine_name)
+
 # mp3s are cached inside the frontend's static folder so Flask can
 # serve them directly at /static/audio/<file>.mp3
 AUDIO_DIR = os.path.join(
@@ -46,7 +59,8 @@ def _cache_filename(medicine_name, language):
     A short hash is appended to keep filenames unique even when two
     medicine names slugify to the same thing.
     """
-    digest = hashlib.sha1(f"{medicine_name}|{language}".encode("utf-8")).hexdigest()[:10]
+    # Sentence changes invalidate recordings made with the old English template.
+    digest = hashlib.sha1(f"{language}|{reminder_text(medicine_name, language)}".encode("utf-8")).hexdigest()[:10]
     return f"{language}_{_slugify(medicine_name)}_{digest}.mp3"
 
 
@@ -66,7 +80,7 @@ def get_or_create_audio(medicine_name, language):
     filepath = os.path.join(AUDIO_DIR, filename)
 
     if not get_cached_audio(medicine_name, language):
-        sentence = f"It's time to take your {medicine_name}."
+        sentence = reminder_text(medicine_name, language)
         speech = gTTS(text=sentence, lang=language, timeout=(3, 8))
         fd, temporary = tempfile.mkstemp(dir=AUDIO_DIR, suffix='.mp3')
         os.close(fd)

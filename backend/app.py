@@ -253,6 +253,7 @@ def medicine_edit(group_id):
 
     if medicine_name and times and language in valid_languages:
         database.update_group(group_id, medicine_name, times, language, days_remaining)
+        reminder_scheduler.prepare_audio(medicine_name, language)
 
     return redirect(url_for("medicine_detail", group_id=group_id))
 
@@ -354,6 +355,7 @@ def add_medicine():
         return jsonify({"error": "days must be a positive number"}), 400
 
     database.add_medicine(session["user_id"], medicine_name, times, days, language)
+    reminder_scheduler.prepare_audio(medicine_name, language)
     return jsonify({"success": True})
 
 
@@ -384,6 +386,8 @@ def check_reminders():
         return jsonify({"due": False})
 
     audio_path = tts.get_cached_audio(due["medicine_name"], due["language"])
+    if audio_path is None:
+        reminder_scheduler.prepare_audio(due["medicine_name"], due["language"])
     return jsonify(
         {
             "due": True,
@@ -391,6 +395,7 @@ def check_reminders():
             "medicine_name": due["medicine_name"],
             "audio_url": url_for("static", filename=audio_path) if audio_path else None,
             "language": due["language"],
+            "spoken_text": tts.reminder_text(due["medicine_name"], due["language"]),
             "fired_at": due["last_fired_at"],
         }
     )

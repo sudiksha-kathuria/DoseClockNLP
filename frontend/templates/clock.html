@@ -10,8 +10,12 @@
         <h1 class="clock-face" id="clock-face">--:--<span class="clock-meridiem" id="clock-meridiem"></span></h1>
       </div>
       <p class="clock-date" id="clock-date"></p>
-      <p class="sound-hint" id="sound-hint">Tap anywhere to enable spoken reminders</p>
     </section>
+
+    <div class="sound-controls">
+      <button type="button" class="sound-hint" id="sound-hint" aria-pressed="false">Enable spoken reminders</button>
+      <p id="audio-status" role="status">Enable sound once to hear reminders in their selected language.</p>
+    </div>
 
     <!-- Alarm view: shown when /check_reminders reports a due reminder.
          Buttons are deliberately huge - see /HARDWARE.md - and also

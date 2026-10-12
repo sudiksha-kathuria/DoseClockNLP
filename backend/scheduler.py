@@ -3,6 +3,7 @@ import logging
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta
 from threading import Lock
+from time import monotonic
 from apscheduler.schedulers.background import BackgroundScheduler
 import database
 import tts
@@ -10,6 +11,7 @@ import tts
 scheduler = BackgroundScheduler()
 _audio_pool = ThreadPoolExecutor(max_workers=2, thread_name_prefix="doseclock-audio")
 _audio_pending = set()
+_audio_retry_after = {}
 _audio_lock = Lock()
 logger = logging.getLogger(__name__)
 
@@ -18,15 +20,19 @@ def prepare_audio(medicine_name, language):
     """Warm speech off request/scheduler threads, deduplicating work."""
     key = (medicine_name, language)
     with _audio_lock:
-        if key in _audio_pending or tts.get_cached_audio(*key):
+        if key in _audio_pending or tts.get_cached_audio(*key) or monotonic() < _audio_retry_after.get(key, 0):
             return
         _audio_pending.add(key)
 
     def generate():
         try:
             tts.get_or_create_audio(*key)
-        except Exception:
-            logger.warning("Speech unavailable; visual alarm remains active")
+            with _audio_lock:
+                _audio_retry_after.pop(key, None)
+        except Exception as error:
+            with _audio_lock:
+                _audio_retry_after[key] = monotonic() + 30
+            logger.warning("Speech unavailable for %s; retrying later (%s)", language, type(error).__name__)
         finally:
             with _audio_lock:
                 _audio_pending.discard(key)

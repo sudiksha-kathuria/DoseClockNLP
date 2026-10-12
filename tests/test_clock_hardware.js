@@ -13,13 +13,15 @@ function clock() {
   let due = false;
   let actionStatus = 200;
   let nextPoll = null;
+  let audioUrl = null;
   const element = (id) => {
     if (!elements.has(id)) {
       const classes = new Set();
       elements.set(id, { textContent: '', innerHTML: '', firstChild: {}, style: {},
         classList: { add: c => classes.add(c), remove: c => classes.delete(c),
           contains: c => classes.has(c), toggle: (c, on) => on ? classes.add(c) : classes.delete(c) },
-        addEventListener() {}, pause() {}, play: () => Promise.resolve(), currentTime: 0 });
+        addEventListener() {}, setAttribute() {}, getAttribute: name => elements.get(id)[name],
+        pause() {}, play: () => Promise.resolve(), currentTime: 0 });
     }
     return elements.get(id);
   };
@@ -35,13 +37,13 @@ function clock() {
         const result = nextPoll; nextPoll = null; return result;
       }
       if (url === '/check_reminders') return { ok: true, status: 200, json: async () =>
-        due ? { due: true, id: 1, fired_at: 'test-occurrence', medicine_name: 'Test', audio_url: null, language: 'en' } : { due: false } };
+        due ? { due: true, id: 1, fired_at: 'test-occurrence', medicine_name: 'Test', audio_url: audioUrl, language: 'en' } : { due: false } };
       return { ok: actionStatus === 200, status: actionStatus, json: async () => ({ success: actionStatus === 200 }) };
     } });
   vm.runInContext(readFileSync(join(__dirname, '../frontend/static/js/clock.js'), 'utf8'), context);
   return { context, element, listeners, intervals, requests, ready: () => new Promise(setImmediate),
     setDue: value => { due = value; }, setStatus: value => { actionStatus = value; },
-    setNextPoll: value => { nextPoll = value; } };
+    setNextPoll: value => { nextPoll = value; }, setAudioUrl: value => { audioUrl = value; } };
 }
 
 test('hardware acknowledgement clears an already-visible alarm', async () => {
@@ -86,4 +88,38 @@ test('a delayed poll cannot restore an acknowledged alarm', async () => {
     fired_at: 'test-occurrence', medicine_name: 'Test', audio_url: null, language: 'en' }) });
   await pendingPoll;
   assert.equal(c.element('alarm-view').classList.contains('visible'), false);
+});
+
+test('late generated speech plays while the same alarm is already visible, once', async () => {
+  const c = clock(); await c.ready(); let plays = 0;
+  c.element('reminder-audio').play = () => { plays++; return Promise.resolve(); };
+  c.setDue(true); await c.context.pollReminders();
+  await c.context.unlockAudio();
+  assert.equal(plays, 1); // Valid activation clip, while generated speech is pending.
+  c.setAudioUrl('/static/audio/hi_reminder.mp3'); await c.context.pollReminders(); await c.ready();
+  assert.equal(c.element('reminder-audio').src, '/static/audio/hi_reminder.mp3');
+  assert.equal(plays, 2);
+  await c.context.pollReminders(); await c.ready(); assert.equal(plays, 2);
+});
+
+test('failed sound activation keeps the enable control and reports the failure', async () => {
+  const c = clock(); await c.ready();
+  c.element('reminder-audio').play = () => Promise.reject(new Error('blocked'));
+  await c.context.unlockAudio();
+  assert.equal(c.element('sound-hint').textContent, 'Enable spoken reminders');
+  assert.match(c.element('audio-status').textContent, /could not start/);
+});
+
+test('an alarm arriving during activation waits and then plays its own audio', async () => {
+  const c = clock(); await c.ready(); let release; let plays = 0;
+  c.element('reminder-audio').play = () => {
+    plays++;
+    return plays === 1 ? new Promise(resolve => { release = resolve; }) : Promise.resolve();
+  };
+  const activation = c.context.unlockAudio();
+  c.setDue(true); c.setAudioUrl('/static/audio/ta_reminder.mp3'); await c.context.pollReminders();
+  assert.equal(plays, 1);
+  release(); await activation; await c.ready();
+  assert.equal(plays, 2);
+  assert.equal(c.element('reminder-audio').src, '/static/audio/ta_reminder.mp3');
 });

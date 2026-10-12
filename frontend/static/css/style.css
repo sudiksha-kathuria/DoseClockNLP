@@ -709,10 +709,29 @@ select.big-input {
 .sound-hint {
   margin-top: var(--space-xs);
   color: var(--on-dark-muted);
-  opacity: 0.7;
+  opacity: 1;
+  background: transparent;
+  border: 1px solid var(--on-dark-muted);
+  border-radius: 6px;
+  min-height: 44px;
+  padding: 0.4rem 0.8rem;
+  cursor: pointer;
   font-size: 0.85rem;
   letter-spacing: 0.02em;
   transition: opacity 400ms var(--ease);
+}
+
+.sound-controls {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  margin: 0.75rem 0;
+}
+
+#audio-status {
+  margin-top: 0.4rem;
+  color: var(--on-dark-muted);
+  font-size: 0.9rem;
 }
 
 .sound-hint.hidden {

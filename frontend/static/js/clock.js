@@ -33,6 +33,7 @@ const micIndicator = document.getElementById("mic-indicator");
 const reminderAudio = document.getElementById("reminder-audio");
 
 const soundHint = document.getElementById("sound-hint");
+const audioStatus = document.getElementById("audio-status");
 
 const toast = document.getElementById("toast");
 
@@ -46,23 +47,50 @@ const toast = document.getElementById("toast");
 // playback works normally for the rest of the visit.
 // ---------------------------------------------------------------------------
 
-const SILENT_CLIP = "data:audio/wav;base64,UklGRiUAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQEAAACA";
+const SILENT_CLIP = "/static/audio/activation.wav";
 let audioUnlocked = false;
+let audioUnlocking = false;
+let playedOccurrence = null;
+let audioAttempting = false;
+let audioGeneration = 0;
+let audioRetryAfter = 0;
+try {
+  audioUnlocked = window.sessionStorage?.getItem("doseclock-sound-enabled") === "1";
+} catch { /* Sound can still be enabled when storage is unavailable. */ }
 
-function unlockAudio() {
-  if (audioUnlocked) return;
-  audioUnlocked = true;
-  reminderAudio.src = SILENT_CLIP;
-  reminderAudio
-    .play()
-    .then(() => reminderAudio.pause())
-    .catch(() => {
-      /* some browsers still refuse this - Taken/Snooze buttons remain the reliable path */
-    });
-  soundHint.classList.add("hidden");
-  ["click", "touchstart", "keydown"].forEach((evt) => document.removeEventListener(evt, unlockAudio));
+function updateSoundControl() {
+  soundHint.textContent = audioUnlocked
+    ? (currentReminder ? "Replay reminder" : "Sound enabled")
+    : "Enable spoken reminders";
+  soundHint.setAttribute("aria-pressed", String(audioUnlocked));
 }
 
+async function unlockAudio() {
+  if (audioUnlocking) return;
+  if (audioUnlocked) {
+    if (currentReminder) playReminderAudio(currentReminder, true);
+    return;
+  }
+  audioUnlocking = true;
+  reminderAudio.src = SILENT_CLIP;
+  reminderAudio.muted = false;
+  try {
+    await reminderAudio.play();
+    if (reminderAudio.getAttribute("src") === SILENT_CLIP) reminderAudio.pause();
+    audioUnlocked = true;
+    try { window.sessionStorage?.setItem("doseclock-sound-enabled", "1"); } catch { /* Optional preference. */ }
+    audioStatus.textContent = "Sound enabled. Keep this page open for spoken reminders.";
+    ["click", "touchstart", "keydown"].forEach((evt) => document.removeEventListener(evt, unlockAudio));
+  } catch {
+    audioStatus.textContent = "Sound could not start. Allow sound for this site, then try again.";
+  } finally {
+    audioUnlocking = false;
+    updateSoundControl();
+    if (audioUnlocked && currentReminder) playReminderAudio(currentReminder);
+  }
+}
+
+soundHint.addEventListener("click", unlockAudio);
 ["click", "touchstart", "keydown"].forEach((evt) => document.addEventListener(evt, unlockAudio));
 
 // ---------------------------------------------------------------------------
@@ -121,6 +149,48 @@ const RECOGNITION_LANG = {
   kn: "kn-IN",
   bn: "bn-IN",
 };
+
+async function playReminderAudio(reminder, force = false) {
+  if (!currentReminder || actionInFlight || audioUnlocking || audioAttempting) return;
+  const occurrence = `${reminder.id}:${reminder.fired_at}`;
+  if (!force && (playedOccurrence === occurrence || Date.now() < audioRetryAfter)) return;
+  if (!audioUnlocked) {
+    audioStatus.textContent = "Enable spoken reminders to hear this alarm.";
+    return;
+  }
+  if (!reminder.audio_url) {
+    audioStatus.textContent = "Preparing spoken audio. The reminder buttons are ready.";
+    return;
+  }
+  audioAttempting = true;
+  const generation = audioGeneration;
+  if (force) {
+    reminderAudio.pause();
+    reminderAudio.currentTime = 0;
+  }
+  if (reminderAudio.getAttribute("src") !== reminder.audio_url) reminderAudio.src = reminder.audio_url;
+  reminderAudio.muted = false;
+  try {
+    await reminderAudio.play();
+    if (generation !== audioGeneration) return;
+    playedOccurrence = occurrence;
+    audioRetryAfter = 0;
+    audioStatus.textContent = "Spoken reminder started. Use Replay reminder to hear it again.";
+  } catch (error) {
+    if (generation !== audioGeneration) return;
+    audioRetryAfter = Date.now() + 5000;
+    if (error.name === "NotAllowedError") {
+      audioUnlocked = false;
+      try { window.sessionStorage?.removeItem("doseclock-sound-enabled"); } catch { /* Optional preference. */ }
+      updateSoundControl();
+      audioStatus.textContent = "Allow sound for this site, then enable spoken reminders.";
+    } else {
+      audioStatus.textContent = "Audio could not play. Use Replay reminder to try again.";
+    }
+  } finally {
+    audioAttempting = false;
+  }
+}
 
 // ---------------------------------------------------------------------------
 // Alarm state
@@ -247,31 +317,15 @@ function showAlarm(reminder) {
   alarmView.classList.add("visible");
   startScanning();
 
-  // Play the reminder audio. If the page was tapped at least once already
-  // (see the audio-unlock block above), this plays with sound straight
-  // away. If it's still blocked for some reason, fall back to a tappable
-  // prompt - the Taken/Snooze buttons remain fully usable either way.
-  if (reminder.audio_url) {
-    reminderAudio.src = reminder.audio_url;
-    reminderAudio.play().catch(() => {
-      micIndicator.innerHTML = '<span class="mic-dot"></span> Tap here to hear the reminder';
-      micIndicator.style.cursor = "pointer";
-      micIndicator.onclick = () => {
-        reminderAudio.play().catch(() => {});
-        micIndicator.onclick = null;
-        micIndicator.style.cursor = "";
-      };
-    });
-  } else if (audioUnlocked && window.speechSynthesis && window.SpeechSynthesisUtterance) {
-    const speech = new window.SpeechSynthesisUtterance(`It's time to take your ${reminder.medicine_name}.`);
-    speech.lang = RECOGNITION_LANG[reminder.language] || "en-IN";
-    window.speechSynthesis.speak(speech);
-  }
-
+  updateSoundControl();
+  playReminderAudio(reminder);
   startRecognition(reminder.language);
 }
 
 function hideAlarm() {
+  audioGeneration += 1;
+  playedOccurrence = null;
+  audioRetryAfter = 0;
   reminderAudio.pause();
   reminderAudio.currentTime = 0;
   if (window.speechSynthesis) window.speechSynthesis.cancel();
@@ -281,6 +335,8 @@ function hideAlarm() {
   stopRecognition();
   stopScanning();
   currentReminder = null;
+  updateSoundControl();
+  audioStatus.textContent = audioUnlocked ? "Sound enabled for the next reminder." : "Enable spoken reminders to hear alarms.";
   idleView.classList.remove("hidden");
 }
 
@@ -373,6 +429,10 @@ async function pollReminders() {
     if (currentReminder && (!data.due || data.id !== currentReminder.id ||
         data.fired_at !== currentReminder.fired_at)) hideAlarm();
     if (data.due && !currentReminder && !successFlash.classList.contains("visible")) showAlarm(data);
+    else if (data.due && currentReminder) {
+      currentReminder = data;
+      playReminderAudio(data);
+    }
   } catch (err) {
     /* server unreachable this cycle - just try again next poll */
   } finally {
@@ -382,3 +442,5 @@ async function pollReminders() {
 
 pollReminders();
 setInterval(pollReminders, 1000);
+updateSoundControl();
+if (audioUnlocked) audioStatus.textContent = "Sound enabled for this tab. Keep the clock open.";
