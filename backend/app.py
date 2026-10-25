@@ -31,6 +31,7 @@ halves of the project stay in separate, clearly-named folders.
 import csv
 import io
 import os
+import re
 import secrets
 from datetime import date
 from functools import wraps
@@ -70,6 +71,18 @@ app = Flask(
     static_folder=os.path.join(FRONTEND_DIR, "static"),
 )
 app.secret_key = _load_or_create_secret_key()
+
+
+def _json_object():
+    data = request.get_json(silent=True)
+    return {} if data is None else (data if isinstance(data, dict) else None)
+
+
+def _valid_times(times):
+    return (isinstance(times, list) and bool(times)
+            and all(isinstance(t, str) and re.fullmatch(r'[0-9]{2}:[0-9]{2}', t)
+                    and int(t[:2]) < 24 and int(t[3:]) < 60 for t in times)
+            and len(times) == len(set(times)))
 
 
 def login_required(view):
@@ -226,8 +239,11 @@ def medicine_edit(group_id):
     except (TypeError, ValueError):
         days_remaining = summary["days_remaining"]
 
+    if not _valid_times(times):
+        return jsonify({'error': 'times must be distinct HH:MM values'}), 400
     if medicine_name and times and language in valid_languages:
         database.update_group(group_id, medicine_name, times, language, days_remaining)
+        reminder_scheduler.prepare_audio(medicine_name, language)
 
     return redirect(url_for("medicine_detail", group_id=group_id))
 
@@ -411,17 +427,22 @@ def add_medicine():
     `medicine_name` is stored as-is - a plain label, never parsed or validated
     against any external medicine database.
     """
-    data = request.get_json(silent=True) or {}
-
-    medicine_name = (data.get("medicine_name") or "").strip()
-    times = [t for t in (data.get("times") or []) if t]
+    data = _json_object()
+    if data is None:
+        return jsonify({'error': 'JSON body must be an object'}), 400
+    if not isinstance(data.get('medicine_name'), str):
+        return jsonify({'error': 'medicine name must be text'}), 400
+    medicine_name = data['medicine_name'].strip()
+    times = data.get("times")
     days = data.get("days")
     language = data.get("language")
 
     valid_languages = {code for code, _ in tts.LANGUAGES}
-    if not medicine_name or not times or language not in valid_languages:
+    if not medicine_name or not _valid_times(times) or not isinstance(language, str) or language not in valid_languages:
         return jsonify({"error": "medicine name, at least one time, and a language are required"}), 400
     try:
+        if isinstance(days, bool) or not isinstance(days, (str, int)):
+            raise ValueError
         days = int(days)
         if days < 1:
             raise ValueError
@@ -429,6 +450,7 @@ def add_medicine():
         return jsonify({"error": "days must be a positive number"}), 400
 
     database.add_medicine(session["user_id"], medicine_name, times, days, language)
+    reminder_scheduler.prepare_audio(medicine_name, language)
     return jsonify({"success": True})
 
 
@@ -440,7 +462,9 @@ def delete_medicine():
     Sets days_remaining = 0 for every row in that group, after verifying
     it belongs to the logged-in user.
     """
-    data = request.get_json(silent=True) or {}
+    data = _json_object()
+    if data is None or not isinstance(data.get('id', ''), str):
+        return jsonify({'error': 'JSON object with a text group id required'}), 400
     group_id = data.get("id") or ""
     # Verify ownership before deactivating
     summary = database.get_group_summary(group_id, session["user_id"])
@@ -465,6 +489,7 @@ def check_reminders():
             "medicine_name": due["medicine_name"],
             "audio_url": url_for("static", filename=due["audio_path"]) if due["audio_path"] else None,
             "language": due["language"],
+            "fired_at": due["last_fired_at"],
         }
     )
 
@@ -484,7 +509,9 @@ def _perform_mark_taken(medicine_id, user_id, expected_fired_at=None):
 @login_required
 def mark_taken():
     """Log the dose, silence the alarm, and count the day off if it was the last dose today."""
-    data = request.get_json(silent=True) or {}
+    data = _json_object()
+    if data is None or isinstance(data.get('id'), (dict, list, bool)):
+        return jsonify({'error': 'JSON object with a reminder id required'}), 400
     medicine_id = data.get("id")
     row = database.get_medicine(medicine_id, user_id=session["user_id"])
     if row is None:
@@ -500,7 +527,9 @@ def mark_taken():
 @login_required
 def mark_snooze():
     """Silence the alarm now, re-ring the exact same reminder in 5 minutes."""
-    data = request.get_json(silent=True) or {}
+    data = _json_object()
+    if data is None or isinstance(data.get('id'), (dict, list, bool)):
+        return jsonify({'error': 'JSON object with a reminder id required'}), 400
     medicine_id = data.get("id")
     row = database.get_medicine(medicine_id, user_id=session["user_id"])
     if row is None:
@@ -521,7 +550,9 @@ def mark_snooze():
 
 @app.route("/api/device/action", methods=["POST"])
 def device_action():
-    data = request.get_json(silent=True) or {}
+    data = _json_object()
+    if data is None or not isinstance(data.get('token', ''), str) or not isinstance(data.get('action', ''), str):
+        return jsonify({'error': 'JSON object with text token and action required'}), 400
     token = data.get("token")
     action = data.get("action")
 

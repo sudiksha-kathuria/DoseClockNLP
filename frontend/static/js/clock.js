@@ -51,16 +51,18 @@ let audioUnlocked = false;
 
 function unlockAudio() {
   if (audioUnlocked) return;
-  audioUnlocked = true;
-  reminderAudio.src = SILENT_CLIP;
+  if (!reminderAudio.getAttribute("src")) reminderAudio.src = SILENT_CLIP;
   reminderAudio
     .play()
-    .then(() => reminderAudio.pause())
+    .then(() => {
+      audioUnlocked = true;
+      if (!currentReminder) reminderAudio.pause();
+      soundHint.classList.add("hidden");
+      ["click", "touchstart", "keydown"].forEach((evt) => document.removeEventListener(evt, unlockAudio));
+    })
     .catch(() => {
       /* some browsers still refuse this - Taken/Snooze buttons remain the reliable path */
     });
-  soundHint.classList.add("hidden");
-  ["click", "touchstart", "keydown"].forEach((evt) => document.removeEventListener(evt, unlockAudio));
 }
 
 ["click", "touchstart", "keydown"].forEach((evt) => document.addEventListener(evt, unlockAudio));
@@ -128,6 +130,7 @@ const RECOGNITION_LANG = {
 
 let currentReminder = null; // { id, medicine_name, audio_url, language }
 let recognition = null;
+let actionPending = false;
 
 function stopRecognition() {
   if (recognition) {
@@ -237,6 +240,9 @@ document.addEventListener("keydown", (event) => {
 // ---------------------------------------------------------------------------
 
 function showAlarm(reminder) {
+  stopRecognition();
+  stopScanning();
+  reminderAudio.pause();
   currentReminder = reminder;
   idleView.classList.add("hidden");
   alarmMedicineName.textContent = reminder.medicine_name;
@@ -247,6 +253,12 @@ function showAlarm(reminder) {
   // (see the audio-unlock block above), this plays with sound straight
   // away. If it's still blocked for some reason, fall back to a tappable
   // prompt - the Taken/Snooze buttons remain fully usable either way.
+  startRecognition(reminder.language);
+  if (!reminder.audio_url) {
+    reminderAudio.removeAttribute("src");
+    micIndicator.textContent = "Audio unavailable. Use Taken or Snooze.";
+    return;
+  }
   reminderAudio.src = reminder.audio_url;
   reminderAudio.play().catch(() => {
     micIndicator.innerHTML = '<span class="mic-dot"></span> Tap here to hear the reminder';
@@ -258,10 +270,12 @@ function showAlarm(reminder) {
     };
   });
 
-  startRecognition(reminder.language);
 }
 
 function hideAlarm() {
+  reminderAudio.pause();
+  micIndicator.onclick = null;
+  micIndicator.style.cursor = "";
   alarmView.classList.remove("visible");
   stopRecognition();
   stopScanning();
@@ -270,6 +284,7 @@ function hideAlarm() {
 }
 
 function showSuccessThenIdle() {
+  reminderAudio.pause();
   alarmView.classList.remove("visible");
   stopScanning();
   successFlash.classList.add("visible");
@@ -285,42 +300,40 @@ function showSuccessThenIdle() {
 // Actions
 // ---------------------------------------------------------------------------
 
-async function handleTaken() {
-  if (!currentReminder) return;
-  const id = currentReminder.id;
+async function submitAction(action) {
+  if (!currentReminder || actionPending) return;
+  const reminder = currentReminder;
+  actionPending = true;
+  takenBtn.disabled = true;
+  snoozeBtn.disabled = true;
   stopRecognition();
   stopScanning();
-  currentReminder = null; // prevent double-fire from a lingering voice result
   try {
-    await fetch("/mark_taken", {
+    const response = await fetch(action === "taken" ? "/mark_taken" : "/mark_snooze", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id }),
+      body: JSON.stringify({ id: reminder.id, fired_at: reminder.fired_at }),
     });
+    const result = await response.json();
+    if (!response.ok || !result.success) throw new Error("Acknowledgment rejected");
+    currentReminder = null;
+    if (action === "taken") showSuccessThenIdle();
+    else {
+      hideAlarm();
+      showToast("Snoozed for 5 minutes");
+    }
   } catch (err) {
-    /* network hiccup - the reminder will simply show again on next poll */
+    showToast("Could not record your response. Please try again.");
+    startScanning();
+  } finally {
+    actionPending = false;
+    takenBtn.disabled = false;
+    snoozeBtn.disabled = false;
   }
-  showSuccessThenIdle();
 }
 
-async function handleSnooze() {
-  if (!currentReminder) return;
-  const id = currentReminder.id;
-  stopRecognition();
-  stopScanning();
-  currentReminder = null;
-  try {
-    await fetch("/mark_snooze", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id }),
-    });
-  } catch (err) {
-    /* network hiccup - fine, user can snooze again next time it rings */
-  }
-  showToast("Snoozed for 5 minutes");
-  hideAlarm();
-}
+async function handleTaken() { return submitAction("taken"); }
+async function handleSnooze() { return submitAction("snooze"); }
 
 takenBtn.addEventListener("click", handleTaken);
 snoozeBtn.addEventListener("click", handleSnooze);
@@ -330,15 +343,15 @@ snoozeBtn.addEventListener("click", handleSnooze);
 // ---------------------------------------------------------------------------
 
 async function pollReminders() {
-  // Don't interrupt an alarm that's already showing.
-  if (currentReminder) return;
+  if (actionPending) return;
 
   try {
     const response = await fetch("/check_reminders");
+    if (!response.ok) return;
     const data = await response.json();
     if (data.due) {
-      showAlarm(data);
-    }
+      if (!currentReminder || currentReminder.id !== data.id || currentReminder.fired_at !== data.fired_at) showAlarm(data);
+    } else if (currentReminder) hideAlarm();
   } catch (err) {
     /* server unreachable this cycle - just try again next poll */
   }

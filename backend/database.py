@@ -101,6 +101,8 @@ def init_db():
         conn.execute('ALTER TABLE medicines ADD COLUMN user_id INTEGER REFERENCES users(id)')
     if 'snoozed_until' not in columns:
         conn.execute('ALTER TABLE medicines ADD COLUMN snoozed_until TEXT')
+    if 'is_archived' not in columns:
+        conn.execute('ALTER TABLE medicines ADD COLUMN is_archived INTEGER NOT NULL DEFAULT 0')
     conn.commit()
     conn.close()
 
@@ -178,7 +180,7 @@ def get_active_medicines(user_id):
     """One user's reminder rows that still have doses left, soonest time first."""
     conn = get_db_connection()
     rows = conn.execute(
-        "SELECT * FROM medicines WHERE user_id = ? AND days_remaining > 0 ORDER BY time ASC",
+        "SELECT * FROM medicines WHERE user_id = ? AND days_remaining > 0 AND is_archived = 0 ORDER BY time ASC",
         (user_id,),
     ).fetchall()
     conn.close()
@@ -194,7 +196,7 @@ def get_all_active_medicines():
     """
     conn = get_db_connection()
     rows = conn.execute(
-        "SELECT * FROM medicines WHERE days_remaining > 0 ORDER BY time ASC"
+        "SELECT * FROM medicines WHERE days_remaining > 0 AND is_archived = 0 ORDER BY time ASC"
     ).fetchall()
     conn.close()
     return rows
@@ -225,7 +227,7 @@ def get_group(group_id):
     """All time-slots that belong to the same medicine course."""
     conn = get_db_connection()
     rows = conn.execute(
-        "SELECT * FROM medicines WHERE group_id = ?", (group_id,)
+        "SELECT * FROM medicines WHERE group_id = ? AND is_archived = 0", (group_id,)
     ).fetchall()
     conn.close()
     return rows
@@ -273,7 +275,7 @@ def get_due_reminder(user_id):
     """The oldest currently-ringing reminder that belongs to this user, if any."""
     conn = get_db_connection()
     row = conn.execute(
-        "SELECT * FROM medicines WHERE user_id = ? AND is_due = 1 ORDER BY last_fired_at ASC LIMIT 1",
+        "SELECT * FROM medicines WHERE user_id = ? AND is_due = 1 AND days_remaining > 0 AND is_archived = 0 ORDER BY last_fired_at ASC LIMIT 1",
         (user_id,),
     ).fetchone()
     conn.close()
@@ -418,7 +420,7 @@ def deactivate_group(group_id):
     """Set days_remaining = 0 for every row in a medicine group (soft-delete)."""
     conn = get_db_connection()
     conn.execute(
-        "UPDATE medicines SET days_remaining = 0 WHERE group_id = ?",
+        "UPDATE medicines SET days_remaining = 0, is_due = 0, snoozed_until = NULL WHERE group_id = ?",
         (group_id,),
     )
     conn.commit()
@@ -433,7 +435,7 @@ def get_group_summary(group_id, user_id):
     """
     conn = get_db_connection()
     rows = conn.execute(
-        "SELECT * FROM medicines WHERE group_id = ? AND user_id = ? ORDER BY time ASC",
+        "SELECT * FROM medicines WHERE group_id = ? AND user_id = ? AND is_archived = 0 ORDER BY time ASC",
         (group_id, user_id),
     ).fetchall()
     conn.close()
@@ -451,8 +453,8 @@ def get_group_summary(group_id, user_id):
 
 def update_group(group_id, medicine_name, times, language, days_remaining):
     """
-    Replace all time-slot rows for group_id with new values, keeping the
-    same group_id so dose-log history remains linked.
+    Archive old time slots and add replacements in the same transaction.
+    History keeps its original name/time/language and foreign-key target.
     """
     conn = get_db_connection()
     existing = conn.execute(
@@ -462,7 +464,7 @@ def update_group(group_id, medicine_name, times, language, days_remaining):
         conn.close()
         return
     user_id = existing["user_id"]
-    conn.execute("DELETE FROM medicines WHERE group_id = ?", (group_id,))
+    conn.execute("UPDATE medicines SET is_archived = 1, days_remaining = 0, is_due = 0, snoozed_until = NULL WHERE group_id = ?", (group_id,))
     created_at = datetime.now().isoformat()
     for t in times:
         conn.execute(
@@ -515,7 +517,7 @@ def get_adherence_data(user_id):
                COUNT(*)            AS times_count,
                GROUP_CONCAT(time, ',') AS times_str
         FROM medicines
-        WHERE user_id = ?
+        WHERE user_id = ? AND is_archived = 0
         GROUP BY group_id, medicine_name, language
         ORDER BY medicine_name COLLATE NOCASE
         """,
