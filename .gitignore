@@ -7,9 +7,16 @@ venv/
 
 # SQLite database (auto-created on first run)
 backend/schedules.db
+backend/*.db-*
+backend/*.sqlite*
 
 # Session-signing key (auto-created on first run - must never be committed)
 backend/.secret_key
+.env
+.env.*
+!.env.example
+hardware/private/
+artifacts-local/
 
 # Cached generated speech (auto-created on first run)
 frontend/static/audio/*.mp3
