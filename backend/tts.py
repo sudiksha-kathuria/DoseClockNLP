@@ -4,8 +4,8 @@ tts.py
 Generates the spoken reminder using gTTS and caches the mp3 on disk so
 the same medicine + language combination is never synthesized twice.
 
-The template is fixed on purpose: "It's time to take your [name]."
-The medicine name is treated as an opaque label - it is only ever
+The sentence is translated for each supported language. The medicine
+name is treated as an opaque label - it is only ever
 substituted into the sentence, never parsed, split, or acted on. There
 is no dosage information anywhere in this module.
 """
@@ -25,6 +25,24 @@ LANGUAGES = [
     ("kn", "Kannada"),
     ("bn", "Bengali"),
 ]
+
+REMINDER_TEMPLATES = {
+    'en': "It's time to take your {medicine_name}.",
+    'hi': 'आपकी दवा {medicine_name} लेने का समय हो गया है।',
+    'ta': 'உங்கள் {medicine_name} மருந்தை எடுத்துக்கொள்ள வேண்டிய நேரம் இது.',
+    'te': 'మీ {medicine_name} మందు తీసుకునే సమయం అయింది.',
+    'kn': 'ನಿಮ್ಮ {medicine_name} ಔಷಧಿ ತೆಗೆದುಕೊಳ್ಳುವ ಸಮಯವಾಗಿದೆ.',
+    'bn': 'আপনার {medicine_name} ওষুধ খাওয়ার সময় হয়েছে।',
+}
+
+
+def build_reminder_text(medicine_name, language):
+    """Insert the exact label without translating, parsing or changing it."""
+    if not isinstance(language, str) or language not in REMINDER_TEMPLATES:
+        raise ValueError('unsupported reminder language')
+    if not isinstance(medicine_name, str) or not medicine_name.strip():
+        raise ValueError('medicine name must be nonempty text')
+    return REMINDER_TEMPLATES[language].format(medicine_name=medicine_name)
 
 # mp3s are cached inside the frontend's static folder so Flask can
 # serve them directly at /static/audio/<file>.mp3
@@ -46,7 +64,10 @@ def _cache_filename(medicine_name, language):
     A short hash is appended to keep filenames unique even when two
     medicine names slugify to the same thing.
     """
-    digest = hashlib.sha1(f"{medicine_name}|{language}".encode("utf-8")).hexdigest()[:10]
+    # Include actual content: old English-only files and later template edits
+    # cannot be mistaken for the current translated message. Keep old files.
+    sentence = build_reminder_text(medicine_name, language)
+    digest = hashlib.sha256(f"{language}|{sentence}".encode("utf-8")).hexdigest()[:16]
     return f"{language}_{_slugify(medicine_name)}_{digest}.mp3"
 
 
@@ -61,17 +82,19 @@ def get_or_create_audio(medicine_name, language):
     Return the audio filename (relative to static/audio/) for this
     reminder, generating + caching it with gTTS if it doesn't exist yet.
     """
-    os.makedirs(AUDIO_DIR, exist_ok=True)
     filename = _cache_filename(medicine_name, language)
+    os.makedirs(AUDIO_DIR, exist_ok=True)
     filepath = os.path.join(AUDIO_DIR, filename)
 
     if not get_cached_audio(medicine_name, language):
-        sentence = f"It's time to take your {medicine_name}."
+        sentence = build_reminder_text(medicine_name, language)
         speech = gTTS(text=sentence, lang=language, timeout=(3, 8))
         fd, temporary = tempfile.mkstemp(dir=AUDIO_DIR, suffix='.mp3')
         os.close(fd)
         try:
             speech.save(temporary)
+            if not os.path.getsize(temporary):
+                raise OSError('speech provider returned an empty audio file')
             os.replace(temporary, filepath)
         finally:
             if os.path.exists(temporary):

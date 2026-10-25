@@ -487,7 +487,9 @@ def check_reminders():
             "due": True,
             "id": due["id"],
             "medicine_name": due["medicine_name"],
-            "audio_url": url_for("static", filename=due["audio_path"]) if due["audio_path"] else None,
+            # Resolve against current translated content, not a legacy cached
+            # English-only path persisted before the template upgrade.
+            "audio_url": url_for("static", filename=audio_path) if (audio_path := tts.get_cached_audio(due['medicine_name'], due['language'])) else None,
             "language": due["language"],
             "fired_at": due["last_fired_at"],
         }
