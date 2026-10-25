@@ -22,6 +22,7 @@ DoseClock's Flask application.
     POST /mark_taken       log a dose, decrement days if it was the last of the day
     POST /mark_snooze      re-fire the same reminder in 5 minutes
     POST /pair_device      mint a token for a piece of paired hardware
+    POST /api/device/reminder select one owned firing before a device action
     POST /api/device/action   called by paired hardware instead of a browser
 
 The frontend lives in ../frontend (templates/ and static/) so the two
@@ -33,6 +34,7 @@ import io
 import os
 import re
 import secrets
+import sqlite3
 from datetime import date
 from functools import wraps
 
@@ -83,6 +85,11 @@ def _valid_times(times):
             and all(isinstance(t, str) and re.fullmatch(r'[0-9]{2}:[0-9]{2}', t)
                     and int(t[:2]) < 24 and int(t[3:]) < 60 for t in times)
             and len(times) == len(set(times)))
+
+
+def _valid_occurrence(data):
+    return (isinstance(data.get('id'), int) and not isinstance(data['id'], bool) and 0 < data['id'] <= 2**63 - 1
+            and isinstance(data.get('fired_at'), str) and 0 < len(data['fired_at']) <= 128)
 
 
 def login_required(view):
@@ -512,8 +519,8 @@ def _perform_mark_taken(medicine_id, user_id, expected_fired_at=None):
 def mark_taken():
     """Log the dose, silence the alarm, and count the day off if it was the last dose today."""
     data = _json_object()
-    if data is None or isinstance(data.get('id'), (dict, list, bool)):
-        return jsonify({'error': 'JSON object with a reminder id required'}), 400
+    if data is None or not _valid_occurrence(data):
+        return jsonify({'error': 'reminder id and fired_at from /check_reminders required'}), 400
     medicine_id = data.get("id")
     row = database.get_medicine(medicine_id, user_id=session["user_id"])
     if row is None:
@@ -530,8 +537,8 @@ def mark_taken():
 def mark_snooze():
     """Silence the alarm now, re-ring the exact same reminder in 5 minutes."""
     data = _json_object()
-    if data is None or isinstance(data.get('id'), (dict, list, bool)):
-        return jsonify({'error': 'JSON object with a reminder id required'}), 400
+    if data is None or not _valid_occurrence(data):
+        return jsonify({'error': 'reminder id and fired_at from /check_reminders required'}), 400
     medicine_id = data.get("id")
     row = database.get_medicine(medicine_id, user_id=session["user_id"])
     if row is None:
@@ -546,9 +553,22 @@ def mark_snooze():
 # API - paired hardware (see HARDWARE.md)
 # A wireless bedside button, adaptive switch receiver, or other paired
 # device has no browser and no session cookie, so it authenticates with a
-# long-lived per-device token instead and acts on whichever reminder is
-# currently due for the user that token is paired with.
+# long-lived per-device token. Select a firing first; every action/retry is
+# explicitly bound to it. Never silently select another reminder on retry.
 # ---------------------------------------------------------------------------
+
+@app.route('/api/device/reminder', methods=['POST'])
+def device_reminder():
+    data = _json_object()
+    if data is None or not isinstance(data.get('token', ''), str):
+        return jsonify({'error':'JSON object with text token required'}), 400
+    user_id = database.get_user_id_for_token(data.get('token')) if data.get('token') else None
+    if user_id is None: return jsonify({'error':'unknown or missing device token'}), 401
+    due = database.get_due_reminder(user_id)
+    response = jsonify({'due':False} if due is None else {
+        'due':True, 'id':due['id'], 'fired_at':due['last_fired_at'], 'medicine_name':due['medicine_name']})
+    response.headers['Cache-Control'] = 'no-store'
+    return response
 
 @app.route("/api/device/action", methods=["POST"])
 def device_action():
@@ -564,18 +584,17 @@ def device_action():
     if action not in ("taken", "snooze"):
         return jsonify({"error": "action must be 'taken' or 'snooze'"}), 400
 
-    due = database.get_due_reminder(user_id)
-    if due is None:
-        return jsonify({"error": "no reminder is currently due"}), 404
-
-    if action == "taken":
-        if _perform_mark_taken(due['id'], user_id, due['last_fired_at']) is None:
-            return jsonify({'error': 'reminder is no longer due'}), 409
-    else:
-        if not reminder_scheduler.schedule_snooze(due['id'], user_id, due['last_fired_at']):
-            return jsonify({'error': 'reminder is no longer due'}), 409
-
-    return jsonify({"success": True, "medicine_name": due["medicine_name"]})
+    if (not _valid_occurrence(data) or not isinstance(data.get('request_id'), str)
+            or not re.fullmatch(r'[A-Za-z0-9_-]{8,128}', data['request_id'])):
+        return jsonify({'error':'id, fired_at and unique request_id required; select /api/device/reminder first'}), 400
+    try:
+        result, status = database.apply_device_action(token, user_id, data)
+    except sqlite3.Error:
+        app.logger.warning('Device transaction unavailable; retry the identical request')
+        return jsonify({'error':'temporarily unavailable; retry the identical request'}), 503
+    response = jsonify(result)
+    response.headers['Cache-Control'] = 'no-store'
+    return response, status
 
 
 # ---------------------------------------------------------------------------

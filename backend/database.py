@@ -20,6 +20,8 @@ Schema:
     devices    - long-lived tokens issued to paired hardware (e.g. a
                  wireless bedside button) so firmware can act on a
                  user's due reminder without a browser session/cookie.
+    device_action_receipts - durable per-device request bindings/results,
+                 committed atomically with Taken/Snooze for safe retries.
 """
 
 import sqlite3
@@ -94,6 +96,16 @@ def init_db():
         )
         """
     )
+    conn.execute('''CREATE TABLE IF NOT EXISTS device_action_receipts (
+        device_id INTEGER NOT NULL REFERENCES devices(id),
+        request_id TEXT NOT NULL,
+        medicine_id INTEGER NOT NULL REFERENCES medicines(id),
+        fired_at TEXT NOT NULL,
+        action TEXT NOT NULL CHECK(action IN ('taken', 'snooze')),
+        medicine_name TEXT NOT NULL,
+        created_at TEXT NOT NULL,
+        PRIMARY KEY (device_id, request_id)
+    )''')
     # Pre-account installations must retain their rows without exposing them
     # to the first person who signs up. A caregiver can re-enter those doses.
     columns = {row['name'] for row in conn.execute('PRAGMA table_info(medicines)')}
@@ -248,7 +260,7 @@ def snooze_due(medicine_id, until, user_id=None, expected_fired_at=None):
     """Atomically silence a due alarm and persist when to ring again."""
     conn = get_db_connection()
     try:
-        query = 'UPDATE medicines SET is_due = 0, snoozed_until = ? WHERE id = ? AND is_due = 1'
+        query = 'UPDATE medicines SET is_due = 0, snoozed_until = ? WHERE id = ? AND is_due = 1 AND days_remaining > 0 AND is_archived = 0'
         params = [until, medicine_id]
         if user_id is not None:
             query += ' AND user_id = ?'
@@ -298,24 +310,78 @@ def acknowledge_due(medicine_id, user_id, expected_fired_at=None):
     try:
         conn.execute('BEGIN IMMEDIATE')
         row = conn.execute(
-            'SELECT * FROM medicines WHERE id = ? AND user_id = ? AND is_due = 1',
+            'SELECT * FROM medicines WHERE id = ? AND user_id = ? AND is_due = 1 AND days_remaining > 0 AND is_archived = 0',
             (medicine_id, user_id),
         ).fetchone()
         if row is None or (expected_fired_at is not None and row['last_fired_at'] != expected_fired_at):
             conn.rollback()
             return None
-        conn.execute('UPDATE medicines SET is_due = 0, snoozed_until = NULL WHERE id = ?', (medicine_id,))
-        conn.execute('INSERT INTO dose_log (medicine_id, taken_at) VALUES (?, ?)',
-                     (medicine_id, datetime.now().isoformat()))
-        latest = conn.execute(
-            'SELECT MAX(time) FROM medicines WHERE group_id = ? AND days_remaining > 0',
-            (row['group_id'],),
-        ).fetchone()[0]
-        if row['time'] == latest:
-            conn.execute('UPDATE medicines SET days_remaining = MAX(days_remaining - 1, 0) WHERE group_id = ?',
-                         (row['group_id'],))
+        _acknowledge_row(conn, row)
         conn.commit()
         return get_medicine(medicine_id, user_id)
+    finally:
+        conn.close()
+
+
+def _acknowledge_row(conn, row):
+    """Apply Taken inside the caller's transaction (also used by devices)."""
+    conn.execute('UPDATE medicines SET is_due = 0, snoozed_until = NULL WHERE id = ?', (row['id'],))
+    conn.execute('INSERT INTO dose_log (medicine_id, taken_at) VALUES (?, ?)',
+                 (row['id'], datetime.now().isoformat()))
+    latest = conn.execute(
+        'SELECT MAX(time) FROM medicines WHERE group_id = ? AND days_remaining > 0 AND is_archived = 0',
+        (row['group_id'],),
+    ).fetchone()[0]
+    if row['time'] == latest:
+        conn.execute('UPDATE medicines SET days_remaining = MAX(days_remaining - 1, 0) WHERE group_id = ? AND is_archived = 0',
+                     (row['group_id'],))
+
+
+def _record_device_action(conn, device_id, data, row):
+    conn.execute('''INSERT INTO device_action_receipts
+        (device_id, request_id, medicine_id, fired_at, action, medicine_name, created_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?)''',
+        (device_id, data['request_id'], row['id'], data['fired_at'], data['action'],
+         row['medicine_name'], datetime.now().isoformat()))
+
+
+def apply_device_action(token, user_id, data):
+    """Atomically bind a retry receipt and its effect to one owned firing.
+
+    Exact retries return the stored success even after restart/refiring. A
+    new request cannot affect a stale firing, and a key cannot change target
+    or action. Receipts are retained; pruning them requires a protocol policy.
+    """
+    conn = get_db_connection()
+    try:
+        conn.execute('BEGIN IMMEDIATE')
+        device = conn.execute('SELECT id FROM devices WHERE token = ? AND user_id = ?', (token, user_id)).fetchone()
+        if device is None:
+            conn.rollback(); return {'error':'unknown or missing device token'}, 401
+        receipt = conn.execute('SELECT * FROM device_action_receipts WHERE device_id = ? AND request_id = ?',
+                               (device['id'], data['request_id'])).fetchone()
+        if receipt is not None:
+            matches = (receipt['medicine_id'] == data['id'] and receipt['fired_at'] == data['fired_at']
+                       and receipt['action'] == data['action'])
+            conn.rollback()
+            if not matches: return {'error':'request_id already used for a different action or firing'}, 409
+            return {'success':True, 'medicine_name':receipt['medicine_name']}, 200
+        row = conn.execute('SELECT * FROM medicines WHERE id = ? AND user_id = ?', (data['id'], user_id)).fetchone()
+        if row is None:
+            conn.rollback(); return {'error':'reminder not found'}, 404
+        if not row['is_due'] or row['is_archived'] or row['days_remaining'] <= 0 or row['last_fired_at'] != data['fired_at']:
+            conn.rollback(); return {'error':'selected firing is no longer due'}, 409
+        if data['action'] == 'taken':
+            _acknowledge_row(conn, row)
+        else:
+            conn.execute('UPDATE medicines SET is_due = 0, snoozed_until = ? WHERE id = ?',
+                         ((datetime.now() + timedelta(minutes=5)).isoformat(), row['id']))
+        _record_device_action(conn, device['id'], data, row)
+        conn.commit()
+        return {'success':True, 'medicine_name':row['medicine_name']}, 200
+    except Exception:
+        conn.rollback()
+        raise
     finally:
         conn.close()
 

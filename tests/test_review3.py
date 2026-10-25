@@ -42,6 +42,9 @@ class Review3Tests(unittest.TestCase):
         gid = database.add_medicine(owner or self.owner['id'], name, list(times), days, 'en')
         return gid, list(database.get_group(gid))
 
+    def occurrence(self, mid):
+        return {'id':mid,'fired_at':database.get_medicine(mid)['last_fired_at']}
+
     def test_signup_login_logout_and_invalid_credentials(self):
         c = app.test_client()
         self.assertEqual(c.post('/signup', data={'username':' NEW_USER ', 'display_name':'New User', 'password':'dummy-password'}).status_code, 302)
@@ -66,7 +69,7 @@ class Review3Tests(unittest.TestCase):
         for route in ['/', '/clock','/logs','/dashboard','/export']:
             self.assertNotIn(b'Other private medicine',self.client.get(route).data)
         for route in ['/mark_taken','/mark_snooze']:
-            self.assertEqual(self.client.post(route,json={'id':rows[0]['id']}).status_code,404)
+            self.assertEqual(self.client.post(route,json=self.occurrence(rows[0]['id'])).status_code,404)
         self.assertEqual(self.client.post('/delete_medicine',json={'id':gid}).status_code,404)
         self.assertEqual(database.get_medicine(rows[0]['id'])['days_remaining'],3)
 
@@ -106,10 +109,10 @@ class Review3Tests(unittest.TestCase):
         gid,rows=self.medicine(times=('08:00','20:00'),days=2)
         for i,row in enumerate(rows):
             database.mark_fired(row['id'],None)
-            response=self.client.post('/mark_taken',json={'id':row['id']})
+            response=self.client.post('/mark_taken',json=self.occurrence(row['id']))
             self.assertEqual(response.status_code,200)
             self.assertEqual(response.json['days_remaining'],2 if i==0 else 1)
-            self.assertEqual(self.client.post('/mark_taken',json={'id':row['id']}).status_code,409)
+            self.assertEqual(self.client.post('/mark_taken',json=self.occurrence(row['id'])).status_code,409)
         self.assertEqual(len(database.get_dose_history(self.owner['id'])),2)
         self.assertEqual({r['days_remaining'] for r in database.get_group(gid)},{1})
 
@@ -118,7 +121,7 @@ class Review3Tests(unittest.TestCase):
         barrier=threading.Barrier(2)
         def take(_):
             c=self.client_for(self.owner['id']);barrier.wait()
-            return c.post('/mark_taken',json={'id':mid}).status_code
+            return c.post('/mark_taken',json=self.occurrence(mid)).status_code
         with concurrent.futures.ThreadPoolExecutor(max_workers=2) as pool: statuses=list(pool.map(take,range(2)))
         self.assertEqual(sorted(statuses),[200,409])
         self.assertEqual(len(database.get_dose_history(self.owner['id'])),1)
@@ -132,7 +135,7 @@ class Review3Tests(unittest.TestCase):
 
     def test_deleting_due_medicine_clears_alarm_and_preserves_history(self):
         gid,rows=self.medicine();mid=rows[0]['id'];database.mark_fired(mid,None)
-        self.client.post('/mark_taken',json={'id':mid});database.mark_fired(mid,None)
+        self.client.post('/mark_taken',json=self.occurrence(mid));database.mark_fired(mid,None)
         self.assertEqual(self.client.post('/delete_medicine',json={'id':gid}).status_code,200)
         self.assertFalse(self.client.get('/check_reminders').json['due'])
         self.assertEqual(len(database.get_dose_history(self.owner['id'])),1)
@@ -160,11 +163,14 @@ class Review3Tests(unittest.TestCase):
         # Reconstruct the immediately preceding schema in this disposable DB.
         with database.get_db_connection() as conn:
             conn.execute('ALTER TABLE medicines DROP COLUMN is_archived')
+            conn.execute('DROP TABLE device_action_receipts')
         database.init_db()
         self.assertEqual(dict(database.get_dose_history(self.owner['id'])[0]), before)
         self.assertEqual(database.get_user_id_for_token(token), self.owner['id'])
         self.assertEqual(database.get_group_summary(gid, self.owner['id'])['times'], ['08:00'])
         self.assertEqual(database.get_medicine(rows[0]['id'])['is_archived'], 0)
+        with database.get_db_connection() as conn:
+            self.assertEqual(conn.execute('SELECT COUNT(*) FROM device_action_receipts').fetchone()[0],0)
 
     def test_restart_database_retains_accounts_tokens_logs_and_snooze(self):
         _,rows=self.medicine(times=('08:00','20:00'));a,b=rows
@@ -199,7 +205,7 @@ class Review3Tests(unittest.TestCase):
             clock.now.return_value=datetime(2026,10,23,9,0);clock.combine.side_effect=datetime.combine;clock.strptime.side_effect=datetime.strptime;clock.fromisoformat.side_effect=datetime.fromisoformat
             scheduler._check_due_reminders()
         self.assertTrue(all(database.get_medicine(i)['is_due']==1 for i in ids))
-        self.assertEqual(self.client.post('/mark_taken',json={'id':ids[0]}).status_code,200)
+        self.assertEqual(self.client.post('/mark_taken',json=self.occurrence(ids[0])).status_code,200)
         self.assertEqual(self.client.get('/check_reminders').json['id'],ids[1])
 
     def test_repeated_snooze_unit_clock_and_no_taken_logs(self):
@@ -208,7 +214,7 @@ class Review3Tests(unittest.TestCase):
         for _ in range(2):
             with patch('scheduler.datetime') as clock:
                 clock.now.return_value=now
-                self.assertEqual(self.client.post('/mark_snooze',json={'id':mid}).status_code,200)
+                self.assertEqual(self.client.post('/mark_snooze',json=self.occurrence(mid)).status_code,200)
                 deadline=now+timedelta(seconds=300)
                 self.assertEqual(datetime.fromisoformat(database.get_medicine(mid)['snoozed_until']),deadline)
                 clock.fromisoformat.side_effect=datetime.fromisoformat;clock.now.return_value=deadline
@@ -224,16 +230,21 @@ class Review3Tests(unittest.TestCase):
         self.assertNotIn(token,self.client.get('/logs').get_data(as_text=True))
         for payload in [{},{'token':'invalid','action':'taken'}]:self.assertEqual(self.client.post('/api/device/action',json=payload).status_code,401)
         _,rows=self.medicine(owner=self.other['id']);database.mark_fired(rows[0]['id'],None)
-        self.assertEqual(self.client.post('/api/device/action',json={'token':token,'action':'taken'}).status_code,404)
+        self.assertFalse(self.client.post('/api/device/reminder',json={'token':token}).json['due'])
         self.assertEqual(database.get_medicine(rows[0]['id'])['is_due'],1)
 
-    def test_device_multiple_due_selection_is_documented_not_replay_safe(self):
+    def test_device_multiple_due_selection_requires_bound_retry(self):
         ids=[self.medicine(name='Pending '+str(i))[1][0]['id'] for i in range(2)]
         for mid in ids:database.mark_fired(mid,None)
         token=database.create_device_token(self.owner['id'],'Simulated switch')
-        for _ in ids:self.assertEqual(self.client.post('/api/device/action',json={'token':token,'action':'taken'}).status_code,200)
+        self.assertEqual(self.client.post('/api/device/action',json={'token':token,'action':'taken'}).status_code,400)
+        body={'token':token,'action':'taken',**self.occurrence(ids[0]),'request_id':'review3-retry-request'}
+        for _ in range(2):self.assertEqual(self.client.post('/api/device/action',json=body).status_code,200)
+        self.assertEqual(len(database.get_dose_history(self.owner['id'])),1)
+        self.assertEqual(database.get_medicine(ids[1])['is_due'],1)
+        body={**body,**self.occurrence(ids[1]),'request_id':'review3-next-request'}
+        self.assertEqual(self.client.post('/api/device/action',json=body).status_code,200)
         self.assertEqual(len(database.get_dose_history(self.owner['id'])),2)
-        self.assertEqual(self.client.post('/api/device/action',json={'token':token,'action':'taken'}).status_code,404)
 
     def test_tts_failure_is_atomic_and_visual_alarm_remains(self):
         _,rows=self.medicine()

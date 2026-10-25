@@ -32,6 +32,11 @@
 
 #include <WiFi.h>
 #include <HTTPClient.h>
+#define ARDUINOJSON_USE_LONG_LONG 1
+#include <ArduinoJson.h> // ArduinoJson 7
+#include <Preferences.h>
+#include <esp_system.h>
+#include <string.h>
 
 // ---- Configure before flashing --------------------------------------
 constexpr char WIFI_SSID[] = "your-wifi-name";
@@ -60,33 +65,116 @@ void blinkLed(int times, int onMs) {
   }
 }
 
-void sendAction(const char *action) {
+// Save the selected occurrence and request ID BEFORE sending. No token is
+// stored in this queue. Exact retries survive reboot and never select a new
+// reminder. Server receipts make a lost successful response safe to retry.
+Preferences retryStore;
+String pendingBody;
+bool storageReady = false;
+uint32_t lastRetryAt = 0;
+constexpr uint32_t RETRY_INTERVAL_MS = 5000;
+
+bool validPending(JsonDocument &doc) {
+  const char *action = doc["action"] | "";
+  return doc["id"].is<int64_t>() && doc["id"].as<int64_t>() > 0 &&
+         doc["fired_at"].is<const char *>() && strlen(doc["fired_at"].as<const char *>()) > 0 &&
+         doc["request_id"].is<const char *>() && strlen(doc["request_id"].as<const char *>()) >= 8 &&
+         (strcmp(action, "taken") == 0 || strcmp(action, "snooze") == 0);
+}
+
+void attemptPending() {
+  if (!storageReady || pendingBody.length() == 0) return;
+  lastRetryAt = millis();
   if (WiFi.status() != WL_CONNECTED) {
-    Serial.println("Wi-Fi disconnected; no action sent.");
-    blinkLed(8, 60); // fast blink = no network, nothing was sent
+    Serial.println("Wi-Fi disconnected; selected action retained for retry.");
+    blinkLed(8, 60);
     return;
   }
-
+  JsonDocument request;
+  if (deserializeJson(request, pendingBody) || !validPending(request)) {
+    Serial.println("Invalid stored action; no request sent. Caregiver reset required.");
+    return;
+  }
+  request["token"] = DEVICE_TOKEN;
+  String wireBody;
+  serializeJson(request, wireBody);
   HTTPClient http;
   http.begin(String(DOSECLOCK_HOST) + "/api/device/action");
+  http.setTimeout(3000);
   http.addHeader("Content-Type", "application/json");
-  String body = String("{\"token\":\"") + DEVICE_TOKEN + "\",\"action\":\"" + action + "\"}";
-  int status = http.POST(body);
-  Serial.printf("Sent '%s', server responded %d\n", action, status);
-  if (status < 0) {
-    Serial.printf("HTTP error: %s\n", HTTPClient::errorToString(status).c_str());
-  }
+  int status = http.POST(wireBody);
+  String response = http.getString();
   http.end();
-
-  // Confirmation feedback the patient (or a caregiver in the room) can
-  // see even if they can't see the clock screen from the bed: two slow
-  // blinks for success, five fast blinks if the server rejected it
-  // (e.g. an unpaired token, or no reminder currently due).
-  if (status == 200) {
-    blinkLed(2, 150);
+  Serial.printf("Bound action responded %d\n", status); // Never print credentials/body.
+  JsonDocument result;
+  bool confirmed = status == 200 && !deserializeJson(result, response) && result["success"] == true;
+  bool rejected = status >= 400 && status < 500;
+  if (confirmed || rejected) {
+    if (!retryStore.remove("pending")) {
+      Serial.println("Could not clear local queue; retaining identical request.");
+      blinkLed(5, 60);
+      return;
+    }
+    pendingBody = "";
+    blinkLed(confirmed ? 2 : 5, confirmed ? 150 : 60);
   } else {
+    Serial.println("Result uncertain; will retry the identical selected action.");
     blinkLed(5, 60);
   }
+}
+
+void sendAction(const char *action) {
+  if (!storageReady) {
+    Serial.println("Retry storage unavailable; no action sent.");
+    blinkLed(5, 60);
+    return;
+  }
+  if (pendingBody.length() > 0) {
+    Serial.println("Resolving the original pending action before accepting another.");
+    attemptPending();
+    return;
+  }
+  if (WiFi.status() != WL_CONNECTED) {
+    Serial.println("Wi-Fi disconnected; no firing selected or action sent.");
+    blinkLed(8, 60);
+    return;
+  }
+  HTTPClient http;
+  http.begin(String(DOSECLOCK_HOST) + "/api/device/reminder");
+  http.setTimeout(3000);
+  http.addHeader("Content-Type", "application/json");
+  JsonDocument auth;
+  auth["token"] = DEVICE_TOKEN;
+  String authBody;
+  serializeJson(auth, authBody);
+  int status = http.POST(authBody);
+  String response = http.getString();
+  http.end();
+  JsonDocument selected;
+  if (status != 200 || deserializeJson(selected, response) || !selected["due"].as<bool>() ||
+      !selected["id"].is<int64_t>() || !selected["fired_at"].is<const char *>()) {
+    Serial.println("No current firing selected; no action sent.");
+    blinkLed(5, 60);
+    return;
+  }
+  char requestId[33];
+  snprintf(requestId, sizeof(requestId), "%08lx%08lx%08lx%08lx",
+           (unsigned long)esp_random(), (unsigned long)esp_random(),
+           (unsigned long)esp_random(), (unsigned long)esp_random());
+  JsonDocument pending;
+  pending["id"] = selected["id"].as<int64_t>();
+  pending["fired_at"] = selected["fired_at"].as<const char *>();
+  pending["action"] = action;
+  pending["request_id"] = requestId;
+  String saved;
+  serializeJson(pending, saved);
+  if (!validPending(pending) || retryStore.putString("pending", saved) != saved.length()) {
+    Serial.println("Could not persist selected action; no request sent.");
+    blinkLed(5, 60);
+    return;
+  }
+  pendingBody = saved;
+  attemptPending();
 }
 
 void setup() {
@@ -95,6 +183,8 @@ void setup() {
   pinMode(LED_PIN, OUTPUT);
   digitalWrite(LED_PIN, LOW);
 
+  storageReady = retryStore.begin("doseclock", false);
+  if (storageReady) pendingBody = retryStore.getString("pending", "");
   WiFi.mode(WIFI_STA);
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
   Serial.print("Connecting to Wi-Fi");
@@ -109,6 +199,7 @@ void setup() {
 }
 
 void loop() {
+  if (pendingBody.length() > 0 && millis() - lastRetryAt >= RETRY_INTERVAL_MS) attemptPending();
   if (digitalRead(SWITCH_PIN) != LOW) {
     delay(20);
     return; // not pressed - keep polling

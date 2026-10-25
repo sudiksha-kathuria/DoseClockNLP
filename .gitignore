@@ -3,6 +3,7 @@ __pycache__/
 *.pyc
 venv/
 .venv/
+.pio/
 
 # SQLite database (auto-created on first run)
 backend/schedules.db
