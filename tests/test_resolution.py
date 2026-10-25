@@ -249,5 +249,18 @@ class ResolutionTests(unittest.TestCase):
         self.assertEqual(database.get_medicine(mid)['is_due'],1)
         self.assertEqual(self.client.post('/mark_taken',json={'id':mid,'fired_at':fired}).status_code,200)
 
+    def test_device_selection_and_actions_preserve_signed_64_bit_ids(self):
+        for large_id in (2**31, 2**63 - 1):
+            mid = self.due('Large ID')
+            with database.get_db_connection() as connection:
+                connection.execute('UPDATE medicines SET id=? WHERE id=?', (large_id, mid))
+            selected = self.client.post('/api/device/reminder', json={'token': self.token})
+            self.assertEqual(selected.status_code, 200)
+            self.assertEqual(selected.json['id'], large_id)
+            body = self.body(large_id, request_id='large-id-' + str(large_id))
+            self.assertEqual(self.post(body).status_code, 200)
+            self.assertEqual(self.post(body).status_code, 200)
+            self.assertEqual(database.get_medicine(large_id)['is_due'], 0)
+        self.assertEqual(len(database.get_dose_history(self.owner['id'])), 2)
 
 if __name__=='__main__':unittest.main(verbosity=2)

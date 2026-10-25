@@ -37,6 +37,7 @@
 #include <Preferences.h>
 #include <esp_system.h>
 #include <string.h>
+#include "switch_input.h"
 
 // ---- Configure before flashing --------------------------------------
 constexpr char WIFI_SSID[] = "your-wifi-name";
@@ -52,9 +53,7 @@ constexpr char DEVICE_TOKEN[] = "paste-token-from-the-logs-screen";
 constexpr int SWITCH_PIN = 4;
 constexpr int LED_PIN = 2; // most ESP32 dev boards have one built in here
 
-constexpr uint32_t DEBOUNCE_MS = 50;
-constexpr uint32_t SHORT_PRESS_MAX_MS = 600;
-constexpr uint32_t HOLD_CONFIRM_MS = 1500;
+SwitchInput switchInput;
 
 void blinkLed(int times, int onMs) {
   for (int i = 0; i < times; i++) {
@@ -71,19 +70,92 @@ void blinkLed(int times, int onMs) {
 Preferences retryStore;
 String pendingBody;
 bool storageReady = false;
+bool queueCorrupt = false;
+bool queueMarked = false;
 uint32_t lastRetryAt = 0;
 constexpr uint32_t RETRY_INTERVAL_MS = 5000;
 
+bool validText(JsonVariantConst value, size_t minimum, size_t maximum) {
+  if (!value.is<const char *>()) return false;
+  const JsonString text = value.as<JsonString>();
+  return text.size() >= minimum && text.size() <= maximum &&
+         strlen(text.c_str()) == text.size(); // Never truncate embedded NULs.
+}
+
 bool validPending(JsonDocument &doc) {
   const char *action = doc["action"] | "";
-  return doc["id"].is<int64_t>() && doc["id"].as<int64_t>() > 0 &&
-         doc["fired_at"].is<const char *>() && strlen(doc["fired_at"].as<const char *>()) > 0 &&
-         doc["request_id"].is<const char *>() && strlen(doc["request_id"].as<const char *>()) >= 8 &&
-         (strcmp(action, "taken") == 0 || strcmp(action, "snooze") == 0);
+  if (!doc.is<JsonObject>() || doc.size() != 4 || !doc["id"].is<int64_t>() ||
+      doc["id"].is<bool>() || doc["id"].as<int64_t>() <= 0 ||
+      !validText(doc["fired_at"], 1, 128) || !validText(doc["request_id"], 8, 128) ||
+      !validText(doc["action"], 5, 6) ||
+      (strcmp(action, "taken") != 0 && strcmp(action, "snooze") != 0)) return false;
+  for (const char *p = doc["request_id"].as<const char *>(); *p; ++p) {
+    if (!((*p >= 'a' && *p <= 'z') || (*p >= 'A' && *p <= 'Z') ||
+          (*p >= '0' && *p <= '9') || *p == '_' || *p == '-')) return false;
+  }
+  return true;
+}
+
+void corruptQueue() {
+  queueCorrupt = true;
+  switchInput.inhibit();
+  Serial.println("Invalid saved retry; actions blocked. USB command: CLEAR CORRUPT RETRY");
+}
+
+void loadPending() {
+  const bool hasBody = retryStore.isKey("pending");
+  const bool hasMarker = retryStore.isKey("pending_set");
+  queueMarked = hasMarker && retryStore.getType("pending_set") == PT_U8 &&
+                retryStore.getUChar("pending_set", 0) == 1;
+  if (!hasBody && !hasMarker) return;
+  if ((hasMarker && !queueMarked) || !hasBody || retryStore.getType("pending") != PT_STR) {
+    corruptQueue();
+    return;
+  }
+  pendingBody = retryStore.getString("pending", "");
+  JsonDocument saved;
+  if (pendingBody.length() > 512 || deserializeJson(saved, pendingBody) || !validPending(saved)) corruptQueue();
+  // A valid pre-marker queue from the October 23 firmware is retained unchanged.
+}
+
+// USB maintenance only, never a switch gesture or HTTP operation. A valid
+// uncertain action cannot be discarded through this recovery command.
+bool serviceRecoveryCommand() {
+  static char line[40];
+  static size_t length = 0;
+  static bool overflow = false;
+  for (unsigned int read = 0; read < 64 && Serial.available(); ++read) {
+    const char c = static_cast<char>(Serial.read());
+    if (c == '\r') continue;
+    if (c != '\n') {
+      if (static_cast<unsigned char>(c) < 32 || static_cast<unsigned char>(c) > 126) { overflow = true; continue; }
+      if (length + 1 < sizeof(line)) line[length++] = c;
+      else overflow = true;
+      continue;
+    }
+    line[length] = '\0';
+    const bool recover = !overflow && strcmp(line, "CLEAR CORRUPT RETRY") == 0;
+    length = 0;
+    overflow = false;
+    if (!recover) {
+      Serial.println("Unknown maintenance command; no action sent.");
+    } else if (!storageReady || !queueCorrupt) {
+      Serial.println("Recovery refused: no corrupt queue or storage unavailable; no action sent.");
+    } else if (!retryStore.clear()) {
+      Serial.println("Recovery failed; actions remain blocked. No action sent.");
+    } else {
+      pendingBody = "";
+      queueMarked = queueCorrupt = false;
+      Serial.println("Corrupt retry cleared; no action sent. Release switch, then press anew.");
+    }
+    switchInput.inhibit();
+    return true;
+  }
+  return false;
 }
 
 void attemptPending() {
-  if (!storageReady || pendingBody.length() == 0) return;
+  if (!storageReady || queueCorrupt || pendingBody.length() == 0) return;
   lastRetryAt = millis();
   if (WiFi.status() != WL_CONNECTED) {
     Serial.println("Wi-Fi disconnected; selected action retained for retry.");
@@ -92,7 +164,18 @@ void attemptPending() {
   }
   JsonDocument request;
   if (deserializeJson(request, pendingBody) || !validPending(request)) {
-    Serial.println("Invalid stored action; no request sent. Caregiver reset required.");
+    corruptQueue();
+    return;
+  }
+  if (!queueMarked) {
+    if (retryStore.putBool("pending_set", true) != 1) {
+      Serial.println("Could not mark saved retry; no request sent.");
+      return;
+    }
+    queueMarked = true;
+  }
+  if (retryStore.getType("pending") != PT_STR) {
+    corruptQueue();
     return;
   }
   request["token"] = DEVICE_TOKEN;
@@ -105,7 +188,10 @@ void attemptPending() {
   int status = http.POST(wireBody);
   String response = http.getString();
   http.end();
-  Serial.printf("Bound action responded %d\n", status); // Never print credentials/body.
+  Serial.printf("Bound action %s id=%lld fired_at=%s request_id=%s responded %d\n",
+                request["action"].as<const char *>(), (long long)request["id"].as<int64_t>(),
+                request["fired_at"].as<const char *>(), request["request_id"].as<const char *>(), status);
+  // Identity is observable; credentials and the full request body are never logged.
   JsonDocument result;
   bool confirmed = status == 200 && !deserializeJson(result, response) && result["success"] == true;
   bool rejected = status >= 400 && status < 500;
@@ -115,7 +201,14 @@ void attemptPending() {
       blinkLed(5, 60);
       return;
     }
+    // A separate marker makes an interrupted/failed queue write detectable on
+    // reboot. Orphaned markers fail closed; recovery never acknowledges a dose.
+    if (!retryStore.remove("pending_set")) {
+      corruptQueue();
+      return;
+    }
     pendingBody = "";
+    queueMarked = false;
     blinkLed(confirmed ? 2 : 5, confirmed ? 150 : 60);
   } else {
     Serial.println("Result uncertain; will retry the identical selected action.");
@@ -124,7 +217,7 @@ void attemptPending() {
 }
 
 void sendAction(const char *action) {
-  if (!storageReady) {
+  if (!storageReady || queueCorrupt) {
     Serial.println("Retry storage unavailable; no action sent.");
     blinkLed(5, 60);
     return;
@@ -151,8 +244,10 @@ void sendAction(const char *action) {
   String response = http.getString();
   http.end();
   JsonDocument selected;
-  if (status != 200 || deserializeJson(selected, response) || !selected["due"].as<bool>() ||
-      !selected["id"].is<int64_t>() || !selected["fired_at"].is<const char *>()) {
+  if (status != 200 || deserializeJson(selected, response) ||
+      !selected["due"].is<bool>() || !selected["due"].as<bool>() ||
+      !selected["id"].is<int64_t>() || selected["id"].is<bool>() || selected["id"].as<int64_t>() <= 0 ||
+      !validText(selected["fired_at"], 1, 128)) {
     Serial.println("No current firing selected; no action sent.");
     blinkLed(5, 60);
     return;
@@ -168,8 +263,15 @@ void sendAction(const char *action) {
   pending["request_id"] = requestId;
   String saved;
   serializeJson(pending, saved);
-  if (!validPending(pending) || retryStore.putString("pending", saved) != saved.length()) {
+  if (!validPending(pending)) return;
+  if (retryStore.putBool("pending_set", true) != 1) {
+    corruptQueue();
+    return;
+  }
+  queueMarked = true;
+  if (retryStore.putString("pending", saved) != saved.length()) {
     Serial.println("Could not persist selected action; no request sent.");
+    corruptQueue();
     blinkLed(5, 60);
     return;
   }
@@ -184,11 +286,12 @@ void setup() {
   digitalWrite(LED_PIN, LOW);
 
   storageReady = retryStore.begin("doseclock", false);
-  if (storageReady) pendingBody = retryStore.getString("pending", "");
+  if (storageReady) loadPending();
   WiFi.mode(WIFI_STA);
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
   Serial.print("Connecting to Wi-Fi");
   while (WiFi.status() != WL_CONNECTED) {
+    serviceRecoveryCommand(); // USB recovery also works without Wi-Fi.
     delay(300);
     Serial.print(".");
   }
@@ -196,36 +299,32 @@ void setup() {
   Serial.print("ESP32 IP: ");
   Serial.println(WiFi.localIP());
   blinkLed(3, 200); // three blinks on boot = ready
+  switchInput.inhibit();
 }
 
 void loop() {
-  if (pendingBody.length() > 0 && millis() - lastRetryAt >= RETRY_INTERVAL_MS) attemptPending();
-  if (digitalRead(SWITCH_PIN) != LOW) {
-    delay(20);
-    return; // not pressed - keep polling
-  }
-
-  // Debounce: require the contact to stay closed past DEBOUNCE_MS
-  // before treating it as a real actuation, not switch bounce/noise.
-  delay(DEBOUNCE_MS);
-  if (digitalRead(SWITCH_PIN) != LOW) return;
-
-  uint32_t pressStart = millis();
-  bool holdConfirmed = false;
-  while (digitalRead(SWITCH_PIN) == LOW) {
-    uint32_t held = millis() - pressStart;
-    if (held >= HOLD_CONFIRM_MS && !holdConfirmed) {
-      holdConfirmed = true;
-      digitalWrite(LED_PIN, HIGH); // steady-on = "held long enough for Snooze"
-    }
+  if (!storageReady || queueCorrupt || pendingBody.length() > 0) {
+    // No new gesture can start while a retry/recovery is pending. In particular,
+    // a held Snooze is never reinterpreted as Taken after a blocking HTTP call.
+    switchInput.inhibit();
+    digitalWrite(LED_PIN, LOW);
+    const bool commandHandled = serviceRecoveryCommand();
+    if (!commandHandled && !queueCorrupt && pendingBody.length() > 0 &&
+        millis() - lastRetryAt >= RETRY_INTERVAL_MS) attemptPending();
+    switchInput.inhibit(); // Begin release debounce AFTER all HTTP/LED delays.
     delay(10);
+    return;
   }
-  digitalWrite(LED_PIN, LOW);
-
-  uint32_t pressDuration = millis() - pressStart;
-  if (pressDuration < SHORT_PRESS_MAX_MS) {
-    sendAction("taken");
-  } else if (holdConfirmed) {
-    sendAction("snooze");
+  const SwitchInput::Action action = switchInput.update(digitalRead(SWITCH_PIN) == LOW, millis());
+  digitalWrite(LED_PIN, switchInput.holdConfirmed() ? HIGH : LOW);
+  // Parsing serial input is nonblocking. Any completed maintenance command
+  // cancels the gesture, including commands refused against a healthy queue.
+  if (serviceRecoveryCommand()) { digitalWrite(LED_PIN, LOW); delay(10); return; }
+  if (action != SwitchInput::NONE) {
+    switchInput.inhibit();
+    digitalWrite(LED_PIN, LOW);
+    sendAction(action == SwitchInput::TAKEN ? "taken" : "snooze");
+    switchInput.inhibit();
   }
+  delay(10);
 }
