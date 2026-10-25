@@ -1,0 +1,31 @@
+{
+  "source_private_path": "/private/tmp/doseclock-firmware-20261025-autoplay.protocol.log",
+  "source_sha256": "dab7fbce053dce41a855a0d76fcbb9c605b2b00c7e554ccd45631f00bba558e4",
+  "scope": "Actual outgoing Runtime/Input/navigation calls; HTTP credentials excluded. Last navigation to first browser input per session.",
+  "sessions": [
+    {
+      "sessionId": "00D19F86F7007EB77BE6419C37F9E372",
+      "navigation": "http://127.0.0.1:58332/clock",
+      "runtime_before_first_input": 6,
+      "userGesture_true": 0,
+      "userGesture_false": 6,
+      "userGesture_omitted": 0
+    },
+    {
+      "sessionId": "FCE1F587391BB7540DB4850B5AF33203",
+      "navigation": "http://127.0.0.1:58332/clock",
+      "runtime_before_first_input": 6,
+      "userGesture_true": 0,
+      "userGesture_false": 6,
+      "userGesture_omitted": 0
+    },
+    {
+      "sessionId": "2BD5EEA0E929A52A86C4AFD559AC2E8D",
+      "navigation": "http://127.0.0.1:58332/clock",
+      "runtime_before_first_input": 2,
+      "userGesture_true": 0,
+      "userGesture_false": 2,
+      "userGesture_omitted": 0
+    }
+  ]
+}

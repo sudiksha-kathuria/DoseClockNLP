@@ -1,0 +1,16 @@
+Installed source: /private/tmp/doseclock-review3-validation-20261023/venv/lib/python3.12/site-packages/playwright/driver/package/lib/coreBundle.js
+SHA256: 829521b67ed7be90c7d6d6098ff39f2241562d47e4ad7ccab13710924a56001d
+
+      async evaluateWithArguments(expression2, returnByValue, utilityScript, values, handles) {
+        const { exceptionDetails, result: remoteObject } = await this._client.send("Runtime.callFunctionOn", {
+          functionDeclaration: expression2,
+          objectId: utilityScript._objectId,
+          arguments: [
+            { objectId: utilityScript._objectId },
+            ...values.map((value2) => ({ value: value2 })),
+            ...handles.map((handle) => ({ objectId: handle._objectId }))
+          ],
+          returnByValue,
+          awaitPromise: true,
+          userGesture: true
+        }).catch(rewriteError);

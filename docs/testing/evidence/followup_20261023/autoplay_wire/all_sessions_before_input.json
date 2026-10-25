@@ -1,0 +1,26 @@
+[
+  {
+    "navigation": "http://127.0.0.1:61578/clock",
+    "navigation_session": "BF0B7F7E5343446116EB49F600B60B44",
+    "runtime_calls_all_sessions_before_first_input": 7,
+    "true": 0,
+    "false": 7,
+    "omitted": 0
+  },
+  {
+    "navigation": "http://127.0.0.1:61578/clock",
+    "navigation_session": "5702DC8FBD9124CAD4CE1FC860331B97",
+    "runtime_calls_all_sessions_before_first_input": 7,
+    "true": 0,
+    "false": 7,
+    "omitted": 0
+  },
+  {
+    "navigation": "http://127.0.0.1:61578/clock",
+    "navigation_session": "F4CC4D5C0C6B0D0FBAF59E4902F001FE",
+    "runtime_calls_all_sessions_before_first_input": 3,
+    "true": 0,
+    "false": 3,
+    "omitted": 0
+  }
+]

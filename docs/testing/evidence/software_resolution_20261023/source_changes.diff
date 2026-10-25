@@ -1,0 +1,936 @@
+--- before/backend/database.py
++++ after/backend/database.py
+@@ -20,6 +20,8 @@
+     devices    - long-lived tokens issued to paired hardware (e.g. a
+                  wireless bedside button) so firmware can act on a
+                  user's due reminder without a browser session/cookie.
++    device_action_receipts - durable per-device request bindings/results,
++                 committed atomically with Taken/Snooze for safe retries.
+ """
+ 
+ import sqlite3
+@@ -94,6 +96,16 @@
+         )
+         """
+     )
++    conn.execute('''CREATE TABLE IF NOT EXISTS device_action_receipts (
++        device_id INTEGER NOT NULL REFERENCES devices(id),
++        request_id TEXT NOT NULL,
++        medicine_id INTEGER NOT NULL REFERENCES medicines(id),
++        fired_at TEXT NOT NULL,
++        action TEXT NOT NULL CHECK(action IN ('taken', 'snooze')),
++        medicine_name TEXT NOT NULL,
++        created_at TEXT NOT NULL,
++        PRIMARY KEY (device_id, request_id)
++    )''')
+     # Pre-account installations must retain their rows without exposing them
+     # to the first person who signs up. A caregiver can re-enter those doses.
+     columns = {row['name'] for row in conn.execute('PRAGMA table_info(medicines)')}
+@@ -248,7 +260,7 @@
+     """Atomically silence a due alarm and persist when to ring again."""
+     conn = get_db_connection()
+     try:
+-        query = 'UPDATE medicines SET is_due = 0, snoozed_until = ? WHERE id = ? AND is_due = 1'
++        query = 'UPDATE medicines SET is_due = 0, snoozed_until = ? WHERE id = ? AND is_due = 1 AND days_remaining > 0 AND is_archived = 0'
+         params = [until, medicine_id]
+         if user_id is not None:
+             query += ' AND user_id = ?'
+@@ -298,24 +310,78 @@
+     try:
+         conn.execute('BEGIN IMMEDIATE')
+         row = conn.execute(
+-            'SELECT * FROM medicines WHERE id = ? AND user_id = ? AND is_due = 1',
++            'SELECT * FROM medicines WHERE id = ? AND user_id = ? AND is_due = 1 AND days_remaining > 0 AND is_archived = 0',
+             (medicine_id, user_id),
+         ).fetchone()
+         if row is None or (expected_fired_at is not None and row['last_fired_at'] != expected_fired_at):
+             conn.rollback()
+             return None
+-        conn.execute('UPDATE medicines SET is_due = 0, snoozed_until = NULL WHERE id = ?', (medicine_id,))
+-        conn.execute('INSERT INTO dose_log (medicine_id, taken_at) VALUES (?, ?)',
+-                     (medicine_id, datetime.now().isoformat()))
+-        latest = conn.execute(
+-            'SELECT MAX(time) FROM medicines WHERE group_id = ? AND days_remaining > 0',
+-            (row['group_id'],),
+-        ).fetchone()[0]
+-        if row['time'] == latest:
+-            conn.execute('UPDATE medicines SET days_remaining = MAX(days_remaining - 1, 0) WHERE group_id = ?',
+-                         (row['group_id'],))
++        _acknowledge_row(conn, row)
+         conn.commit()
+         return get_medicine(medicine_id, user_id)
++    finally:
++        conn.close()
++
++
++def _acknowledge_row(conn, row):
++    """Apply Taken inside the caller's transaction (also used by devices)."""
++    conn.execute('UPDATE medicines SET is_due = 0, snoozed_until = NULL WHERE id = ?', (row['id'],))
++    conn.execute('INSERT INTO dose_log (medicine_id, taken_at) VALUES (?, ?)',
++                 (row['id'], datetime.now().isoformat()))
++    latest = conn.execute(
++        'SELECT MAX(time) FROM medicines WHERE group_id = ? AND days_remaining > 0 AND is_archived = 0',
++        (row['group_id'],),
++    ).fetchone()[0]
++    if row['time'] == latest:
++        conn.execute('UPDATE medicines SET days_remaining = MAX(days_remaining - 1, 0) WHERE group_id = ? AND is_archived = 0',
++                     (row['group_id'],))
++
++
++def _record_device_action(conn, device_id, data, row):
++    conn.execute('''INSERT INTO device_action_receipts
++        (device_id, request_id, medicine_id, fired_at, action, medicine_name, created_at)
++        VALUES (?, ?, ?, ?, ?, ?, ?)''',
++        (device_id, data['request_id'], row['id'], data['fired_at'], data['action'],
++         row['medicine_name'], datetime.now().isoformat()))
++
++
++def apply_device_action(token, user_id, data):
++    """Atomically bind a retry receipt and its effect to one owned firing.
++
++    Exact retries return the stored success even after restart/refiring. A
++    new request cannot affect a stale firing, and a key cannot change target
++    or action. Receipts are retained; pruning them requires a protocol policy.
++    """
++    conn = get_db_connection()
++    try:
++        conn.execute('BEGIN IMMEDIATE')
++        device = conn.execute('SELECT id FROM devices WHERE token = ? AND user_id = ?', (token, user_id)).fetchone()
++        if device is None:
++            conn.rollback(); return {'error':'unknown or missing device token'}, 401
++        receipt = conn.execute('SELECT * FROM device_action_receipts WHERE device_id = ? AND request_id = ?',
++                               (device['id'], data['request_id'])).fetchone()
++        if receipt is not None:
++            matches = (receipt['medicine_id'] == data['id'] and receipt['fired_at'] == data['fired_at']
++                       and receipt['action'] == data['action'])
++            conn.rollback()
++            if not matches: return {'error':'request_id already used for a different action or firing'}, 409
++            return {'success':True, 'medicine_name':receipt['medicine_name']}, 200
++        row = conn.execute('SELECT * FROM medicines WHERE id = ? AND user_id = ?', (data['id'], user_id)).fetchone()
++        if row is None:
++            conn.rollback(); return {'error':'reminder not found'}, 404
++        if not row['is_due'] or row['is_archived'] or row['days_remaining'] <= 0 or row['last_fired_at'] != data['fired_at']:
++            conn.rollback(); return {'error':'selected firing is no longer due'}, 409
++        if data['action'] == 'taken':
++            _acknowledge_row(conn, row)
++        else:
++            conn.execute('UPDATE medicines SET is_due = 0, snoozed_until = ? WHERE id = ?',
++                         ((datetime.now() + timedelta(minutes=5)).isoformat(), row['id']))
++        _record_device_action(conn, device['id'], data, row)
++        conn.commit()
++        return {'success':True, 'medicine_name':row['medicine_name']}, 200
++    except Exception:
++        conn.rollback()
++        raise
+     finally:
+         conn.close()
+ 
+--- before/backend/tts.py
++++ after/backend/tts.py
+@@ -4,8 +4,8 @@
+ Generates the spoken reminder using gTTS and caches the mp3 on disk so
+ the same medicine + language combination is never synthesized twice.
+ 
+-The template is fixed on purpose: "It's time to take your [name]."
+-The medicine name is treated as an opaque label - it is only ever
++The sentence is translated for each supported language. The medicine
++name is treated as an opaque label - it is only ever
+ substituted into the sentence, never parsed, split, or acted on. There
+ is no dosage information anywhere in this module.
+ """
+@@ -25,6 +25,24 @@
+     ("kn", "Kannada"),
+     ("bn", "Bengali"),
+ ]
++
++REMINDER_TEMPLATES = {
++    'en': "It's time to take your {medicine_name}.",
++    'hi': 'आपकी दवा {medicine_name} लेने का समय हो गया है।',
++    'ta': 'உங்கள் {medicine_name} மருந்தை எடுத்துக்கொள்ள வேண்டிய நேரம் இது.',
++    'te': 'మీ {medicine_name} మందు తీసుకునే సమయం అయింది.',
++    'kn': 'ನಿಮ್ಮ {medicine_name} ಔಷಧಿ ತೆಗೆದುಕೊಳ್ಳುವ ಸಮಯವಾಗಿದೆ.',
++    'bn': 'আপনার {medicine_name} ওষুধ খাওয়ার সময় হয়েছে।',
++}
++
++
++def build_reminder_text(medicine_name, language):
++    """Insert the exact label without translating, parsing or changing it."""
++    if not isinstance(language, str) or language not in REMINDER_TEMPLATES:
++        raise ValueError('unsupported reminder language')
++    if not isinstance(medicine_name, str) or not medicine_name.strip():
++        raise ValueError('medicine name must be nonempty text')
++    return REMINDER_TEMPLATES[language].format(medicine_name=medicine_name)
+ 
+ # mp3s are cached inside the frontend's static folder so Flask can
+ # serve them directly at /static/audio/<file>.mp3
+@@ -46,7 +64,10 @@
+     A short hash is appended to keep filenames unique even when two
+     medicine names slugify to the same thing.
+     """
+-    digest = hashlib.sha1(f"{medicine_name}|{language}".encode("utf-8")).hexdigest()[:10]
++    # Include actual content: old English-only files and later template edits
++    # cannot be mistaken for the current translated message. Keep old files.
++    sentence = build_reminder_text(medicine_name, language)
++    digest = hashlib.sha256(f"{language}|{sentence}".encode("utf-8")).hexdigest()[:16]
+     return f"{language}_{_slugify(medicine_name)}_{digest}.mp3"
+ 
+ 
+@@ -61,17 +82,19 @@
+     Return the audio filename (relative to static/audio/) for this
+     reminder, generating + caching it with gTTS if it doesn't exist yet.
+     """
++    filename = _cache_filename(medicine_name, language)
+     os.makedirs(AUDIO_DIR, exist_ok=True)
+-    filename = _cache_filename(medicine_name, language)
+     filepath = os.path.join(AUDIO_DIR, filename)
+ 
+     if not get_cached_audio(medicine_name, language):
+-        sentence = f"It's time to take your {medicine_name}."
++        sentence = build_reminder_text(medicine_name, language)
+         speech = gTTS(text=sentence, lang=language, timeout=(3, 8))
+         fd, temporary = tempfile.mkstemp(dir=AUDIO_DIR, suffix='.mp3')
+         os.close(fd)
+         try:
+             speech.save(temporary)
++            if not os.path.getsize(temporary):
++                raise OSError('speech provider returned an empty audio file')
+             os.replace(temporary, filepath)
+         finally:
+             if os.path.exists(temporary):
+--- before/backend/app.py
++++ after/backend/app.py
+@@ -22,6 +22,7 @@
+     POST /mark_taken       log a dose, decrement days if it was the last of the day
+     POST /mark_snooze      re-fire the same reminder in 5 minutes
+     POST /pair_device      mint a token for a piece of paired hardware
++    POST /api/device/reminder select one owned firing before a device action
+     POST /api/device/action   called by paired hardware instead of a browser
+ 
+ The frontend lives in ../frontend (templates/ and static/) so the two
+@@ -33,6 +34,7 @@
+ import os
+ import re
+ import secrets
++import sqlite3
+ from datetime import date
+ from functools import wraps
+ 
+@@ -83,6 +85,11 @@
+             and all(isinstance(t, str) and re.fullmatch(r'[0-9]{2}:[0-9]{2}', t)
+                     and int(t[:2]) < 24 and int(t[3:]) < 60 for t in times)
+             and len(times) == len(set(times)))
++
++
++def _valid_occurrence(data):
++    return (isinstance(data.get('id'), int) and not isinstance(data['id'], bool) and 0 < data['id'] <= 2**63 - 1
++            and isinstance(data.get('fired_at'), str) and 0 < len(data['fired_at']) <= 128)
+ 
+ 
+ def login_required(view):
+@@ -487,7 +494,9 @@
+             "due": True,
+             "id": due["id"],
+             "medicine_name": due["medicine_name"],
+-            "audio_url": url_for("static", filename=due["audio_path"]) if due["audio_path"] else None,
++            # Resolve against current translated content, not a legacy cached
++            # English-only path persisted before the template upgrade.
++            "audio_url": url_for("static", filename=audio_path) if (audio_path := tts.get_cached_audio(due['medicine_name'], due['language'])) else None,
+             "language": due["language"],
+             "fired_at": due["last_fired_at"],
+         }
+@@ -510,8 +519,8 @@
+ def mark_taken():
+     """Log the dose, silence the alarm, and count the day off if it was the last dose today."""
+     data = _json_object()
+-    if data is None or isinstance(data.get('id'), (dict, list, bool)):
+-        return jsonify({'error': 'JSON object with a reminder id required'}), 400
++    if data is None or not _valid_occurrence(data):
++        return jsonify({'error': 'reminder id and fired_at from /check_reminders required'}), 400
+     medicine_id = data.get("id")
+     row = database.get_medicine(medicine_id, user_id=session["user_id"])
+     if row is None:
+@@ -528,8 +537,8 @@
+ def mark_snooze():
+     """Silence the alarm now, re-ring the exact same reminder in 5 minutes."""
+     data = _json_object()
+-    if data is None or isinstance(data.get('id'), (dict, list, bool)):
+-        return jsonify({'error': 'JSON object with a reminder id required'}), 400
++    if data is None or not _valid_occurrence(data):
++        return jsonify({'error': 'reminder id and fired_at from /check_reminders required'}), 400
+     medicine_id = data.get("id")
+     row = database.get_medicine(medicine_id, user_id=session["user_id"])
+     if row is None:
+@@ -544,9 +553,22 @@
+ # API - paired hardware (see HARDWARE.md)
+ # A wireless bedside button, adaptive switch receiver, or other paired
+ # device has no browser and no session cookie, so it authenticates with a
+-# long-lived per-device token instead and acts on whichever reminder is
+-# currently due for the user that token is paired with.
+-# ---------------------------------------------------------------------------
++# long-lived per-device token. Select a firing first; every action/retry is
++# explicitly bound to it. Never silently select another reminder on retry.
++# ---------------------------------------------------------------------------
++
++@app.route('/api/device/reminder', methods=['POST'])
++def device_reminder():
++    data = _json_object()
++    if data is None or not isinstance(data.get('token', ''), str):
++        return jsonify({'error':'JSON object with text token required'}), 400
++    user_id = database.get_user_id_for_token(data.get('token')) if data.get('token') else None
++    if user_id is None: return jsonify({'error':'unknown or missing device token'}), 401
++    due = database.get_due_reminder(user_id)
++    response = jsonify({'due':False} if due is None else {
++        'due':True, 'id':due['id'], 'fired_at':due['last_fired_at'], 'medicine_name':due['medicine_name']})
++    response.headers['Cache-Control'] = 'no-store'
++    return response
+ 
+ @app.route("/api/device/action", methods=["POST"])
+ def device_action():
+@@ -562,18 +584,17 @@
+     if action not in ("taken", "snooze"):
+         return jsonify({"error": "action must be 'taken' or 'snooze'"}), 400
+ 
+-    due = database.get_due_reminder(user_id)
+-    if due is None:
+-        return jsonify({"error": "no reminder is currently due"}), 404
+-
+-    if action == "taken":
+-        if _perform_mark_taken(due['id'], user_id, due['last_fired_at']) is None:
+-            return jsonify({'error': 'reminder is no longer due'}), 409
+-    else:
+-        if not reminder_scheduler.schedule_snooze(due['id'], user_id, due['last_fired_at']):
+-            return jsonify({'error': 'reminder is no longer due'}), 409
+-
+-    return jsonify({"success": True, "medicine_name": due["medicine_name"]})
++    if (not _valid_occurrence(data) or not isinstance(data.get('request_id'), str)
++            or not re.fullmatch(r'[A-Za-z0-9_-]{8,128}', data['request_id'])):
++        return jsonify({'error':'id, fired_at and unique request_id required; select /api/device/reminder first'}), 400
++    try:
++        result, status = database.apply_device_action(token, user_id, data)
++    except sqlite3.Error:
++        app.logger.warning('Device transaction unavailable; retry the identical request')
++        return jsonify({'error':'temporarily unavailable; retry the identical request'}), 503
++    response = jsonify(result)
++    response.headers['Cache-Control'] = 'no-store'
++    return response, status
+ 
+ 
+ # ---------------------------------------------------------------------------
+--- before/tests/run_review3_audio.py
++++ after/tests/run_review3_audio.py
+@@ -6,15 +6,19 @@
+ from mutagen.mp3 import MP3
+ p=argparse.ArgumentParser();p.add_argument('--source',required=True);p.add_argument('--output',required=True);a=p.parse_args()
+ sys.path.insert(0,str(Path(a.source).resolve()/'backend'));import tts
+-out=Path(a.output).resolve();out.mkdir(parents=True,exist_ok=True);tts.AUDIO_DIR=str(out)
++out=Path(a.output).resolve();out.mkdir(parents=True,exist_ok=False);tts.AUDIO_DIR=str(out)
+ records=[]
+ for lang,name in tts.LANGUAGES:
+  start=time.perf_counter()
+  try:
+-  relative=tts.get_or_create_audio('Review dummy',lang);f=out/Path(relative).name;info=MP3(f).info
++  with patch('tts.gTTS',wraps=tts.gTTS) as provider:
++   relative=tts.get_or_create_audio('Review dummy',lang)
++   assert provider.call_count==1
++   provider.assert_called_once_with(text=tts.build_reminder_text('Review dummy',lang),lang=lang,timeout=(3,8))
++  f=out/Path(relative).name;info=MP3(f).info
+   assert f.stat().st_size>0 and info.length>0
+   digest=hashlib.sha256(f.read_bytes()).hexdigest();mtime=f.stat().st_mtime_ns
+-  actual={'language_code':lang,'bytes':f.stat().st_size,'duration_seconds':info.length,'sample_rate':info.sample_rate,'sha256':digest,'spoken_template':"It's time to take your Review dummy.",'human_pronunciation_verified':False}
++  actual={'language_code':lang,'bytes':f.stat().st_size,'duration_seconds':info.length,'sample_rate':info.sample_rate,'sha256':digest,'spoken_template':tts.build_reminder_text('Review dummy',lang),'provider_calls':provider.call_count,'human_pronunciation_verified':False}
+   status='PASS'
+  except Exception as e:status='FAIL';actual={'error':str(e),'human_pronunciation_verified':False};f=None
+  records.append({'id':'AUDIO-'+lang,'feature':name+' audio generation and MP3 validity','expected':'Nonempty parsable MP3 with positive duration','actual':actual,'status':status,'duration_seconds':time.perf_counter()-start,'evidence':f.name if f else 'results.json'})
+@@ -25,4 +29,5 @@
+   unchanged=f.stat().st_mtime_ns==mtime and hashlib.sha256(f.read_bytes()).hexdigest()==digest
+   records.append({'id':'CACHE-'+lang,'feature':name+' cached reuse with synthesis unavailable','expected':'Same file/hash/mtime without a synthesis call','actual':{'unchanged':unchanged,'gTTS_calls':synth.call_count,'scope':'synthesis disabled by controlled injection; not a physical network outage'},'status':'PASS' if unchanged else 'FAIL','duration_seconds':time.perf_counter()-start,'evidence':f.name})
+  print(lang,status,flush=True)
+- (out/'results.json').write_text(json.dumps({'recorded_at_utc':datetime.now(timezone.utc).isoformat(),'text_scope':'Existing fixed English sentence with six language codes; not verified translated speech','records':records},indent=2))
++ (out/'results.json').write_text(json.dumps({'recorded_at_utc':datetime.now(timezone.utc).isoformat(),'text_scope':'Six translated templates; exact provider inputs and valid MP3s checked; no human pronunciation/intelligibility verification','records':records},ensure_ascii=False,indent=2))
++sys.exit(1 if any(r['status']=='FAIL' for r in records) else 0)
+--- before/tests/review3_media.py
++++ after/tests/review3_media.py
+@@ -147,6 +147,12 @@
+                     assert 'Tap here' in state['prompt'], state
+                     click('#mic-indicator')
+                 state = until(lambda s: any(c['result'] == 'resolved' for c in s['audit']['calls']), 'play promise resolved after input')
++            # A resolved play promise can precede audio-output clock startup.
++            # Require actual progress within a bounded timeout before measuring
++            # sustained progress; stalled/paused media must still fail.
++            started_playback = until(lambda s: not s['media']['paused'] and s['media']['currentTime'] > .05,
++                                     'first observable audio progression')
++            result['first_progress'] = started_playback
+             before = sample('playing first sample')
+             time.sleep(.55)
+             after = sample('playing second sample')
+--- before/tests/run_review3_browser.py
++++ after/tests/run_review3_browser.py
+@@ -79,7 +79,7 @@
+     recovered=fixture(page,user);assert not recovered['medicines'][0]['is_due'];return {'failure':actual,'recovered_after_network_restored':True}
+    def external(page):
+     user='review_ui_external';login(page,user);token=fixture(page,user,'pair')['token']
+-    response=page.request.post(base+'/api/device/action',data={'token':token,'action':'taken'});assert response.status==200
++    response=page.request.post(base+'/api/device/action',data={'token':token,'action':'taken','id':(selected:=page.request.post(base+'/api/device/reminder',data={'token':token}).json())['id'],'fired_at':selected['fired_at'],'request_id':'browser-external-request'});assert response.status==200
+     page.wait_for_function("!document.querySelector('#alarm-view').classList.contains('visible')",timeout=19000)
+     return {'hardware_message':'SIMULATED ESP32 COMMUNICATION','HTTP':200,'browser_reconciled_without_refresh':True}
+    def autoplay(page):
+--- before/tests/test_review3.py
++++ after/tests/test_review3.py
+@@ -42,6 +42,9 @@
+         gid = database.add_medicine(owner or self.owner['id'], name, list(times), days, 'en')
+         return gid, list(database.get_group(gid))
+ 
++    def occurrence(self, mid):
++        return {'id':mid,'fired_at':database.get_medicine(mid)['last_fired_at']}
++
+     def test_signup_login_logout_and_invalid_credentials(self):
+         c = app.test_client()
+         self.assertEqual(c.post('/signup', data={'username':' NEW_USER ', 'display_name':'New User', 'password':'dummy-password'}).status_code, 302)
+@@ -66,7 +69,7 @@
+         for route in ['/', '/clock','/logs','/dashboard','/export']:
+             self.assertNotIn(b'Other private medicine',self.client.get(route).data)
+         for route in ['/mark_taken','/mark_snooze']:
+-            self.assertEqual(self.client.post(route,json={'id':rows[0]['id']}).status_code,404)
++            self.assertEqual(self.client.post(route,json=self.occurrence(rows[0]['id'])).status_code,404)
+         self.assertEqual(self.client.post('/delete_medicine',json={'id':gid}).status_code,404)
+         self.assertEqual(database.get_medicine(rows[0]['id'])['days_remaining'],3)
+ 
+@@ -106,10 +109,10 @@
+         gid,rows=self.medicine(times=('08:00','20:00'),days=2)
+         for i,row in enumerate(rows):
+             database.mark_fired(row['id'],None)
+-            response=self.client.post('/mark_taken',json={'id':row['id']})
++            response=self.client.post('/mark_taken',json=self.occurrence(row['id']))
+             self.assertEqual(response.status_code,200)
+             self.assertEqual(response.json['days_remaining'],2 if i==0 else 1)
+-            self.assertEqual(self.client.post('/mark_taken',json={'id':row['id']}).status_code,409)
++            self.assertEqual(self.client.post('/mark_taken',json=self.occurrence(row['id'])).status_code,409)
+         self.assertEqual(len(database.get_dose_history(self.owner['id'])),2)
+         self.assertEqual({r['days_remaining'] for r in database.get_group(gid)},{1})
+ 
+@@ -118,7 +121,7 @@
+         barrier=threading.Barrier(2)
+         def take(_):
+             c=self.client_for(self.owner['id']);barrier.wait()
+-            return c.post('/mark_taken',json={'id':mid}).status_code
++            return c.post('/mark_taken',json=self.occurrence(mid)).status_code
+         with concurrent.futures.ThreadPoolExecutor(max_workers=2) as pool: statuses=list(pool.map(take,range(2)))
+         self.assertEqual(sorted(statuses),[200,409])
+         self.assertEqual(len(database.get_dose_history(self.owner['id'])),1)
+@@ -132,7 +135,7 @@
+ 
+     def test_deleting_due_medicine_clears_alarm_and_preserves_history(self):
+         gid,rows=self.medicine();mid=rows[0]['id'];database.mark_fired(mid,None)
+-        self.client.post('/mark_taken',json={'id':mid});database.mark_fired(mid,None)
++        self.client.post('/mark_taken',json=self.occurrence(mid));database.mark_fired(mid,None)
+         self.assertEqual(self.client.post('/delete_medicine',json={'id':gid}).status_code,200)
+         self.assertFalse(self.client.get('/check_reminders').json['due'])
+         self.assertEqual(len(database.get_dose_history(self.owner['id'])),1)
+@@ -160,11 +163,14 @@
+         # Reconstruct the immediately preceding schema in this disposable DB.
+         with database.get_db_connection() as conn:
+             conn.execute('ALTER TABLE medicines DROP COLUMN is_archived')
++            conn.execute('DROP TABLE device_action_receipts')
+         database.init_db()
+         self.assertEqual(dict(database.get_dose_history(self.owner['id'])[0]), before)
+         self.assertEqual(database.get_user_id_for_token(token), self.owner['id'])
+         self.assertEqual(database.get_group_summary(gid, self.owner['id'])['times'], ['08:00'])
+         self.assertEqual(database.get_medicine(rows[0]['id'])['is_archived'], 0)
++        with database.get_db_connection() as conn:
++            self.assertEqual(conn.execute('SELECT COUNT(*) FROM device_action_receipts').fetchone()[0],0)
+ 
+     def test_restart_database_retains_accounts_tokens_logs_and_snooze(self):
+         _,rows=self.medicine(times=('08:00','20:00'));a,b=rows
+@@ -199,7 +205,7 @@
+             clock.now.return_value=datetime(2026,10,23,9,0);clock.combine.side_effect=datetime.combine;clock.strptime.side_effect=datetime.strptime;clock.fromisoformat.side_effect=datetime.fromisoformat
+             scheduler._check_due_reminders()
+         self.assertTrue(all(database.get_medicine(i)['is_due']==1 for i in ids))
+-        self.assertEqual(self.client.post('/mark_taken',json={'id':ids[0]}).status_code,200)
++        self.assertEqual(self.client.post('/mark_taken',json=self.occurrence(ids[0])).status_code,200)
+         self.assertEqual(self.client.get('/check_reminders').json['id'],ids[1])
+ 
+     def test_repeated_snooze_unit_clock_and_no_taken_logs(self):
+@@ -208,7 +214,7 @@
+         for _ in range(2):
+             with patch('scheduler.datetime') as clock:
+                 clock.now.return_value=now
+-                self.assertEqual(self.client.post('/mark_snooze',json={'id':mid}).status_code,200)
++                self.assertEqual(self.client.post('/mark_snooze',json=self.occurrence(mid)).status_code,200)
+                 deadline=now+timedelta(seconds=300)
+                 self.assertEqual(datetime.fromisoformat(database.get_medicine(mid)['snoozed_until']),deadline)
+                 clock.fromisoformat.side_effect=datetime.fromisoformat;clock.now.return_value=deadline
+@@ -224,16 +230,21 @@
+         self.assertNotIn(token,self.client.get('/logs').get_data(as_text=True))
+         for payload in [{},{'token':'invalid','action':'taken'}]:self.assertEqual(self.client.post('/api/device/action',json=payload).status_code,401)
+         _,rows=self.medicine(owner=self.other['id']);database.mark_fired(rows[0]['id'],None)
+-        self.assertEqual(self.client.post('/api/device/action',json={'token':token,'action':'taken'}).status_code,404)
++        self.assertFalse(self.client.post('/api/device/reminder',json={'token':token}).json['due'])
+         self.assertEqual(database.get_medicine(rows[0]['id'])['is_due'],1)
+ 
+-    def test_device_multiple_due_selection_is_documented_not_replay_safe(self):
++    def test_device_multiple_due_selection_requires_bound_retry(self):
+         ids=[self.medicine(name='Pending '+str(i))[1][0]['id'] for i in range(2)]
+         for mid in ids:database.mark_fired(mid,None)
+         token=database.create_device_token(self.owner['id'],'Simulated switch')
+-        for _ in ids:self.assertEqual(self.client.post('/api/device/action',json={'token':token,'action':'taken'}).status_code,200)
++        self.assertEqual(self.client.post('/api/device/action',json={'token':token,'action':'taken'}).status_code,400)
++        body={'token':token,'action':'taken',**self.occurrence(ids[0]),'request_id':'review3-retry-request'}
++        for _ in range(2):self.assertEqual(self.client.post('/api/device/action',json=body).status_code,200)
++        self.assertEqual(len(database.get_dose_history(self.owner['id'])),1)
++        self.assertEqual(database.get_medicine(ids[1])['is_due'],1)
++        body={**body,**self.occurrence(ids[1]),'request_id':'review3-next-request'}
++        self.assertEqual(self.client.post('/api/device/action',json=body).status_code,200)
+         self.assertEqual(len(database.get_dose_history(self.owner['id'])),2)
+-        self.assertEqual(self.client.post('/api/device/action',json={'token':token,'action':'taken'}).status_code,404)
+ 
+     def test_tts_failure_is_atomic_and_visual_alarm_remains(self):
+         _,rows=self.medicine()
+--- before/tests/run_review3_live.py
++++ after/tests/run_review3_live.py
+@@ -46,7 +46,7 @@
+   return ESP32Simulator(base,token),opener
+  def digest():
+   conn=sqlite3.connect(f'file:{db}?mode=ro',uri=True)
+-  state={t:conn.execute('SELECT * FROM '+t+' ORDER BY 1').fetchall() for t in ['users','medicines','dose_log','devices']};conn.close()
++  state={t:conn.execute('SELECT * FROM '+t+' ORDER BY 1').fetchall() for t in ['users','medicines','dose_log','devices','device_action_receipts']};conn.close()
+   return hashlib.sha256(json.dumps(state,sort_keys=True).encode()).hexdigest()
+  start_server()
+  try:
+@@ -90,23 +90,34 @@
+   durations=[s['duration_ms'] for s in samples if s['http_status']==200];median=statistics.median(durations) if durations else None;p95=sorted(durations)[math.ceil(.95*len(durations))-1] if durations else None
+   record('B03-LOCAL','Loopback HTTP response time (LAN variant not measured)','30 successful requests; median <=500 ms, nearest-rank p95 <=1000 ms',{'requests':len(samples),'successes':len(durations),'median_ms':median,'p95_ms':p95,'scope':'127.0.0.1 loopback, not LAN','timer':'perf_counter: POST start through complete body; LED time excluded'},'PASS' if len(durations)==30 and median<=500 and p95<=1000 else 'FAIL')
+   record('B03-LAN','Genuine ESP32/LAN response time','Same target measured across independent LAN devices','No ESP32 or second independent LAN client; loopback values are not substituted','NOT TESTED')
+-  no_due=sim.action('taken');record('SIM-NO-DUE','Paired token without due row','HTTP 404',no_due,'PASS' if no_due['http_status']==404 else 'FAIL')
++  no_due=sim.select();record('SIM-NO-DUE','Paired token without due row','Selection HTTP 200, due=false; no action submitted',no_due,'PASS' if no_due['http_status']==200 and no_due['response']=={'due':False} else 'FAIL')
+   missing=sim.action('taken',omit_token=True);record('SIM-MISSING','Missing device token','HTTP 401',missing,'PASS' if missing['http_status']==401 else 'FAIL')
+   invalid_action=sim.action('unsupported');record('SIM-ACTION','Unsupported action','HTTP 400',invalid_action,'PASS' if invalid_action['http_status']==400 else 'FAIL')
+-  fixture('bench_duplicate','due');dup,_=paired('bench_duplicate');first=dup.action('taken');second=dup.action('taken');state=fixture('bench_duplicate')
+-  record('SIM-DUPLICATE','Sequential repeated single-due request','First 200; repeat 404; one log',{'statuses':[first['http_status'],second['http_status']],'logs':len(state['logs'])},'PASS' if first['http_status']==200 and second['http_status']==404 and len(state['logs'])==1 else 'FAIL')
+-  fixture('bench_other','due');isolation,_=paired('bench_isolation');before=fixture('bench_other');response=isolation.action('taken');after=fixture('bench_other')
++  fixture('bench_duplicate','due');dup,_=paired('bench_duplicate');body=dup.prepare('taken');first=dup.action('taken',payload=body);second=dup.action('taken',payload=body);state=fixture('bench_duplicate')
++  record('SIM-DUPLICATE','Sequential repeated single-due request','First and exact retry 200; one log',{'statuses':[first['http_status'],second['http_status']],'logs':len(state['logs'])},'PASS' if first['http_status']==200 and second['http_status']==200 and len(state['logs'])==1 else 'FAIL')
++  fixture('bench_other','due');isolation,_=paired('bench_isolation');before=fixture('bench_other');response=isolation.action('taken',payload={'token':isolation.token,'action':'taken','id':before['medicines'][0]['id'],'fired_at':before['medicines'][0]['last_fired_at'],'request_id':'wrong-owner-request'});after=fixture('bench_other')
+   record('SIM-ISOLATION','Paired device owner isolation','A cannot acknowledge B; 404 and B state unchanged',{'http_status':response['http_status'],'other_account_state_unchanged':before==after},'PASS' if response['http_status']==404 and before==after else 'FAIL')
+-  con,_=paired('bench_concurrent');fixture('bench_concurrent','due');barrier=threading.Barrier(2)
+-  def action(_):barrier.wait();return con.action('taken')
++  con,_=paired('bench_concurrent');fixture('bench_concurrent','due');con_body=con.prepare('taken');barrier=threading.Barrier(2)
++  def action(_):barrier.wait();return con.action('taken',payload=con_body)
+   with concurrent.futures.ThreadPoolExecutor(max_workers=2) as pool:responses=list(pool.map(action,range(2)))
+   statuses=sorted(r['http_status'] for r in responses);logs=len(fixture('bench_concurrent')['logs'])
+-  record('SIM-CONCURRENT','Real concurrent duplicate HTTP requests','Exactly one 200; other 404/409; one log',{'statuses':statuses,'logs':logs},'PASS' if statuses[0]==200 and statuses[1] in (404,409) and logs==1 else 'FAIL')
+-  replay,_=paired('bench_replay');fixture('bench_replay','due');fixture('bench_replay','due');rr=[replay.action('taken'),replay.action('taken')]
+-  record('SIM-REPLAY-LIMIT','Documented multiple-due selection limitation','Identical id-less body may select two different due rows',{'statuses':[r['http_status'] for r in rr],'logs':len(fixture('bench_replay')['logs']),'retry_safe':False},'PASS' if len(fixture('bench_replay')['logs'])==2 else 'FAIL')
++  record('SIM-CONCURRENT','Real concurrent duplicate HTTP requests','Two 200 receipts; one effect and log',{'statuses':statuses,'logs':logs},'PASS' if statuses==[200,200] and logs==1 else 'FAIL')
++  for action_name in ('taken','snooze'):
++   user='bench_replay_'+action_name;replay,_=paired(user);fixture(user,'due');fixture(user,'due');body=replay.prepare(action_name)
++   first=replay.action(action_name,payload=body);state_first=fixture(user);second=replay.action(action_name,payload=body);state=fixture(user)
++   unchanged=state['medicines']==state_first['medicines'] and state['logs']==state_first['logs']
++   record('SIM-REPLAY-'+action_name.upper(),'Multiple-due exact retry bound to one firing','Two 200s, same state after retry, one other reminder still due',
++    {'statuses':[first['http_status'],second['http_status']],'logs':len(state['logs']),'retry_state_unchanged':unchanged,'still_due':sum(r['is_due'] for r in state['medicines']),'request_id':body['request_id']},
++    'PASS' if first['http_status']==second['http_status']==200 and unchanged and sum(r['is_due'] for r in state['medicines'])==1 and len(state['logs'])==(1 if action_name=='taken' else 0) else 'FAIL')
++  lost,_=paired('bench_lost_response');fixture('bench_lost_response','due');fixture('bench_lost_response','due');lost_body=lost.prepare('taken')
++  discarded=lost.action('taken',payload=lost_body)  # Controlled client discards a received result, modelling response loss after commit.
++  stop_server();start_server();retried=lost.action('taken',payload=lost_body);state=fixture('bench_lost_response')
++  record('SIM-LOST-RESPONSE','Discarded response followed by retry after real server restart','Receipt replay; one log; other reminder remains due',
++   {'first_http_status':discarded['http_status'],'retry_http_status':retried['http_status'],'logs':len(state['logs']),'still_due':sum(r['is_due'] for r in state['medicines']),'scope':'controlled client-side response discard; no claim of real packet loss'},
++   'PASS' if discarded['http_status']==retried['http_status']==200 and len(state['logs'])==1 and sum(r['is_due'] for r in state['medicines'])==1 else 'FAIL')
+   outages=[]
+   for i in range(6):
+-   fixture('bench_taken','due');before=len(fixture('bench_taken')['logs']);stop_server();response=sim.action('taken');start_server();after=len(fixture('bench_taken')['logs']);recovery=sim.action('taken')
++   fixture('bench_taken','due');before=len(fixture('bench_taken')['logs']);outage_body=sim.prepare('taken');stop_server();response=sim.action('taken',payload=outage_body);start_server();after=len(fixture('bench_taken')['logs']);recovery=sim.action('taken',payload=outage_body)
+    outages.append({'trial':i+1,'offline_http_status':response['http_status'],'transport_error':response['transport_error'],'logs_unchanged_during_outage':before==after,'recovery_http_status':recovery['http_status']})
+   record('OUTAGE-HTTP','Six real backend-stop/restart trials','No success or new log while stopped; intended action succeeds after restart',outages,'PASS' if all(t['offline_http_status'] is None and t['logs_unchanged_during_outage'] and t['recovery_http_status']==200 for t in outages) else 'FAIL')
+   with opener.open(base+'/check_reminders') as r:session_status=r.status
+@@ -117,3 +128,5 @@
+  finally:
+   if server and server.poll() is None:stop_server()
+   log.close()
++
++sys.exit(1 if any(r['status']=='FAIL' for r in records) else 0)
+--- before/tests/run_review3_suite.py
++++ after/tests/run_review3_suite.py
+@@ -31,11 +31,25 @@
+         def addSuccess(self,test):super().addSuccess(test);self.record(test,'PASS','')
+         def addFailure(self,test,err):super().addFailure(test,err);self.record(test,'FAIL',self._exc_info_to_string(err,test))
+         def addError(self,test,err):super().addError(test,err);self.record(test,'FAIL',self._exc_info_to_string(err,test))
++        def addSubTest(self,test,subtest,err):
++            super().addSubTest(test,subtest,err)
++            if err is not None:
++                detail=str(subtest)+'\n'+self._exc_info_to_string(err,test)
++                prior=next((r for r in records if r['id']==test.id()),None)
++                if prior:prior['actual']+='\n'+detail
++                else:self.record(test,'FAIL',detail)
+         def addSkip(self,test,reason):super().addSkip(test,reason);self.record(test,'SKIP',reason)
+-        def record(self,test,status,detail):records.append({'id':test.id(),'status':status,'duration_seconds':time.perf_counter()-self.started,'actual':detail or 'All assertions met'})
++        def record(self,test,status,detail):
++            prior=next((r for r in records if r['id']==test.id()),None)
++            if prior:
++                if status=='FAIL':prior['status']='FAIL'
++                prior['duration_seconds']=time.perf_counter()-self.started
++                if detail:prior['actual']+='\n'+detail
++            else:records.append({'id':test.id(),'status':status,'duration_seconds':time.perf_counter()-self.started,'actual':detail or 'All assertions met'})
+     suite=unittest.defaultTestLoader.discover(str(Path(args.source)/'tests'),pattern='test*.py')
+     result=unittest.TextTestRunner(verbosity=2,resultclass=Result).run(suite)
+-    payload={'recorded_at_utc':datetime.now(timezone.utc).isoformat(),'environment':'temporary exported source; disposable SQLite and audio caches','tests_run':result.testsRun,'passed':sum(r['status']=='PASS' for r in records),'failed':len(result.failures)+len(result.errors),'skipped':len(result.skipped),'records':records}
++    assert len(records)==result.testsRun, 'Each unittest method must have exactly one case record'
++    payload={'recorded_at_utc':datetime.now(timezone.utc).isoformat(),'environment':'temporary exported source; disposable SQLite and audio caches','tests_run':result.testsRun,'passed':sum(r['status']=='PASS' for r in records),'failed':sum(r['status']=='FAIL' for r in records),'failure_assertions':len(result.failures)+len(result.errors),'skipped':len(result.skipped),'records':records}
+     (out/'results.json').write_text(json.dumps(payload,indent=2))
+     sys.exit(0 if result.wasSuccessful() else 1)
+ elif __name__=='__main__':sys.exit(main())
+--- before/tests/test_hardware.py
++++ after/tests/test_hardware.py
+@@ -3,6 +3,7 @@
+ import sys
+ import tempfile
+ import unittest
++import uuid
+ from datetime import datetime, timedelta
+ from pathlib import Path
+ from unittest.mock import patch
+@@ -36,8 +37,12 @@
+         self.tmp.cleanup()
+ 
+     def action(self, action, token=None):
+-        return self.client.post('/api/device/action', json={
+-            'token': self.token if token is None else token, 'action': action})
++        return self.client.post('/api/device/action', json=self.action_body(action,token))
++
++    def action_body(self, action, token=None):
++        return {'token':self.token if token is None else token, 'action':action,
++                'id':self.mid,'fired_at':database.get_medicine(self.mid)['last_fired_at'] or 'not-fired',
++                'request_id':uuid.uuid4().hex}
+ 
+     def test_pairing_token_is_owned_and_displayed_once(self):
+         self.assertEqual(database.get_user_id_for_token(self.token), self.owner['id'])
+@@ -47,21 +52,24 @@
+     def test_invalid_token_action_and_no_due_statuses(self):
+         self.assertEqual(self.action('taken', token='invalid-token').status_code, 401)
+         self.assertEqual(self.action('unknown').status_code, 400)
+-        self.assertEqual(self.action('taken').status_code, 404)
++        self.assertFalse(self.client.post('/api/device/reminder',json={'token':self.token}).json['due'])
++        self.assertEqual(self.action('taken').status_code, 409)
+ 
+     def test_hardware_taken_logs_once(self):
+         database.mark_fired(self.mid, None)
+-        response = self.action('taken')
++        body = self.action_body('taken')
++        response = self.client.post('/api/device/action',json=body)
+         self.assertEqual(response.status_code, 200)
+         self.assertEqual(response.json, {'success': True, 'medicine_name': 'Switch test'})
+-        self.assertEqual(self.action('taken').status_code, 404)
++        self.assertEqual(self.client.post('/api/device/action',json=body).status_code, 200)
++        self.assertEqual(self.action('taken').status_code, 409)
+         self.assertEqual(len(database.get_dose_history(self.owner['id'])), 1)
+         self.assertEqual(database.get_medicine(self.mid)['days_remaining'], 1)
+ 
+     def test_hardware_snooze_survives_a_scheduler_restart(self):
+         database.mark_fired(self.mid, None)
+         now = datetime.now()
+-        with patch('scheduler.datetime') as clock:
++        with patch('database.datetime') as clock:
+             clock.now.return_value = now
+             self.assertEqual(self.action('snooze').status_code, 200)
+         row = database.get_medicine(self.mid)
+@@ -81,14 +89,16 @@
+         group = database.add_medicine(self.other['id'], 'Other account', ['08:00'], 1, 'en')
+         other_mid = database.get_group(group)[0]['id']
+         database.mark_fired(other_mid, None)
+-        self.assertEqual(self.action('taken').status_code, 404)
++        body={**self.action_body('taken'),'id':other_mid,'fired_at':database.get_medicine(other_mid)['last_fired_at']}
++        self.assertEqual(self.client.post('/api/device/action',json=body).status_code, 404)
+         self.assertEqual(database.get_medicine(other_mid)['is_due'], 1)
+ 
+     def test_overlapping_device_action_returns_conflict(self):
+         database.mark_fired(self.mid, None)
+-        with patch('database.acknowledge_due', return_value=None):
+-            self.assertEqual(self.action('taken').status_code, 409)
+-        self.assertEqual(database.get_medicine(self.mid)['is_due'], 1)
++        body=self.action_body('taken')
++        database.snooze_due(self.mid,(datetime.now()+timedelta(minutes=5)).isoformat(),self.owner['id'])
++        self.assertEqual(self.client.post('/api/device/action',json=body).status_code, 409)
++        self.assertEqual(len(database.get_dose_history(self.owner['id'])),0)
+ 
+     def test_audio_failure_does_not_block_hardware(self):
+         with patch('tts.get_or_create_audio', side_effect=RuntimeError('offline')):
+--- before/tests/esp32_simulator.py
++++ after/tests/esp32_simulator.py
+@@ -1,18 +1,17 @@
+-"""SIMULATED ESP32 COMMUNICATION over real HTTP. No GPIO, LED or Wi-Fi claims.
++"""SIMULATED ESP32 COMMUNICATION; real HTTP, no GPIO/LED/Wi-Fi claims.
+ 
+-CLI: DOSECLOCK_DEVICE_TOKEN=<private dummy token> python tests/esp32_simulator.py \
+-       --host http://127.0.0.1:5050 --action taken
+-Does not automatically retry: an id-less retry may acknowledge another due row.
++A new action selects one firing. Retries MUST reuse the prepared body.
++CLI --request-file retains identity without storing the private token.
+ """
+-import argparse,json,os,time,urllib.error,urllib.request
++import argparse,json,os,time,urllib.error,urllib.request,uuid
++from pathlib import Path
+ 
+ class ESP32Simulator:
+     def __init__(self,host,token=None,timeout=3):
+         self.host=host.rstrip('/');self.token=token;self.timeout=timeout
+-    def action(self,action,token=None,omit_token=False):
+-        payload={'action':action}
+-        if not omit_token:payload['token']=self.token if token is None else token
+-        request=urllib.request.Request(self.host+'/api/device/action',data=json.dumps(payload).encode(),headers={'Content-Type':'application/json'},method='POST')
++
++    def _post(self,path,payload,operation):
++        request=urllib.request.Request(self.host+path,data=json.dumps(payload).encode(),headers={'Content-Type':'application/json'},method='POST')
+         start=time.perf_counter()
+         try:
+             with urllib.request.urlopen(request,timeout=self.timeout) as response:status=response.status;body=response.read().decode()
+@@ -21,10 +20,41 @@
+         except (OSError,urllib.error.URLError) as e:status=None;body='';error=str(e)
+         try:result=json.loads(body) if body else None
+         except ValueError:result=body
+-        return {'label':'SIMULATED ESP32 COMMUNICATION','transport':'real HTTP; caller must identify loopback versus LAN','action':action,'token':'<redacted>' if not omit_token else '<omitted>','http_status':status,'response':result,'transport_error':error,'duration_ms':(time.perf_counter()-start)*1000}
++        return {'label':'SIMULATED ESP32 COMMUNICATION','transport':'real HTTP; identify loopback versus LAN',
++            'operation':operation,'token':'<redacted>' if 'token' in payload else '<omitted>',
++            'http_status':status,'response':result,'transport_error':error,'duration_ms':(time.perf_counter()-start)*1000}
++
++    def select(self):return self._post('/api/device/reminder',{'token':self.token},'select firing')
++
++    def prepare(self,action):
++        selection=self.select()
++        if selection['http_status']!=200 or not selection['response'].get('due'):
++            raise RuntimeError('No firing selected: '+json.dumps(selection))
++        row=selection['response']
++        return {'token':self.token,'action':action,'id':row['id'],'fired_at':row['fired_at'],'request_id':uuid.uuid4().hex}
++
++    def action(self,action,token=None,omit_token=False,payload=None):
++        if payload is None:
++            if token is not None or omit_token or action not in ('taken','snooze'):
++                payload={'action':action}
++                if not omit_token:payload['token']=self.token if token is None else token
++            else:payload=self.prepare(action)
++        result=self._post('/api/device/action',payload,'bound action')
++        result['action']=payload.get('action')
++        result['request_id']=payload.get('request_id')
++        return result
+ 
+ if __name__=='__main__':
+-    p=argparse.ArgumentParser();p.add_argument('--host',required=True);p.add_argument('--action',choices=['taken','snooze'],required=True);a=p.parse_args()
+-    token=os.environ.get('DOSECLOCK_DEVICE_TOKEN')
+-    if not token:p.error('Set DOSECLOCK_DEVICE_TOKEN privately; do not commit or record it.')
+-    print(json.dumps(ESP32Simulator(a.host,token).action(a.action),indent=2))
++    p=argparse.ArgumentParser();p.add_argument('--host',required=True);p.add_argument('--action',choices=['taken','snooze'],required=True)
++    p.add_argument('--request-file',required=True,help='New file for an intentional action; reuse same file for every retry')
++    a=p.parse_args();token=os.environ.get('DOSECLOCK_DEVICE_TOKEN')
++    if not token:p.error('Set DOSECLOCK_DEVICE_TOKEN privately; never commit or record it.')
++    sim=ESP32Simulator(a.host,token);path=Path(a.request_file)
++    if path.exists():
++        payload=json.loads(path.read_text())
++        if payload.get('action')!=a.action:p.error('Pending request has a different action; retry it unchanged.')
++        payload['token']=token
++    else:
++        payload=sim.prepare(a.action)
++        with path.open('x') as f:json.dump({k:v for k,v in payload.items() if k!='token'},f)
++    print(json.dumps(sim.action(a.action,payload=payload),indent=2))
+--- before/hardware/switch_hub.ino
++++ after/hardware/switch_hub.ino
+@@ -32,6 +32,10 @@
+ 
+ #include <WiFi.h>
+ #include <HTTPClient.h>
++#include <ArduinoJson.h> // ArduinoJson 7
++#include <Preferences.h>
++#include <esp_system.h>
++#include <string.h>
+ 
+ // ---- Configure before flashing --------------------------------------
+ constexpr char WIFI_SSID[] = "your-wifi-name";
+@@ -60,33 +64,116 @@
+   }
+ }
+ 
+-void sendAction(const char *action) {
++// Save the selected occurrence and request ID BEFORE sending. No token is
++// stored in this queue. Exact retries survive reboot and never select a new
++// reminder. Server receipts make a lost successful response safe to retry.
++Preferences retryStore;
++String pendingBody;
++bool storageReady = false;
++uint32_t lastRetryAt = 0;
++constexpr uint32_t RETRY_INTERVAL_MS = 5000;
++
++bool validPending(JsonDocument &doc) {
++  const char *action = doc["action"] | "";
++  return doc["id"].is<int>() && doc["id"].as<int>() > 0 &&
++         doc["fired_at"].is<const char *>() && strlen(doc["fired_at"].as<const char *>()) > 0 &&
++         doc["request_id"].is<const char *>() && strlen(doc["request_id"].as<const char *>()) >= 8 &&
++         (strcmp(action, "taken") == 0 || strcmp(action, "snooze") == 0);
++}
++
++void attemptPending() {
++  if (!storageReady || pendingBody.length() == 0) return;
++  lastRetryAt = millis();
+   if (WiFi.status() != WL_CONNECTED) {
+-    Serial.println("Wi-Fi disconnected; no action sent.");
+-    blinkLed(8, 60); // fast blink = no network, nothing was sent
+-    return;
+-  }
+-
++    Serial.println("Wi-Fi disconnected; selected action retained for retry.");
++    blinkLed(8, 60);
++    return;
++  }
++  JsonDocument request;
++  if (deserializeJson(request, pendingBody) || !validPending(request)) {
++    Serial.println("Invalid stored action; no request sent. Caregiver reset required.");
++    return;
++  }
++  request["token"] = DEVICE_TOKEN;
++  String wireBody;
++  serializeJson(request, wireBody);
+   HTTPClient http;
+   http.begin(String(DOSECLOCK_HOST) + "/api/device/action");
++  http.setTimeout(3000);
+   http.addHeader("Content-Type", "application/json");
+-  String body = String("{\"token\":\"") + DEVICE_TOKEN + "\",\"action\":\"" + action + "\"}";
+-  int status = http.POST(body);
+-  Serial.printf("Sent '%s', server responded %d\n", action, status);
+-  if (status < 0) {
+-    Serial.printf("HTTP error: %s\n", HTTPClient::errorToString(status).c_str());
+-  }
++  int status = http.POST(wireBody);
++  String response = http.getString();
+   http.end();
+-
+-  // Confirmation feedback the patient (or a caregiver in the room) can
+-  // see even if they can't see the clock screen from the bed: two slow
+-  // blinks for success, five fast blinks if the server rejected it
+-  // (e.g. an unpaired token, or no reminder currently due).
+-  if (status == 200) {
+-    blinkLed(2, 150);
++  Serial.printf("Bound action responded %d\n", status); // Never print credentials/body.
++  JsonDocument result;
++  bool confirmed = status == 200 && !deserializeJson(result, response) && result["success"] == true;
++  bool rejected = status >= 400 && status < 500;
++  if (confirmed || rejected) {
++    if (!retryStore.remove("pending")) {
++      Serial.println("Could not clear local queue; retaining identical request.");
++      blinkLed(5, 60);
++      return;
++    }
++    pendingBody = "";
++    blinkLed(confirmed ? 2 : 5, confirmed ? 150 : 60);
+   } else {
+-    blinkLed(5, 60);
+-  }
++    Serial.println("Result uncertain; will retry the identical selected action.");
++    blinkLed(5, 60);
++  }
++}
++
++void sendAction(const char *action) {
++  if (!storageReady) {
++    Serial.println("Retry storage unavailable; no action sent.");
++    blinkLed(5, 60);
++    return;
++  }
++  if (pendingBody.length() > 0) {
++    Serial.println("Resolving the original pending action before accepting another.");
++    attemptPending();
++    return;
++  }
++  if (WiFi.status() != WL_CONNECTED) {
++    Serial.println("Wi-Fi disconnected; no firing selected or action sent.");
++    blinkLed(8, 60);
++    return;
++  }
++  HTTPClient http;
++  http.begin(String(DOSECLOCK_HOST) + "/api/device/reminder");
++  http.setTimeout(3000);
++  http.addHeader("Content-Type", "application/json");
++  JsonDocument auth;
++  auth["token"] = DEVICE_TOKEN;
++  String authBody;
++  serializeJson(auth, authBody);
++  int status = http.POST(authBody);
++  String response = http.getString();
++  http.end();
++  JsonDocument selected;
++  if (status != 200 || deserializeJson(selected, response) || selected["due"] != true ||
++      !selected["id"].is<int>() || !selected["fired_at"].is<const char *>()) {
++    Serial.println("No current firing selected; no action sent.");
++    blinkLed(5, 60);
++    return;
++  }
++  char requestId[33];
++  snprintf(requestId, sizeof(requestId), "%08lx%08lx%08lx%08lx",
++           (unsigned long)esp_random(), (unsigned long)esp_random(),
++           (unsigned long)esp_random(), (unsigned long)esp_random());
++  JsonDocument pending;
++  pending["id"] = selected["id"].as<int>();
++  pending["fired_at"] = selected["fired_at"].as<const char *>();
++  pending["action"] = action;
++  pending["request_id"] = requestId;
++  String saved;
++  serializeJson(pending, saved);
++  if (!validPending(pending) || retryStore.putString("pending", saved) != saved.length()) {
++    Serial.println("Could not persist selected action; no request sent.");
++    blinkLed(5, 60);
++    return;
++  }
++  pendingBody = saved;
++  attemptPending();
+ }
+ 
+ void setup() {
+@@ -95,6 +182,8 @@
+   pinMode(LED_PIN, OUTPUT);
+   digitalWrite(LED_PIN, LOW);
+ 
++  storageReady = retryStore.begin("doseclock", false);
++  if (storageReady) pendingBody = retryStore.getString("pending", "");
+   WiFi.mode(WIFI_STA);
+   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+   Serial.print("Connecting to Wi-Fi");
+@@ -109,6 +198,7 @@
+ }
+ 
+ void loop() {
++  if (pendingBody.length() > 0 && millis() - lastRetryAt >= RETRY_INTERVAL_MS) attemptPending();
+   if (digitalRead(SWITCH_PIN) != LOW) {
+     delay(20);
+     return; // not pressed - keep polling
+--- before/hardware/README.md
++++ after/hardware/README.md
+@@ -76,7 +76,7 @@
+ 
+ 1. Open `switch_hub.ino` in the Arduino IDE (or PlatformIO). Install the
+    ESP32 board package if you haven't before (Boards Manager → search
+-   "esp32").
++   "esp32"). Install ArduinoJson 7 through Library Manager as well.
+ 2. Fill in your Wi-Fi name/password and `DOSECLOCK_HOST` (the IP address
+    and port, `5050`, of the machine running DoseClock's Flask server;
+    find the IP with `hostname -I` on Linux, `ipconfig` on Windows, or
+@@ -107,13 +107,19 @@
+ to the LED anode (long leg), then connect the cathode to GND. Connecting
+ the LED to 3.3V instead makes it stay on without firmware control.
+ 
+-The firmware sends `POST /api/device/action` with JSON keys `token` and
+-`action`; action is `taken` for a short press or `snooze` for a confirmed
+-hold. HTTP 200 means the action succeeded. HTTP 401 means the token is
+-missing or unknown, HTTP 400 means the action is invalid, HTTP 404 means
+-no reminder is due for that account, and HTTP 409 means the reminder was
+-already answered. A negative status is a transport failure; Serial
+-Monitor now prints its description. Use 115200 baud.
++The firmware first selects an account-owned firing with
++`POST /api/device/reminder`, then sends `token`, `action`, `id`, `fired_at`
++and `request_id` to `POST /api/device/action`. It persists the selected request
++in Preferences before sending; transport/5xx failures retry the same request,
++including after reboot. A new press while one request is unresolved retries
++that pending action. It does not select a second medicine. Only confirmed
++success or a definite 4xx rejection clears the pending request.
++
++Install this firmware and the updated backend together. Old token/action-only
++requests are rejected with 400. See [protocol details](../docs/DEVICE_PROTOCOL.md).
++Firmware build and physical GPIO/LED/Wi-Fi/NVS behavior require the separate
++verification described in the testing report; backend simulation does not
++establish those results.
+ 
+ Keep real Wi-Fi credentials and paired tokens in your local upload
+ copy. Do not commit them to this repository.

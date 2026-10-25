@@ -1,0 +1,196 @@
+{
+  "recorded_at_utc": "2026-10-22T20:59:20.589468+00:00",
+  "environment": "temporary exported source; disposable SQLite and audio caches",
+  "tests_run": 31,
+  "passed": 24,
+  "failed": 7,
+  "skipped": 0,
+  "records": [
+    {
+      "id": "test_database.DatabaseTests.test_pre_account_database_migrates_without_assigning_old_records",
+      "status": "PASS",
+      "duration_seconds": 0.00640512490645051,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_database.DatabaseTests.test_taken_is_atomic_and_rejects_repeated_or_wrong_owner_actions",
+      "status": "PASS",
+      "duration_seconds": 0.0679425410926342,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_hardware.HardwareTests.test_audio_failure_does_not_block_hardware",
+      "status": "PASS",
+      "duration_seconds": 0.1440066669601947,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_hardware.HardwareTests.test_hardware_snooze_survives_a_scheduler_restart",
+      "status": "PASS",
+      "duration_seconds": 0.12914179102517664,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_hardware.HardwareTests.test_hardware_taken_logs_once",
+      "status": "PASS",
+      "duration_seconds": 0.12543733301572502,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_hardware.HardwareTests.test_invalid_token_action_and_no_due_statuses",
+      "status": "PASS",
+      "duration_seconds": 0.13435504212975502,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_hardware.HardwareTests.test_overlapping_device_action_returns_conflict",
+      "status": "PASS",
+      "duration_seconds": 0.15320141590200365,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_hardware.HardwareTests.test_pairing_token_is_owned_and_displayed_once",
+      "status": "PASS",
+      "duration_seconds": 0.13527137506753206,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_hardware.HardwareTests.test_token_cannot_answer_another_users_reminder",
+      "status": "PASS",
+      "duration_seconds": 0.13101816596463323,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_actual_concurrent_taken_requests_log_once",
+      "status": "PASS",
+      "duration_seconds": 0.1282966248691082,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_authenticated_routes_and_account_isolation",
+      "status": "PASS",
+      "duration_seconds": 0.13370383298024535,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_background_synthesis_failure_is_observed",
+      "status": "PASS",
+      "duration_seconds": 0.12113887490704656,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_creation_multiple_times_and_audio_warming",
+      "status": "FAIL",
+      "duration_seconds": 0.1224717921577394,
+      "actual": "Traceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-wpha2dkj/tests/test_review3.py\", line 79, in test_creation_multiple_times_and_audio_warming\n    self.warm_mock_called('New audio label','hi')\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-wpha2dkj/tests/test_review3.py\", line 82, in warm_mock_called\n    scheduler.prepare_audio.assert_called_with(*args)\n  File \"/Users/pranav/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py\", line 940, in assert_called_with\n    raise AssertionError(error_message)\nAssertionError: expected call not found.\nExpected: prepare_audio('New audio label', 'hi')\n  Actual: not called.\n"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_deleting_due_medicine_clears_alarm_and_preserves_history",
+      "status": "FAIL",
+      "duration_seconds": 0.1268298327922821,
+      "actual": "Traceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-wpha2dkj/tests/test_review3.py\", line 137, in test_deleting_due_medicine_clears_alarm_and_preserves_history\n    self.assertFalse(self.client.get('/check_reminders').json['due'])\nAssertionError: True is not false\n"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_device_multiple_due_selection_is_documented_not_replay_safe",
+      "status": "PASS",
+      "duration_seconds": 0.13550516706891358,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_edit_after_taken_preserves_historical_details",
+      "status": "FAIL",
+      "duration_seconds": 0.12933829193934798,
+      "actual": "Traceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-wpha2dkj/tests/test_review3.py\", line 146, in test_edit_after_taken_preserves_historical_details\n    self.assertEqual(r.status_code,302)\nAssertionError: 500 != 302\n"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_invalid_creation_fields_rejected",
+      "status": "PASS",
+      "duration_seconds": 0.13157862494699657,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_invalid_time_values_rejected",
+      "status": "FAIL",
+      "duration_seconds": 0.13055424997583032,
+      "actual": "Traceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-wpha2dkj/tests/test_review3.py\", line 92, in test_invalid_time_values_rejected\n    self.assertEqual(self.client.post('/add_medicine',json={'medicine_name':'Dummy','times':times,'days':2,'language':'en'}).status_code,400,times)\nAssertionError: 200 != 400 : ['25:00']\n"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_non_object_json_rejected",
+      "status": "FAIL",
+      "duration_seconds": 0.13592704199254513,
+      "actual": "Traceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-wpha2dkj/tests/test_review3.py\", line 97, in test_non_object_json_rejected\n    self.assertEqual(self.client.post(route,json=['unexpected']).status_code,400,route)\nAssertionError: 500 != 400 : /add_medicine\n"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_pairing_missing_invalid_token_and_account_isolation",
+      "status": "PASS",
+      "duration_seconds": 0.1328256248962134,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_repeated_snooze_unit_clock_and_no_taken_logs",
+      "status": "PASS",
+      "duration_seconds": 0.13028854108415544,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_restart_database_retains_accounts_tokens_logs_and_snooze",
+      "status": "PASS",
+      "duration_seconds": 0.20319929206743836,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_scheduler_multiple_simultaneous_and_restart_recovery",
+      "status": "PASS",
+      "duration_seconds": 0.1424219161272049,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_scheduler_scheduled_time_overdue_and_same_day_guard",
+      "status": "PASS",
+      "duration_seconds": 0.13542766706086695,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_signup_duplicate_and_short_password_rejected",
+      "status": "PASS",
+      "duration_seconds": 0.17262362479232252,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_signup_login_logout_and_invalid_credentials",
+      "status": "PASS",
+      "duration_seconds": 0.3259569590445608,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_stale_firing_generation_is_rejected",
+      "status": "FAIL",
+      "duration_seconds": 0.13516441592946649,
+      "actual": "Traceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-wpha2dkj/tests/test_review3.py\", line 131, in test_stale_firing_generation_is_rejected\n    self.assertEqual(self.client.get('/check_reminders').json['fired_at'],database.get_medicine(mid)['last_fired_at'])\n                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^\nKeyError: 'fired_at'\n"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_take_logs_exactly_once_and_updates_last_course_slot",
+      "status": "PASS",
+      "duration_seconds": 0.14333695895038545,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_tts_cache_reused_when_synthesis_unavailable",
+      "status": "PASS",
+      "duration_seconds": 0.13652479089796543,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_tts_failure_is_atomic_and_visual_alarm_remains",
+      "status": "PASS",
+      "duration_seconds": 0.1358755831606686,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_wrong_json_field_types_rejected",
+      "status": "FAIL",
+      "duration_seconds": 0.1446121248882264,
+      "actual": "Traceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-wpha2dkj/tests/test_review3.py\", line 101, in test_wrong_json_field_types_rejected\n    self.assertEqual(self.client.post('/api/device/action',json={'token':['invalid'],'action':'taken'}).status_code,400)\nAssertionError: 500 != 400\n"
+    }
+  ]
+}

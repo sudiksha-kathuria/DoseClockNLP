@@ -1,0 +1,431 @@
+{
+  "recorded_at_utc": "2026-10-25T09:20:00.429419+00:00",
+  "environment": "temporary exported source; disposable SQLite and audio caches",
+  "tests_run": 70,
+  "passed": 70,
+  "failed": 0,
+  "failure_assertions": 0,
+  "skipped": 0,
+  "records": [
+    {
+      "id": "test_database.DatabaseTests.test_pre_account_database_migrates_without_assigning_old_records",
+      "status": "PASS",
+      "duration_seconds": 0.0065412078984081745,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_database.DatabaseTests.test_taken_is_atomic_and_rejects_repeated_or_wrong_owner_actions",
+      "status": "PASS",
+      "duration_seconds": 0.14630933292210102,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_firmware.FirmwareTests.test_corrupt_recovery_never_posts_and_requires_fresh_gesture",
+      "status": "PASS",
+      "duration_seconds": 1.0846385001204908,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_firmware.FirmwareTests.test_failed_or_malformed_recovery_stays_blocked",
+      "status": "PASS",
+      "duration_seconds": 0.005440291948616505,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_firmware.FirmwareTests.test_failed_queue_removal_retries_identical_action",
+      "status": "PASS",
+      "duration_seconds": 0.005010416964069009,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_firmware.FirmwareTests.test_hold_duration_measured_without_http_calls",
+      "status": "PASS",
+      "duration_seconds": 0.004896459169685841,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_firmware.FirmwareTests.test_identical_retry_after_restart_503_timeout_and_invalid_success",
+      "status": "PASS",
+      "duration_seconds": 0.004942583153024316,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_firmware.FirmwareTests.test_long_hold_overlapping_blocking_retry_is_not_taken",
+      "status": "PASS",
+      "duration_seconds": 0.004860749933868647,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_firmware.FirmwareTests.test_malformed_json_schema_types_and_keys_never_transmit",
+      "status": "PASS",
+      "duration_seconds": 0.004732416942715645,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_firmware.FirmwareTests.test_marker_write_failure_never_transmits",
+      "status": "PASS",
+      "duration_seconds": 0.004565875045955181,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_firmware.FirmwareTests.test_older_valid_queue_keeps_its_original_identity",
+      "status": "PASS",
+      "duration_seconds": 0.004612250020727515,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_firmware.FirmwareTests.test_partial_persistence_orphan_marker_fails_closed_after_restart",
+      "status": "PASS",
+      "duration_seconds": 0.004746000049635768,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_firmware.FirmwareTests.test_recovery_cannot_discard_valid_uncertain_action",
+      "status": "PASS",
+      "duration_seconds": 0.00454541714861989,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_firmware.FirmwareTests.test_retry_completion_requires_fresh_debounced_release_and_press",
+      "status": "PASS",
+      "duration_seconds": 0.004579334054142237,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_firmware.FirmwareTests.test_signed_64_bit_identifiers_and_invalid_numbers",
+      "status": "PASS",
+      "duration_seconds": 0.004846916999667883,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_firmware.FirmwareTests.test_thresholds_debounce_and_millis_wrap",
+      "status": "PASS",
+      "duration_seconds": 0.004535915795713663,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_firmware.FirmwareTests.test_usb_recovery_works_during_wifi_startup_without_acknowledging",
+      "status": "PASS",
+      "duration_seconds": 0.004533875035122037,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_hardware.HardwareTests.test_audio_failure_does_not_block_hardware",
+      "status": "PASS",
+      "duration_seconds": 0.13914537499658763,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_hardware.HardwareTests.test_hardware_snooze_survives_a_scheduler_restart",
+      "status": "PASS",
+      "duration_seconds": 0.13311045919544995,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_hardware.HardwareTests.test_hardware_taken_logs_once",
+      "status": "PASS",
+      "duration_seconds": 0.13127591693773866,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_hardware.HardwareTests.test_invalid_token_action_and_no_due_statuses",
+      "status": "PASS",
+      "duration_seconds": 0.12943666614592075,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_hardware.HardwareTests.test_overlapping_device_action_returns_conflict",
+      "status": "PASS",
+      "duration_seconds": 0.16410870803520083,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_hardware.HardwareTests.test_pairing_token_is_owned_and_displayed_once",
+      "status": "PASS",
+      "duration_seconds": 0.1483327499590814,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_hardware.HardwareTests.test_token_cannot_answer_another_users_reminder",
+      "status": "PASS",
+      "duration_seconds": 0.15574875008314848,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_archived_or_deleted_target_does_not_redirect_to_another_due_row",
+      "status": "PASS",
+      "duration_seconds": 0.14739629090763628,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_browser_actions_require_generation_and_reject_stale_requests",
+      "status": "PASS",
+      "duration_seconds": 0.1610129999462515,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_current_due_audio_does_not_expose_legacy_english_cache",
+      "status": "PASS",
+      "duration_seconds": 0.1647917910013348,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_database_failure_rolls_back_effect_and_receipt_then_retry_succeeds",
+      "status": "PASS",
+      "duration_seconds": 0.1333300000987947,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_device_selection_and_actions_preserve_signed_64_bit_ids",
+      "status": "PASS",
+      "duration_seconds": 0.13502479088492692,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_distinct_requests_for_same_occurrence_cannot_both_apply",
+      "status": "PASS",
+      "duration_seconds": 0.12499862490221858,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_invalid_identity_types_and_missing_fields_are_rejected",
+      "status": "PASS",
+      "duration_seconds": 0.13634024979546666,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_invalid_language_rejected_before_provider_or_file_creation",
+      "status": "PASS",
+      "duration_seconds": 0.12561462516896427,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_legacy_english_cache_not_reused_for_translated_templates",
+      "status": "PASS",
+      "duration_seconds": 0.12053966685198247,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_legacy_idless_taken_and_snooze_requests_fail_closed",
+      "status": "PASS",
+      "duration_seconds": 0.12382175005041063,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_receipts_survive_database_restart_and_are_scoped_to_device",
+      "status": "PASS",
+      "duration_seconds": 0.12873950018547475,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_request_id_reuse_with_different_target_or_action_conflicts",
+      "status": "PASS",
+      "duration_seconds": 0.12577333417721093,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_same_request_concurrent_retries_have_one_durable_effect",
+      "status": "PASS",
+      "duration_seconds": 0.12447241717018187,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_selection_is_authenticated_and_account_scoped",
+      "status": "PASS",
+      "duration_seconds": 0.12826287490315735,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_six_cache_entries_are_distinct_and_reusable_offline",
+      "status": "PASS",
+      "duration_seconds": 0.12914149998687208,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_six_synthesis_calls_use_translated_text_and_matching_language",
+      "status": "PASS",
+      "duration_seconds": 0.12793649989180267,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_snooze_retry_does_not_extend_deadline_or_snooze_second_reminder",
+      "status": "PASS",
+      "duration_seconds": 0.13176633301191032,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_stale_firing_rejected_while_exact_successful_retry_replays_receipt",
+      "status": "PASS",
+      "duration_seconds": 0.13539574993774295,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_synthesis_failures_cleanup_and_can_retry_all_languages",
+      "status": "PASS",
+      "duration_seconds": 0.12805566587485373,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_taken_response_loss_retry_does_not_acknowledge_second_reminder",
+      "status": "PASS",
+      "duration_seconds": 0.1270549998153001,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_taken_snooze_race_has_only_one_transition",
+      "status": "PASS",
+      "duration_seconds": 0.13115387503057718,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_translated_text_preserves_opaque_unicode_name",
+      "status": "PASS",
+      "duration_seconds": 0.12473220797255635,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_wrong_owner_target_never_mutates_either_account",
+      "status": "PASS",
+      "duration_seconds": 0.12407062505371869,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_actual_concurrent_taken_requests_log_once",
+      "status": "PASS",
+      "duration_seconds": 0.12562316586263478,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_authenticated_routes_and_account_isolation",
+      "status": "PASS",
+      "duration_seconds": 0.13386566611006856,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_background_synthesis_failure_is_observed",
+      "status": "PASS",
+      "duration_seconds": 0.12294337502680719,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_creation_multiple_times_and_audio_warming",
+      "status": "PASS",
+      "duration_seconds": 0.12438558298163116,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_deleting_due_medicine_clears_alarm_and_preserves_history",
+      "status": "PASS",
+      "duration_seconds": 0.12666900013573468,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_device_multiple_due_selection_requires_bound_retry",
+      "status": "PASS",
+      "duration_seconds": 0.13282958301715553,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_edit_after_taken_preserves_historical_details",
+      "status": "PASS",
+      "duration_seconds": 0.1261972920037806,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_existing_account_history_survives_archive_schema_migration",
+      "status": "PASS",
+      "duration_seconds": 0.12741604214534163,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_invalid_creation_fields_rejected",
+      "status": "PASS",
+      "duration_seconds": 0.1319236671552062,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_invalid_time_values_rejected",
+      "status": "PASS",
+      "duration_seconds": 0.1256928329821676,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_non_object_json_rejected",
+      "status": "PASS",
+      "duration_seconds": 0.1265469160862267,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_pairing_missing_invalid_token_and_account_isolation",
+      "status": "PASS",
+      "duration_seconds": 0.12496925005689263,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_repeated_snooze_unit_clock_and_no_taken_logs",
+      "status": "PASS",
+      "duration_seconds": 0.1264301671180874,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_restart_database_retains_accounts_tokens_logs_and_snooze",
+      "status": "PASS",
+      "duration_seconds": 0.18460104195401073,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_scheduler_multiple_simultaneous_and_restart_recovery",
+      "status": "PASS",
+      "duration_seconds": 0.13335120817646384,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_scheduler_scheduled_time_overdue_and_same_day_guard",
+      "status": "PASS",
+      "duration_seconds": 0.12926737498492002,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_signup_duplicate_and_short_password_rejected",
+      "status": "PASS",
+      "duration_seconds": 0.1234155420679599,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_signup_login_logout_and_invalid_credentials",
+      "status": "PASS",
+      "duration_seconds": 0.29512500017881393,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_stale_firing_generation_is_rejected",
+      "status": "PASS",
+      "duration_seconds": 0.12224020808935165,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_take_logs_exactly_once_and_updates_last_course_slot",
+      "status": "PASS",
+      "duration_seconds": 0.12463641702197492,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_tts_cache_reused_when_synthesis_unavailable",
+      "status": "PASS",
+      "duration_seconds": 0.12174291699193418,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_tts_failure_is_atomic_and_visual_alarm_remains",
+      "status": "PASS",
+      "duration_seconds": 0.12357420800253749,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_wrong_json_field_types_rejected",
+      "status": "PASS",
+      "duration_seconds": 0.12687737494707108,
+      "actual": "All assertions met"
+    }
+  ]
+}

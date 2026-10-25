@@ -1,0 +1,38 @@
+{
+  "metadata": {
+    "browser": "156.0.8078.4",
+    "mode": "headless Chromium; loopback Flask; disposable SQLite",
+    "microphone": "not available for independent spoken-command validation",
+    "autoplay_policy": "document-user-activation-required"
+  },
+  "records": [
+    {
+      "id": "UI10",
+      "feature": "Autoplay blocked before gesture; real MP3 retained and paused on Snooze",
+      "expected": "Autoplay blocked before gesture; real MP3 retained and paused on Snooze",
+      "actual": {
+        "autoplay_before_gesture": "paused before user gesture",
+        "after_gesture": {
+          "src": "/static/audio/en_review-dummy_3a367197a1.mp3",
+          "duration": 2.592,
+          "paused": false
+        },
+        "paused_after_snooze": true,
+        "human_listening": false
+      },
+      "status": "PASS",
+      "duration_seconds": 1.0809047911316156,
+      "evidence": "screenshots/UI10.png",
+      "page_errors": []
+    },
+    {
+      "id": "UI-VOICE",
+      "feature": "Real spoken acknowledgment",
+      "expected": "Actual microphone/transcription and action",
+      "actual": "No participant/microphone or recorded utterance available; speech handler not counted as real voice verification.",
+      "status": "NOT TESTED",
+      "duration_seconds": 0,
+      "evidence": "results.json"
+    }
+  ]
+}

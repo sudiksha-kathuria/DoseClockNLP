@@ -1,0 +1,395 @@
+diff --git a/backend/app.py b/backend/app.py
+index 4b0f5c2..26b38f7 100644
+--- a/backend/app.py
++++ b/backend/app.py
+@@ -31,6 +31,7 @@ halves of the project stay in separate, clearly-named folders.
+ import csv
+ import io
+ import os
++import re
+ import secrets
+ from datetime import date
+ from functools import wraps
+@@ -72,6 +73,18 @@ app = Flask(
+ app.secret_key = _load_or_create_secret_key()
+ 
+ 
++def _json_object():
++    data = request.get_json(silent=True)
++    return {} if data is None else (data if isinstance(data, dict) else None)
++
++
++def _valid_times(times):
++    return (isinstance(times, list) and bool(times)
++            and all(isinstance(t, str) and re.fullmatch(r'[0-9]{2}:[0-9]{2}', t)
++                    and int(t[:2]) < 24 and int(t[3:]) < 60 for t in times)
++            and len(times) == len(set(times)))
++
++
+ def login_required(view):
+     """Redirect to /login instead of serving a page/API call with no session."""
+     @wraps(view)
+@@ -226,8 +239,11 @@ def medicine_edit(group_id):
+     except (TypeError, ValueError):
+         days_remaining = summary["days_remaining"]
+ 
++    if not _valid_times(times):
++        return jsonify({'error': 'times must be distinct HH:MM values'}), 400
+     if medicine_name and times and language in valid_languages:
+         database.update_group(group_id, medicine_name, times, language, days_remaining)
++        reminder_scheduler.prepare_audio(medicine_name, language)
+ 
+     return redirect(url_for("medicine_detail", group_id=group_id))
+ 
+@@ -411,17 +427,22 @@ def add_medicine():
+     `medicine_name` is stored as-is - a plain label, never parsed or validated
+     against any external medicine database.
+     """
+-    data = request.get_json(silent=True) or {}
+-
+-    medicine_name = (data.get("medicine_name") or "").strip()
+-    times = [t for t in (data.get("times") or []) if t]
++    data = _json_object()
++    if data is None:
++        return jsonify({'error': 'JSON body must be an object'}), 400
++    if not isinstance(data.get('medicine_name'), str):
++        return jsonify({'error': 'medicine name must be text'}), 400
++    medicine_name = data['medicine_name'].strip()
++    times = data.get("times")
+     days = data.get("days")
+     language = data.get("language")
+ 
+     valid_languages = {code for code, _ in tts.LANGUAGES}
+-    if not medicine_name or not times or language not in valid_languages:
++    if not medicine_name or not _valid_times(times) or not isinstance(language, str) or language not in valid_languages:
+         return jsonify({"error": "medicine name, at least one time, and a language are required"}), 400
+     try:
++        if isinstance(days, bool) or not isinstance(days, (str, int)):
++            raise ValueError
+         days = int(days)
+         if days < 1:
+             raise ValueError
+@@ -429,6 +450,7 @@ def add_medicine():
+         return jsonify({"error": "days must be a positive number"}), 400
+ 
+     database.add_medicine(session["user_id"], medicine_name, times, days, language)
++    reminder_scheduler.prepare_audio(medicine_name, language)
+     return jsonify({"success": True})
+ 
+ 
+@@ -440,7 +462,9 @@ def delete_medicine():
+     Sets days_remaining = 0 for every row in that group, after verifying
+     it belongs to the logged-in user.
+     """
+-    data = request.get_json(silent=True) or {}
++    data = _json_object()
++    if data is None or not isinstance(data.get('id', ''), str):
++        return jsonify({'error': 'JSON object with a text group id required'}), 400
+     group_id = data.get("id") or ""
+     # Verify ownership before deactivating
+     summary = database.get_group_summary(group_id, session["user_id"])
+@@ -465,6 +489,7 @@ def check_reminders():
+             "medicine_name": due["medicine_name"],
+             "audio_url": url_for("static", filename=due["audio_path"]) if due["audio_path"] else None,
+             "language": due["language"],
++            "fired_at": due["last_fired_at"],
+         }
+     )
+ 
+@@ -484,7 +509,9 @@ def _perform_mark_taken(medicine_id, user_id, expected_fired_at=None):
+ @login_required
+ def mark_taken():
+     """Log the dose, silence the alarm, and count the day off if it was the last dose today."""
+-    data = request.get_json(silent=True) or {}
++    data = _json_object()
++    if data is None or isinstance(data.get('id'), (dict, list, bool)):
++        return jsonify({'error': 'JSON object with a reminder id required'}), 400
+     medicine_id = data.get("id")
+     row = database.get_medicine(medicine_id, user_id=session["user_id"])
+     if row is None:
+@@ -500,7 +527,9 @@ def mark_taken():
+ @login_required
+ def mark_snooze():
+     """Silence the alarm now, re-ring the exact same reminder in 5 minutes."""
+-    data = request.get_json(silent=True) or {}
++    data = _json_object()
++    if data is None or isinstance(data.get('id'), (dict, list, bool)):
++        return jsonify({'error': 'JSON object with a reminder id required'}), 400
+     medicine_id = data.get("id")
+     row = database.get_medicine(medicine_id, user_id=session["user_id"])
+     if row is None:
+@@ -521,7 +550,9 @@ def mark_snooze():
+ 
+ @app.route("/api/device/action", methods=["POST"])
+ def device_action():
+-    data = request.get_json(silent=True) or {}
++    data = _json_object()
++    if data is None or not isinstance(data.get('token', ''), str) or not isinstance(data.get('action', ''), str):
++        return jsonify({'error': 'JSON object with text token and action required'}), 400
+     token = data.get("token")
+     action = data.get("action")
+ 
+diff --git a/backend/database.py b/backend/database.py
+index 7cf6006..ec17d7d 100644
+--- a/backend/database.py
++++ b/backend/database.py
+@@ -101,6 +101,8 @@ def init_db():
+         conn.execute('ALTER TABLE medicines ADD COLUMN user_id INTEGER REFERENCES users(id)')
+     if 'snoozed_until' not in columns:
+         conn.execute('ALTER TABLE medicines ADD COLUMN snoozed_until TEXT')
++    if 'is_archived' not in columns:
++        conn.execute('ALTER TABLE medicines ADD COLUMN is_archived INTEGER NOT NULL DEFAULT 0')
+     conn.commit()
+     conn.close()
+ 
+@@ -178,7 +180,7 @@ def get_active_medicines(user_id):
+     """One user's reminder rows that still have doses left, soonest time first."""
+     conn = get_db_connection()
+     rows = conn.execute(
+-        "SELECT * FROM medicines WHERE user_id = ? AND days_remaining > 0 ORDER BY time ASC",
++        "SELECT * FROM medicines WHERE user_id = ? AND days_remaining > 0 AND is_archived = 0 ORDER BY time ASC",
+         (user_id,),
+     ).fetchall()
+     conn.close()
+@@ -194,7 +196,7 @@ def get_all_active_medicines():
+     """
+     conn = get_db_connection()
+     rows = conn.execute(
+-        "SELECT * FROM medicines WHERE days_remaining > 0 ORDER BY time ASC"
++        "SELECT * FROM medicines WHERE days_remaining > 0 AND is_archived = 0 ORDER BY time ASC"
+     ).fetchall()
+     conn.close()
+     return rows
+@@ -225,7 +227,7 @@ def get_group(group_id):
+     """All time-slots that belong to the same medicine course."""
+     conn = get_db_connection()
+     rows = conn.execute(
+-        "SELECT * FROM medicines WHERE group_id = ?", (group_id,)
++        "SELECT * FROM medicines WHERE group_id = ? AND is_archived = 0", (group_id,)
+     ).fetchall()
+     conn.close()
+     return rows
+@@ -273,7 +275,7 @@ def get_due_reminder(user_id):
+     """The oldest currently-ringing reminder that belongs to this user, if any."""
+     conn = get_db_connection()
+     row = conn.execute(
+-        "SELECT * FROM medicines WHERE user_id = ? AND is_due = 1 ORDER BY last_fired_at ASC LIMIT 1",
++        "SELECT * FROM medicines WHERE user_id = ? AND is_due = 1 AND days_remaining > 0 AND is_archived = 0 ORDER BY last_fired_at ASC LIMIT 1",
+         (user_id,),
+     ).fetchone()
+     conn.close()
+@@ -418,7 +420,7 @@ def deactivate_group(group_id):
+     """Set days_remaining = 0 for every row in a medicine group (soft-delete)."""
+     conn = get_db_connection()
+     conn.execute(
+-        "UPDATE medicines SET days_remaining = 0 WHERE group_id = ?",
++        "UPDATE medicines SET days_remaining = 0, is_due = 0, snoozed_until = NULL WHERE group_id = ?",
+         (group_id,),
+     )
+     conn.commit()
+@@ -433,7 +435,7 @@ def get_group_summary(group_id, user_id):
+     """
+     conn = get_db_connection()
+     rows = conn.execute(
+-        "SELECT * FROM medicines WHERE group_id = ? AND user_id = ? ORDER BY time ASC",
++        "SELECT * FROM medicines WHERE group_id = ? AND user_id = ? AND is_archived = 0 ORDER BY time ASC",
+         (group_id, user_id),
+     ).fetchall()
+     conn.close()
+@@ -451,8 +453,8 @@ def get_group_summary(group_id, user_id):
+ 
+ def update_group(group_id, medicine_name, times, language, days_remaining):
+     """
+-    Replace all time-slot rows for group_id with new values, keeping the
+-    same group_id so dose-log history remains linked.
++    Archive old time slots and add replacements in the same transaction.
++    History keeps its original name/time/language and foreign-key target.
+     """
+     conn = get_db_connection()
+     existing = conn.execute(
+@@ -462,7 +464,7 @@ def update_group(group_id, medicine_name, times, language, days_remaining):
+         conn.close()
+         return
+     user_id = existing["user_id"]
+-    conn.execute("DELETE FROM medicines WHERE group_id = ?", (group_id,))
++    conn.execute("UPDATE medicines SET is_archived = 1, days_remaining = 0, is_due = 0, snoozed_until = NULL WHERE group_id = ?", (group_id,))
+     created_at = datetime.now().isoformat()
+     for t in times:
+         conn.execute(
+@@ -515,7 +517,7 @@ def get_adherence_data(user_id):
+                COUNT(*)            AS times_count,
+                GROUP_CONCAT(time, ',') AS times_str
+         FROM medicines
+-        WHERE user_id = ?
++        WHERE user_id = ? AND is_archived = 0
+         GROUP BY group_id, medicine_name, language
+         ORDER BY medicine_name COLLATE NOCASE
+         """,
+diff --git a/frontend/static/js/clock.js b/frontend/static/js/clock.js
+index e8ec740..cb357ee 100644
+--- a/frontend/static/js/clock.js
++++ b/frontend/static/js/clock.js
+@@ -51,16 +51,18 @@ let audioUnlocked = false;
+ 
+ function unlockAudio() {
+   if (audioUnlocked) return;
+-  audioUnlocked = true;
+-  reminderAudio.src = SILENT_CLIP;
++  if (!reminderAudio.getAttribute("src")) reminderAudio.src = SILENT_CLIP;
+   reminderAudio
+     .play()
+-    .then(() => reminderAudio.pause())
++    .then(() => {
++      audioUnlocked = true;
++      if (!currentReminder) reminderAudio.pause();
++      soundHint.classList.add("hidden");
++      ["click", "touchstart", "keydown"].forEach((evt) => document.removeEventListener(evt, unlockAudio));
++    })
+     .catch(() => {
+       /* some browsers still refuse this - Taken/Snooze buttons remain the reliable path */
+     });
+-  soundHint.classList.add("hidden");
+-  ["click", "touchstart", "keydown"].forEach((evt) => document.removeEventListener(evt, unlockAudio));
+ }
+ 
+ ["click", "touchstart", "keydown"].forEach((evt) => document.addEventListener(evt, unlockAudio));
+@@ -128,6 +130,7 @@ const RECOGNITION_LANG = {
+ 
+ let currentReminder = null; // { id, medicine_name, audio_url, language }
+ let recognition = null;
++let actionPending = false;
+ 
+ function stopRecognition() {
+   if (recognition) {
+@@ -237,6 +240,9 @@ document.addEventListener("keydown", (event) => {
+ // ---------------------------------------------------------------------------
+ 
+ function showAlarm(reminder) {
++  stopRecognition();
++  stopScanning();
++  reminderAudio.pause();
+   currentReminder = reminder;
+   idleView.classList.add("hidden");
+   alarmMedicineName.textContent = reminder.medicine_name;
+@@ -247,6 +253,12 @@ function showAlarm(reminder) {
+   // (see the audio-unlock block above), this plays with sound straight
+   // away. If it's still blocked for some reason, fall back to a tappable
+   // prompt - the Taken/Snooze buttons remain fully usable either way.
++  startRecognition(reminder.language);
++  if (!reminder.audio_url) {
++    reminderAudio.removeAttribute("src");
++    micIndicator.textContent = "Audio unavailable. Use Taken or Snooze.";
++    return;
++  }
+   reminderAudio.src = reminder.audio_url;
+   reminderAudio.play().catch(() => {
+     micIndicator.innerHTML = '<span class="mic-dot"></span> Tap here to hear the reminder';
+@@ -258,10 +270,12 @@ function showAlarm(reminder) {
+     };
+   });
+ 
+-  startRecognition(reminder.language);
+ }
+ 
+ function hideAlarm() {
++  reminderAudio.pause();
++  micIndicator.onclick = null;
++  micIndicator.style.cursor = "";
+   alarmView.classList.remove("visible");
+   stopRecognition();
+   stopScanning();
+@@ -270,6 +284,7 @@ function hideAlarm() {
+ }
+ 
+ function showSuccessThenIdle() {
++  reminderAudio.pause();
+   alarmView.classList.remove("visible");
+   stopScanning();
+   successFlash.classList.add("visible");
+@@ -285,42 +300,40 @@ function showSuccessThenIdle() {
+ // Actions
+ // ---------------------------------------------------------------------------
+ 
+-async function handleTaken() {
+-  if (!currentReminder) return;
+-  const id = currentReminder.id;
++async function submitAction(action) {
++  if (!currentReminder || actionPending) return;
++  const reminder = currentReminder;
++  actionPending = true;
++  takenBtn.disabled = true;
++  snoozeBtn.disabled = true;
+   stopRecognition();
+   stopScanning();
+-  currentReminder = null; // prevent double-fire from a lingering voice result
+   try {
+-    await fetch("/mark_taken", {
++    const response = await fetch(action === "taken" ? "/mark_taken" : "/mark_snooze", {
+       method: "POST",
+       headers: { "Content-Type": "application/json" },
+-      body: JSON.stringify({ id }),
++      body: JSON.stringify({ id: reminder.id, fired_at: reminder.fired_at }),
+     });
++    const result = await response.json();
++    if (!response.ok || !result.success) throw new Error("Acknowledgment rejected");
++    currentReminder = null;
++    if (action === "taken") showSuccessThenIdle();
++    else {
++      hideAlarm();
++      showToast("Snoozed for 5 minutes");
++    }
+   } catch (err) {
+-    /* network hiccup - the reminder will simply show again on next poll */
++    showToast("Could not record your response. Please try again.");
++    startScanning();
++  } finally {
++    actionPending = false;
++    takenBtn.disabled = false;
++    snoozeBtn.disabled = false;
+   }
+-  showSuccessThenIdle();
+ }
+ 
+-async function handleSnooze() {
+-  if (!currentReminder) return;
+-  const id = currentReminder.id;
+-  stopRecognition();
+-  stopScanning();
+-  currentReminder = null;
+-  try {
+-    await fetch("/mark_snooze", {
+-      method: "POST",
+-      headers: { "Content-Type": "application/json" },
+-      body: JSON.stringify({ id }),
+-    });
+-  } catch (err) {
+-    /* network hiccup - fine, user can snooze again next time it rings */
+-  }
+-  showToast("Snoozed for 5 minutes");
+-  hideAlarm();
+-}
++async function handleTaken() { return submitAction("taken"); }
++async function handleSnooze() { return submitAction("snooze"); }
+ 
+ takenBtn.addEventListener("click", handleTaken);
+ snoozeBtn.addEventListener("click", handleSnooze);
+@@ -330,15 +343,15 @@ snoozeBtn.addEventListener("click", handleSnooze);
+ // ---------------------------------------------------------------------------
+ 
+ async function pollReminders() {
+-  // Don't interrupt an alarm that's already showing.
+-  if (currentReminder) return;
++  if (actionPending) return;
+ 
+   try {
+     const response = await fetch("/check_reminders");
++    if (!response.ok) return;
+     const data = await response.json();
+     if (data.due) {
+-      showAlarm(data);
+-    }
++      if (!currentReminder || currentReminder.id !== data.id || currentReminder.fired_at !== data.fired_at) showAlarm(data);
++    } else if (currentReminder) hideAlarm();
+   } catch (err) {
+     /* server unreachable this cycle - just try again next poll */
+   }

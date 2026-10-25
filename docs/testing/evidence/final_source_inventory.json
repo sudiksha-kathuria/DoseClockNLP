@@ -1,0 +1,166 @@
+{
+  "base_commit": "a1230c928a0471aa2a05e0af6b32ee2a64a0cd05",
+  "branch": "validation/review3-20261023",
+  "tracked_files": [
+    {
+      "path": ".gitignore",
+      "bytes": 337,
+      "lines": 18,
+      "sha256": "e1de03fb9bce3e5b577a8f7ac154f65e4f8d6ec02c42a05ea44972b569357aa0"
+    },
+    {
+      "path": "HARDWARE.md",
+      "bytes": 8341,
+      "lines": 151,
+      "sha256": "88ad9f34057cfb0090d71ed408aadb77b4b633e488a5d915fa033c286f800bbd"
+    },
+    {
+      "path": "README.md",
+      "bytes": 33680,
+      "lines": 619,
+      "sha256": "9036ae2c893c5c08280f4dc82c6f5e2ca6564383dcefff02915316f93b7f87be"
+    },
+    {
+      "path": "backend/app.py",
+      "bytes": 21686,
+      "lines": 595,
+      "sha256": "3485c81926433373ade4b21d0498508ea3ae4c5c1e231ec0505f618b7bc6d20e"
+    },
+    {
+      "path": "backend/database.py",
+      "bytes": 21780,
+      "lines": 627,
+      "sha256": "63f81775fcb24cd01486d863907b88a0c2ee2d13d21b39171ca49d3739bd9dba"
+    },
+    {
+      "path": "backend/requirements.txt",
+      "bytes": 48,
+      "lines": 3,
+      "sha256": "40683c158136a5ae010a3d7bef27d267d55526fb87a8a02f762ec1bbb05cbc4c"
+    },
+    {
+      "path": "backend/scheduler.py",
+      "bytes": 3277,
+      "lines": 86,
+      "sha256": "946704a32d2c65e38fd2249487618aa93157abe574d192af0ca83083eee6a62c"
+    },
+    {
+      "path": "backend/tts.py",
+      "bytes": 2707,
+      "lines": 80,
+      "sha256": "8cb38d7ab9324e6b22c6a4823686f2a089358316f77ac3df04614e9a5b4277ee"
+    },
+    {
+      "path": "frontend/static/audio/.gitkeep",
+      "bytes": 0,
+      "lines": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "frontend/static/css/style.css",
+      "bytes": 30914,
+      "lines": 1559,
+      "sha256": "1d204efa7476c467d586dac24ca2878da548765043f374eb4001e6206744fa1a"
+    },
+    {
+      "path": "frontend/static/js/clock.js",
+      "bytes": 12767,
+      "lines": 361,
+      "sha256": "043947726c2c574a9c508b689d6fe91931cfb5b1d9a95c8aa1e2c43876aafcbc"
+    },
+    {
+      "path": "frontend/static/js/index.js",
+      "bytes": 2885,
+      "lines": 99,
+      "sha256": "04daf47acb7047aeced9bbdc21cf22355c4f03275b9ffc75a6fbbc291b1bc646"
+    },
+    {
+      "path": "frontend/static/js/logs.js",
+      "bytes": 973,
+      "lines": 29,
+      "sha256": "495170785fc5fdbedef0a9dd8afc26643635fff8410034f3d9983457fa9a45e8"
+    },
+    {
+      "path": "frontend/templates/base.html",
+      "bytes": 1438,
+      "lines": 42,
+      "sha256": "361fc736159ad7748b681d45fd966f63c9bbdfaf685e5dd52381b803e757575e"
+    },
+    {
+      "path": "frontend/templates/clock.html",
+      "bytes": 2705,
+      "lines": 70,
+      "sha256": "798a9ddc6f06d0595c85fe01d966303c5871a22c255c17631f1f56561884c64d"
+    },
+    {
+      "path": "frontend/templates/dashboard.html",
+      "bytes": 2125,
+      "lines": 62,
+      "sha256": "c65540a3b97cb3f135df4ed0ff91b3e09a65d3f2f635b79fd80a754bd0b0bb2e"
+    },
+    {
+      "path": "frontend/templates/index.html",
+      "bytes": 4124,
+      "lines": 113,
+      "sha256": "5508cbd4d7de128f95ee690cce279b79f467870c95b6e1e5c5718f688f7c80f9"
+    },
+    {
+      "path": "frontend/templates/login.html",
+      "bytes": 1641,
+      "lines": 43,
+      "sha256": "53e5a92436823a3d986f996f76a7663da7c0badf41d0b072e4e7fd392b8e0d47"
+    },
+    {
+      "path": "frontend/templates/logs.html",
+      "bytes": 4054,
+      "lines": 108,
+      "sha256": "f58c95386b53b8b4a2b974cdc20011a597b5c2e620efcb7586bb27ec7774eb7a"
+    },
+    {
+      "path": "frontend/templates/medicine_detail.html",
+      "bytes": 4901,
+      "lines": 146,
+      "sha256": "9a37f81af8d8918f36b80d6fbfa23f181f83aba93ee23687f28bc286c0f24a61"
+    },
+    {
+      "path": "frontend/templates/signup.html",
+      "bytes": 1959,
+      "lines": 47,
+      "sha256": "4b3e50e87adb2f28fd90f2008c0c8e2a2e7ab6d1b6f62852b98a7d0655954ad1"
+    },
+    {
+      "path": "hardware/README.md",
+      "bytes": 7386,
+      "lines": 128,
+      "sha256": "c8edf330f2f94874676d5a98d11a3eff15cee009947a1c116c5d95ea23c1de33"
+    },
+    {
+      "path": "hardware/switch_hub.ino",
+      "bytes": 5205,
+      "lines": 140,
+      "sha256": "c452e14a8ea4cdc6fac724983d98604e13bd098aeb04db54332035fddfc3a65b"
+    },
+    {
+      "path": "tests/test_database.py",
+      "bytes": 2388,
+      "lines": 51,
+      "sha256": "b7c36f6b29e586d13cf85b1d9c626ba8630eae3882a4a062b58774402ea69b38"
+    },
+    {
+      "path": "tests/test_hardware.py",
+      "bytes": 4740,
+      "lines": 100,
+      "sha256": "2ef9e0149844e878d2ecdf6420a318e5eef17dfba8cf55db6a356884925379e1"
+    }
+  ],
+  "new_test_files_sha256": {
+    "tests/run_review3_audio.py": "5c978ccdacec3a0a075584d0ec8368c945c7a1f2532011c5c33ebc85611fa47b",
+    "tests/run_review3_browser.py": "94662853325fa9144ebd799ae919b594a5467d6962917160e7fa27fe1fd217ad",
+    "tests/test_review3.py": "f346c12a4ebea0243e68700c3d73ce82e1609a2f21ab3a398cca3dc330efdc80",
+    "tests/run_review3_live.py": "4bce44bc9f9794853e52f6425ba50541db86344e05ccc13938e5491cbc0955bb",
+    "tests/requirements-review3.txt": "3869e693ee9712ccdb06a5a1b6380142686d7979e34b298baa1888f0f81bfa72",
+    "tests/validation_server.py": "6646f31e5f1f248b28adc742205adbc34ae301177690091a8d78fa2f2bdf7673",
+    "tests/run_review3_suite.py": "9ee354f66e9e3ed5759db3c74c05c00e5de137d88785ed4ccbbcf33001686d32",
+    "tests/esp32_simulator.py": "67bcdf8dd9ae4c04b4fe8129003af2478be4d3454f0cc134df06a8d293f626ee"
+  }
+}

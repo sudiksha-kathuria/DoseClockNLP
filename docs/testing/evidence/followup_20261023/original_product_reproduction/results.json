@@ -1,0 +1,16 @@
+{
+  "validation_date": "23 October 2026",
+  "stage": "Follow-up after initial Review 3",
+  "control_only": false,
+  "records": [
+    {
+      "id": "AUTOPLAY-strict-pending",
+      "status": "FAIL",
+      "actual": {
+        "traceback": "Traceback (most recent call last):\n  File \"/Users/pranav/Documents/DoseClock/DoseClockNLP/tests/run_review3_autoplay.py\", line 53, in main\n    actual = verify_autoplay(pw, base, fixture, out/spec, policy, scenario, args.control)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/pranav/Documents/DoseClock/DoseClockNLP/tests/review3_media.py\", line 155, in verify_autoplay\n    assert m2['src'].endswith('.mp3') and m2['duration'] > 1, m2\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: {'src': 'data:audio/wav;base64,UklGRiUAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQEAAACA', 'currentSrc': 'data:audio/wav;base64,UklGRiUAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQEAAACA', 'currentTime': 0, 'duration': 0.000125, 'paused': True, 'ended': False, 'muted': False, 'volume': 1, 'readyState': 4, 'error': None, 'decodedBytes': 1, 'activation': {'isActive': True, 'hasBeenActive': True}}\n"
+      },
+      "duration_seconds": 2.8910841250326484,
+      "evidence": "strict-pending/results.json"
+    }
+  ]
+}

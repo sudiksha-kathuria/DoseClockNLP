@@ -1,0 +1,991 @@
+{
+  "recorded_at_utc": "2026-10-23T10:49:44.624547+00:00",
+  "scope": "SIMULATED ESP32 COMMUNICATION: real loopback HTTP + disposable SQLite; no physical hardware",
+  "records": [
+    {
+      "id": "B01",
+      "feature": "Taken correctness over real HTTP",
+      "expected": "10/10, exactly one new log per fresh due reminder",
+      "actual": [
+        {
+          "trial": 1,
+          "http_status": 200,
+          "logs_before": 0,
+          "logs_after": 1
+        },
+        {
+          "trial": 2,
+          "http_status": 200,
+          "logs_before": 1,
+          "logs_after": 2
+        },
+        {
+          "trial": 3,
+          "http_status": 200,
+          "logs_before": 2,
+          "logs_after": 3
+        },
+        {
+          "trial": 4,
+          "http_status": 200,
+          "logs_before": 3,
+          "logs_after": 4
+        },
+        {
+          "trial": 5,
+          "http_status": 200,
+          "logs_before": 4,
+          "logs_after": 5
+        },
+        {
+          "trial": 6,
+          "http_status": 200,
+          "logs_before": 5,
+          "logs_after": 6
+        },
+        {
+          "trial": 7,
+          "http_status": 200,
+          "logs_before": 6,
+          "logs_after": 7
+        },
+        {
+          "trial": 8,
+          "http_status": 200,
+          "logs_before": 7,
+          "logs_after": 8
+        },
+        {
+          "trial": 9,
+          "http_status": 200,
+          "logs_before": 8,
+          "logs_after": 9
+        },
+        {
+          "trial": 10,
+          "http_status": 200,
+          "logs_before": 9,
+          "logs_after": 10
+        }
+      ],
+      "status": "PASS",
+      "duration_seconds": 0,
+      "evidence": "results.json"
+    },
+    {
+      "id": "B02",
+      "feature": "Invalid-token isolation",
+      "expected": "10/10 HTTP 401 and unchanged whole-database digest",
+      "actual": [
+        {
+          "trial": 1,
+          "http_status": 401,
+          "database_digest_before": "08666653d3e6a750491ebf8f07bf9ac9a5db6aec43b499fca72d40f56fdb7f69",
+          "database_digest_after": "08666653d3e6a750491ebf8f07bf9ac9a5db6aec43b499fca72d40f56fdb7f69"
+        },
+        {
+          "trial": 2,
+          "http_status": 401,
+          "database_digest_before": "08666653d3e6a750491ebf8f07bf9ac9a5db6aec43b499fca72d40f56fdb7f69",
+          "database_digest_after": "08666653d3e6a750491ebf8f07bf9ac9a5db6aec43b499fca72d40f56fdb7f69"
+        },
+        {
+          "trial": 3,
+          "http_status": 401,
+          "database_digest_before": "08666653d3e6a750491ebf8f07bf9ac9a5db6aec43b499fca72d40f56fdb7f69",
+          "database_digest_after": "08666653d3e6a750491ebf8f07bf9ac9a5db6aec43b499fca72d40f56fdb7f69"
+        },
+        {
+          "trial": 4,
+          "http_status": 401,
+          "database_digest_before": "08666653d3e6a750491ebf8f07bf9ac9a5db6aec43b499fca72d40f56fdb7f69",
+          "database_digest_after": "08666653d3e6a750491ebf8f07bf9ac9a5db6aec43b499fca72d40f56fdb7f69"
+        },
+        {
+          "trial": 5,
+          "http_status": 401,
+          "database_digest_before": "08666653d3e6a750491ebf8f07bf9ac9a5db6aec43b499fca72d40f56fdb7f69",
+          "database_digest_after": "08666653d3e6a750491ebf8f07bf9ac9a5db6aec43b499fca72d40f56fdb7f69"
+        },
+        {
+          "trial": 6,
+          "http_status": 401,
+          "database_digest_before": "08666653d3e6a750491ebf8f07bf9ac9a5db6aec43b499fca72d40f56fdb7f69",
+          "database_digest_after": "08666653d3e6a750491ebf8f07bf9ac9a5db6aec43b499fca72d40f56fdb7f69"
+        },
+        {
+          "trial": 7,
+          "http_status": 401,
+          "database_digest_before": "08666653d3e6a750491ebf8f07bf9ac9a5db6aec43b499fca72d40f56fdb7f69",
+          "database_digest_after": "08666653d3e6a750491ebf8f07bf9ac9a5db6aec43b499fca72d40f56fdb7f69"
+        },
+        {
+          "trial": 8,
+          "http_status": 401,
+          "database_digest_before": "08666653d3e6a750491ebf8f07bf9ac9a5db6aec43b499fca72d40f56fdb7f69",
+          "database_digest_after": "08666653d3e6a750491ebf8f07bf9ac9a5db6aec43b499fca72d40f56fdb7f69"
+        },
+        {
+          "trial": 9,
+          "http_status": 401,
+          "database_digest_before": "08666653d3e6a750491ebf8f07bf9ac9a5db6aec43b499fca72d40f56fdb7f69",
+          "database_digest_after": "08666653d3e6a750491ebf8f07bf9ac9a5db6aec43b499fca72d40f56fdb7f69"
+        },
+        {
+          "trial": 10,
+          "http_status": 401,
+          "database_digest_before": "08666653d3e6a750491ebf8f07bf9ac9a5db6aec43b499fca72d40f56fdb7f69",
+          "database_digest_after": "08666653d3e6a750491ebf8f07bf9ac9a5db6aec43b499fca72d40f56fdb7f69"
+        }
+      ],
+      "status": "PASS",
+      "duration_seconds": 0,
+      "evidence": "results.json"
+    },
+    {
+      "id": "B03-LOCAL",
+      "feature": "Loopback HTTP response time (LAN variant not measured)",
+      "expected": "30 successful requests; median <=500 ms, nearest-rank p95 <=1000 ms",
+      "actual": {
+        "requests": 30,
+        "successes": 30,
+        "median_ms": 1.3746250187978148,
+        "p95_ms": 1.6242919955402613,
+        "scope": "127.0.0.1 loopback, not LAN",
+        "timer": "perf_counter: POST start through complete body; LED time excluded"
+      },
+      "status": "PASS",
+      "duration_seconds": 0,
+      "evidence": "results.json"
+    },
+    {
+      "id": "B03-LAN",
+      "feature": "Genuine ESP32/LAN response time",
+      "expected": "Same target measured across independent LAN devices",
+      "actual": "No ESP32 or second independent LAN client; loopback values are not substituted",
+      "status": "NOT TESTED",
+      "duration_seconds": 0,
+      "evidence": "results.json"
+    },
+    {
+      "id": "SIM-NO-DUE",
+      "feature": "Paired token without due row",
+      "expected": "Selection HTTP 200, due=false; no action submitted",
+      "actual": {
+        "label": "SIMULATED ESP32 COMMUNICATION",
+        "transport": "real HTTP; identify loopback versus LAN",
+        "operation": "select firing",
+        "token": "<redacted>",
+        "http_status": 200,
+        "response": {
+          "due": false
+        },
+        "transport_error": null,
+        "duration_ms": 1.1102501302957535
+      },
+      "status": "PASS",
+      "duration_seconds": 0,
+      "evidence": "results.json"
+    },
+    {
+      "id": "SIM-MISSING",
+      "feature": "Missing device token",
+      "expected": "HTTP 401",
+      "actual": {
+        "label": "SIMULATED ESP32 COMMUNICATION",
+        "transport": "real HTTP; identify loopback versus LAN",
+        "operation": "bound action",
+        "token": "<omitted>",
+        "http_status": 401,
+        "response": {
+          "error": "unknown or missing device token"
+        },
+        "transport_error": null,
+        "duration_ms": 0.5017088260501623,
+        "action": "taken",
+        "request_id": null
+      },
+      "status": "PASS",
+      "duration_seconds": 0,
+      "evidence": "results.json"
+    },
+    {
+      "id": "SIM-ACTION",
+      "feature": "Unsupported action",
+      "expected": "HTTP 400",
+      "actual": {
+        "label": "SIMULATED ESP32 COMMUNICATION",
+        "transport": "real HTTP; identify loopback versus LAN",
+        "operation": "bound action",
+        "token": "<redacted>",
+        "http_status": 400,
+        "response": {
+          "error": "action must be 'taken' or 'snooze'"
+        },
+        "transport_error": null,
+        "duration_ms": 0.9610839188098907,
+        "action": "unsupported",
+        "request_id": null
+      },
+      "status": "PASS",
+      "duration_seconds": 0,
+      "evidence": "results.json"
+    },
+    {
+      "id": "SIM-DUPLICATE",
+      "feature": "Sequential repeated single-due request",
+      "expected": "First and exact retry 200; one log",
+      "actual": {
+        "statuses": [
+          200,
+          200
+        ],
+        "logs": 1
+      },
+      "status": "PASS",
+      "duration_seconds": 0,
+      "evidence": "results.json"
+    },
+    {
+      "id": "SIM-ISOLATION",
+      "feature": "Paired device owner isolation",
+      "expected": "A cannot acknowledge B; 404 and B state unchanged",
+      "actual": {
+        "http_status": 404,
+        "other_account_state_unchanged": true
+      },
+      "status": "PASS",
+      "duration_seconds": 0,
+      "evidence": "results.json"
+    },
+    {
+      "id": "SIM-CONCURRENT",
+      "feature": "Real concurrent duplicate HTTP requests",
+      "expected": "Two 200 receipts; one effect and log",
+      "actual": {
+        "statuses": [
+          200,
+          200
+        ],
+        "logs": 1
+      },
+      "status": "PASS",
+      "duration_seconds": 0,
+      "evidence": "results.json"
+    },
+    {
+      "id": "SIM-REPLAY-TAKEN",
+      "feature": "Multiple-due exact retry bound to one firing",
+      "expected": "Two 200s, same state after retry, one other reminder still due",
+      "actual": {
+        "statuses": [
+          200,
+          200
+        ],
+        "logs": 1,
+        "retry_state_unchanged": true,
+        "still_due": 1,
+        "request_id": "b70bd5562cf14de2b049a488f6969231"
+      },
+      "status": "PASS",
+      "duration_seconds": 0,
+      "evidence": "results.json"
+    },
+    {
+      "id": "SIM-REPLAY-SNOOZE",
+      "feature": "Multiple-due exact retry bound to one firing",
+      "expected": "Two 200s, same state after retry, one other reminder still due",
+      "actual": {
+        "statuses": [
+          200,
+          200
+        ],
+        "logs": 0,
+        "retry_state_unchanged": true,
+        "still_due": 1,
+        "request_id": "3b530c69bf8e4a7ba97801e6d57a5eb6"
+      },
+      "status": "PASS",
+      "duration_seconds": 0,
+      "evidence": "results.json"
+    },
+    {
+      "id": "SIM-LOST-RESPONSE",
+      "feature": "Discarded response followed by retry after real server restart",
+      "expected": "Receipt replay; one log; other reminder remains due",
+      "actual": {
+        "first_http_status": 200,
+        "retry_http_status": 200,
+        "logs": 1,
+        "still_due": 1,
+        "scope": "controlled client-side response discard; no claim of real packet loss"
+      },
+      "status": "PASS",
+      "duration_seconds": 0,
+      "evidence": "results.json"
+    },
+    {
+      "id": "OUTAGE-HTTP",
+      "feature": "Six real backend-stop/restart trials",
+      "expected": "No success or new log while stopped; intended action succeeds after restart",
+      "actual": [
+        {
+          "trial": 1,
+          "offline_http_status": null,
+          "transport_error": "<urlopen error [Errno 61] Connection refused>",
+          "logs_unchanged_during_outage": true,
+          "recovery_http_status": 200
+        },
+        {
+          "trial": 2,
+          "offline_http_status": null,
+          "transport_error": "<urlopen error [Errno 61] Connection refused>",
+          "logs_unchanged_during_outage": true,
+          "recovery_http_status": 200
+        },
+        {
+          "trial": 3,
+          "offline_http_status": null,
+          "transport_error": "<urlopen error [Errno 61] Connection refused>",
+          "logs_unchanged_during_outage": true,
+          "recovery_http_status": 200
+        },
+        {
+          "trial": 4,
+          "offline_http_status": null,
+          "transport_error": "<urlopen error [Errno 61] Connection refused>",
+          "logs_unchanged_during_outage": true,
+          "recovery_http_status": 200
+        },
+        {
+          "trial": 5,
+          "offline_http_status": null,
+          "transport_error": "<urlopen error [Errno 61] Connection refused>",
+          "logs_unchanged_during_outage": true,
+          "recovery_http_status": 200
+        },
+        {
+          "trial": 6,
+          "offline_http_status": null,
+          "transport_error": "<urlopen error [Errno 61] Connection refused>",
+          "logs_unchanged_during_outage": true,
+          "recovery_http_status": 200
+        }
+      ],
+      "status": "PASS",
+      "duration_seconds": 0,
+      "evidence": "results.json"
+    },
+    {
+      "id": "RESTART-SESSION",
+      "feature": "Browser session and device credential survive process restart",
+      "expected": "Existing cookie works; existing token authenticated",
+      "actual": {
+        "session_http_status": 200,
+        "token_authenticated_after_restart": true
+      },
+      "status": "PASS",
+      "duration_seconds": 0,
+      "evidence": "results.json"
+    },
+    {
+      "id": "B06-HARDWARE",
+      "feature": "Physical press classification",
+      "expected": "30 physical short/hold/intermediate trials",
+      "actual": "Teammate reports it works; independent GPIO/button/LED evidence not supplied",
+      "status": "NOT TESTED",
+      "duration_seconds": 0,
+      "evidence": "results.json"
+    },
+    {
+      "id": "B07-HARDWARE",
+      "feature": "ESP32 Wi-Fi/backend outage LED feedback",
+      "expected": "3 Wi-Fi-loss plus 3 backend-loss physical trials",
+      "actual": "Six backend HTTP-outage simulations were run, but ESP32 Wi-Fi and LED feedback require physical evidence",
+      "status": "NOT TESTED",
+      "duration_seconds": 0,
+      "evidence": "results.json"
+    },
+    {
+      "id": "B04-1",
+      "feature": "Real 300-second Snooze and restart recovery",
+      "expected": "Deadline 300 s; backend due observed within 2 s; no Taken log",
+      "actual": {
+        "real_elapsed_seconds": 300.1321167089045,
+        "stored_deadline": "2026-10-23T16:19:43.480263",
+        "observed_at": "2026-10-23T16:19:43.607932",
+        "observed_delay_seconds": 0.127669,
+        "server_firing_delay_seconds": 0.118388,
+        "taken_logs": 0,
+        "request": {
+          "label": "SIMULATED ESP32 COMMUNICATION",
+          "transport": "real HTTP; identify loopback versus LAN",
+          "operation": "bound action",
+          "token": "<redacted>",
+          "http_status": 200,
+          "response": {
+            "medicine_name": "Review dummy",
+            "success": true
+          },
+          "transport_error": null,
+          "duration_ms": 1.53299979865551,
+          "action": "snooze",
+          "request_id": "5948eaf5255c43df8111442665030bed"
+        },
+        "clock_mocking": false,
+        "backend_restarted_during_wait": true
+      },
+      "status": "PASS",
+      "duration_seconds": 300.1321167089045,
+      "evidence": "results.json"
+    },
+    {
+      "id": "B04-2",
+      "feature": "Real 300-second Snooze and restart recovery",
+      "expected": "Deadline 300 s; backend due observed within 2 s; no Taken log",
+      "actual": {
+        "real_elapsed_seconds": 301.0076019591652,
+        "stored_deadline": "2026-10-23T16:19:43.615417",
+        "observed_at": "2026-10-23T16:19:44.619004",
+        "observed_delay_seconds": 1.003587,
+        "server_firing_delay_seconds": 0.983368,
+        "taken_logs": 0,
+        "request": {
+          "label": "SIMULATED ESP32 COMMUNICATION",
+          "transport": "real HTTP; identify loopback versus LAN",
+          "operation": "bound action",
+          "token": "<redacted>",
+          "http_status": 200,
+          "response": {
+            "medicine_name": "Review dummy",
+            "success": true
+          },
+          "transport_error": null,
+          "duration_ms": 1.4822499360889196,
+          "action": "snooze",
+          "request_id": "d2688341ecd542a7beba4b7ba2eab905"
+        },
+        "clock_mocking": false,
+        "backend_restarted_during_wait": true
+      },
+      "status": "PASS",
+      "duration_seconds": 301.0076019591652,
+      "evidence": "results.json"
+    },
+    {
+      "id": "B04-3",
+      "feature": "Real 300-second Snooze and restart recovery",
+      "expected": "Deadline 300 s; backend due observed within 2 s; no Taken log",
+      "actual": {
+        "real_elapsed_seconds": 300.87868091696873,
+        "stored_deadline": "2026-10-23T16:19:43.750046",
+        "observed_at": "2026-10-23T16:19:44.624516",
+        "observed_delay_seconds": 0.87447,
+        "server_firing_delay_seconds": 0.85217,
+        "taken_logs": 0,
+        "request": {
+          "label": "SIMULATED ESP32 COMMUNICATION",
+          "transport": "real HTTP; identify loopback versus LAN",
+          "operation": "bound action",
+          "token": "<redacted>",
+          "http_status": 200,
+          "response": {
+            "medicine_name": "Review dummy",
+            "success": true
+          },
+          "transport_error": null,
+          "duration_ms": 1.5222919173538685,
+          "action": "snooze",
+          "request_id": "8a890702045c4ee890ebab0d88045200"
+        },
+        "clock_mocking": false,
+        "backend_restarted_during_wait": true
+      },
+      "status": "PASS",
+      "duration_seconds": 300.87868091696873,
+      "evidence": "results.json"
+    }
+  ],
+  "response_time_samples": [
+    {
+      "trial": 1,
+      "label": "SIMULATED ESP32 COMMUNICATION",
+      "transport": "real HTTP; identify loopback versus LAN",
+      "operation": "bound action",
+      "token": "<redacted>",
+      "http_status": 200,
+      "response": {
+        "medicine_name": "Review dummy",
+        "success": true
+      },
+      "transport_error": null,
+      "duration_ms": 1.5123339835554361,
+      "action": "taken",
+      "request_id": "c32b79d443324bada1220d8615fdb290"
+    },
+    {
+      "trial": 2,
+      "label": "SIMULATED ESP32 COMMUNICATION",
+      "transport": "real HTTP; identify loopback versus LAN",
+      "operation": "bound action",
+      "token": "<redacted>",
+      "http_status": 200,
+      "response": {
+        "medicine_name": "Review dummy",
+        "success": true
+      },
+      "transport_error": null,
+      "duration_ms": 1.5034161042422056,
+      "action": "taken",
+      "request_id": "d78820b6e147456190cb45e9aa62d8b4"
+    },
+    {
+      "trial": 3,
+      "label": "SIMULATED ESP32 COMMUNICATION",
+      "transport": "real HTTP; identify loopback versus LAN",
+      "operation": "bound action",
+      "token": "<redacted>",
+      "http_status": 200,
+      "response": {
+        "medicine_name": "Review dummy",
+        "success": true
+      },
+      "transport_error": null,
+      "duration_ms": 1.5167919918894768,
+      "action": "taken",
+      "request_id": "f7c489958433428f99d6faefeff86559"
+    },
+    {
+      "trial": 4,
+      "label": "SIMULATED ESP32 COMMUNICATION",
+      "transport": "real HTTP; identify loopback versus LAN",
+      "operation": "bound action",
+      "token": "<redacted>",
+      "http_status": 200,
+      "response": {
+        "medicine_name": "Review dummy",
+        "success": true
+      },
+      "transport_error": null,
+      "duration_ms": 1.8054579850286245,
+      "action": "taken",
+      "request_id": "6be15f71b53d48ea83c526c08183ba05"
+    },
+    {
+      "trial": 5,
+      "label": "SIMULATED ESP32 COMMUNICATION",
+      "transport": "real HTTP; identify loopback versus LAN",
+      "operation": "bound action",
+      "token": "<redacted>",
+      "http_status": 200,
+      "response": {
+        "medicine_name": "Review dummy",
+        "success": true
+      },
+      "transport_error": null,
+      "duration_ms": 1.4314160216599703,
+      "action": "taken",
+      "request_id": "fceea32ceea94886ad38f0db412ac5c9"
+    },
+    {
+      "trial": 6,
+      "label": "SIMULATED ESP32 COMMUNICATION",
+      "transport": "real HTTP; identify loopback versus LAN",
+      "operation": "bound action",
+      "token": "<redacted>",
+      "http_status": 200,
+      "response": {
+        "medicine_name": "Review dummy",
+        "success": true
+      },
+      "transport_error": null,
+      "duration_ms": 1.3286250177770853,
+      "action": "taken",
+      "request_id": "01cf46b4ba2d4c0ca24e498075fbbb25"
+    },
+    {
+      "trial": 7,
+      "label": "SIMULATED ESP32 COMMUNICATION",
+      "transport": "real HTTP; identify loopback versus LAN",
+      "operation": "bound action",
+      "token": "<redacted>",
+      "http_status": 200,
+      "response": {
+        "medicine_name": "Review dummy",
+        "success": true
+      },
+      "transport_error": null,
+      "duration_ms": 1.6242919955402613,
+      "action": "taken",
+      "request_id": "c2445bd388de412899c1dc81cce77799"
+    },
+    {
+      "trial": 8,
+      "label": "SIMULATED ESP32 COMMUNICATION",
+      "transport": "real HTTP; identify loopback versus LAN",
+      "operation": "bound action",
+      "token": "<redacted>",
+      "http_status": 200,
+      "response": {
+        "medicine_name": "Review dummy",
+        "success": true
+      },
+      "transport_error": null,
+      "duration_ms": 1.2668338604271412,
+      "action": "taken",
+      "request_id": "7d9a75d9ae2c497fa1da7e9fcf60454d"
+    },
+    {
+      "trial": 9,
+      "label": "SIMULATED ESP32 COMMUNICATION",
+      "transport": "real HTTP; identify loopback versus LAN",
+      "operation": "bound action",
+      "token": "<redacted>",
+      "http_status": 200,
+      "response": {
+        "medicine_name": "Review dummy",
+        "success": true
+      },
+      "transport_error": null,
+      "duration_ms": 1.3152500614523888,
+      "action": "taken",
+      "request_id": "c51ca07c681e4421aefb1b8c98d60102"
+    },
+    {
+      "trial": 10,
+      "label": "SIMULATED ESP32 COMMUNICATION",
+      "transport": "real HTTP; identify loopback versus LAN",
+      "operation": "bound action",
+      "token": "<redacted>",
+      "http_status": 200,
+      "response": {
+        "medicine_name": "Review dummy",
+        "success": true
+      },
+      "transport_error": null,
+      "duration_ms": 1.3567910064011812,
+      "action": "taken",
+      "request_id": "3a67f93e7c514263b2adb64926b9fb33"
+    },
+    {
+      "trial": 11,
+      "label": "SIMULATED ESP32 COMMUNICATION",
+      "transport": "real HTTP; identify loopback versus LAN",
+      "operation": "bound action",
+      "token": "<redacted>",
+      "http_status": 200,
+      "response": {
+        "medicine_name": "Review dummy",
+        "success": true
+      },
+      "transport_error": null,
+      "duration_ms": 1.364958006888628,
+      "action": "taken",
+      "request_id": "fb4ccfd2fccc4fd0a5f546c8269c219f"
+    },
+    {
+      "trial": 12,
+      "label": "SIMULATED ESP32 COMMUNICATION",
+      "transport": "real HTTP; identify loopback versus LAN",
+      "operation": "bound action",
+      "token": "<redacted>",
+      "http_status": 200,
+      "response": {
+        "medicine_name": "Review dummy",
+        "success": true
+      },
+      "transport_error": null,
+      "duration_ms": 1.3199159875512123,
+      "action": "taken",
+      "request_id": "2578db9b106f4c7880ddec442340784f"
+    },
+    {
+      "trial": 13,
+      "label": "SIMULATED ESP32 COMMUNICATION",
+      "transport": "real HTTP; identify loopback versus LAN",
+      "operation": "bound action",
+      "token": "<redacted>",
+      "http_status": 200,
+      "response": {
+        "medicine_name": "Review dummy",
+        "success": true
+      },
+      "transport_error": null,
+      "duration_ms": 1.3734579551964998,
+      "action": "taken",
+      "request_id": "6fa53cf0277b4a3eb71b67e04125f87a"
+    },
+    {
+      "trial": 14,
+      "label": "SIMULATED ESP32 COMMUNICATION",
+      "transport": "real HTTP; identify loopback versus LAN",
+      "operation": "bound action",
+      "token": "<redacted>",
+      "http_status": 200,
+      "response": {
+        "medicine_name": "Review dummy",
+        "success": true
+      },
+      "transport_error": null,
+      "duration_ms": 1.28875020891428,
+      "action": "taken",
+      "request_id": "7fc327c7a4de486f8b33c8e5403a068b"
+    },
+    {
+      "trial": 15,
+      "label": "SIMULATED ESP32 COMMUNICATION",
+      "transport": "real HTTP; identify loopback versus LAN",
+      "operation": "bound action",
+      "token": "<redacted>",
+      "http_status": 200,
+      "response": {
+        "medicine_name": "Review dummy",
+        "success": true
+      },
+      "transport_error": null,
+      "duration_ms": 1.3970001600682735,
+      "action": "taken",
+      "request_id": "026ac83adffd4c34ab6267f75e8fa4eb"
+    },
+    {
+      "trial": 16,
+      "label": "SIMULATED ESP32 COMMUNICATION",
+      "transport": "real HTTP; identify loopback versus LAN",
+      "operation": "bound action",
+      "token": "<redacted>",
+      "http_status": 200,
+      "response": {
+        "medicine_name": "Review dummy",
+        "success": true
+      },
+      "transport_error": null,
+      "duration_ms": 1.5640000347048044,
+      "action": "taken",
+      "request_id": "c4fcef8ff8e04e929f8fd4c6873553ef"
+    },
+    {
+      "trial": 17,
+      "label": "SIMULATED ESP32 COMMUNICATION",
+      "transport": "real HTTP; identify loopback versus LAN",
+      "operation": "bound action",
+      "token": "<redacted>",
+      "http_status": 200,
+      "response": {
+        "medicine_name": "Review dummy",
+        "success": true
+      },
+      "transport_error": null,
+      "duration_ms": 1.271124929189682,
+      "action": "taken",
+      "request_id": "3e3fc5b67360467faeb9423774433d94"
+    },
+    {
+      "trial": 18,
+      "label": "SIMULATED ESP32 COMMUNICATION",
+      "transport": "real HTTP; identify loopback versus LAN",
+      "operation": "bound action",
+      "token": "<redacted>",
+      "http_status": 200,
+      "response": {
+        "medicine_name": "Review dummy",
+        "success": true
+      },
+      "transport_error": null,
+      "duration_ms": 1.3939999043941498,
+      "action": "taken",
+      "request_id": "b35c3ee930744a459ccbbdc41387cfc6"
+    },
+    {
+      "trial": 19,
+      "label": "SIMULATED ESP32 COMMUNICATION",
+      "transport": "real HTTP; identify loopback versus LAN",
+      "operation": "bound action",
+      "token": "<redacted>",
+      "http_status": 200,
+      "response": {
+        "medicine_name": "Review dummy",
+        "success": true
+      },
+      "transport_error": null,
+      "duration_ms": 1.3440840411931276,
+      "action": "taken",
+      "request_id": "8f67633049cc497487568f94bcfa23e6"
+    },
+    {
+      "trial": 20,
+      "label": "SIMULATED ESP32 COMMUNICATION",
+      "transport": "real HTTP; identify loopback versus LAN",
+      "operation": "bound action",
+      "token": "<redacted>",
+      "http_status": 200,
+      "response": {
+        "medicine_name": "Review dummy",
+        "success": true
+      },
+      "transport_error": null,
+      "duration_ms": 1.3202091213315725,
+      "action": "taken",
+      "request_id": "f62c9b85f48248c8ae18b206c07d4875"
+    },
+    {
+      "trial": 21,
+      "label": "SIMULATED ESP32 COMMUNICATION",
+      "transport": "real HTTP; identify loopback versus LAN",
+      "operation": "bound action",
+      "token": "<redacted>",
+      "http_status": 200,
+      "response": {
+        "medicine_name": "Review dummy",
+        "success": true
+      },
+      "transport_error": null,
+      "duration_ms": 1.3757920823991299,
+      "action": "taken",
+      "request_id": "c042ac476bac4503b67f1aaeb8708c6c"
+    },
+    {
+      "trial": 22,
+      "label": "SIMULATED ESP32 COMMUNICATION",
+      "transport": "real HTTP; identify loopback versus LAN",
+      "operation": "bound action",
+      "token": "<redacted>",
+      "http_status": 200,
+      "response": {
+        "medicine_name": "Review dummy",
+        "success": true
+      },
+      "transport_error": null,
+      "duration_ms": 1.2998750898987055,
+      "action": "taken",
+      "request_id": "00c7ac08c44c494391a41686814a2103"
+    },
+    {
+      "trial": 23,
+      "label": "SIMULATED ESP32 COMMUNICATION",
+      "transport": "real HTTP; identify loopback versus LAN",
+      "operation": "bound action",
+      "token": "<redacted>",
+      "http_status": 200,
+      "response": {
+        "medicine_name": "Review dummy",
+        "success": true
+      },
+      "transport_error": null,
+      "duration_ms": 1.5390000771731138,
+      "action": "taken",
+      "request_id": "d6ade3e5420d422ea73fc3aee2b468d4"
+    },
+    {
+      "trial": 24,
+      "label": "SIMULATED ESP32 COMMUNICATION",
+      "transport": "real HTTP; identify loopback versus LAN",
+      "operation": "bound action",
+      "token": "<redacted>",
+      "http_status": 200,
+      "response": {
+        "medicine_name": "Review dummy",
+        "success": true
+      },
+      "transport_error": null,
+      "duration_ms": 1.4033331535756588,
+      "action": "taken",
+      "request_id": "d45f81bfd4874e959f12c67afe63ab1d"
+    },
+    {
+      "trial": 25,
+      "label": "SIMULATED ESP32 COMMUNICATION",
+      "transport": "real HTTP; identify loopback versus LAN",
+      "operation": "bound action",
+      "token": "<redacted>",
+      "http_status": 200,
+      "response": {
+        "medicine_name": "Review dummy",
+        "success": true
+      },
+      "transport_error": null,
+      "duration_ms": 1.3622080441564322,
+      "action": "taken",
+      "request_id": "ec57a0a217c44481aed2287414a71820"
+    },
+    {
+      "trial": 26,
+      "label": "SIMULATED ESP32 COMMUNICATION",
+      "transport": "real HTTP; identify loopback versus LAN",
+      "operation": "bound action",
+      "token": "<redacted>",
+      "http_status": 200,
+      "response": {
+        "medicine_name": "Review dummy",
+        "success": true
+      },
+      "transport_error": null,
+      "duration_ms": 1.3065419625490904,
+      "action": "taken",
+      "request_id": "471d2287786541719cb0ef5454f72095"
+    },
+    {
+      "trial": 27,
+      "label": "SIMULATED ESP32 COMMUNICATION",
+      "transport": "real HTTP; identify loopback versus LAN",
+      "operation": "bound action",
+      "token": "<redacted>",
+      "http_status": 200,
+      "response": {
+        "medicine_name": "Review dummy",
+        "success": true
+      },
+      "transport_error": null,
+      "duration_ms": 1.4102919958531857,
+      "action": "taken",
+      "request_id": "5c36ff786e20420a82dea7fd79e411e2"
+    },
+    {
+      "trial": 28,
+      "label": "SIMULATED ESP32 COMMUNICATION",
+      "transport": "real HTTP; identify loopback versus LAN",
+      "operation": "bound action",
+      "token": "<redacted>",
+      "http_status": 200,
+      "response": {
+        "medicine_name": "Review dummy",
+        "success": true
+      },
+      "transport_error": null,
+      "duration_ms": 1.3728751800954342,
+      "action": "taken",
+      "request_id": "37618f1223ad40c595b56db987032c1f"
+    },
+    {
+      "trial": 29,
+      "label": "SIMULATED ESP32 COMMUNICATION",
+      "transport": "real HTTP; identify loopback versus LAN",
+      "operation": "bound action",
+      "token": "<redacted>",
+      "http_status": 200,
+      "response": {
+        "medicine_name": "Review dummy",
+        "success": true
+      },
+      "transport_error": null,
+      "duration_ms": 1.4360409695655107,
+      "action": "taken",
+      "request_id": "21219a24df5d4babae239ec39a58bb71"
+    },
+    {
+      "trial": 30,
+      "label": "SIMULATED ESP32 COMMUNICATION",
+      "transport": "real HTTP; identify loopback versus LAN",
+      "operation": "bound action",
+      "token": "<redacted>",
+      "http_status": 200,
+      "response": {
+        "medicine_name": "Review dummy",
+        "success": true
+      },
+      "transport_error": null,
+      "duration_ms": 1.4940418768674135,
+      "action": "taken",
+      "request_id": "ed53c344cd21402281856adf6c38959c"
+    }
+  ]
+}

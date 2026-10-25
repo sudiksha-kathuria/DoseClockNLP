@@ -1,0 +1,29 @@
+{
+  "validation_date": "23 October 2026",
+  "recorded_at": "2026-10-23T14:57:01.156850+05:30",
+  "chronology": "Follow-up executed after initial Review 3; not backdated",
+  "full_regression": {
+    "PASS": 75,
+    "FAIL": 0,
+    "SKIP": 0,
+    "NOT TESTED": 5
+  },
+  "full_regression_case_count": 80,
+  "targeted_autoplay_repeats": {
+    "PASS": 3,
+    "counted_again_in_full_regression": false
+  },
+  "product_changes_this_followup": [],
+  "historical_UI10_evidence": "INVALIDATED for full autoplay claim; observations preserved",
+  "unresolved": [
+    "English-only message for six language codes",
+    "Multiple-reminder retry safety"
+  ],
+  "not_tested": [
+    "UI-VOICE",
+    "HUMAN-SPEECH",
+    "B03-LAN",
+    "B06-HARDWARE",
+    "B07-HARDWARE"
+  ]
+}

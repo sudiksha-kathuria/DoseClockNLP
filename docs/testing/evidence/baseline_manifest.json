@@ -1,0 +1,30 @@
+{
+  "base": "a1230c928a0471aa2a05e0af6b32ee2a64a0cd05",
+  "tracked_sha256": {
+    ".gitignore": "e1de03fb9bce3e5b577a8f7ac154f65e4f8d6ec02c42a05ea44972b569357aa0",
+    "HARDWARE.md": "88ad9f34057cfb0090d71ed408aadb77b4b633e488a5d915fa033c286f800bbd",
+    "README.md": "010d182ff59392b2343ec4c679bf6dea8fec9b24b1f6fc125657135a1fc86892",
+    "backend/app.py": "7c4052f30c7e8474e0df17a16f23fbfc620f1d15213ded13b1a3dc2fa4fcaf30",
+    "backend/database.py": "48de4b6055d22d9b0d5ee927998d8c3477b2a15454c361e3bae1edcc1c74b4c9",
+    "backend/requirements.txt": "40683c158136a5ae010a3d7bef27d267d55526fb87a8a02f762ec1bbb05cbc4c",
+    "backend/scheduler.py": "946704a32d2c65e38fd2249487618aa93157abe574d192af0ca83083eee6a62c",
+    "backend/tts.py": "8cb38d7ab9324e6b22c6a4823686f2a089358316f77ac3df04614e9a5b4277ee",
+    "frontend/static/audio/.gitkeep": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "frontend/static/css/style.css": "1d204efa7476c467d586dac24ca2878da548765043f374eb4001e6206744fa1a",
+    "frontend/static/js/clock.js": "2221d2a53893b524444fb369d5cf3d3c43d4f6bd6aa482ef7059239502428eee",
+    "frontend/static/js/index.js": "04daf47acb7047aeced9bbdc21cf22355c4f03275b9ffc75a6fbbc291b1bc646",
+    "frontend/static/js/logs.js": "495170785fc5fdbedef0a9dd8afc26643635fff8410034f3d9983457fa9a45e8",
+    "frontend/templates/base.html": "361fc736159ad7748b681d45fd966f63c9bbdfaf685e5dd52381b803e757575e",
+    "frontend/templates/clock.html": "798a9ddc6f06d0595c85fe01d966303c5871a22c255c17631f1f56561884c64d",
+    "frontend/templates/dashboard.html": "c65540a3b97cb3f135df4ed0ff91b3e09a65d3f2f635b79fd80a754bd0b0bb2e",
+    "frontend/templates/index.html": "5508cbd4d7de128f95ee690cce279b79f467870c95b6e1e5c5718f688f7c80f9",
+    "frontend/templates/login.html": "53e5a92436823a3d986f996f76a7663da7c0badf41d0b072e4e7fd392b8e0d47",
+    "frontend/templates/logs.html": "f58c95386b53b8b4a2b974cdc20011a597b5c2e620efcb7586bb27ec7774eb7a",
+    "frontend/templates/medicine_detail.html": "9a37f81af8d8918f36b80d6fbfa23f181f83aba93ee23687f28bc286c0f24a61",
+    "frontend/templates/signup.html": "4b3e50e87adb2f28fd90f2008c0c8e2a2e7ab6d1b6f62852b98a7d0655954ad1",
+    "hardware/README.md": "c8edf330f2f94874676d5a98d11a3eff15cee009947a1c116c5d95ea23c1de33",
+    "hardware/switch_hub.ino": "c452e14a8ea4cdc6fac724983d98604e13bd098aeb04db54332035fddfc3a65b",
+    "tests/test_database.py": "b7c36f6b29e586d13cf85b1d9c626ba8630eae3882a4a062b58774402ea69b38",
+    "tests/test_hardware.py": "2ef9e0149844e878d2ecdf6420a318e5eef17dfba8cf55db6a356884925379e1"
+  }
+}

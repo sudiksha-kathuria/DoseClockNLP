@@ -1,0 +1,335 @@
+{
+  "recorded_at_utc": "2026-10-23T10:42:10.626604+00:00",
+  "environment": "temporary exported source; disposable SQLite and audio caches",
+  "tests_run": 54,
+  "passed": 33,
+  "failed": 21,
+  "failure_assertions": 58,
+  "skipped": 0,
+  "records": [
+    {
+      "id": "test_database.DatabaseTests.test_pre_account_database_migrates_without_assigning_old_records",
+      "status": "PASS",
+      "duration_seconds": 0.00403225002810359,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_database.DatabaseTests.test_taken_is_atomic_and_rejects_repeated_or_wrong_owner_actions",
+      "status": "PASS",
+      "duration_seconds": 0.06739208404906094,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_hardware.HardwareTests.test_audio_failure_does_not_block_hardware",
+      "status": "PASS",
+      "duration_seconds": 0.12885916698724031,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_hardware.HardwareTests.test_hardware_snooze_survives_a_scheduler_restart",
+      "status": "PASS",
+      "duration_seconds": 0.11968291690573096,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_hardware.HardwareTests.test_hardware_taken_logs_once",
+      "status": "PASS",
+      "duration_seconds": 0.12726604100316763,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_hardware.HardwareTests.test_invalid_token_action_and_no_due_statuses",
+      "status": "PASS",
+      "duration_seconds": 0.11747362487949431,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_hardware.HardwareTests.test_overlapping_device_action_returns_conflict",
+      "status": "PASS",
+      "duration_seconds": 0.11713791592046618,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_hardware.HardwareTests.test_pairing_token_is_owned_and_displayed_once",
+      "status": "PASS",
+      "duration_seconds": 0.1237196249421686,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_hardware.HardwareTests.test_token_cannot_answer_another_users_reminder",
+      "status": "PASS",
+      "duration_seconds": 0.12800620798952878,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_archived_or_deleted_target_does_not_redirect_to_another_due_row",
+      "status": "FAIL",
+      "duration_seconds": 0.12648674985393882,
+      "actual": "Traceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-lxfnvgzb/tests/test_resolution.py\", line 220, in test_archived_or_deleted_target_does_not_redirect_to_another_due_row\n    self.assertEqual(self.post(body).status_code,409)\nAssertionError: 200 != 409\n"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_browser_actions_require_generation_and_reject_stale_requests",
+      "status": "FAIL",
+      "duration_seconds": 0.12643062509596348,
+      "actual": "Traceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-lxfnvgzb/tests/test_resolution.py\", line 243, in test_browser_actions_require_generation_and_reject_stale_requests\n    self.assertEqual(self.client.post(route,json={'id':mid}).status_code,400)\nAssertionError: 200 != 400\n"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_current_due_audio_does_not_expose_legacy_english_cache",
+      "status": "FAIL",
+      "duration_seconds": 0.12396533391438425,
+      "actual": "Traceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-lxfnvgzb/tests/test_resolution.py\", line 128, in test_current_due_audio_does_not_expose_legacy_english_cache\n    self.assertIsNone(response['audio_url'])\nAssertionError: '/static/audio/legacy-english.mp3' is not None\n"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_database_failure_rolls_back_effect_and_receipt_then_retry_succeeds",
+      "status": "FAIL",
+      "duration_seconds": 0.12357112509198487,
+      "actual": "Traceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-lxfnvgzb/tests/test_resolution.py\", line 195, in test_database_failure_rolls_back_effect_and_receipt_then_retry_succeeds\n    with patch('database._record_device_action',side_effect=sqlite3.OperationalError('controlled disk failure')):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/pranav/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py\", line 1467, in __enter__\n    original, local = self.get_original()\n                      ^^^^^^^^^^^^^^^^^^^\n  File \"/Users/pranav/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py\", line 1437, in get_original\n    raise AttributeError(\nAttributeError: <module 'database' from '/private/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-lxfnvgzb/backend/database.py'> does not have the attribute '_record_device_action'\n"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_distinct_requests_for_same_occurrence_cannot_both_apply",
+      "status": "FAIL",
+      "duration_seconds": 0.1293685408309102,
+      "actual": "Traceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-lxfnvgzb/tests/test_resolution.py\", line 173, in test_distinct_requests_for_same_occurrence_cannot_both_apply\n    self.assertEqual(sorted(r[0] for r in results),[200,409])\nAssertionError: Lists differ: [200, 200] != [200, 409]\n\nFirst differing element 1:\n200\n409\n\n- [200, 200]\n?       ^ ^\n\n+ [200, 409]\n?       ^ ^\n\n"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_invalid_identity_types_and_missing_fields_are_rejected",
+      "status": "FAIL",
+      "duration_seconds": 0.1401012921705842,
+      "actual": "test_invalid_identity_types_and_missing_fields_are_rejected (test_resolution.ResolutionTests.test_invalid_identity_types_and_missing_fields_are_rejected) (field='id', value=None)\nTraceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-lxfnvgzb/tests/test_resolution.py\", line 237, in test_invalid_identity_types_and_missing_fields_are_rejected\n    with self.subTest(field=key,value=value):self.assertEqual(self.post({**body,key:value}).status_code,400)\n                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: 200 != 400\n\ntest_invalid_identity_types_and_missing_fields_are_rejected (test_resolution.ResolutionTests.test_invalid_identity_types_and_missing_fields_are_rejected) (field='id', value=[])\nTraceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-lxfnvgzb/tests/test_resolution.py\", line 237, in test_invalid_identity_types_and_missing_fields_are_rejected\n    with self.subTest(field=key,value=value):self.assertEqual(self.post({**body,key:value}).status_code,400)\n                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: 404 != 400\n\ntest_invalid_identity_types_and_missing_fields_are_rejected (test_resolution.ResolutionTests.test_invalid_identity_types_and_missing_fields_are_rejected) (field='id', value={})\nTraceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-lxfnvgzb/tests/test_resolution.py\", line 237, in test_invalid_identity_types_and_missing_fields_are_rejected\n    with self.subTest(field=key,value=value):self.assertEqual(self.post({**body,key:value}).status_code,400)\n                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: 404 != 400\n\ntest_invalid_identity_types_and_missing_fields_are_rejected (test_resolution.ResolutionTests.test_invalid_identity_types_and_missing_fields_are_rejected) (field='id', value=True)\nTraceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-lxfnvgzb/tests/test_resolution.py\", line 237, in test_invalid_identity_types_and_missing_fields_are_rejected\n    with self.subTest(field=key,value=value):self.assertEqual(self.post({**body,key:value}).status_code,400)\n                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: 404 != 400\n\ntest_invalid_identity_types_and_missing_fields_are_rejected (test_resolution.ResolutionTests.test_invalid_identity_types_and_missing_fields_are_rejected) (field='id', value='')\nTraceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-lxfnvgzb/tests/test_resolution.py\", line 237, in test_invalid_identity_types_and_missing_fields_are_rejected\n    with self.subTest(field=key,value=value):self.assertEqual(self.post({**body,key:value}).status_code,400)\n                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: 404 != 400\n\ntest_invalid_identity_types_and_missing_fields_are_rejected (test_resolution.ResolutionTests.test_invalid_identity_types_and_missing_fields_are_rejected) (field='id', value='1')\nTraceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-lxfnvgzb/tests/test_resolution.py\", line 237, in test_invalid_identity_types_and_missing_fields_are_rejected\n    with self.subTest(field=key,value=value):self.assertEqual(self.post({**body,key:value}).status_code,400)\n                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: 404 != 400\n\ntest_invalid_identity_types_and_missing_fields_are_rejected (test_resolution.ResolutionTests.test_invalid_identity_types_and_missing_fields_are_rejected) (field='id', value=-1)\nTraceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-lxfnvgzb/tests/test_resolution.py\", line 237, in test_invalid_identity_types_and_missing_fields_are_rejected\n    with self.subTest(field=key,value=value):self.assertEqual(self.post({**body,key:value}).status_code,400)\n                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: 404 != 400\n\ntest_invalid_identity_types_and_missing_fields_are_rejected (test_resolution.ResolutionTests.test_invalid_identity_types_and_missing_fields_are_rejected) (field='id', value=1.5)\nTraceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-lxfnvgzb/tests/test_resolution.py\", line 237, in test_invalid_identity_types_and_missing_fields_are_rejected\n    with self.subTest(field=key,value=value):self.assertEqual(self.post({**body,key:value}).status_code,400)\n                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: 404 != 400\n\ntest_invalid_identity_types_and_missing_fields_are_rejected (test_resolution.ResolutionTests.test_invalid_identity_types_and_missing_fields_are_rejected) (field='fired_at', value=None)\nTraceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-lxfnvgzb/tests/test_resolution.py\", line 237, in test_invalid_identity_types_and_missing_fields_are_rejected\n    with self.subTest(field=key,value=value):self.assertEqual(self.post({**body,key:value}).status_code,400)\n                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: 404 != 400\n\ntest_invalid_identity_types_and_missing_fields_are_rejected (test_resolution.ResolutionTests.test_invalid_identity_types_and_missing_fields_are_rejected) (field='fired_at', value=[])\nTraceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-lxfnvgzb/tests/test_resolution.py\", line 237, in test_invalid_identity_types_and_missing_fields_are_rejected\n    with self.subTest(field=key,value=value):self.assertEqual(self.post({**body,key:value}).status_code,400)\n                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: 404 != 400\n\ntest_invalid_identity_types_and_missing_fields_are_rejected (test_resolution.ResolutionTests.test_invalid_identity_types_and_missing_fields_are_rejected) (field='fired_at', value={})\nTraceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-lxfnvgzb/tests/test_resolution.py\", line 237, in test_invalid_identity_types_and_missing_fields_are_rejected\n    with self.subTest(field=key,value=value):self.assertEqual(self.post({**body,key:value}).status_code,400)\n                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: 404 != 400\n\ntest_invalid_identity_types_and_missing_fields_are_rejected (test_resolution.ResolutionTests.test_invalid_identity_types_and_missing_fields_are_rejected) (field='fired_at', value=True)\nTraceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-lxfnvgzb/tests/test_resolution.py\", line 237, in test_invalid_identity_types_and_missing_fields_are_rejected\n    with self.subTest(field=key,value=value):self.assertEqual(self.post({**body,key:value}).status_code,400)\n                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: 404 != 400\n\ntest_invalid_identity_types_and_missing_fields_are_rejected (test_resolution.ResolutionTests.test_invalid_identity_types_and_missing_fields_are_rejected) (field='fired_at', value='')\nTraceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-lxfnvgzb/tests/test_resolution.py\", line 237, in test_invalid_identity_types_and_missing_fields_are_rejected\n    with self.subTest(field=key,value=value):self.assertEqual(self.post({**body,key:value}).status_code,400)\n                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: 404 != 400\n\ntest_invalid_identity_types_and_missing_fields_are_rejected (test_resolution.ResolutionTests.test_invalid_identity_types_and_missing_fields_are_rejected) (field='request_id', value=None)\nTraceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-lxfnvgzb/tests/test_resolution.py\", line 237, in test_invalid_identity_types_and_missing_fields_are_rejected\n    with self.subTest(field=key,value=value):self.assertEqual(self.post({**body,key:value}).status_code,400)\n                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: 404 != 400\n\ntest_invalid_identity_types_and_missing_fields_are_rejected (test_resolution.ResolutionTests.test_invalid_identity_types_and_missing_fields_are_rejected) (field='request_id', value=[])\nTraceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-lxfnvgzb/tests/test_resolution.py\", line 237, in test_invalid_identity_types_and_missing_fields_are_rejected\n    with self.subTest(field=key,value=value):self.assertEqual(self.post({**body,key:value}).status_code,400)\n                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: 404 != 400\n\ntest_invalid_identity_types_and_missing_fields_are_rejected (test_resolution.ResolutionTests.test_invalid_identity_types_and_missing_fields_are_rejected) (field='request_id', value={})\nTraceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-lxfnvgzb/tests/test_resolution.py\", line 237, in test_invalid_identity_types_and_missing_fields_are_rejected\n    with self.subTest(field=key,value=value):self.assertEqual(self.post({**body,key:value}).status_code,400)\n                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: 404 != 400\n\ntest_invalid_identity_types_and_missing_fields_are_rejected (test_resolution.ResolutionTests.test_invalid_identity_types_and_missing_fields_are_rejected) (field='request_id', value=True)\nTraceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-lxfnvgzb/tests/test_resolution.py\", line 237, in test_invalid_identity_types_and_missing_fields_are_rejected\n    with self.subTest(field=key,value=value):self.assertEqual(self.post({**body,key:value}).status_code,400)\n                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: 404 != 400\n\ntest_invalid_identity_types_and_missing_fields_are_rejected (test_resolution.ResolutionTests.test_invalid_identity_types_and_missing_fields_are_rejected) (field='request_id', value='')\nTraceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-lxfnvgzb/tests/test_resolution.py\", line 237, in test_invalid_identity_types_and_missing_fields_are_rejected\n    with self.subTest(field=key,value=value):self.assertEqual(self.post({**body,key:value}).status_code,400)\n                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: 404 != 400\n\nTraceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-lxfnvgzb/tests/test_resolution.py\", line 238, in test_invalid_identity_types_and_missing_fields_are_rejected\n    self.assertEqual(database.get_medicine(mid)['is_due'],1)\nAssertionError: 0 != 1\n"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_invalid_language_rejected_before_provider_or_file_creation",
+      "status": "FAIL",
+      "duration_seconds": 0.12477266602218151,
+      "actual": "test_invalid_language_rejected_before_provider_or_file_creation (test_resolution.ResolutionTests.test_invalid_language_rejected_before_provider_or_file_creation) (language='zz')\nTraceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-lxfnvgzb/tests/test_resolution.py\", line 118, in test_invalid_language_rejected_before_provider_or_file_creation\n    with self.subTest(language=lang), self.assertRaises(ValueError):tts.get_or_create_audio('Dummy',lang)\n                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: ValueError not raised\n\ntest_invalid_language_rejected_before_provider_or_file_creation (test_resolution.ResolutionTests.test_invalid_language_rejected_before_provider_or_file_creation) (language='../en')\nTraceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-lxfnvgzb/tests/test_resolution.py\", line 118, in test_invalid_language_rejected_before_provider_or_file_creation\n    with self.subTest(language=lang), self.assertRaises(ValueError):tts.get_or_create_audio('Dummy',lang)\n                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: ValueError not raised\n\ntest_invalid_language_rejected_before_provider_or_file_creation (test_resolution.ResolutionTests.test_invalid_language_rejected_before_provider_or_file_creation) (language='')\nTraceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-lxfnvgzb/tests/test_resolution.py\", line 118, in test_invalid_language_rejected_before_provider_or_file_creation\n    with self.subTest(language=lang), self.assertRaises(ValueError):tts.get_or_create_audio('Dummy',lang)\n                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: ValueError not raised\n\ntest_invalid_language_rejected_before_provider_or_file_creation (test_resolution.ResolutionTests.test_invalid_language_rejected_before_provider_or_file_creation) (language=None)\nTraceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-lxfnvgzb/tests/test_resolution.py\", line 118, in test_invalid_language_rejected_before_provider_or_file_creation\n    with self.subTest(language=lang), self.assertRaises(ValueError):tts.get_or_create_audio('Dummy',lang)\n                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: ValueError not raised\n\nTraceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-lxfnvgzb/tests/test_resolution.py\", line 119, in test_invalid_language_rejected_before_provider_or_file_creation\n    synth.assert_not_called()\n  File \"/Users/pranav/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py\", line 910, in assert_not_called\n    raise AssertionError(msg)\nAssertionError: Expected 'gTTS' to not have been called. Called 4 times.\nCalls: [call(text=\"It's time to take your Dummy.\", lang='zz', timeout=(3, 8)),\n call().save('/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/tmptjjmtn4n/audio/tmp0ym4phu_.mp3'),\n call(text=\"It's time to take your Dummy.\", lang='../en', timeout=(3, 8)),\n call().save('/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/tmptjjmtn4n/audio/tmpbrsmant6.mp3'),\n call(text=\"It's time to take your Dummy.\", lang='', timeout=(3, 8)),\n call().save('/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/tmptjjmtn4n/audio/tmps790j8_y.mp3'),\n call(text=\"It's time to take your Dummy.\", lang=None, timeout=(3, 8)),\n call().save('/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/tmptjjmtn4n/audio/tmp1yki4zix.mp3')].\n"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_legacy_english_cache_not_reused_for_translated_templates",
+      "status": "FAIL",
+      "duration_seconds": 0.12939466699026525,
+      "actual": "test_legacy_english_cache_not_reused_for_translated_templates (test_resolution.ResolutionTests.test_legacy_english_cache_not_reused_for_translated_templates) (language='en')\nTraceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-lxfnvgzb/tests/test_resolution.py\", line 86, in test_legacy_english_cache_not_reused_for_translated_templates\n    with self.subTest(language=lang): self.assertIsNone(tts.get_cached_audio(name,lang))\n                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: 'audio/en_review-dummy_3a367197a1.mp3' is not None\n\ntest_legacy_english_cache_not_reused_for_translated_templates (test_resolution.ResolutionTests.test_legacy_english_cache_not_reused_for_translated_templates) (language='hi')\nTraceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-lxfnvgzb/tests/test_resolution.py\", line 86, in test_legacy_english_cache_not_reused_for_translated_templates\n    with self.subTest(language=lang): self.assertIsNone(tts.get_cached_audio(name,lang))\n                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: 'audio/hi_review-dummy_82d9d2858f.mp3' is not None\n\ntest_legacy_english_cache_not_reused_for_translated_templates (test_resolution.ResolutionTests.test_legacy_english_cache_not_reused_for_translated_templates) (language='ta')\nTraceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-lxfnvgzb/tests/test_resolution.py\", line 86, in test_legacy_english_cache_not_reused_for_translated_templates\n    with self.subTest(language=lang): self.assertIsNone(tts.get_cached_audio(name,lang))\n                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: 'audio/ta_review-dummy_e051e9fdcc.mp3' is not None\n\ntest_legacy_english_cache_not_reused_for_translated_templates (test_resolution.ResolutionTests.test_legacy_english_cache_not_reused_for_translated_templates) (language='te')\nTraceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-lxfnvgzb/tests/test_resolution.py\", line 86, in test_legacy_english_cache_not_reused_for_translated_templates\n    with self.subTest(language=lang): self.assertIsNone(tts.get_cached_audio(name,lang))\n                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: 'audio/te_review-dummy_197d794b78.mp3' is not None\n\ntest_legacy_english_cache_not_reused_for_translated_templates (test_resolution.ResolutionTests.test_legacy_english_cache_not_reused_for_translated_templates) (language='kn')\nTraceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-lxfnvgzb/tests/test_resolution.py\", line 86, in test_legacy_english_cache_not_reused_for_translated_templates\n    with self.subTest(language=lang): self.assertIsNone(tts.get_cached_audio(name,lang))\n                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: 'audio/kn_review-dummy_b796331fa7.mp3' is not None\n\ntest_legacy_english_cache_not_reused_for_translated_templates (test_resolution.ResolutionTests.test_legacy_english_cache_not_reused_for_translated_templates) (language='bn')\nTraceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-lxfnvgzb/tests/test_resolution.py\", line 86, in test_legacy_english_cache_not_reused_for_translated_templates\n    with self.subTest(language=lang): self.assertIsNone(tts.get_cached_audio(name,lang))\n                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: 'audio/bn_review-dummy_f209e32c62.mp3' is not None\n"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_legacy_idless_taken_and_snooze_requests_fail_closed",
+      "status": "FAIL",
+      "duration_seconds": 0.1344176249112934,
+      "actual": "Traceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-lxfnvgzb/tests/test_resolution.py\", line 144, in test_legacy_idless_taken_and_snooze_requests_fail_closed\n    self.assertEqual(self.post({'token':self.token,'action':action}).status_code,400)\nAssertionError: 200 != 400\n"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_receipts_survive_database_restart_and_are_scoped_to_device",
+      "status": "FAIL",
+      "duration_seconds": 0.1339572910219431,
+      "actual": "Traceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-lxfnvgzb/tests/test_resolution.py\", line 208, in test_receipts_survive_database_restart_and_are_scoped_to_device\n    first=self.post(body);database.init_db();self.assertEqual(self.post(body).json,first.json)\n                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: {'medicine_name': 'Pending B', 'success': True} != {'medicine_name': 'Pending A', 'success': True}\n- {'medicine_name': 'Pending B', 'success': True}\n?                            ^\n\n+ {'medicine_name': 'Pending A', 'success': True}\n?                            ^\n\n"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_request_id_reuse_with_different_target_or_action_conflicts",
+      "status": "FAIL",
+      "duration_seconds": 0.1376465840730816,
+      "actual": "Traceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-lxfnvgzb/tests/test_resolution.py\", line 181, in test_request_id_reuse_with_different_target_or_action_conflicts\n    self.assertEqual(self.post({**body,**changed}).status_code,409)\nAssertionError: 200 != 409\n"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_same_request_concurrent_retries_have_one_durable_effect",
+      "status": "FAIL",
+      "duration_seconds": 0.13884224998764694,
+      "actual": "Traceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-lxfnvgzb/tests/test_resolution.py\", line 166, in test_same_request_concurrent_retries_have_one_durable_effect\n    self.assertEqual([r[0] for r in results],[200,200]);self.assertEqual(results[0][1],results[1][1])\n                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: {'medicine_name': 'Pending B', 'success': True} != {'medicine_name': 'Pending A', 'success': True}\n- {'medicine_name': 'Pending B', 'success': True}\n?                            ^\n\n+ {'medicine_name': 'Pending A', 'success': True}\n?                            ^\n\n"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_selection_is_authenticated_and_account_scoped",
+      "status": "FAIL",
+      "duration_seconds": 0.12801616685464978,
+      "actual": "Traceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-lxfnvgzb/tests/test_resolution.py\", line 135, in test_selection_is_authenticated_and_account_scoped\n    self.assertEqual(self.client.post('/api/device/reminder',json={'token':'invalid'}).status_code,401)\nAssertionError: 404 != 401\n"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_six_cache_entries_are_distinct_and_reusable_offline",
+      "status": "PASS",
+      "duration_seconds": 0.13199020782485604,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_six_synthesis_calls_use_translated_text_and_matching_language",
+      "status": "FAIL",
+      "duration_seconds": 0.12927224999293685,
+      "actual": "Traceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-lxfnvgzb/tests/test_resolution.py\", line 77, in test_six_synthesis_calls_use_translated_text_and_matching_language\n    self.assertEqual(synth.call_args.kwargs['text'],template.format(name=name))\nAssertionError: \"It's time to take your Review dummy.\" != '\u0906\u092a\u0915\u0940 \u0926\u0935\u093e Review dummy \u0932\u0947\u0928\u0947 \u0915\u093e \u0938\u092e\u092f \u0939\u094b \u0917\u092f\u093e \u0939\u0948\u0964'\n- It's time to take your Review dummy.\n+ \u0906\u092a\u0915\u0940 \u0926\u0935\u093e Review dummy \u0932\u0947\u0928\u0947 \u0915\u093e \u0938\u092e\u092f \u0939\u094b \u0917\u092f\u093e \u0939\u0948\u0964\n\n"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_snooze_retry_does_not_extend_deadline_or_snooze_second_reminder",
+      "status": "FAIL",
+      "duration_seconds": 0.13185370806604624,
+      "actual": "Traceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-lxfnvgzb/tests/test_resolution.py\", line 160, in test_snooze_retry_does_not_extend_deadline_or_snooze_second_reminder\n    self.assertEqual(database.get_medicine(b)['is_due'],1)\nAssertionError: 0 != 1\n"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_stale_firing_rejected_while_exact_successful_retry_replays_receipt",
+      "status": "FAIL",
+      "duration_seconds": 0.13684433395974338,
+      "actual": "Traceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-lxfnvgzb/tests/test_resolution.py\", line 188, in test_stale_firing_rejected_while_exact_successful_retry_replays_receipt\n    self.assertEqual(self.post({**old,'request_id':'unused-stale-request'}).status_code,409)\nAssertionError: 404 != 409\n"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_synthesis_failures_cleanup_and_can_retry_all_languages",
+      "status": "FAIL",
+      "duration_seconds": 0.13138462486676872,
+      "actual": "test_synthesis_failures_cleanup_and_can_retry_all_languages (test_resolution.ResolutionTests.test_synthesis_failures_cleanup_and_can_retry_all_languages) (language='en', implementation='Empty')\nTraceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-lxfnvgzb/tests/test_resolution.py\", line 110, in test_synthesis_failures_cleanup_and_can_retry_all_languages\n    with self.assertRaises(OSError): tts.get_or_create_audio('Failure dummy',lang)\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: OSError not raised\n\ntest_synthesis_failures_cleanup_and_can_retry_all_languages (test_resolution.ResolutionTests.test_synthesis_failures_cleanup_and_can_retry_all_languages) (language='hi', implementation='Empty')\nTraceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-lxfnvgzb/tests/test_resolution.py\", line 110, in test_synthesis_failures_cleanup_and_can_retry_all_languages\n    with self.assertRaises(OSError): tts.get_or_create_audio('Failure dummy',lang)\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: OSError not raised\n\ntest_synthesis_failures_cleanup_and_can_retry_all_languages (test_resolution.ResolutionTests.test_synthesis_failures_cleanup_and_can_retry_all_languages) (language='ta', implementation='Empty')\nTraceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-lxfnvgzb/tests/test_resolution.py\", line 110, in test_synthesis_failures_cleanup_and_can_retry_all_languages\n    with self.assertRaises(OSError): tts.get_or_create_audio('Failure dummy',lang)\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: OSError not raised\n\ntest_synthesis_failures_cleanup_and_can_retry_all_languages (test_resolution.ResolutionTests.test_synthesis_failures_cleanup_and_can_retry_all_languages) (language='te', implementation='Empty')\nTraceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-lxfnvgzb/tests/test_resolution.py\", line 110, in test_synthesis_failures_cleanup_and_can_retry_all_languages\n    with self.assertRaises(OSError): tts.get_or_create_audio('Failure dummy',lang)\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: OSError not raised\n\ntest_synthesis_failures_cleanup_and_can_retry_all_languages (test_resolution.ResolutionTests.test_synthesis_failures_cleanup_and_can_retry_all_languages) (language='kn', implementation='Empty')\nTraceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-lxfnvgzb/tests/test_resolution.py\", line 110, in test_synthesis_failures_cleanup_and_can_retry_all_languages\n    with self.assertRaises(OSError): tts.get_or_create_audio('Failure dummy',lang)\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: OSError not raised\n\ntest_synthesis_failures_cleanup_and_can_retry_all_languages (test_resolution.ResolutionTests.test_synthesis_failures_cleanup_and_can_retry_all_languages) (language='bn', implementation='Empty')\nTraceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-lxfnvgzb/tests/test_resolution.py\", line 110, in test_synthesis_failures_cleanup_and_can_retry_all_languages\n    with self.assertRaises(OSError): tts.get_or_create_audio('Failure dummy',lang)\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: OSError not raised\n"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_taken_response_loss_retry_does_not_acknowledge_second_reminder",
+      "status": "FAIL",
+      "duration_seconds": 0.1531880002003163,
+      "actual": "Traceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-lxfnvgzb/tests/test_resolution.py\", line 151, in test_taken_response_loss_retry_does_not_acknowledge_second_reminder\n    self.assertEqual([first.status_code,retry.status_code],[200,200]);self.assertEqual(first.json,retry.json)\n                                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: {'medicine_name': 'Pending A', 'success': True} != {'medicine_name': 'Pending B', 'success': True}\n- {'medicine_name': 'Pending A', 'success': True}\n?                            ^\n\n+ {'medicine_name': 'Pending B', 'success': True}\n?                            ^\n\n"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_taken_snooze_race_has_only_one_transition",
+      "status": "FAIL",
+      "duration_seconds": 0.1482512920629233,
+      "actual": "Traceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-lxfnvgzb/tests/test_resolution.py\", line 226, in test_taken_snooze_race_has_only_one_transition\n    self.assertEqual(sorted(r[0] for r in results),[200,409]);self.assertEqual(self.receipts(),1)\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: Lists differ: [200, 200] != [200, 409]\n\nFirst differing element 1:\n200\n409\n\n- [200, 200]\n?       ^ ^\n\n+ [200, 409]\n?       ^ ^\n\n"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_translated_text_preserves_opaque_unicode_name",
+      "status": "FAIL",
+      "duration_seconds": 0.12839549989439547,
+      "actual": "test_translated_text_preserves_opaque_unicode_name (test_resolution.ResolutionTests.test_translated_text_preserves_opaque_unicode_name) (language='en')\nTraceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-lxfnvgzb/tests/test_resolution.py\", line 67, in test_translated_text_preserves_opaque_unicode_name\n    with self.subTest(language=lang): self.assertEqual(tts.build_reminder_text(name,lang),template.format(name=name))\n                                                       ^^^^^^^^^^^^^^^^^^^^^^^\nAttributeError: module 'tts' has no attribute 'build_reminder_text'\n\ntest_translated_text_preserves_opaque_unicode_name (test_resolution.ResolutionTests.test_translated_text_preserves_opaque_unicode_name) (language='hi')\nTraceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-lxfnvgzb/tests/test_resolution.py\", line 67, in test_translated_text_preserves_opaque_unicode_name\n    with self.subTest(language=lang): self.assertEqual(tts.build_reminder_text(name,lang),template.format(name=name))\n                                                       ^^^^^^^^^^^^^^^^^^^^^^^\nAttributeError: module 'tts' has no attribute 'build_reminder_text'\n\ntest_translated_text_preserves_opaque_unicode_name (test_resolution.ResolutionTests.test_translated_text_preserves_opaque_unicode_name) (language='ta')\nTraceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-lxfnvgzb/tests/test_resolution.py\", line 67, in test_translated_text_preserves_opaque_unicode_name\n    with self.subTest(language=lang): self.assertEqual(tts.build_reminder_text(name,lang),template.format(name=name))\n                                                       ^^^^^^^^^^^^^^^^^^^^^^^\nAttributeError: module 'tts' has no attribute 'build_reminder_text'\n\ntest_translated_text_preserves_opaque_unicode_name (test_resolution.ResolutionTests.test_translated_text_preserves_opaque_unicode_name) (language='te')\nTraceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-lxfnvgzb/tests/test_resolution.py\", line 67, in test_translated_text_preserves_opaque_unicode_name\n    with self.subTest(language=lang): self.assertEqual(tts.build_reminder_text(name,lang),template.format(name=name))\n                                                       ^^^^^^^^^^^^^^^^^^^^^^^\nAttributeError: module 'tts' has no attribute 'build_reminder_text'\n\ntest_translated_text_preserves_opaque_unicode_name (test_resolution.ResolutionTests.test_translated_text_preserves_opaque_unicode_name) (language='kn')\nTraceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-lxfnvgzb/tests/test_resolution.py\", line 67, in test_translated_text_preserves_opaque_unicode_name\n    with self.subTest(language=lang): self.assertEqual(tts.build_reminder_text(name,lang),template.format(name=name))\n                                                       ^^^^^^^^^^^^^^^^^^^^^^^\nAttributeError: module 'tts' has no attribute 'build_reminder_text'\n\ntest_translated_text_preserves_opaque_unicode_name (test_resolution.ResolutionTests.test_translated_text_preserves_opaque_unicode_name) (language='bn')\nTraceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-lxfnvgzb/tests/test_resolution.py\", line 67, in test_translated_text_preserves_opaque_unicode_name\n    with self.subTest(language=lang): self.assertEqual(tts.build_reminder_text(name,lang),template.format(name=name))\n                                                       ^^^^^^^^^^^^^^^^^^^^^^^\nAttributeError: module 'tts' has no attribute 'build_reminder_text'\n"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_wrong_owner_target_never_mutates_either_account",
+      "status": "FAIL",
+      "duration_seconds": 0.1337940830271691,
+      "actual": "Traceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-lxfnvgzb/tests/test_resolution.py\", line 204, in test_wrong_owner_target_never_mutates_either_account\n    self.assertEqual(self.receipts(),0)\n                     ^^^^^^^^^^^^^^^\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-lxfnvgzb/tests/test_resolution.py\", line 55, in receipts\n    with database.get_db_connection() as c: return c.execute('SELECT COUNT(*) FROM device_action_receipts').fetchone()[0]\n                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsqlite3.OperationalError: no such table: device_action_receipts\n"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_actual_concurrent_taken_requests_log_once",
+      "status": "PASS",
+      "duration_seconds": 0.13764450000599027,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_authenticated_routes_and_account_isolation",
+      "status": "PASS",
+      "duration_seconds": 0.13923187484033406,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_background_synthesis_failure_is_observed",
+      "status": "PASS",
+      "duration_seconds": 0.1255855408962816,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_creation_multiple_times_and_audio_warming",
+      "status": "PASS",
+      "duration_seconds": 0.12736087501980364,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_deleting_due_medicine_clears_alarm_and_preserves_history",
+      "status": "PASS",
+      "duration_seconds": 0.1287802078295499,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_device_multiple_due_selection_is_documented_not_replay_safe",
+      "status": "PASS",
+      "duration_seconds": 0.14299400011077523,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_edit_after_taken_preserves_historical_details",
+      "status": "PASS",
+      "duration_seconds": 0.1525313330348581,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_existing_account_history_survives_archive_schema_migration",
+      "status": "PASS",
+      "duration_seconds": 0.12946958281099796,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_invalid_creation_fields_rejected",
+      "status": "PASS",
+      "duration_seconds": 0.12626791605725884,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_invalid_time_values_rejected",
+      "status": "PASS",
+      "duration_seconds": 0.13800274999812245,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_non_object_json_rejected",
+      "status": "PASS",
+      "duration_seconds": 0.12612599995918572,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_pairing_missing_invalid_token_and_account_isolation",
+      "status": "PASS",
+      "duration_seconds": 0.12767004198394716,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_repeated_snooze_unit_clock_and_no_taken_logs",
+      "status": "PASS",
+      "duration_seconds": 0.13178166700527072,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_restart_database_retains_accounts_tokens_logs_and_snooze",
+      "status": "PASS",
+      "duration_seconds": 0.18737066606990993,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_scheduler_multiple_simultaneous_and_restart_recovery",
+      "status": "PASS",
+      "duration_seconds": 0.13068104186095297,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_scheduler_scheduled_time_overdue_and_same_day_guard",
+      "status": "PASS",
+      "duration_seconds": 0.14082412491552532,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_signup_duplicate_and_short_password_rejected",
+      "status": "PASS",
+      "duration_seconds": 0.1492892091628164,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_signup_login_logout_and_invalid_credentials",
+      "status": "PASS",
+      "duration_seconds": 0.3201674581505358,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_stale_firing_generation_is_rejected",
+      "status": "PASS",
+      "duration_seconds": 0.12757675000466406,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_take_logs_exactly_once_and_updates_last_course_slot",
+      "status": "PASS",
+      "duration_seconds": 0.12806737492792308,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_tts_cache_reused_when_synthesis_unavailable",
+      "status": "PASS",
+      "duration_seconds": 0.13276587496511638,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_tts_failure_is_atomic_and_visual_alarm_remains",
+      "status": "PASS",
+      "duration_seconds": 0.13697712495923042,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_wrong_json_field_types_rejected",
+      "status": "PASS",
+      "duration_seconds": 0.12424941686913371,
+      "actual": "All assertions met"
+    }
+  ]
+}

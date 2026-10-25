@@ -114,22 +114,15 @@ motion sensor trying to infer whether the patient is still capable of
 pressing anything. Disproportionate and privacy-invasive for a medicine
 reminder.
 
-**Server-side integration (already implemented, this *is* live code):**
-`POST /api/device/action` in `backend/app.py` accepts
-`{ "token": "<paired device token>", "action": "taken" | "snooze" }`.
-The hub has no browser and no session cookie, so it authenticates with a
-long-lived per-device token instead (minted from the Logs screen,
-`database.create_device_token`) rather than the cookie-based login flow
-built for humans. This is the same code path `/mark_taken` uses
-internally (`_perform_mark_taken` in `app.py`), so a switch press and a
-screen tap produce identical, indistinguishable log entries.
-
-```bash
-# what switch_hub.ino sends once the switch is released
-curl -X POST http://<clock-host>:5050/api/device/action \
-  -H "Content-Type: application/json" \
-  -d '{"token": "<paired-device-token>", "action": "taken"}'
-```
+**Server-side integration (updated 23 October 2026):** a paired device
+selects an account-owned firing with `POST /api/device/reminder`, then submits
+`token`, `action`, `id`, `fired_at` and a unique `request_id` to
+`POST /api/device/action`. The transition and success receipt commit together.
+Retries reuse the same fields and cannot acknowledge another pending reminder.
+The firmware persists that selected request before transmission. Legacy id-less
+requests receive 400; upgrade firmware and backend together. See
+[the complete contract](docs/DEVICE_PROTOCOL.md) and
+[the later software validation](docs/testing/SOFTWARE_RESOLUTION_20261023.md).
 
 ### Software fallback, for anyone who already owns a generic switch
 

@@ -76,7 +76,7 @@ tested, purpose-built product, not a first-time DIY part.
 
 1. Open `switch_hub.ino` in the Arduino IDE (or PlatformIO). Install the
    ESP32 board package if you haven't before (Boards Manager → search
-   "esp32").
+   "esp32"). Install ArduinoJson 7 through Library Manager as well.
 2. Fill in your Wi-Fi name/password and `DOSECLOCK_HOST` (the IP address
    and port, `5050`, of the machine running DoseClock's Flask server;
    find the IP with `hostname -I` on Linux, `ipconfig` on Windows, or
@@ -107,13 +107,66 @@ For the GPIO2 status LED, wire GPIO2/D2 through a roughly 220Ω resistor
 to the LED anode (long leg), then connect the cathode to GND. Connecting
 the LED to 3.3V instead makes it stay on without firmware control.
 
-The firmware sends `POST /api/device/action` with JSON keys `token` and
-`action`; action is `taken` for a short press or `snooze` for a confirmed
-hold. HTTP 200 means the action succeeded. HTTP 401 means the token is
-missing or unknown, HTTP 400 means the action is invalid, HTTP 404 means
-no reminder is due for that account, and HTTP 409 means the reminder was
-already answered. A negative status is a transport failure; Serial
-Monitor now prints its description. Use 115200 baud.
+The firmware first selects an account-owned firing with
+`POST /api/device/reminder`, then sends `token`, `action`, `id`, `fired_at`
+and `request_id` to `POST /api/device/action`. It persists the selected request
+in Preferences before sending; transport/5xx failures retry the same request,
+including after reboot. While a request is unresolved, new switch gestures are
+ignored and automatic retries keep the original binding. Only confirmed success
+or a definite 4xx rejection clears it. After every blocking request/LED sequence,
+the input must observe a continuous 50 ms release before accepting a fresh,
+debounced press. Network work never runs during a measured gesture. The original
+post-press-debounce thresholds remain: <600 ms Taken, >=1500 ms Snooze, and no
+action in the intermediate window. Release debounce does not extend the hold.
+
+### Reproducible build and USB recovery (25 October 2026)
+
+The pinned [PlatformIO project](platformio.ini) uses `esp32dev`, Espressif32 6.9.0
+(Arduino ESP32 2.0.17) and ArduinoJson 7.4.3. PlatformIO Core 6.2.0 produced a
+complete `firmware.bin` on 25 October 2026; this is a cross-compilation result,
+not a physical test. From the repository root, with PlatformIO installed:
+
+```sh
+pio run --project-dir hardware --environment esp32dev
+```
+
+The ArduinoJson proxy comparison now explicitly extracts a Boolean. Reminder
+IDs use signed 64-bit parsing, validation, storage and serialization, matching
+Flask/SQLite's positive signed 64-bit range. The request fields and IDs used for
+retries have not changed. Valid older saved requests remain retryable unchanged.
+
+A durable `pending_set` marker is written before the pending JSON. Incomplete
+writes, invalid JSON/schema/identity or a wrong stored value type block all
+actions and automatic transmission. No token is stored in this retry data.
+
+For a **reported corrupt queue only**, a caregiver can use USB Serial Monitor
+at **115200 baud**, with **Newline** enabled, and send exactly:
+
+```text
+CLEAR CORRUPT RETRY
+```
+
+Recovery clears only the sketch's `doseclock` Preferences namespace. It sends
+no HTTP request, cannot be invoked by the switch, and requires a new debounced
+release/press before any new action. A failed clear remains blocked. A valid
+uncertain request cannot be cleared using this command. Recovery also works
+while setup is waiting for Wi-Fi. EN/reboot alone does not clear saved data.
+The previous outcome may be unknown after corruption: check Flask receipts and
+dose history before making any new intentional acknowledgment. A caregiver's
+recovery command cancels any input gesture in progress.
+
+Three boot blinks indicate Wi-Fi connection; check Serial for queue/storage
+errors before treating the switch as ready. Serial action logs include action,
+64-bit ID, firing timestamp, request ID and HTTP status, excluding the token.
+
+See [Ayush's flashing and physical checklist](../docs/testing/AYUSH_FIRMWARE_CHECKLIST_20261025.md).
+No hardware has been flashed or independently tested in this validation.
+
+Install this firmware and the updated backend together. Old token/action-only
+requests are rejected with 400. See [protocol details](../docs/DEVICE_PROTOCOL.md).
+Firmware build and physical GPIO/LED/Wi-Fi/NVS behavior require the separate
+verification described in the testing report; backend simulation does not
+establish those results.
 
 Keep real Wi-Fi credentials and paired tokens in your local upload
 copy. Do not commit them to this repository.

@@ -1,0 +1,1197 @@
+{
+  "recorded_at": "2026-10-23T14:48:39.027519+05:30",
+  "policy": "strict",
+  "scenario": "pending",
+  "human_listening": false,
+  "profile_initially_empty": true,
+  "browser_command_line": [
+    "/Users/pranav/Library/Caches/ms-playwright/chromium_headless_shell-1248/chrome-headless-shell-mac-arm64/chrome-headless-shell",
+    "--disable-field-trial-config",
+    "--disable-background-networking",
+    "--disable-background-timer-throttling",
+    "--disable-backgrounding-occluded-windows",
+    "--disable-back-forward-cache",
+    "--disable-breakpad",
+    "--disable-client-side-phishing-detection",
+    "--disable-component-extensions-with-background-pages",
+    "--disable-component-update",
+    "--no-default-browser-check",
+    "--disable-default-apps",
+    "--disable-dev-shm-usage",
+    "--disable-edgeupdater",
+    "--disable-extensions",
+    "--disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,AvoidCorsURLLoaderRestartOnRedirect,Translate,AutoDeElevate,OptimizationHints,NetworkTimeServiceQuerying,AimEnabled,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion",
+    "--enable-features=CDPScreenshotNewSurface",
+    "--allow-pre-commit-input",
+    "--disable-hang-monitor",
+    "--disable-ipc-flooding-protection",
+    "--disable-popup-blocking",
+    "--disable-prompt-on-repost",
+    "--disable-renderer-backgrounding",
+    "--disable-updater-scheduler",
+    "--force-color-profile=srgb",
+    "--metrics-recording-only",
+    "--no-first-run",
+    "--password-store=basic",
+    "--use-mock-keychain",
+    "--no-service-autorun",
+    "--export-tagged-pdf",
+    "--disable-search-engine-choice-screen",
+    "--unsafely-disable-devtools-self-xss-warnings",
+    "--edge-skip-compat-layer-relaunch",
+    "--disable-infobars",
+    "--disable-search-engine-choice-screen",
+    "--disable-sync",
+    "--enable-unsafe-swiftshader",
+    "--headless",
+    "--hide-scrollbars",
+    "--blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4",
+    "--no-sandbox",
+    "--enable-automation",
+    "--autoplay-policy=document-user-activation-required",
+    "--user-data-dir=/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-clean-profile-mo8i6d88",
+    "--remote-debugging-pipe",
+    "--use-mock-keychain",
+    "--use-gl=angle",
+    "--use-angle=swiftshader-webgl",
+    "--allow-pre-commit-input",
+    "about:blank"
+  ],
+  "browser_version": {
+    "protocolVersion": "1.3",
+    "product": "HeadlessChrome/156.0.8078.4",
+    "revision": "@f842f52ef39fd97b449eb27cff414bf05a98ddce",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.8078.4 Safari/537.36",
+    "jsVersion": "15.6.75"
+  },
+  "initial": {
+    "media": {
+      "src": "/static/audio/en_review-dummy_3a367197a1.mp3",
+      "currentSrc": "http://127.0.0.1:61619/static/audio/en_review-dummy_3a367197a1.mp3",
+      "currentTime": 0,
+      "duration": null,
+      "paused": true,
+      "ended": false,
+      "muted": false,
+      "volume": 1,
+      "readyState": 0,
+      "error": null,
+      "decodedBytes": 0,
+      "activation": {
+        "isActive": false,
+        "hasBeenActive": false
+      }
+    },
+    "audit": {
+      "calls": [
+        {
+          "at": 140.79999995231628,
+          "before": {
+            "src": "/static/audio/en_review-dummy_3a367197a1.mp3",
+            "currentSrc": "",
+            "currentTime": 0,
+            "duration": null,
+            "paused": true,
+            "ended": false,
+            "muted": false,
+            "volume": 1,
+            "readyState": 0,
+            "error": null,
+            "decodedBytes": 0,
+            "activation": {
+              "isActive": false,
+              "hasBeenActive": false
+            }
+          },
+          "result": "rejected",
+          "error": {
+            "name": "NotAllowedError",
+            "message": "play() failed because the user didn't interact with the document first. https://goo.gl/xX8pDD"
+          },
+          "after": {
+            "src": "/static/audio/en_review-dummy_3a367197a1.mp3",
+            "currentSrc": "",
+            "currentTime": 0,
+            "duration": null,
+            "paused": true,
+            "ended": false,
+            "muted": false,
+            "volume": 1,
+            "readyState": 0,
+            "error": null,
+            "decodedBytes": 0,
+            "activation": {
+              "isActive": false,
+              "hasBeenActive": false
+            }
+          }
+        }
+      ],
+      "events": [],
+      "gestures": []
+    },
+    "alarmVisible": true,
+    "prompt": " Tap here to hear the reminder",
+    "hintHidden": false
+  },
+  "blocked_later": {
+    "media": {
+      "src": "/static/audio/en_review-dummy_3a367197a1.mp3",
+      "currentSrc": "http://127.0.0.1:61619/static/audio/en_review-dummy_3a367197a1.mp3",
+      "currentTime": 0,
+      "duration": null,
+      "paused": true,
+      "ended": false,
+      "muted": false,
+      "volume": 1,
+      "readyState": 0,
+      "error": null,
+      "decodedBytes": 0,
+      "activation": {
+        "isActive": false,
+        "hasBeenActive": false
+      }
+    },
+    "audit": {
+      "calls": [
+        {
+          "at": 140.79999995231628,
+          "before": {
+            "src": "/static/audio/en_review-dummy_3a367197a1.mp3",
+            "currentSrc": "",
+            "currentTime": 0,
+            "duration": null,
+            "paused": true,
+            "ended": false,
+            "muted": false,
+            "volume": 1,
+            "readyState": 0,
+            "error": null,
+            "decodedBytes": 0,
+            "activation": {
+              "isActive": false,
+              "hasBeenActive": false
+            }
+          },
+          "result": "rejected",
+          "error": {
+            "name": "NotAllowedError",
+            "message": "play() failed because the user didn't interact with the document first. https://goo.gl/xX8pDD"
+          },
+          "after": {
+            "src": "/static/audio/en_review-dummy_3a367197a1.mp3",
+            "currentSrc": "",
+            "currentTime": 0,
+            "duration": null,
+            "paused": true,
+            "ended": false,
+            "muted": false,
+            "volume": 1,
+            "readyState": 0,
+            "error": null,
+            "decodedBytes": 0,
+            "activation": {
+              "isActive": false,
+              "hasBeenActive": false
+            }
+          }
+        }
+      ],
+      "events": [],
+      "gestures": []
+    },
+    "alarmVisible": true,
+    "prompt": " Tap here to hear the reminder",
+    "hintHidden": false
+  },
+  "explicit_probe": {
+    "result": "rejected",
+    "name": "NotAllowedError",
+    "message": "play() failed because the user didn't interact with the document first. https://goo.gl/xX8pDD"
+  },
+  "playing_samples": [
+    {
+      "media": {
+        "src": "data:audio/wav;base64,UklGRiUAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQEAAACA",
+        "currentSrc": "data:audio/wav;base64,UklGRiUAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQEAAACA",
+        "currentTime": 0,
+        "duration": 0.000125,
+        "paused": true,
+        "ended": false,
+        "muted": false,
+        "volume": 1,
+        "readyState": 4,
+        "error": null,
+        "decodedBytes": 1,
+        "activation": {
+          "isActive": true,
+          "hasBeenActive": true
+        }
+      },
+      "audit": {
+        "calls": [
+          {
+            "at": 140.79999995231628,
+            "before": {
+              "src": "/static/audio/en_review-dummy_3a367197a1.mp3",
+              "currentSrc": "",
+              "currentTime": 0,
+              "duration": null,
+              "paused": true,
+              "ended": false,
+              "muted": false,
+              "volume": 1,
+              "readyState": 0,
+              "error": null,
+              "decodedBytes": 0,
+              "activation": {
+                "isActive": false,
+                "hasBeenActive": false
+              }
+            },
+            "result": "rejected",
+            "error": {
+              "name": "NotAllowedError",
+              "message": "play() failed because the user didn't interact with the document first. https://goo.gl/xX8pDD"
+            },
+            "after": {
+              "src": "/static/audio/en_review-dummy_3a367197a1.mp3",
+              "currentSrc": "",
+              "currentTime": 0,
+              "duration": null,
+              "paused": true,
+              "ended": false,
+              "muted": false,
+              "volume": 1,
+              "readyState": 0,
+              "error": null,
+              "decodedBytes": 0,
+              "activation": {
+                "isActive": false,
+                "hasBeenActive": false
+              }
+            }
+          },
+          {
+            "at": 649.9000000953674,
+            "before": {
+              "src": "/static/audio/en_review-dummy_3a367197a1.mp3",
+              "currentSrc": "http://127.0.0.1:61619/static/audio/en_review-dummy_3a367197a1.mp3",
+              "currentTime": 0,
+              "duration": null,
+              "paused": true,
+              "ended": false,
+              "muted": false,
+              "volume": 1,
+              "readyState": 0,
+              "error": null,
+              "decodedBytes": 0,
+              "activation": {
+                "isActive": false,
+                "hasBeenActive": false
+              }
+            },
+            "result": "rejected",
+            "error": {
+              "name": "NotAllowedError",
+              "message": "play() failed because the user didn't interact with the document first. https://goo.gl/xX8pDD"
+            },
+            "after": {
+              "src": "/static/audio/en_review-dummy_3a367197a1.mp3",
+              "currentSrc": "http://127.0.0.1:61619/static/audio/en_review-dummy_3a367197a1.mp3",
+              "currentTime": 0,
+              "duration": null,
+              "paused": true,
+              "ended": false,
+              "muted": false,
+              "volume": 1,
+              "readyState": 0,
+              "error": null,
+              "decodedBytes": 0,
+              "activation": {
+                "isActive": false,
+                "hasBeenActive": false
+              }
+            }
+          },
+          {
+            "at": 706,
+            "before": {
+              "src": "/static/audio/en_review-dummy_3a367197a1.mp3",
+              "currentSrc": "http://127.0.0.1:61619/static/audio/en_review-dummy_3a367197a1.mp3",
+              "currentTime": 0,
+              "duration": null,
+              "paused": true,
+              "ended": false,
+              "muted": false,
+              "volume": 1,
+              "readyState": 0,
+              "error": null,
+              "decodedBytes": 0,
+              "activation": {
+                "isActive": true,
+                "hasBeenActive": true
+              }
+            },
+            "result": "rejected",
+            "error": {
+              "name": "AbortError",
+              "message": "The play() request was interrupted by a new load request. https://goo.gl/LdLk22"
+            },
+            "after": {
+              "src": "data:audio/wav;base64,UklGRiUAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQEAAACA",
+              "currentSrc": "http://127.0.0.1:61619/static/audio/en_review-dummy_3a367197a1.mp3",
+              "currentTime": 0,
+              "duration": null,
+              "paused": false,
+              "ended": false,
+              "muted": false,
+              "volume": 1,
+              "readyState": 0,
+              "error": null,
+              "decodedBytes": 0,
+              "activation": {
+                "isActive": true,
+                "hasBeenActive": true
+              }
+            }
+          },
+          {
+            "at": 707.7000000476837,
+            "before": {
+              "src": "data:audio/wav;base64,UklGRiUAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQEAAACA",
+              "currentSrc": "http://127.0.0.1:61619/static/audio/en_review-dummy_3a367197a1.mp3",
+              "currentTime": 0,
+              "duration": null,
+              "paused": true,
+              "ended": false,
+              "muted": false,
+              "volume": 1,
+              "readyState": 0,
+              "error": null,
+              "decodedBytes": 0,
+              "activation": {
+                "isActive": true,
+                "hasBeenActive": true
+              }
+            },
+            "result": "resolved",
+            "after": {
+              "src": "data:audio/wav;base64,UklGRiUAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQEAAACA",
+              "currentSrc": "data:audio/wav;base64,UklGRiUAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQEAAACA",
+              "currentTime": 0,
+              "duration": 0.000125,
+              "paused": false,
+              "ended": false,
+              "muted": false,
+              "volume": 1,
+              "readyState": 4,
+              "error": null,
+              "decodedBytes": 1,
+              "activation": {
+                "isActive": true,
+                "hasBeenActive": true
+              }
+            }
+          }
+        ],
+        "events": [
+          {
+            "type": "abort",
+            "at": 713.4000000953674,
+            "media": {
+              "src": "data:audio/wav;base64,UklGRiUAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQEAAACA",
+              "currentSrc": "http://127.0.0.1:61619/static/audio/en_review-dummy_3a367197a1.mp3",
+              "currentTime": 0,
+              "duration": null,
+              "paused": false,
+              "ended": false,
+              "muted": false,
+              "volume": 1,
+              "readyState": 0,
+              "error": null,
+              "decodedBytes": 0,
+              "activation": {
+                "isActive": true,
+                "hasBeenActive": true
+              }
+            }
+          },
+          {
+            "type": "play",
+            "at": 714.0999999046326,
+            "media": {
+              "src": "data:audio/wav;base64,UklGRiUAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQEAAACA",
+              "currentSrc": "data:audio/wav;base64,UklGRiUAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQEAAACA",
+              "currentTime": 0,
+              "duration": null,
+              "paused": false,
+              "ended": false,
+              "muted": false,
+              "volume": 1,
+              "readyState": 0,
+              "error": null,
+              "decodedBytes": 0,
+              "activation": {
+                "isActive": true,
+                "hasBeenActive": true
+              }
+            }
+          },
+          {
+            "type": "loadedmetadata",
+            "at": 714.7000000476837,
+            "media": {
+              "src": "data:audio/wav;base64,UklGRiUAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQEAAACA",
+              "currentSrc": "data:audio/wav;base64,UklGRiUAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQEAAACA",
+              "currentTime": 0,
+              "duration": 0.000125,
+              "paused": false,
+              "ended": false,
+              "muted": false,
+              "volume": 1,
+              "readyState": 1,
+              "error": null,
+              "decodedBytes": 0,
+              "activation": {
+                "isActive": true,
+                "hasBeenActive": true
+              }
+            }
+          },
+          {
+            "type": "playing",
+            "at": 996.9000000953674,
+            "media": {
+              "src": "data:audio/wav;base64,UklGRiUAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQEAAACA",
+              "currentSrc": "data:audio/wav;base64,UklGRiUAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQEAAACA",
+              "currentTime": 0,
+              "duration": 0.000125,
+              "paused": false,
+              "ended": false,
+              "muted": false,
+              "volume": 1,
+              "readyState": 4,
+              "error": null,
+              "decodedBytes": 1,
+              "activation": {
+                "isActive": true,
+                "hasBeenActive": true
+              }
+            }
+          },
+          {
+            "type": "timeupdate",
+            "at": 997.2000000476837,
+            "media": {
+              "src": "data:audio/wav;base64,UklGRiUAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQEAAACA",
+              "currentSrc": "data:audio/wav;base64,UklGRiUAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQEAAACA",
+              "currentTime": 0,
+              "duration": 0.000125,
+              "paused": true,
+              "ended": false,
+              "muted": false,
+              "volume": 1,
+              "readyState": 4,
+              "error": null,
+              "decodedBytes": 1,
+              "activation": {
+                "isActive": true,
+                "hasBeenActive": true
+              }
+            }
+          },
+          {
+            "type": "pause",
+            "at": 997.2999999523163,
+            "media": {
+              "src": "data:audio/wav;base64,UklGRiUAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQEAAACA",
+              "currentSrc": "data:audio/wav;base64,UklGRiUAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQEAAACA",
+              "currentTime": 0,
+              "duration": 0.000125,
+              "paused": true,
+              "ended": false,
+              "muted": false,
+              "volume": 1,
+              "readyState": 4,
+              "error": null,
+              "decodedBytes": 1,
+              "activation": {
+                "isActive": true,
+                "hasBeenActive": true
+              }
+            }
+          }
+        ],
+        "gestures": [
+          {
+            "type": "click",
+            "trusted": true,
+            "target": "mic-indicator",
+            "at": 705.7999999523163,
+            "active": true
+          }
+        ]
+      },
+      "alarmVisible": true,
+      "prompt": " Tap here to hear the reminder",
+      "hintHidden": true
+    },
+    {
+      "media": {
+        "src": "data:audio/wav;base64,UklGRiUAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQEAAACA",
+        "currentSrc": "data:audio/wav;base64,UklGRiUAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQEAAACA",
+        "currentTime": 0,
+        "duration": 0.000125,
+        "paused": true,
+        "ended": false,
+        "muted": false,
+        "volume": 1,
+        "readyState": 4,
+        "error": null,
+        "decodedBytes": 1,
+        "activation": {
+          "isActive": true,
+          "hasBeenActive": true
+        }
+      },
+      "audit": {
+        "calls": [
+          {
+            "at": 140.79999995231628,
+            "before": {
+              "src": "/static/audio/en_review-dummy_3a367197a1.mp3",
+              "currentSrc": "",
+              "currentTime": 0,
+              "duration": null,
+              "paused": true,
+              "ended": false,
+              "muted": false,
+              "volume": 1,
+              "readyState": 0,
+              "error": null,
+              "decodedBytes": 0,
+              "activation": {
+                "isActive": false,
+                "hasBeenActive": false
+              }
+            },
+            "result": "rejected",
+            "error": {
+              "name": "NotAllowedError",
+              "message": "play() failed because the user didn't interact with the document first. https://goo.gl/xX8pDD"
+            },
+            "after": {
+              "src": "/static/audio/en_review-dummy_3a367197a1.mp3",
+              "currentSrc": "",
+              "currentTime": 0,
+              "duration": null,
+              "paused": true,
+              "ended": false,
+              "muted": false,
+              "volume": 1,
+              "readyState": 0,
+              "error": null,
+              "decodedBytes": 0,
+              "activation": {
+                "isActive": false,
+                "hasBeenActive": false
+              }
+            }
+          },
+          {
+            "at": 649.9000000953674,
+            "before": {
+              "src": "/static/audio/en_review-dummy_3a367197a1.mp3",
+              "currentSrc": "http://127.0.0.1:61619/static/audio/en_review-dummy_3a367197a1.mp3",
+              "currentTime": 0,
+              "duration": null,
+              "paused": true,
+              "ended": false,
+              "muted": false,
+              "volume": 1,
+              "readyState": 0,
+              "error": null,
+              "decodedBytes": 0,
+              "activation": {
+                "isActive": false,
+                "hasBeenActive": false
+              }
+            },
+            "result": "rejected",
+            "error": {
+              "name": "NotAllowedError",
+              "message": "play() failed because the user didn't interact with the document first. https://goo.gl/xX8pDD"
+            },
+            "after": {
+              "src": "/static/audio/en_review-dummy_3a367197a1.mp3",
+              "currentSrc": "http://127.0.0.1:61619/static/audio/en_review-dummy_3a367197a1.mp3",
+              "currentTime": 0,
+              "duration": null,
+              "paused": true,
+              "ended": false,
+              "muted": false,
+              "volume": 1,
+              "readyState": 0,
+              "error": null,
+              "decodedBytes": 0,
+              "activation": {
+                "isActive": false,
+                "hasBeenActive": false
+              }
+            }
+          },
+          {
+            "at": 706,
+            "before": {
+              "src": "/static/audio/en_review-dummy_3a367197a1.mp3",
+              "currentSrc": "http://127.0.0.1:61619/static/audio/en_review-dummy_3a367197a1.mp3",
+              "currentTime": 0,
+              "duration": null,
+              "paused": true,
+              "ended": false,
+              "muted": false,
+              "volume": 1,
+              "readyState": 0,
+              "error": null,
+              "decodedBytes": 0,
+              "activation": {
+                "isActive": true,
+                "hasBeenActive": true
+              }
+            },
+            "result": "rejected",
+            "error": {
+              "name": "AbortError",
+              "message": "The play() request was interrupted by a new load request. https://goo.gl/LdLk22"
+            },
+            "after": {
+              "src": "data:audio/wav;base64,UklGRiUAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQEAAACA",
+              "currentSrc": "http://127.0.0.1:61619/static/audio/en_review-dummy_3a367197a1.mp3",
+              "currentTime": 0,
+              "duration": null,
+              "paused": false,
+              "ended": false,
+              "muted": false,
+              "volume": 1,
+              "readyState": 0,
+              "error": null,
+              "decodedBytes": 0,
+              "activation": {
+                "isActive": true,
+                "hasBeenActive": true
+              }
+            }
+          },
+          {
+            "at": 707.7000000476837,
+            "before": {
+              "src": "data:audio/wav;base64,UklGRiUAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQEAAACA",
+              "currentSrc": "http://127.0.0.1:61619/static/audio/en_review-dummy_3a367197a1.mp3",
+              "currentTime": 0,
+              "duration": null,
+              "paused": true,
+              "ended": false,
+              "muted": false,
+              "volume": 1,
+              "readyState": 0,
+              "error": null,
+              "decodedBytes": 0,
+              "activation": {
+                "isActive": true,
+                "hasBeenActive": true
+              }
+            },
+            "result": "resolved",
+            "after": {
+              "src": "data:audio/wav;base64,UklGRiUAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQEAAACA",
+              "currentSrc": "data:audio/wav;base64,UklGRiUAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQEAAACA",
+              "currentTime": 0,
+              "duration": 0.000125,
+              "paused": false,
+              "ended": false,
+              "muted": false,
+              "volume": 1,
+              "readyState": 4,
+              "error": null,
+              "decodedBytes": 1,
+              "activation": {
+                "isActive": true,
+                "hasBeenActive": true
+              }
+            }
+          }
+        ],
+        "events": [
+          {
+            "type": "abort",
+            "at": 713.4000000953674,
+            "media": {
+              "src": "data:audio/wav;base64,UklGRiUAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQEAAACA",
+              "currentSrc": "http://127.0.0.1:61619/static/audio/en_review-dummy_3a367197a1.mp3",
+              "currentTime": 0,
+              "duration": null,
+              "paused": false,
+              "ended": false,
+              "muted": false,
+              "volume": 1,
+              "readyState": 0,
+              "error": null,
+              "decodedBytes": 0,
+              "activation": {
+                "isActive": true,
+                "hasBeenActive": true
+              }
+            }
+          },
+          {
+            "type": "play",
+            "at": 714.0999999046326,
+            "media": {
+              "src": "data:audio/wav;base64,UklGRiUAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQEAAACA",
+              "currentSrc": "data:audio/wav;base64,UklGRiUAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQEAAACA",
+              "currentTime": 0,
+              "duration": null,
+              "paused": false,
+              "ended": false,
+              "muted": false,
+              "volume": 1,
+              "readyState": 0,
+              "error": null,
+              "decodedBytes": 0,
+              "activation": {
+                "isActive": true,
+                "hasBeenActive": true
+              }
+            }
+          },
+          {
+            "type": "loadedmetadata",
+            "at": 714.7000000476837,
+            "media": {
+              "src": "data:audio/wav;base64,UklGRiUAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQEAAACA",
+              "currentSrc": "data:audio/wav;base64,UklGRiUAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQEAAACA",
+              "currentTime": 0,
+              "duration": 0.000125,
+              "paused": false,
+              "ended": false,
+              "muted": false,
+              "volume": 1,
+              "readyState": 1,
+              "error": null,
+              "decodedBytes": 0,
+              "activation": {
+                "isActive": true,
+                "hasBeenActive": true
+              }
+            }
+          },
+          {
+            "type": "playing",
+            "at": 996.9000000953674,
+            "media": {
+              "src": "data:audio/wav;base64,UklGRiUAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQEAAACA",
+              "currentSrc": "data:audio/wav;base64,UklGRiUAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQEAAACA",
+              "currentTime": 0,
+              "duration": 0.000125,
+              "paused": false,
+              "ended": false,
+              "muted": false,
+              "volume": 1,
+              "readyState": 4,
+              "error": null,
+              "decodedBytes": 1,
+              "activation": {
+                "isActive": true,
+                "hasBeenActive": true
+              }
+            }
+          },
+          {
+            "type": "timeupdate",
+            "at": 997.2000000476837,
+            "media": {
+              "src": "data:audio/wav;base64,UklGRiUAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQEAAACA",
+              "currentSrc": "data:audio/wav;base64,UklGRiUAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQEAAACA",
+              "currentTime": 0,
+              "duration": 0.000125,
+              "paused": true,
+              "ended": false,
+              "muted": false,
+              "volume": 1,
+              "readyState": 4,
+              "error": null,
+              "decodedBytes": 1,
+              "activation": {
+                "isActive": true,
+                "hasBeenActive": true
+              }
+            }
+          },
+          {
+            "type": "pause",
+            "at": 997.2999999523163,
+            "media": {
+              "src": "data:audio/wav;base64,UklGRiUAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQEAAACA",
+              "currentSrc": "data:audio/wav;base64,UklGRiUAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQEAAACA",
+              "currentTime": 0,
+              "duration": 0.000125,
+              "paused": true,
+              "ended": false,
+              "muted": false,
+              "volume": 1,
+              "readyState": 4,
+              "error": null,
+              "decodedBytes": 1,
+              "activation": {
+                "isActive": true,
+                "hasBeenActive": true
+              }
+            }
+          }
+        ],
+        "gestures": [
+          {
+            "type": "click",
+            "trusted": true,
+            "target": "mic-indicator",
+            "at": 705.7999999523163,
+            "active": true
+          }
+        ]
+      },
+      "alarmVisible": true,
+      "prompt": " Tap here to hear the reminder",
+      "hintHidden": true
+    }
+  ],
+  "status": "FAIL",
+  "error": "{'src': 'data:audio/wav;base64,UklGRiUAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQEAAACA', 'currentSrc': 'data:audio/wav;base64,UklGRiUAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQEAAACA', 'currentTime': 0, 'duration': 0.000125, 'paused': True, 'ended': False, 'muted': False, 'volume': 1, 'readyState': 4, 'error': None, 'decodedBytes': 1, 'activation': {'isActive': True, 'hasBeenActive': True}}",
+  "failure_state": {
+    "media": {
+      "src": "data:audio/wav;base64,UklGRiUAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQEAAACA",
+      "currentSrc": "data:audio/wav;base64,UklGRiUAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQEAAACA",
+      "currentTime": 0,
+      "duration": 0.000125,
+      "paused": true,
+      "ended": false,
+      "muted": false,
+      "volume": 1,
+      "readyState": 4,
+      "error": null,
+      "decodedBytes": 1,
+      "activation": {
+        "isActive": true,
+        "hasBeenActive": true
+      }
+    },
+    "audit": {
+      "calls": [
+        {
+          "at": 140.79999995231628,
+          "before": {
+            "src": "/static/audio/en_review-dummy_3a367197a1.mp3",
+            "currentSrc": "",
+            "currentTime": 0,
+            "duration": null,
+            "paused": true,
+            "ended": false,
+            "muted": false,
+            "volume": 1,
+            "readyState": 0,
+            "error": null,
+            "decodedBytes": 0,
+            "activation": {
+              "isActive": false,
+              "hasBeenActive": false
+            }
+          },
+          "result": "rejected",
+          "error": {
+            "name": "NotAllowedError",
+            "message": "play() failed because the user didn't interact with the document first. https://goo.gl/xX8pDD"
+          },
+          "after": {
+            "src": "/static/audio/en_review-dummy_3a367197a1.mp3",
+            "currentSrc": "",
+            "currentTime": 0,
+            "duration": null,
+            "paused": true,
+            "ended": false,
+            "muted": false,
+            "volume": 1,
+            "readyState": 0,
+            "error": null,
+            "decodedBytes": 0,
+            "activation": {
+              "isActive": false,
+              "hasBeenActive": false
+            }
+          }
+        },
+        {
+          "at": 649.9000000953674,
+          "before": {
+            "src": "/static/audio/en_review-dummy_3a367197a1.mp3",
+            "currentSrc": "http://127.0.0.1:61619/static/audio/en_review-dummy_3a367197a1.mp3",
+            "currentTime": 0,
+            "duration": null,
+            "paused": true,
+            "ended": false,
+            "muted": false,
+            "volume": 1,
+            "readyState": 0,
+            "error": null,
+            "decodedBytes": 0,
+            "activation": {
+              "isActive": false,
+              "hasBeenActive": false
+            }
+          },
+          "result": "rejected",
+          "error": {
+            "name": "NotAllowedError",
+            "message": "play() failed because the user didn't interact with the document first. https://goo.gl/xX8pDD"
+          },
+          "after": {
+            "src": "/static/audio/en_review-dummy_3a367197a1.mp3",
+            "currentSrc": "http://127.0.0.1:61619/static/audio/en_review-dummy_3a367197a1.mp3",
+            "currentTime": 0,
+            "duration": null,
+            "paused": true,
+            "ended": false,
+            "muted": false,
+            "volume": 1,
+            "readyState": 0,
+            "error": null,
+            "decodedBytes": 0,
+            "activation": {
+              "isActive": false,
+              "hasBeenActive": false
+            }
+          }
+        },
+        {
+          "at": 706,
+          "before": {
+            "src": "/static/audio/en_review-dummy_3a367197a1.mp3",
+            "currentSrc": "http://127.0.0.1:61619/static/audio/en_review-dummy_3a367197a1.mp3",
+            "currentTime": 0,
+            "duration": null,
+            "paused": true,
+            "ended": false,
+            "muted": false,
+            "volume": 1,
+            "readyState": 0,
+            "error": null,
+            "decodedBytes": 0,
+            "activation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          "result": "rejected",
+          "error": {
+            "name": "AbortError",
+            "message": "The play() request was interrupted by a new load request. https://goo.gl/LdLk22"
+          },
+          "after": {
+            "src": "data:audio/wav;base64,UklGRiUAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQEAAACA",
+            "currentSrc": "http://127.0.0.1:61619/static/audio/en_review-dummy_3a367197a1.mp3",
+            "currentTime": 0,
+            "duration": null,
+            "paused": false,
+            "ended": false,
+            "muted": false,
+            "volume": 1,
+            "readyState": 0,
+            "error": null,
+            "decodedBytes": 0,
+            "activation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        },
+        {
+          "at": 707.7000000476837,
+          "before": {
+            "src": "data:audio/wav;base64,UklGRiUAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQEAAACA",
+            "currentSrc": "http://127.0.0.1:61619/static/audio/en_review-dummy_3a367197a1.mp3",
+            "currentTime": 0,
+            "duration": null,
+            "paused": true,
+            "ended": false,
+            "muted": false,
+            "volume": 1,
+            "readyState": 0,
+            "error": null,
+            "decodedBytes": 0,
+            "activation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          "result": "resolved",
+          "after": {
+            "src": "data:audio/wav;base64,UklGRiUAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQEAAACA",
+            "currentSrc": "data:audio/wav;base64,UklGRiUAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQEAAACA",
+            "currentTime": 0,
+            "duration": 0.000125,
+            "paused": false,
+            "ended": false,
+            "muted": false,
+            "volume": 1,
+            "readyState": 4,
+            "error": null,
+            "decodedBytes": 1,
+            "activation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        }
+      ],
+      "events": [
+        {
+          "type": "abort",
+          "at": 713.4000000953674,
+          "media": {
+            "src": "data:audio/wav;base64,UklGRiUAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQEAAACA",
+            "currentSrc": "http://127.0.0.1:61619/static/audio/en_review-dummy_3a367197a1.mp3",
+            "currentTime": 0,
+            "duration": null,
+            "paused": false,
+            "ended": false,
+            "muted": false,
+            "volume": 1,
+            "readyState": 0,
+            "error": null,
+            "decodedBytes": 0,
+            "activation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        },
+        {
+          "type": "play",
+          "at": 714.0999999046326,
+          "media": {
+            "src": "data:audio/wav;base64,UklGRiUAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQEAAACA",
+            "currentSrc": "data:audio/wav;base64,UklGRiUAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQEAAACA",
+            "currentTime": 0,
+            "duration": null,
+            "paused": false,
+            "ended": false,
+            "muted": false,
+            "volume": 1,
+            "readyState": 0,
+            "error": null,
+            "decodedBytes": 0,
+            "activation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        },
+        {
+          "type": "loadedmetadata",
+          "at": 714.7000000476837,
+          "media": {
+            "src": "data:audio/wav;base64,UklGRiUAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQEAAACA",
+            "currentSrc": "data:audio/wav;base64,UklGRiUAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQEAAACA",
+            "currentTime": 0,
+            "duration": 0.000125,
+            "paused": false,
+            "ended": false,
+            "muted": false,
+            "volume": 1,
+            "readyState": 1,
+            "error": null,
+            "decodedBytes": 0,
+            "activation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        },
+        {
+          "type": "playing",
+          "at": 996.9000000953674,
+          "media": {
+            "src": "data:audio/wav;base64,UklGRiUAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQEAAACA",
+            "currentSrc": "data:audio/wav;base64,UklGRiUAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQEAAACA",
+            "currentTime": 0,
+            "duration": 0.000125,
+            "paused": false,
+            "ended": false,
+            "muted": false,
+            "volume": 1,
+            "readyState": 4,
+            "error": null,
+            "decodedBytes": 1,
+            "activation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        },
+        {
+          "type": "timeupdate",
+          "at": 997.2000000476837,
+          "media": {
+            "src": "data:audio/wav;base64,UklGRiUAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQEAAACA",
+            "currentSrc": "data:audio/wav;base64,UklGRiUAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQEAAACA",
+            "currentTime": 0,
+            "duration": 0.000125,
+            "paused": true,
+            "ended": false,
+            "muted": false,
+            "volume": 1,
+            "readyState": 4,
+            "error": null,
+            "decodedBytes": 1,
+            "activation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        },
+        {
+          "type": "pause",
+          "at": 997.2999999523163,
+          "media": {
+            "src": "data:audio/wav;base64,UklGRiUAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQEAAACA",
+            "currentSrc": "data:audio/wav;base64,UklGRiUAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQEAAACA",
+            "currentTime": 0,
+            "duration": 0.000125,
+            "paused": true,
+            "ended": false,
+            "muted": false,
+            "volume": 1,
+            "readyState": 4,
+            "error": null,
+            "decodedBytes": 1,
+            "activation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        }
+      ],
+      "gestures": [
+        {
+          "type": "click",
+          "trusted": true,
+          "target": "mic-indicator",
+          "at": 705.7999999523163,
+          "active": true
+        }
+      ]
+    },
+    "alarmVisible": true,
+    "prompt": " Tap here to hear the reminder",
+    "hintHidden": true
+  }
+}

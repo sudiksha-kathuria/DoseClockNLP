@@ -1,0 +1,15 @@
+{
+  "source_private_path": "/private/tmp/doseclock-original-harness-20261023.protocol.log",
+  "source_sha256": "5a7ef19778cb4111d279bbe120ff579e436fc4043aac017f38243489176a2fe5",
+  "scope": "Actual outgoing Runtime/Input/navigation calls; HTTP credentials excluded. Last navigation to first browser input per session.",
+  "sessions": [
+    {
+      "sessionId": "1CDE3BDAB3AA719260C69ACC2383B72B",
+      "navigation": "http://127.0.0.1:61480/clock",
+      "runtime_before_first_input": 19,
+      "userGesture_true": 15,
+      "userGesture_false": 0,
+      "userGesture_omitted": 4
+    }
+  ]
+}

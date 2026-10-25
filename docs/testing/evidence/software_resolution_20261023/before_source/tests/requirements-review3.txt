@@ -1,0 +1,3 @@
+-r ../backend/requirements.txt
+mutagen>=1.47,<2
+playwright>=1.55,<2

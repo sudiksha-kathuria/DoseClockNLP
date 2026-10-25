@@ -1,0 +1,26 @@
+{
+  "source_private_path": "/private/tmp/doseclock-resolution-autoplay-retest.protocol.log",
+  "source_sha256": "f9694b8d7df13d6a61f2998102b7754c194097f675c8b9d20a713301ead34225",
+  "checks": [
+    {
+      "session": "0C1C52BBB26D7FBCAAEF097784AB1904",
+      "runtime_calls_before_first_input": 7,
+      "true": 0,
+      "false": 7
+    },
+    {
+      "session": "E57F707D7DE1C09674BB247A9C66BF00",
+      "runtime_calls_before_first_input": 6,
+      "true": 0,
+      "false": 6
+    },
+    {
+      "session": "6A9C3960A43EEF11D4E53C6546BCCEC2",
+      "runtime_calls_before_first_input": 3,
+      "true": 0,
+      "false": 3
+    }
+  ],
+  "acceptance_userGesture_true": 0,
+  "scope": "Across all sessions after audited navigation and before first browser input; acceptance transcripts retained separately"
+}

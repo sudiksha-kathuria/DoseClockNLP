@@ -1,0 +1,1831 @@
+{
+  "recorded_at": "2026-10-25T15:02:04.567127+05:30",
+  "validation_date": "25 October 2026",
+  "branch": "validation/review3-20261023",
+  "historical_dates": "Original Review 3: 9 October 2026; retained validations: 23 October; read-only compatibility audit: 24 October. No work backdated.",
+  "software_suite": {
+    "PASS": 115,
+    "FAIL": 0,
+    "SKIP": 0,
+    "NOT TESTED": 5
+  },
+  "including_cross_compile": {
+    "PASS": 116,
+    "FAIL": 0,
+    "SKIP": 0,
+    "NOT TESTED": 5
+  },
+  "breakdown": {
+    "application_unit_api_database_scheduler": 55,
+    "firmware_host_simulations": 15,
+    "browser_pass": 16,
+    "live_http_pass": 17,
+    "audio_cache_pass": 12,
+    "cross_compile_pass": 1
+  },
+  "targeted_autoplay_repeats": {
+    "PASS": 3,
+    "additive_to_case_count": false
+  },
+  "case_count": 121,
+  "not_tested": [
+    "UI-VOICE",
+    "B03-LAN",
+    "B06-HARDWARE",
+    "B07-HARDWARE",
+    "HUMAN-SPEECH"
+  ],
+  "firmware_bin": {
+    "firmware_bin_exists": true,
+    "firmware_bin": "/Users/pranav/Documents/DoseClock/DoseClockNLP/hardware/.pio/build/esp32dev/firmware.bin",
+    "firmware_bin_bytes": 942784,
+    "firmware_bin_sha256": "8230c11ee9deb02a8aa277a251c23bff6ec12beddff616db395862bfe28f0c3d"
+  },
+  "physical_hardware_tested": false,
+  "staged": false,
+  "committed": false,
+  "pushed": false,
+  "flashed": false,
+  "records": [
+    {
+      "id": "UNIT::test_database.DatabaseTests.test_pre_account_database_migrates_without_assigning_old_records",
+      "status": "PASS",
+      "duration_seconds": 0.0065412078984081745,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_database.DatabaseTests.test_taken_is_atomic_and_rejects_repeated_or_wrong_owner_actions",
+      "status": "PASS",
+      "duration_seconds": 0.14630933292210102,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_firmware.FirmwareTests.test_corrupt_recovery_never_posts_and_requires_fresh_gesture",
+      "status": "PASS",
+      "duration_seconds": 1.0846385001204908,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_firmware.FirmwareTests.test_failed_or_malformed_recovery_stays_blocked",
+      "status": "PASS",
+      "duration_seconds": 0.005440291948616505,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_firmware.FirmwareTests.test_failed_queue_removal_retries_identical_action",
+      "status": "PASS",
+      "duration_seconds": 0.005010416964069009,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_firmware.FirmwareTests.test_hold_duration_measured_without_http_calls",
+      "status": "PASS",
+      "duration_seconds": 0.004896459169685841,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_firmware.FirmwareTests.test_identical_retry_after_restart_503_timeout_and_invalid_success",
+      "status": "PASS",
+      "duration_seconds": 0.004942583153024316,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_firmware.FirmwareTests.test_long_hold_overlapping_blocking_retry_is_not_taken",
+      "status": "PASS",
+      "duration_seconds": 0.004860749933868647,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_firmware.FirmwareTests.test_malformed_json_schema_types_and_keys_never_transmit",
+      "status": "PASS",
+      "duration_seconds": 0.004732416942715645,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_firmware.FirmwareTests.test_marker_write_failure_never_transmits",
+      "status": "PASS",
+      "duration_seconds": 0.004565875045955181,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_firmware.FirmwareTests.test_older_valid_queue_keeps_its_original_identity",
+      "status": "PASS",
+      "duration_seconds": 0.004612250020727515,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_firmware.FirmwareTests.test_partial_persistence_orphan_marker_fails_closed_after_restart",
+      "status": "PASS",
+      "duration_seconds": 0.004746000049635768,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_firmware.FirmwareTests.test_recovery_cannot_discard_valid_uncertain_action",
+      "status": "PASS",
+      "duration_seconds": 0.00454541714861989,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_firmware.FirmwareTests.test_retry_completion_requires_fresh_debounced_release_and_press",
+      "status": "PASS",
+      "duration_seconds": 0.004579334054142237,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_firmware.FirmwareTests.test_signed_64_bit_identifiers_and_invalid_numbers",
+      "status": "PASS",
+      "duration_seconds": 0.004846916999667883,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_firmware.FirmwareTests.test_thresholds_debounce_and_millis_wrap",
+      "status": "PASS",
+      "duration_seconds": 0.004535915795713663,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_firmware.FirmwareTests.test_usb_recovery_works_during_wifi_startup_without_acknowledging",
+      "status": "PASS",
+      "duration_seconds": 0.004533875035122037,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_hardware.HardwareTests.test_audio_failure_does_not_block_hardware",
+      "status": "PASS",
+      "duration_seconds": 0.13914537499658763,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_hardware.HardwareTests.test_hardware_snooze_survives_a_scheduler_restart",
+      "status": "PASS",
+      "duration_seconds": 0.13311045919544995,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_hardware.HardwareTests.test_hardware_taken_logs_once",
+      "status": "PASS",
+      "duration_seconds": 0.13127591693773866,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_hardware.HardwareTests.test_invalid_token_action_and_no_due_statuses",
+      "status": "PASS",
+      "duration_seconds": 0.12943666614592075,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_hardware.HardwareTests.test_overlapping_device_action_returns_conflict",
+      "status": "PASS",
+      "duration_seconds": 0.16410870803520083,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_hardware.HardwareTests.test_pairing_token_is_owned_and_displayed_once",
+      "status": "PASS",
+      "duration_seconds": 0.1483327499590814,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_hardware.HardwareTests.test_token_cannot_answer_another_users_reminder",
+      "status": "PASS",
+      "duration_seconds": 0.15574875008314848,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_resolution.ResolutionTests.test_archived_or_deleted_target_does_not_redirect_to_another_due_row",
+      "status": "PASS",
+      "duration_seconds": 0.14739629090763628,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_resolution.ResolutionTests.test_browser_actions_require_generation_and_reject_stale_requests",
+      "status": "PASS",
+      "duration_seconds": 0.1610129999462515,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_resolution.ResolutionTests.test_current_due_audio_does_not_expose_legacy_english_cache",
+      "status": "PASS",
+      "duration_seconds": 0.1647917910013348,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_resolution.ResolutionTests.test_database_failure_rolls_back_effect_and_receipt_then_retry_succeeds",
+      "status": "PASS",
+      "duration_seconds": 0.1333300000987947,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_resolution.ResolutionTests.test_device_selection_and_actions_preserve_signed_64_bit_ids",
+      "status": "PASS",
+      "duration_seconds": 0.13502479088492692,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_resolution.ResolutionTests.test_distinct_requests_for_same_occurrence_cannot_both_apply",
+      "status": "PASS",
+      "duration_seconds": 0.12499862490221858,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_resolution.ResolutionTests.test_invalid_identity_types_and_missing_fields_are_rejected",
+      "status": "PASS",
+      "duration_seconds": 0.13634024979546666,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_resolution.ResolutionTests.test_invalid_language_rejected_before_provider_or_file_creation",
+      "status": "PASS",
+      "duration_seconds": 0.12561462516896427,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_resolution.ResolutionTests.test_legacy_english_cache_not_reused_for_translated_templates",
+      "status": "PASS",
+      "duration_seconds": 0.12053966685198247,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_resolution.ResolutionTests.test_legacy_idless_taken_and_snooze_requests_fail_closed",
+      "status": "PASS",
+      "duration_seconds": 0.12382175005041063,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_resolution.ResolutionTests.test_receipts_survive_database_restart_and_are_scoped_to_device",
+      "status": "PASS",
+      "duration_seconds": 0.12873950018547475,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_resolution.ResolutionTests.test_request_id_reuse_with_different_target_or_action_conflicts",
+      "status": "PASS",
+      "duration_seconds": 0.12577333417721093,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_resolution.ResolutionTests.test_same_request_concurrent_retries_have_one_durable_effect",
+      "status": "PASS",
+      "duration_seconds": 0.12447241717018187,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_resolution.ResolutionTests.test_selection_is_authenticated_and_account_scoped",
+      "status": "PASS",
+      "duration_seconds": 0.12826287490315735,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_resolution.ResolutionTests.test_six_cache_entries_are_distinct_and_reusable_offline",
+      "status": "PASS",
+      "duration_seconds": 0.12914149998687208,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_resolution.ResolutionTests.test_six_synthesis_calls_use_translated_text_and_matching_language",
+      "status": "PASS",
+      "duration_seconds": 0.12793649989180267,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_resolution.ResolutionTests.test_snooze_retry_does_not_extend_deadline_or_snooze_second_reminder",
+      "status": "PASS",
+      "duration_seconds": 0.13176633301191032,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_resolution.ResolutionTests.test_stale_firing_rejected_while_exact_successful_retry_replays_receipt",
+      "status": "PASS",
+      "duration_seconds": 0.13539574993774295,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_resolution.ResolutionTests.test_synthesis_failures_cleanup_and_can_retry_all_languages",
+      "status": "PASS",
+      "duration_seconds": 0.12805566587485373,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_resolution.ResolutionTests.test_taken_response_loss_retry_does_not_acknowledge_second_reminder",
+      "status": "PASS",
+      "duration_seconds": 0.1270549998153001,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_resolution.ResolutionTests.test_taken_snooze_race_has_only_one_transition",
+      "status": "PASS",
+      "duration_seconds": 0.13115387503057718,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_resolution.ResolutionTests.test_translated_text_preserves_opaque_unicode_name",
+      "status": "PASS",
+      "duration_seconds": 0.12473220797255635,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_resolution.ResolutionTests.test_wrong_owner_target_never_mutates_either_account",
+      "status": "PASS",
+      "duration_seconds": 0.12407062505371869,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_review3.Review3Tests.test_actual_concurrent_taken_requests_log_once",
+      "status": "PASS",
+      "duration_seconds": 0.12562316586263478,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_review3.Review3Tests.test_authenticated_routes_and_account_isolation",
+      "status": "PASS",
+      "duration_seconds": 0.13386566611006856,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_review3.Review3Tests.test_background_synthesis_failure_is_observed",
+      "status": "PASS",
+      "duration_seconds": 0.12294337502680719,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_review3.Review3Tests.test_creation_multiple_times_and_audio_warming",
+      "status": "PASS",
+      "duration_seconds": 0.12438558298163116,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_review3.Review3Tests.test_deleting_due_medicine_clears_alarm_and_preserves_history",
+      "status": "PASS",
+      "duration_seconds": 0.12666900013573468,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_review3.Review3Tests.test_device_multiple_due_selection_requires_bound_retry",
+      "status": "PASS",
+      "duration_seconds": 0.13282958301715553,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_review3.Review3Tests.test_edit_after_taken_preserves_historical_details",
+      "status": "PASS",
+      "duration_seconds": 0.1261972920037806,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_review3.Review3Tests.test_existing_account_history_survives_archive_schema_migration",
+      "status": "PASS",
+      "duration_seconds": 0.12741604214534163,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_review3.Review3Tests.test_invalid_creation_fields_rejected",
+      "status": "PASS",
+      "duration_seconds": 0.1319236671552062,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_review3.Review3Tests.test_invalid_time_values_rejected",
+      "status": "PASS",
+      "duration_seconds": 0.1256928329821676,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_review3.Review3Tests.test_non_object_json_rejected",
+      "status": "PASS",
+      "duration_seconds": 0.1265469160862267,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_review3.Review3Tests.test_pairing_missing_invalid_token_and_account_isolation",
+      "status": "PASS",
+      "duration_seconds": 0.12496925005689263,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_review3.Review3Tests.test_repeated_snooze_unit_clock_and_no_taken_logs",
+      "status": "PASS",
+      "duration_seconds": 0.1264301671180874,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_review3.Review3Tests.test_restart_database_retains_accounts_tokens_logs_and_snooze",
+      "status": "PASS",
+      "duration_seconds": 0.18460104195401073,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_review3.Review3Tests.test_scheduler_multiple_simultaneous_and_restart_recovery",
+      "status": "PASS",
+      "duration_seconds": 0.13335120817646384,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_review3.Review3Tests.test_scheduler_scheduled_time_overdue_and_same_day_guard",
+      "status": "PASS",
+      "duration_seconds": 0.12926737498492002,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_review3.Review3Tests.test_signup_duplicate_and_short_password_rejected",
+      "status": "PASS",
+      "duration_seconds": 0.1234155420679599,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_review3.Review3Tests.test_signup_login_logout_and_invalid_credentials",
+      "status": "PASS",
+      "duration_seconds": 0.29512500017881393,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_review3.Review3Tests.test_stale_firing_generation_is_rejected",
+      "status": "PASS",
+      "duration_seconds": 0.12224020808935165,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_review3.Review3Tests.test_take_logs_exactly_once_and_updates_last_course_slot",
+      "status": "PASS",
+      "duration_seconds": 0.12463641702197492,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_review3.Review3Tests.test_tts_cache_reused_when_synthesis_unavailable",
+      "status": "PASS",
+      "duration_seconds": 0.12174291699193418,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_review3.Review3Tests.test_tts_failure_is_atomic_and_visual_alarm_remains",
+      "status": "PASS",
+      "duration_seconds": 0.12357420800253749,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UNIT::test_review3.Review3Tests.test_wrong_json_field_types_rejected",
+      "status": "PASS",
+      "duration_seconds": 0.12687737494707108,
+      "actual": "All assertions met",
+      "layer": "unit-and-host",
+      "source_evidence": "unit/results.json"
+    },
+    {
+      "id": "UI01",
+      "feature": "Signup, register two times, clock workflow",
+      "expected": "Signup, register two times, clock workflow",
+      "actual": {
+        "rows": 2,
+        "clock": "2:48PM"
+      },
+      "status": "PASS",
+      "duration_seconds": 1.2958087499719113,
+      "evidence": "screenshots/UI01.png",
+      "page_errors": [],
+      "layer": "browser",
+      "source_evidence": "browser/results.json"
+    },
+    {
+      "id": "UI02",
+      "feature": "Taken button and history persistence",
+      "expected": "Taken button and history persistence",
+      "actual": {
+        "dose_logs": 1
+      },
+      "status": "PASS",
+      "duration_seconds": 2.027815875131637,
+      "evidence": "screenshots/UI02.png",
+      "page_errors": [],
+      "layer": "browser",
+      "source_evidence": "browser/results.json"
+    },
+    {
+      "id": "UI03",
+      "feature": "Snooze button persists deadline without Taken log",
+      "expected": "Snooze button persists deadline without Taken log",
+      "actual": {
+        "deadline": "2026-10-25T14:53:29.724995",
+        "logs": 0
+      },
+      "status": "PASS",
+      "duration_seconds": 1.1011929579544812,
+      "evidence": "screenshots/UI03.png",
+      "page_errors": [],
+      "layer": "browser",
+      "source_evidence": "browser/results.json"
+    },
+    {
+      "id": "UI04",
+      "feature": "Space selects highlighted Taken",
+      "expected": "Space selects highlighted Taken",
+      "actual": {
+        "selection": "Taken",
+        "space_key": true
+      },
+      "status": "PASS",
+      "duration_seconds": 0.7063971250317991,
+      "evidence": "screenshots/UI04.png",
+      "page_errors": [],
+      "layer": "browser",
+      "source_evidence": "browser/results.json"
+    },
+    {
+      "id": "UI05",
+      "feature": "Single-switch scanning highlights Snooze and Space selects it",
+      "expected": "Single-switch scanning highlights Snooze and Space selects it",
+      "actual": {
+        "selection": "Snooze",
+        "space_key": true
+      },
+      "status": "PASS",
+      "duration_seconds": 2.857605665922165,
+      "evidence": "screenshots/UI05.png",
+      "page_errors": [],
+      "layer": "browser",
+      "source_evidence": "browser/results.json"
+    },
+    {
+      "id": "UI06",
+      "feature": "Network failure cannot falsely acknowledge Taken; recovery",
+      "expected": "Network failure cannot falsely acknowledge Taken; recovery",
+      "actual": {
+        "failure": {
+          "alarm_visible": true,
+          "success_visible": false,
+          "toast": "Could not record your response. Please try again.",
+          "logs": 0,
+          "is_due": 1
+        },
+        "recovered_after_network_restored": true
+      },
+      "status": "PASS",
+      "duration_seconds": 1.3634334160014987,
+      "evidence": "screenshots/UI06.png",
+      "page_errors": [],
+      "layer": "browser",
+      "source_evidence": "browser/results.json"
+    },
+    {
+      "id": "UI07",
+      "feature": "Network failure cannot falsely report Snooze; recovery",
+      "expected": "Network failure cannot falsely report Snooze; recovery",
+      "actual": {
+        "failure": {
+          "alarm_visible": true,
+          "success_visible": false,
+          "toast": "Could not record your response. Please try again.",
+          "logs": 0,
+          "is_due": 1
+        },
+        "recovered_after_network_restored": true
+      },
+      "status": "PASS",
+      "duration_seconds": 1.4121443340554833,
+      "evidence": "screenshots/UI07.png",
+      "page_errors": [],
+      "layer": "browser",
+      "source_evidence": "browser/results.json"
+    },
+    {
+      "id": "UI08",
+      "feature": "HTTP rejection cannot falsely acknowledge Taken",
+      "expected": "HTTP rejection cannot falsely acknowledge Taken",
+      "actual": {
+        "failure": {
+          "alarm_visible": true,
+          "success_visible": false,
+          "toast": "Could not record your response. Please try again.",
+          "logs": 0,
+          "is_due": 1
+        },
+        "recovered_after_network_restored": true
+      },
+      "status": "PASS",
+      "duration_seconds": 1.3715528747998178,
+      "evidence": "screenshots/UI08.png",
+      "page_errors": [],
+      "layer": "browser",
+      "source_evidence": "browser/results.json"
+    },
+    {
+      "id": "UI09",
+      "feature": "External device action reconciles visible browser alarm",
+      "expected": "External device action reconciles visible browser alarm",
+      "actual": {
+        "hardware_message": "SIMULATED ESP32 COMMUNICATION",
+        "HTTP": 200,
+        "browser_reconciled_without_refresh": true
+      },
+      "status": "PASS",
+      "duration_seconds": 17.406375749967992,
+      "evidence": "screenshots/UI09.png",
+      "page_errors": [],
+      "layer": "browser",
+      "source_evidence": "browser/results.json"
+    },
+    {
+      "id": "UI10",
+      "feature": "Fresh-profile no-gesture play rejects; trusted audio prompt click plays and advances MP3; Snooze stops progression",
+      "expected": "Fresh-profile no-gesture play rejects; trusted audio prompt click plays and advances MP3; Snooze stops progression",
+      "actual": {
+        "autoplay_before_gesture": {
+          "at": 94.60000014305115,
+          "before": {
+            "src": "/static/audio/en_review-dummy_9ba543bfedc08875.mp3",
+            "currentSrc": "",
+            "currentTime": 0,
+            "duration": null,
+            "paused": true,
+            "ended": false,
+            "muted": false,
+            "volume": 1,
+            "readyState": 0,
+            "error": null,
+            "decodedBytes": 0,
+            "activation": {
+              "isActive": false,
+              "hasBeenActive": false
+            }
+          },
+          "result": "rejected",
+          "error": {
+            "name": "NotAllowedError",
+            "message": "play() failed because the user didn't interact with the document first. https://goo.gl/xX8pDD"
+          },
+          "after": {
+            "src": "/static/audio/en_review-dummy_9ba543bfedc08875.mp3",
+            "currentSrc": "",
+            "currentTime": 0,
+            "duration": null,
+            "paused": true,
+            "ended": false,
+            "muted": false,
+            "volume": 1,
+            "readyState": 0,
+            "error": null,
+            "decodedBytes": 0,
+            "activation": {
+              "isActive": false,
+              "hasBeenActive": false
+            }
+          }
+        },
+        "explicit_no_gesture_probe": {
+          "result": "rejected",
+          "name": "NotAllowedError",
+          "message": "play() failed because the user didn't interact with the document first. https://goo.gl/xX8pDD"
+        },
+        "playing_samples": [
+          {
+            "src": "/static/audio/en_review-dummy_9ba543bfedc08875.mp3",
+            "currentSrc": "http://127.0.0.1:58333/static/audio/en_review-dummy_9ba543bfedc08875.mp3",
+            "currentTime": 0.071366,
+            "duration": 2.592,
+            "paused": false,
+            "ended": false,
+            "muted": false,
+            "volume": 1,
+            "readyState": 4,
+            "error": null,
+            "decodedBytes": 3072,
+            "activation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "src": "/static/audio/en_review-dummy_9ba543bfedc08875.mp3",
+            "currentSrc": "http://127.0.0.1:58333/static/audio/en_review-dummy_9ba543bfedc08875.mp3",
+            "currentTime": 0.628701,
+            "duration": 2.592,
+            "paused": false,
+            "ended": false,
+            "muted": false,
+            "volume": 1,
+            "readyState": 4,
+            "error": null,
+            "decodedBytes": 7488,
+            "activation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ],
+        "stopped_samples": [
+          {
+            "src": "/static/audio/en_review-dummy_9ba543bfedc08875.mp3",
+            "currentSrc": "http://127.0.0.1:58333/static/audio/en_review-dummy_9ba543bfedc08875.mp3",
+            "currentTime": 0.691654,
+            "duration": 2.592,
+            "paused": true,
+            "ended": false,
+            "muted": false,
+            "volume": 1,
+            "readyState": 4,
+            "error": null,
+            "decodedBytes": 8064,
+            "activation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "src": "/static/audio/en_review-dummy_9ba543bfedc08875.mp3",
+            "currentSrc": "http://127.0.0.1:58333/static/audio/en_review-dummy_9ba543bfedc08875.mp3",
+            "currentTime": 0.691654,
+            "duration": 2.592,
+            "paused": true,
+            "ended": false,
+            "muted": false,
+            "volume": 1,
+            "readyState": 4,
+            "error": null,
+            "decodedBytes": 8064,
+            "activation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ],
+        "trusted_gestures": [
+          {
+            "type": "click",
+            "trusted": true,
+            "target": "mic-indicator",
+            "at": 656.8000001907349,
+            "active": true
+          }
+        ],
+        "profile_initially_empty": true,
+        "human_listening": false,
+        "detail": "UI10-clean-profile/results.json"
+      },
+      "status": "PASS",
+      "duration_seconds": 2.93239595904015,
+      "evidence": "screenshots/UI10.png",
+      "page_errors": [],
+      "layer": "browser",
+      "source_evidence": "browser/results.json"
+    },
+    {
+      "id": "UI11",
+      "feature": "Unavailable speech leaves visual reminder and Taken usable",
+      "expected": "Unavailable speech leaves visual reminder and Taken usable",
+      "actual": {
+        "audio_src": null,
+        "visual_alarm_and_taken_usable": true
+      },
+      "status": "PASS",
+      "duration_seconds": 1.0587268751114607,
+      "evidence": "screenshots/UI11.png",
+      "page_errors": [],
+      "layer": "browser",
+      "source_evidence": "browser/results.json"
+    },
+    {
+      "id": "B05-1",
+      "feature": "Initial reminder visibility <=20 seconds; real scheduler and browser poll",
+      "expected": "Initial reminder visibility <=20 seconds; real scheduler and browser poll",
+      "actual": {
+        "visible_seconds_after_scheduled_fixture": 17.03274029190652,
+        "scheduled_time": "14:48",
+        "clock_before": "2:48PM",
+        "clock_after": "2:49PM"
+      },
+      "status": "PASS",
+      "duration_seconds": 17.38545725005679,
+      "evidence": "screenshots/B05-1.png",
+      "page_errors": [],
+      "layer": "browser",
+      "source_evidence": "browser/results.json"
+    },
+    {
+      "id": "B05-2",
+      "feature": "Initial reminder visibility <=20 seconds; real scheduler and browser poll",
+      "expected": "Initial reminder visibility <=20 seconds; real scheduler and browser poll",
+      "actual": {
+        "visible_seconds_after_scheduled_fixture": 17.04724208288826,
+        "scheduled_time": "14:49",
+        "clock_before": "2:49PM",
+        "clock_after": "2:49PM"
+      },
+      "status": "PASS",
+      "duration_seconds": 17.457700915867463,
+      "evidence": "screenshots/B05-2.png",
+      "page_errors": [],
+      "layer": "browser",
+      "source_evidence": "browser/results.json"
+    },
+    {
+      "id": "B05-3",
+      "feature": "Initial reminder visibility <=20 seconds; real scheduler and browser poll",
+      "expected": "Initial reminder visibility <=20 seconds; real scheduler and browser poll",
+      "actual": {
+        "visible_seconds_after_scheduled_fixture": 17.00963933300227,
+        "scheduled_time": "14:49",
+        "clock_before": "2:49PM",
+        "clock_after": "2:49PM"
+      },
+      "status": "PASS",
+      "duration_seconds": 17.478908749995753,
+      "evidence": "screenshots/B05-3.png",
+      "page_errors": [],
+      "layer": "browser",
+      "source_evidence": "browser/results.json"
+    },
+    {
+      "id": "B05-4",
+      "feature": "Initial reminder visibility <=20 seconds; real scheduler and browser poll",
+      "expected": "Initial reminder visibility <=20 seconds; real scheduler and browser poll",
+      "actual": {
+        "visible_seconds_after_scheduled_fixture": 16.99179520807229,
+        "scheduled_time": "14:49",
+        "clock_before": "2:49PM",
+        "clock_after": "2:50PM"
+      },
+      "status": "PASS",
+      "duration_seconds": 17.53432291606441,
+      "evidence": "screenshots/B05-4.png",
+      "page_errors": [],
+      "layer": "browser",
+      "source_evidence": "browser/results.json"
+    },
+    {
+      "id": "B05-5",
+      "feature": "Initial reminder visibility <=20 seconds; real scheduler and browser poll",
+      "expected": "Initial reminder visibility <=20 seconds; real scheduler and browser poll",
+      "actual": {
+        "visible_seconds_after_scheduled_fixture": 17.007253916934133,
+        "scheduled_time": "14:50",
+        "clock_before": "2:50PM",
+        "clock_after": "2:50PM"
+      },
+      "status": "PASS",
+      "duration_seconds": 17.354250833857805,
+      "evidence": "screenshots/B05-5.png",
+      "page_errors": [],
+      "layer": "browser",
+      "source_evidence": "browser/results.json"
+    },
+    {
+      "id": "UI-VOICE",
+      "feature": "Real spoken acknowledgment",
+      "expected": "Actual microphone/transcription and action",
+      "actual": "No participant/microphone or recorded utterance available; speech handler not counted as real voice verification.",
+      "status": "NOT TESTED",
+      "duration_seconds": 0,
+      "evidence": "results.json",
+      "layer": "browser",
+      "source_evidence": "browser/results.json"
+    },
+    {
+      "id": "B01",
+      "feature": "Taken correctness over real HTTP",
+      "expected": "10/10, exactly one new log per fresh due reminder",
+      "actual": [
+        {
+          "trial": 1,
+          "http_status": 200,
+          "logs_before": 0,
+          "logs_after": 1
+        },
+        {
+          "trial": 2,
+          "http_status": 200,
+          "logs_before": 1,
+          "logs_after": 2
+        },
+        {
+          "trial": 3,
+          "http_status": 200,
+          "logs_before": 2,
+          "logs_after": 3
+        },
+        {
+          "trial": 4,
+          "http_status": 200,
+          "logs_before": 3,
+          "logs_after": 4
+        },
+        {
+          "trial": 5,
+          "http_status": 200,
+          "logs_before": 4,
+          "logs_after": 5
+        },
+        {
+          "trial": 6,
+          "http_status": 200,
+          "logs_before": 5,
+          "logs_after": 6
+        },
+        {
+          "trial": 7,
+          "http_status": 200,
+          "logs_before": 6,
+          "logs_after": 7
+        },
+        {
+          "trial": 8,
+          "http_status": 200,
+          "logs_before": 7,
+          "logs_after": 8
+        },
+        {
+          "trial": 9,
+          "http_status": 200,
+          "logs_before": 8,
+          "logs_after": 9
+        },
+        {
+          "trial": 10,
+          "http_status": 200,
+          "logs_before": 9,
+          "logs_after": 10
+        }
+      ],
+      "status": "PASS",
+      "duration_seconds": 0,
+      "evidence": "results.json",
+      "layer": "live-http",
+      "source_evidence": "live/results.json"
+    },
+    {
+      "id": "B02",
+      "feature": "Invalid-token isolation",
+      "expected": "10/10 HTTP 401 and unchanged whole-database digest",
+      "actual": [
+        {
+          "trial": 1,
+          "http_status": 401,
+          "database_digest_before": "983bcc6c1e327061f84540bfe7faebfcf944b6e1c9abab9ec31e5035ba11ab13",
+          "database_digest_after": "983bcc6c1e327061f84540bfe7faebfcf944b6e1c9abab9ec31e5035ba11ab13"
+        },
+        {
+          "trial": 2,
+          "http_status": 401,
+          "database_digest_before": "983bcc6c1e327061f84540bfe7faebfcf944b6e1c9abab9ec31e5035ba11ab13",
+          "database_digest_after": "983bcc6c1e327061f84540bfe7faebfcf944b6e1c9abab9ec31e5035ba11ab13"
+        },
+        {
+          "trial": 3,
+          "http_status": 401,
+          "database_digest_before": "983bcc6c1e327061f84540bfe7faebfcf944b6e1c9abab9ec31e5035ba11ab13",
+          "database_digest_after": "983bcc6c1e327061f84540bfe7faebfcf944b6e1c9abab9ec31e5035ba11ab13"
+        },
+        {
+          "trial": 4,
+          "http_status": 401,
+          "database_digest_before": "983bcc6c1e327061f84540bfe7faebfcf944b6e1c9abab9ec31e5035ba11ab13",
+          "database_digest_after": "983bcc6c1e327061f84540bfe7faebfcf944b6e1c9abab9ec31e5035ba11ab13"
+        },
+        {
+          "trial": 5,
+          "http_status": 401,
+          "database_digest_before": "983bcc6c1e327061f84540bfe7faebfcf944b6e1c9abab9ec31e5035ba11ab13",
+          "database_digest_after": "983bcc6c1e327061f84540bfe7faebfcf944b6e1c9abab9ec31e5035ba11ab13"
+        },
+        {
+          "trial": 6,
+          "http_status": 401,
+          "database_digest_before": "983bcc6c1e327061f84540bfe7faebfcf944b6e1c9abab9ec31e5035ba11ab13",
+          "database_digest_after": "983bcc6c1e327061f84540bfe7faebfcf944b6e1c9abab9ec31e5035ba11ab13"
+        },
+        {
+          "trial": 7,
+          "http_status": 401,
+          "database_digest_before": "983bcc6c1e327061f84540bfe7faebfcf944b6e1c9abab9ec31e5035ba11ab13",
+          "database_digest_after": "983bcc6c1e327061f84540bfe7faebfcf944b6e1c9abab9ec31e5035ba11ab13"
+        },
+        {
+          "trial": 8,
+          "http_status": 401,
+          "database_digest_before": "983bcc6c1e327061f84540bfe7faebfcf944b6e1c9abab9ec31e5035ba11ab13",
+          "database_digest_after": "983bcc6c1e327061f84540bfe7faebfcf944b6e1c9abab9ec31e5035ba11ab13"
+        },
+        {
+          "trial": 9,
+          "http_status": 401,
+          "database_digest_before": "983bcc6c1e327061f84540bfe7faebfcf944b6e1c9abab9ec31e5035ba11ab13",
+          "database_digest_after": "983bcc6c1e327061f84540bfe7faebfcf944b6e1c9abab9ec31e5035ba11ab13"
+        },
+        {
+          "trial": 10,
+          "http_status": 401,
+          "database_digest_before": "983bcc6c1e327061f84540bfe7faebfcf944b6e1c9abab9ec31e5035ba11ab13",
+          "database_digest_after": "983bcc6c1e327061f84540bfe7faebfcf944b6e1c9abab9ec31e5035ba11ab13"
+        }
+      ],
+      "status": "PASS",
+      "duration_seconds": 0,
+      "evidence": "results.json",
+      "layer": "live-http",
+      "source_evidence": "live/results.json"
+    },
+    {
+      "id": "B03-LOCAL",
+      "feature": "Loopback HTTP response time (LAN variant not measured)",
+      "expected": "30 successful requests; median <=500 ms, nearest-rank p95 <=1000 ms",
+      "actual": {
+        "requests": 30,
+        "successes": 30,
+        "median_ms": 1.4392705634236336,
+        "p95_ms": 1.7010001465678215,
+        "scope": "127.0.0.1 loopback, not LAN",
+        "timer": "perf_counter: POST start through complete body; LED time excluded"
+      },
+      "status": "PASS",
+      "duration_seconds": 0,
+      "evidence": "results.json",
+      "layer": "live-http",
+      "source_evidence": "live/results.json"
+    },
+    {
+      "id": "B03-LAN",
+      "feature": "Genuine ESP32/LAN response time",
+      "expected": "Same target measured across independent LAN devices",
+      "actual": "No ESP32 or second independent LAN client; loopback values are not substituted",
+      "status": "NOT TESTED",
+      "duration_seconds": 0,
+      "evidence": "results.json",
+      "layer": "live-http",
+      "source_evidence": "live/results.json"
+    },
+    {
+      "id": "SIM-NO-DUE",
+      "feature": "Paired token without due row",
+      "expected": "Selection HTTP 200, due=false; no action submitted",
+      "actual": {
+        "label": "SIMULATED ESP32 COMMUNICATION",
+        "transport": "real HTTP; identify loopback versus LAN",
+        "operation": "select firing",
+        "token": "<redacted>",
+        "http_status": 200,
+        "response": {
+          "due": false
+        },
+        "transport_error": null,
+        "duration_ms": 1.1184581089764833
+      },
+      "status": "PASS",
+      "duration_seconds": 0,
+      "evidence": "results.json",
+      "layer": "live-http",
+      "source_evidence": "live/results.json"
+    },
+    {
+      "id": "SIM-MISSING",
+      "feature": "Missing device token",
+      "expected": "HTTP 401",
+      "actual": {
+        "label": "SIMULATED ESP32 COMMUNICATION",
+        "transport": "real HTTP; identify loopback versus LAN",
+        "operation": "bound action",
+        "token": "<omitted>",
+        "http_status": 401,
+        "response": {
+          "error": "unknown or missing device token"
+        },
+        "transport_error": null,
+        "duration_ms": 0.4818749148398638,
+        "action": "taken",
+        "request_id": null
+      },
+      "status": "PASS",
+      "duration_seconds": 0,
+      "evidence": "results.json",
+      "layer": "live-http",
+      "source_evidence": "live/results.json"
+    },
+    {
+      "id": "SIM-ACTION",
+      "feature": "Unsupported action",
+      "expected": "HTTP 400",
+      "actual": {
+        "label": "SIMULATED ESP32 COMMUNICATION",
+        "transport": "real HTTP; identify loopback versus LAN",
+        "operation": "bound action",
+        "token": "<redacted>",
+        "http_status": 400,
+        "response": {
+          "error": "action must be 'taken' or 'snooze'"
+        },
+        "transport_error": null,
+        "duration_ms": 0.9440840221941471,
+        "action": "unsupported",
+        "request_id": null
+      },
+      "status": "PASS",
+      "duration_seconds": 0,
+      "evidence": "results.json",
+      "layer": "live-http",
+      "source_evidence": "live/results.json"
+    },
+    {
+      "id": "SIM-DUPLICATE",
+      "feature": "Sequential repeated single-due request",
+      "expected": "First and exact retry 200; one log",
+      "actual": {
+        "statuses": [
+          200,
+          200
+        ],
+        "logs": 1
+      },
+      "status": "PASS",
+      "duration_seconds": 0,
+      "evidence": "results.json",
+      "layer": "live-http",
+      "source_evidence": "live/results.json"
+    },
+    {
+      "id": "SIM-ISOLATION",
+      "feature": "Paired device owner isolation",
+      "expected": "A cannot acknowledge B; 404 and B state unchanged",
+      "actual": {
+        "http_status": 404,
+        "other_account_state_unchanged": true
+      },
+      "status": "PASS",
+      "duration_seconds": 0,
+      "evidence": "results.json",
+      "layer": "live-http",
+      "source_evidence": "live/results.json"
+    },
+    {
+      "id": "SIM-CONCURRENT",
+      "feature": "Real concurrent duplicate HTTP requests",
+      "expected": "Two 200 receipts; one effect and log",
+      "actual": {
+        "statuses": [
+          200,
+          200
+        ],
+        "logs": 1
+      },
+      "status": "PASS",
+      "duration_seconds": 0,
+      "evidence": "results.json",
+      "layer": "live-http",
+      "source_evidence": "live/results.json"
+    },
+    {
+      "id": "SIM-REPLAY-TAKEN",
+      "feature": "Multiple-due exact retry bound to one firing",
+      "expected": "Two 200s, same state after retry, one other reminder still due",
+      "actual": {
+        "statuses": [
+          200,
+          200
+        ],
+        "logs": 1,
+        "retry_state_unchanged": true,
+        "still_due": 1,
+        "request_id": "4dfdfd0da7de45fd8e5398ea9bdf9a93"
+      },
+      "status": "PASS",
+      "duration_seconds": 0,
+      "evidence": "results.json",
+      "layer": "live-http",
+      "source_evidence": "live/results.json"
+    },
+    {
+      "id": "SIM-REPLAY-SNOOZE",
+      "feature": "Multiple-due exact retry bound to one firing",
+      "expected": "Two 200s, same state after retry, one other reminder still due",
+      "actual": {
+        "statuses": [
+          200,
+          200
+        ],
+        "logs": 0,
+        "retry_state_unchanged": true,
+        "still_due": 1,
+        "request_id": "86743e186b184e62a090dd8d3bb21cca"
+      },
+      "status": "PASS",
+      "duration_seconds": 0,
+      "evidence": "results.json",
+      "layer": "live-http",
+      "source_evidence": "live/results.json"
+    },
+    {
+      "id": "SIM-LOST-RESPONSE",
+      "feature": "Discarded response followed by retry after real server restart",
+      "expected": "Receipt replay; one log; other reminder remains due",
+      "actual": {
+        "first_http_status": 200,
+        "retry_http_status": 200,
+        "logs": 1,
+        "still_due": 1,
+        "scope": "controlled client-side response discard; no claim of real packet loss"
+      },
+      "status": "PASS",
+      "duration_seconds": 0,
+      "evidence": "results.json",
+      "layer": "live-http",
+      "source_evidence": "live/results.json"
+    },
+    {
+      "id": "OUTAGE-HTTP",
+      "feature": "Six real backend-stop/restart trials",
+      "expected": "No success or new log while stopped; intended action succeeds after restart",
+      "actual": [
+        {
+          "trial": 1,
+          "offline_http_status": null,
+          "transport_error": "<urlopen error [Errno 61] Connection refused>",
+          "logs_unchanged_during_outage": true,
+          "recovery_http_status": 200
+        },
+        {
+          "trial": 2,
+          "offline_http_status": null,
+          "transport_error": "<urlopen error [Errno 61] Connection refused>",
+          "logs_unchanged_during_outage": true,
+          "recovery_http_status": 200
+        },
+        {
+          "trial": 3,
+          "offline_http_status": null,
+          "transport_error": "<urlopen error [Errno 61] Connection refused>",
+          "logs_unchanged_during_outage": true,
+          "recovery_http_status": 200
+        },
+        {
+          "trial": 4,
+          "offline_http_status": null,
+          "transport_error": "<urlopen error [Errno 61] Connection refused>",
+          "logs_unchanged_during_outage": true,
+          "recovery_http_status": 200
+        },
+        {
+          "trial": 5,
+          "offline_http_status": null,
+          "transport_error": "<urlopen error [Errno 61] Connection refused>",
+          "logs_unchanged_during_outage": true,
+          "recovery_http_status": 200
+        },
+        {
+          "trial": 6,
+          "offline_http_status": null,
+          "transport_error": "<urlopen error [Errno 61] Connection refused>",
+          "logs_unchanged_during_outage": true,
+          "recovery_http_status": 200
+        }
+      ],
+      "status": "PASS",
+      "duration_seconds": 0,
+      "evidence": "results.json",
+      "layer": "live-http",
+      "source_evidence": "live/results.json"
+    },
+    {
+      "id": "RESTART-SESSION",
+      "feature": "Browser session and device credential survive process restart",
+      "expected": "Existing cookie works; existing token authenticated",
+      "actual": {
+        "session_http_status": 200,
+        "token_authenticated_after_restart": true
+      },
+      "status": "PASS",
+      "duration_seconds": 0,
+      "evidence": "results.json",
+      "layer": "live-http",
+      "source_evidence": "live/results.json"
+    },
+    {
+      "id": "B06-HARDWARE",
+      "feature": "Physical press classification",
+      "expected": "30 physical short/hold/intermediate trials",
+      "actual": "Teammate reports it works; independent GPIO/button/LED evidence not supplied",
+      "status": "NOT TESTED",
+      "duration_seconds": 0,
+      "evidence": "results.json",
+      "layer": "live-http",
+      "source_evidence": "live/results.json"
+    },
+    {
+      "id": "B07-HARDWARE",
+      "feature": "ESP32 Wi-Fi/backend outage LED feedback",
+      "expected": "3 Wi-Fi-loss plus 3 backend-loss physical trials",
+      "actual": "Six backend HTTP-outage simulations were run, but ESP32 Wi-Fi and LED feedback require physical evidence",
+      "status": "NOT TESTED",
+      "duration_seconds": 0,
+      "evidence": "results.json",
+      "layer": "live-http",
+      "source_evidence": "live/results.json"
+    },
+    {
+      "id": "B04-1",
+      "feature": "Real 300-second Snooze and restart recovery",
+      "expected": "Deadline 300 s; backend due observed within 2 s; no Taken log",
+      "actual": {
+        "real_elapsed_seconds": 300.26710549998097,
+        "stored_deadline": "2026-10-25T14:53:24.649168",
+        "observed_at": "2026-10-25T14:53:24.906547",
+        "observed_delay_seconds": 0.257379,
+        "server_firing_delay_seconds": 0.225722,
+        "taken_logs": 0,
+        "request": {
+          "label": "SIMULATED ESP32 COMMUNICATION",
+          "transport": "real HTTP; identify loopback versus LAN",
+          "operation": "bound action",
+          "token": "<redacted>",
+          "http_status": 200,
+          "response": {
+            "medicine_name": "Review dummy",
+            "success": true
+          },
+          "transport_error": null,
+          "duration_ms": 1.596916001290083,
+          "action": "snooze",
+          "request_id": "fad48aa78b854f3a88eba9706eea869a"
+        },
+        "clock_mocking": false,
+        "backend_restarted_during_wait": true
+      },
+      "status": "PASS",
+      "duration_seconds": 300.26710549998097,
+      "evidence": "results.json",
+      "layer": "live-http",
+      "source_evidence": "live/results.json"
+    },
+    {
+      "id": "B04-2",
+      "feature": "Real 300-second Snooze and restart recovery",
+      "expected": "Deadline 300 s; backend due observed within 2 s; no Taken log",
+      "actual": {
+        "real_elapsed_seconds": 300.1346480420325,
+        "stored_deadline": "2026-10-25T14:53:24.790574",
+        "observed_at": "2026-10-25T14:53:24.914882",
+        "observed_delay_seconds": 0.124308,
+        "server_firing_delay_seconds": 0.088065,
+        "taken_logs": 0,
+        "request": {
+          "label": "SIMULATED ESP32 COMMUNICATION",
+          "transport": "real HTTP; identify loopback versus LAN",
+          "operation": "bound action",
+          "token": "<redacted>",
+          "http_status": 200,
+          "response": {
+            "medicine_name": "Review dummy",
+            "success": true
+          },
+          "transport_error": null,
+          "duration_ms": 2.909041941165924,
+          "action": "snooze",
+          "request_id": "d76e85f4d17d467c9c42fad14112924f"
+        },
+        "clock_mocking": false,
+        "backend_restarted_during_wait": true
+      },
+      "status": "PASS",
+      "duration_seconds": 300.1346480420325,
+      "evidence": "results.json",
+      "layer": "live-http",
+      "source_evidence": "live/results.json"
+    },
+    {
+      "id": "B04-3",
+      "feature": "Real 300-second Snooze and restart recovery",
+      "expected": "Deadline 300 s; backend due observed within 2 s; no Taken log",
+      "actual": {
+        "real_elapsed_seconds": 301.1135400419589,
+        "stored_deadline": "2026-10-25T14:53:24.937579",
+        "observed_at": "2026-10-25T14:53:26.041188",
+        "observed_delay_seconds": 1.103609,
+        "server_firing_delay_seconds": 0.936479,
+        "taken_logs": 0,
+        "request": {
+          "label": "SIMULATED ESP32 COMMUNICATION",
+          "transport": "real HTTP; identify loopback versus LAN",
+          "operation": "bound action",
+          "token": "<redacted>",
+          "http_status": 200,
+          "response": {
+            "medicine_name": "Review dummy",
+            "success": true
+          },
+          "transport_error": null,
+          "duration_ms": 1.7521248664706945,
+          "action": "snooze",
+          "request_id": "69acd908a72444e3bd921051ec44bf63"
+        },
+        "clock_mocking": false,
+        "backend_restarted_during_wait": true
+      },
+      "status": "PASS",
+      "duration_seconds": 301.1135400419589,
+      "evidence": "results.json",
+      "layer": "live-http",
+      "source_evidence": "live/results.json"
+    },
+    {
+      "id": "AUDIO-en",
+      "feature": "English audio generation and MP3 validity",
+      "expected": "Nonempty parsable MP3 with positive duration",
+      "actual": {
+        "language_code": "en",
+        "bytes": 20736,
+        "duration_seconds": 2.592,
+        "sample_rate": 24000,
+        "sha256": "9918915b1f064c5a027a9fa24c3f55375f66c7014e62bbffd22bb84cd6eabd55",
+        "spoken_template": "It's time to take your Review dummy.",
+        "provider_calls": 1,
+        "human_pronunciation_verified": false
+      },
+      "status": "PASS",
+      "duration_seconds": 3.6182373331394047,
+      "evidence": "en_review-dummy_9ba543bfedc08875.mp3",
+      "layer": "audio-cache",
+      "source_evidence": "audio/results.json"
+    },
+    {
+      "id": "CACHE-en",
+      "feature": "English cached reuse with synthesis unavailable",
+      "expected": "Same file/hash/mtime without a synthesis call",
+      "actual": {
+        "unchanged": true,
+        "gTTS_calls": 0,
+        "scope": "synthesis disabled by controlled injection; not a physical network outage"
+      },
+      "status": "PASS",
+      "duration_seconds": 0.00035908399149775505,
+      "evidence": "en_review-dummy_9ba543bfedc08875.mp3",
+      "layer": "audio-cache",
+      "source_evidence": "audio/results.json"
+    },
+    {
+      "id": "AUDIO-hi",
+      "feature": "Hindi audio generation and MP3 validity",
+      "expected": "Nonempty parsable MP3 with positive duration",
+      "actual": {
+        "language_code": "hi",
+        "bytes": 30528,
+        "duration_seconds": 3.816,
+        "sample_rate": 24000,
+        "sha256": "2b10bfee627a17f66f7bfe13af004910a5516a4b198b2f543c713d4a66ff4106",
+        "spoken_template": "आपकी दवा Review dummy लेने का समय हो गया है।",
+        "provider_calls": 1,
+        "human_pronunciation_verified": false
+      },
+      "status": "PASS",
+      "duration_seconds": 3.875426125014201,
+      "evidence": "hi_review-dummy_0445123d52112803.mp3",
+      "layer": "audio-cache",
+      "source_evidence": "audio/results.json"
+    },
+    {
+      "id": "CACHE-hi",
+      "feature": "Hindi cached reuse with synthesis unavailable",
+      "expected": "Same file/hash/mtime without a synthesis call",
+      "actual": {
+        "unchanged": true,
+        "gTTS_calls": 0,
+        "scope": "synthesis disabled by controlled injection; not a physical network outage"
+      },
+      "status": "PASS",
+      "duration_seconds": 0.0004939169157296419,
+      "evidence": "hi_review-dummy_0445123d52112803.mp3",
+      "layer": "audio-cache",
+      "source_evidence": "audio/results.json"
+    },
+    {
+      "id": "AUDIO-ta",
+      "feature": "Tamil audio generation and MP3 validity",
+      "expected": "Nonempty parsable MP3 with positive duration",
+      "actual": {
+        "language_code": "ta",
+        "bytes": 36096,
+        "duration_seconds": 4.512,
+        "sample_rate": 24000,
+        "sha256": "bf5e494dbab0bcb1c6a1db19365cf8809867d7389914207d5506469df78da897",
+        "spoken_template": "உங்கள் Review dummy மருந்தை எடுத்துக்கொள்ள வேண்டிய நேரம் இது.",
+        "provider_calls": 1,
+        "human_pronunciation_verified": false
+      },
+      "status": "PASS",
+      "duration_seconds": 3.948213000083342,
+      "evidence": "ta_review-dummy_99e8b43d09c117c3.mp3",
+      "layer": "audio-cache",
+      "source_evidence": "audio/results.json"
+    },
+    {
+      "id": "CACHE-ta",
+      "feature": "Tamil cached reuse with synthesis unavailable",
+      "expected": "Same file/hash/mtime without a synthesis call",
+      "actual": {
+        "unchanged": true,
+        "gTTS_calls": 0,
+        "scope": "synthesis disabled by controlled injection; not a physical network outage"
+      },
+      "status": "PASS",
+      "duration_seconds": 0.0005588331259787083,
+      "evidence": "ta_review-dummy_99e8b43d09c117c3.mp3",
+      "layer": "audio-cache",
+      "source_evidence": "audio/results.json"
+    },
+    {
+      "id": "AUDIO-te",
+      "feature": "Telugu audio generation and MP3 validity",
+      "expected": "Nonempty parsable MP3 with positive duration",
+      "actual": {
+        "language_code": "te",
+        "bytes": 31104,
+        "duration_seconds": 3.888,
+        "sample_rate": 24000,
+        "sha256": "956743cb1f7be06871c966fe80840cce4e1bc65c34ba43011eb556d11f8f98f2",
+        "spoken_template": "మీ Review dummy మందు తీసుకునే సమయం అయింది.",
+        "provider_calls": 1,
+        "human_pronunciation_verified": false
+      },
+      "status": "PASS",
+      "duration_seconds": 3.45860516699031,
+      "evidence": "te_review-dummy_5b01eee8ee49f247.mp3",
+      "layer": "audio-cache",
+      "source_evidence": "audio/results.json"
+    },
+    {
+      "id": "CACHE-te",
+      "feature": "Telugu cached reuse with synthesis unavailable",
+      "expected": "Same file/hash/mtime without a synthesis call",
+      "actual": {
+        "unchanged": true,
+        "gTTS_calls": 0,
+        "scope": "synthesis disabled by controlled injection; not a physical network outage"
+      },
+      "status": "PASS",
+      "duration_seconds": 0.0002466249279677868,
+      "evidence": "te_review-dummy_5b01eee8ee49f247.mp3",
+      "layer": "audio-cache",
+      "source_evidence": "audio/results.json"
+    },
+    {
+      "id": "AUDIO-kn",
+      "feature": "Kannada audio generation and MP3 validity",
+      "expected": "Nonempty parsable MP3 with positive duration",
+      "actual": {
+        "language_code": "kn",
+        "bytes": 38208,
+        "duration_seconds": 4.776,
+        "sample_rate": 24000,
+        "sha256": "6409df09b1ff44879e59d0471acba74d495eb52fd472d68f1b30b828a7f3fdb3",
+        "spoken_template": "ನಿಮ್ಮ Review dummy ಔಷಧಿ ತೆಗೆದುಕೊಳ್ಳುವ ಸಮಯವಾಗಿದೆ.",
+        "provider_calls": 1,
+        "human_pronunciation_verified": false
+      },
+      "status": "PASS",
+      "duration_seconds": 3.674698791000992,
+      "evidence": "kn_review-dummy_c97e6beaf071eeaf.mp3",
+      "layer": "audio-cache",
+      "source_evidence": "audio/results.json"
+    },
+    {
+      "id": "CACHE-kn",
+      "feature": "Kannada cached reuse with synthesis unavailable",
+      "expected": "Same file/hash/mtime without a synthesis call",
+      "actual": {
+        "unchanged": true,
+        "gTTS_calls": 0,
+        "scope": "synthesis disabled by controlled injection; not a physical network outage"
+      },
+      "status": "PASS",
+      "duration_seconds": 0.0006150831468403339,
+      "evidence": "kn_review-dummy_c97e6beaf071eeaf.mp3",
+      "layer": "audio-cache",
+      "source_evidence": "audio/results.json"
+    },
+    {
+      "id": "AUDIO-bn",
+      "feature": "Bengali audio generation and MP3 validity",
+      "expected": "Nonempty parsable MP3 with positive duration",
+      "actual": {
+        "language_code": "bn",
+        "bytes": 33600,
+        "duration_seconds": 4.2,
+        "sample_rate": 24000,
+        "sha256": "1db435b03d27cee159c3bee92fcbe8a5d0d569bbdc21fac640967c1096c23b60",
+        "spoken_template": "আপনার Review dummy ওষুধ খাওয়ার সময় হয়েছে।",
+        "provider_calls": 1,
+        "human_pronunciation_verified": false
+      },
+      "status": "PASS",
+      "duration_seconds": 5.204352667089552,
+      "evidence": "bn_review-dummy_6066d3f1e23d7bb6.mp3",
+      "layer": "audio-cache",
+      "source_evidence": "audio/results.json"
+    },
+    {
+      "id": "CACHE-bn",
+      "feature": "Bengali cached reuse with synthesis unavailable",
+      "expected": "Same file/hash/mtime without a synthesis call",
+      "actual": {
+        "unchanged": true,
+        "gTTS_calls": 0,
+        "scope": "synthesis disabled by controlled injection; not a physical network outage"
+      },
+      "status": "PASS",
+      "duration_seconds": 0.000828874995931983,
+      "evidence": "bn_review-dummy_6066d3f1e23d7bb6.mp3",
+      "layer": "audio-cache",
+      "source_evidence": "audio/results.json"
+    },
+    {
+      "id": "HUMAN-SPEECH",
+      "feature": "Human pronunciation, intelligibility and output assessment",
+      "expected": "Independent human/native-speaker evaluation",
+      "actual": "Not performed; valid MP3s and browser progression do not establish human hearing or speech quality",
+      "status": "NOT TESTED",
+      "duration_seconds": 0,
+      "layer": "human",
+      "source_evidence": "summary.json"
+    },
+    {
+      "id": "FW-BUILD",
+      "feature": "Clean ESP32 target compilation and firmware.bin generation",
+      "expected": "Clean and build exit 0; complete firmware.bin exists",
+      "actual": {
+        "started_at": "2026-10-25T14:49:48.857018+05:30",
+        "finished_at": "2026-10-25T14:49:59.338248+05:30",
+        "commands": [
+          [
+            "/private/tmp/doseclock-compatibility-audit-20261024/venv/bin/pio",
+            "run",
+            "--project-dir",
+            "/Users/pranav/Documents/DoseClock/DoseClockNLP/hardware",
+            "--environment",
+            "esp32dev",
+            "--target",
+            "clean"
+          ],
+          [
+            "/private/tmp/doseclock-compatibility-audit-20261024/venv/bin/pio",
+            "run",
+            "--project-dir",
+            "/Users/pranav/Documents/DoseClock/DoseClockNLP/hardware",
+            "--environment",
+            "esp32dev"
+          ]
+        ],
+        "exit_codes": [
+          0,
+          0
+        ],
+        "status": "PASS",
+        "scope": "Clean ESP32 cross-compilation; no upload or physical validation",
+        "platformio_core_dir": "/private/tmp/doseclock-compatibility-audit-20261024/platformio-core-pinned",
+        "source_sha256": {
+          "switch_hub.ino": "e3c9ac250433283cda8f614144df8864d6a91bb7c2855c12318f80b1c11b6ace",
+          "switch_input.h": "bd7168cb20b177b18590ddbb376421c1e139e1c1214af0dcbfbe5ef110eaa620",
+          "platformio.ini": "4dcd5d5c67363ca547bfc4220750f93701b01d61eb1d76aef32f09ee5c6a5ddf"
+        },
+        "firmware_bin_exists": true,
+        "firmware_bin": "/Users/pranav/Documents/DoseClock/DoseClockNLP/hardware/.pio/build/esp32dev/firmware.bin",
+        "firmware_bin_bytes": 942784,
+        "firmware_bin_sha256": "8230c11ee9deb02a8aa277a251c23bff6ec12beddff616db395862bfe28f0c3d"
+      },
+      "status": "PASS",
+      "duration_seconds": 10.48123,
+      "layer": "cross-compilation",
+      "source_evidence": "compiler_retest/results.json"
+    }
+  ]
+}

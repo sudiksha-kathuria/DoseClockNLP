@@ -1,0 +1,34 @@
+{
+  "validation_date": "23 October 2026",
+  "stage": "Follow-up after initial Review 3",
+  "control_only": false,
+  "records": [
+    {
+      "id": "AUTOPLAY-strict-pending",
+      "status": "FAIL",
+      "actual": {
+        "traceback": "Traceback (most recent call last):\n  File \"/Users/pranav/Documents/DoseClock/DoseClockNLP/tests/run_review3_autoplay.py\", line 53, in main\n    actual = verify_autoplay(pw, base, fixture, out/spec, policy, scenario, args.control)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/pranav/Documents/DoseClock/DoseClockNLP/tests/review3_media.py\", line 123, in verify_autoplay\n    state = until(lambda s: s['alarmVisible'] and s['audit']['calls'] and\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/pranav/Documents/DoseClock/DoseClockNLP/tests/review3_media.py\", line 85, in until\n    raise AssertionError({'timeout': label, 'last': state})\nAssertionError: {'timeout': 'initial application play result', 'last': None}\n"
+      },
+      "duration_seconds": 7.1591651670169085,
+      "evidence": "strict-pending/results.json"
+    },
+    {
+      "id": "AUTOPLAY-default-pending",
+      "status": "FAIL",
+      "actual": {
+        "traceback": "Traceback (most recent call last):\n  File \"/Users/pranav/Documents/DoseClock/DoseClockNLP/tests/run_review3_autoplay.py\", line 53, in main\n    actual = verify_autoplay(pw, base, fixture, out/spec, policy, scenario, args.control)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/pranav/Documents/DoseClock/DoseClockNLP/tests/review3_media.py\", line 123, in verify_autoplay\n    state = until(lambda s: s['alarmVisible'] and s['audit']['calls'] and\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/pranav/Documents/DoseClock/DoseClockNLP/tests/review3_media.py\", line 85, in until\n    raise AssertionError({'timeout': label, 'last': state})\nAssertionError: {'timeout': 'initial application play result', 'last': None}\n"
+      },
+      "duration_seconds": 6.407490625046194,
+      "evidence": "default-pending/results.json"
+    },
+    {
+      "id": "AUTOPLAY-default-idle",
+      "status": "FAIL",
+      "actual": {
+        "traceback": "Traceback (most recent call last):\n  File \"/Users/pranav/Documents/DoseClock/DoseClockNLP/tests/run_review3_autoplay.py\", line 53, in main\n    actual = verify_autoplay(pw, base, fixture, out/spec, policy, scenario, args.control)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/pranav/Documents/DoseClock/DoseClockNLP/tests/review3_media.py\", line 111, in verify_autoplay\n    state = until(lambda s: s['media'] is not None, 'idle without activation')\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/pranav/Documents/DoseClock/DoseClockNLP/tests/review3_media.py\", line 85, in until\n    raise AssertionError({'timeout': label, 'last': state})\nAssertionError: {'timeout': 'idle without activation', 'last': None}\n"
+      },
+      "duration_seconds": 6.533498582895845,
+      "evidence": "default-idle/results.json"
+    }
+  ]
+}

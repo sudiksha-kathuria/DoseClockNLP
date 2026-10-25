@@ -1,0 +1,1329 @@
+{
+  "recorded_at_ist": "2026-10-23T02:47:46+05:30",
+  "base_commit": "a1230c928a0471aa2a05e0af6b32ee2a64a0cd05",
+  "branch": "validation/review3-20261023",
+  "counts_final": {
+    "PASS": 75,
+    "NOT TESTED": 5
+  },
+  "executed_final": 75,
+  "failed_final": 0,
+  "skipped_final": 0,
+  "not_tested_final": 5,
+  "counting_rule": "One final unittest method or script case; sample trials and historical reruns are not counted again. Zero/default case-duration fields mean not separately timed, not a zero-latency measurement.",
+  "final_records": [
+    {
+      "id": "UNIT::test_database.DatabaseTests.test_pre_account_database_migrates_without_assigning_old_records",
+      "status": "PASS",
+      "duration_seconds": 0.00803299993276596,
+      "actual": "All assertions met",
+      "phase": "final",
+      "feature": "pre account database migrates without assigning old records",
+      "expected": "All behavioral assertions in test_pre_account_database_migrates_without_assigning_old_records must hold",
+      "evidence_location": "evidence/final_suite/results.json"
+    },
+    {
+      "id": "UNIT::test_database.DatabaseTests.test_taken_is_atomic_and_rejects_repeated_or_wrong_owner_actions",
+      "status": "PASS",
+      "duration_seconds": 0.06793129118159413,
+      "actual": "All assertions met",
+      "phase": "final",
+      "feature": "taken is atomic and rejects repeated or wrong owner actions",
+      "expected": "All behavioral assertions in test_taken_is_atomic_and_rejects_repeated_or_wrong_owner_actions must hold",
+      "evidence_location": "evidence/final_suite/results.json"
+    },
+    {
+      "id": "UNIT::test_hardware.HardwareTests.test_audio_failure_does_not_block_hardware",
+      "status": "PASS",
+      "duration_seconds": 0.1313515838701278,
+      "actual": "All assertions met",
+      "phase": "final",
+      "feature": "audio failure does not block hardware",
+      "expected": "All behavioral assertions in test_audio_failure_does_not_block_hardware must hold",
+      "evidence_location": "evidence/final_suite/results.json"
+    },
+    {
+      "id": "UNIT::test_hardware.HardwareTests.test_hardware_snooze_survives_a_scheduler_restart",
+      "status": "PASS",
+      "duration_seconds": 0.12411999981850386,
+      "actual": "All assertions met",
+      "phase": "final",
+      "feature": "hardware snooze survives a scheduler restart",
+      "expected": "All behavioral assertions in test_hardware_snooze_survives_a_scheduler_restart must hold",
+      "evidence_location": "evidence/final_suite/results.json"
+    },
+    {
+      "id": "UNIT::test_hardware.HardwareTests.test_hardware_taken_logs_once",
+      "status": "PASS",
+      "duration_seconds": 0.12947041704319417,
+      "actual": "All assertions met",
+      "phase": "final",
+      "feature": "hardware taken logs once",
+      "expected": "All behavioral assertions in test_hardware_taken_logs_once must hold",
+      "evidence_location": "evidence/final_suite/results.json"
+    },
+    {
+      "id": "UNIT::test_hardware.HardwareTests.test_invalid_token_action_and_no_due_statuses",
+      "status": "PASS",
+      "duration_seconds": 0.12525925016961992,
+      "actual": "All assertions met",
+      "phase": "final",
+      "feature": "invalid token action and no due statuses",
+      "expected": "All behavioral assertions in test_invalid_token_action_and_no_due_statuses must hold",
+      "evidence_location": "evidence/final_suite/results.json"
+    },
+    {
+      "id": "UNIT::test_hardware.HardwareTests.test_overlapping_device_action_returns_conflict",
+      "status": "PASS",
+      "duration_seconds": 0.12399725010618567,
+      "actual": "All assertions met",
+      "phase": "final",
+      "feature": "overlapping device action returns conflict",
+      "expected": "All behavioral assertions in test_overlapping_device_action_returns_conflict must hold",
+      "evidence_location": "evidence/final_suite/results.json"
+    },
+    {
+      "id": "UNIT::test_hardware.HardwareTests.test_pairing_token_is_owned_and_displayed_once",
+      "status": "PASS",
+      "duration_seconds": 0.13375445804558694,
+      "actual": "All assertions met",
+      "phase": "final",
+      "feature": "pairing token is owned and displayed once",
+      "expected": "All behavioral assertions in test_pairing_token_is_owned_and_displayed_once must hold",
+      "evidence_location": "evidence/final_suite/results.json"
+    },
+    {
+      "id": "UNIT::test_hardware.HardwareTests.test_token_cannot_answer_another_users_reminder",
+      "status": "PASS",
+      "duration_seconds": 0.12788541591726243,
+      "actual": "All assertions met",
+      "phase": "final",
+      "feature": "token cannot answer another users reminder",
+      "expected": "All behavioral assertions in test_token_cannot_answer_another_users_reminder must hold",
+      "evidence_location": "evidence/final_suite/results.json"
+    },
+    {
+      "id": "UNIT::test_review3.Review3Tests.test_actual_concurrent_taken_requests_log_once",
+      "status": "PASS",
+      "duration_seconds": 0.12461758404970169,
+      "actual": "All assertions met",
+      "phase": "final",
+      "feature": "actual concurrent taken requests log once",
+      "expected": "All behavioral assertions in test_actual_concurrent_taken_requests_log_once must hold",
+      "evidence_location": "evidence/final_suite/results.json"
+    },
+    {
+      "id": "UNIT::test_review3.Review3Tests.test_authenticated_routes_and_account_isolation",
+      "status": "PASS",
+      "duration_seconds": 0.12942379200831056,
+      "actual": "All assertions met",
+      "phase": "final",
+      "feature": "authenticated routes and account isolation",
+      "expected": "All behavioral assertions in test_authenticated_routes_and_account_isolation must hold",
+      "evidence_location": "evidence/final_suite/results.json"
+    },
+    {
+      "id": "UNIT::test_review3.Review3Tests.test_background_synthesis_failure_is_observed",
+      "status": "PASS",
+      "duration_seconds": 0.11990291601978242,
+      "actual": "All assertions met",
+      "phase": "final",
+      "feature": "background synthesis failure is observed",
+      "expected": "All behavioral assertions in test_background_synthesis_failure_is_observed must hold",
+      "evidence_location": "evidence/final_suite/results.json"
+    },
+    {
+      "id": "UNIT::test_review3.Review3Tests.test_creation_multiple_times_and_audio_warming",
+      "status": "PASS",
+      "duration_seconds": 0.12094462499953806,
+      "actual": "All assertions met",
+      "phase": "final",
+      "feature": "creation multiple times and audio warming",
+      "expected": "All behavioral assertions in test_creation_multiple_times_and_audio_warming must hold",
+      "evidence_location": "evidence/final_suite/results.json"
+    },
+    {
+      "id": "UNIT::test_review3.Review3Tests.test_deleting_due_medicine_clears_alarm_and_preserves_history",
+      "status": "PASS",
+      "duration_seconds": 0.12171858293004334,
+      "actual": "All assertions met",
+      "phase": "final",
+      "feature": "deleting due medicine clears alarm and preserves history",
+      "expected": "All behavioral assertions in test_deleting_due_medicine_clears_alarm_and_preserves_history must hold",
+      "evidence_location": "evidence/final_suite/results.json"
+    },
+    {
+      "id": "UNIT::test_review3.Review3Tests.test_device_multiple_due_selection_is_documented_not_replay_safe",
+      "status": "PASS",
+      "duration_seconds": 0.12495750002563,
+      "actual": "All assertions met",
+      "phase": "final",
+      "feature": "device multiple due selection is documented not replay safe",
+      "expected": "All behavioral assertions in test_device_multiple_due_selection_is_documented_not_replay_safe must hold",
+      "evidence_location": "evidence/final_suite/results.json"
+    },
+    {
+      "id": "UNIT::test_review3.Review3Tests.test_edit_after_taken_preserves_historical_details",
+      "status": "PASS",
+      "duration_seconds": 0.12348670908249915,
+      "actual": "All assertions met",
+      "phase": "final",
+      "feature": "edit after taken preserves historical details",
+      "expected": "All behavioral assertions in test_edit_after_taken_preserves_historical_details must hold",
+      "evidence_location": "evidence/final_suite/results.json"
+    },
+    {
+      "id": "UNIT::test_review3.Review3Tests.test_existing_account_history_survives_archive_schema_migration",
+      "status": "PASS",
+      "duration_seconds": 0.12522558378987014,
+      "actual": "All assertions met",
+      "phase": "final",
+      "feature": "existing account history survives archive schema migration",
+      "expected": "All behavioral assertions in test_existing_account_history_survives_archive_schema_migration must hold",
+      "evidence_location": "evidence/final_suite/results.json"
+    },
+    {
+      "id": "UNIT::test_review3.Review3Tests.test_invalid_creation_fields_rejected",
+      "status": "PASS",
+      "duration_seconds": 0.11897879187017679,
+      "actual": "All assertions met",
+      "phase": "final",
+      "feature": "invalid creation fields rejected",
+      "expected": "All behavioral assertions in test_invalid_creation_fields_rejected must hold",
+      "evidence_location": "evidence/final_suite/results.json"
+    },
+    {
+      "id": "UNIT::test_review3.Review3Tests.test_invalid_time_values_rejected",
+      "status": "PASS",
+      "duration_seconds": 0.11927670892328024,
+      "actual": "All assertions met",
+      "phase": "final",
+      "feature": "invalid time values rejected",
+      "expected": "All behavioral assertions in test_invalid_time_values_rejected must hold",
+      "evidence_location": "evidence/final_suite/results.json"
+    },
+    {
+      "id": "UNIT::test_review3.Review3Tests.test_non_object_json_rejected",
+      "status": "PASS",
+      "duration_seconds": 0.11942208302207291,
+      "actual": "All assertions met",
+      "phase": "final",
+      "feature": "non object json rejected",
+      "expected": "All behavioral assertions in test_non_object_json_rejected must hold",
+      "evidence_location": "evidence/final_suite/results.json"
+    },
+    {
+      "id": "UNIT::test_review3.Review3Tests.test_pairing_missing_invalid_token_and_account_isolation",
+      "status": "PASS",
+      "duration_seconds": 0.12368149985559285,
+      "actual": "All assertions met",
+      "phase": "final",
+      "feature": "pairing missing invalid token and account isolation",
+      "expected": "All behavioral assertions in test_pairing_missing_invalid_token_and_account_isolation must hold",
+      "evidence_location": "evidence/final_suite/results.json"
+    },
+    {
+      "id": "UNIT::test_review3.Review3Tests.test_repeated_snooze_unit_clock_and_no_taken_logs",
+      "status": "PASS",
+      "duration_seconds": 0.12539691617712379,
+      "actual": "All assertions met",
+      "phase": "final",
+      "feature": "repeated snooze unit clock and no taken logs",
+      "expected": "All behavioral assertions in test_repeated_snooze_unit_clock_and_no_taken_logs must hold",
+      "evidence_location": "evidence/final_suite/results.json"
+    },
+    {
+      "id": "UNIT::test_review3.Review3Tests.test_restart_database_retains_accounts_tokens_logs_and_snooze",
+      "status": "PASS",
+      "duration_seconds": 0.1804771670140326,
+      "actual": "All assertions met",
+      "phase": "final",
+      "feature": "restart database retains accounts tokens logs and snooze",
+      "expected": "All behavioral assertions in test_restart_database_retains_accounts_tokens_logs_and_snooze must hold",
+      "evidence_location": "evidence/final_suite/results.json"
+    },
+    {
+      "id": "UNIT::test_review3.Review3Tests.test_scheduler_multiple_simultaneous_and_restart_recovery",
+      "status": "PASS",
+      "duration_seconds": 0.12357116700150073,
+      "actual": "All assertions met",
+      "phase": "final",
+      "feature": "scheduler multiple simultaneous and restart recovery",
+      "expected": "All behavioral assertions in test_scheduler_multiple_simultaneous_and_restart_recovery must hold",
+      "evidence_location": "evidence/final_suite/results.json"
+    },
+    {
+      "id": "UNIT::test_review3.Review3Tests.test_scheduler_scheduled_time_overdue_and_same_day_guard",
+      "status": "PASS",
+      "duration_seconds": 0.12242454197257757,
+      "actual": "All assertions met",
+      "phase": "final",
+      "feature": "scheduler scheduled time overdue and same day guard",
+      "expected": "All behavioral assertions in test_scheduler_scheduled_time_overdue_and_same_day_guard must hold",
+      "evidence_location": "evidence/final_suite/results.json"
+    },
+    {
+      "id": "UNIT::test_review3.Review3Tests.test_signup_duplicate_and_short_password_rejected",
+      "status": "PASS",
+      "duration_seconds": 0.12008783291094005,
+      "actual": "All assertions met",
+      "phase": "final",
+      "feature": "signup duplicate and short password rejected",
+      "expected": "All behavioral assertions in test_signup_duplicate_and_short_password_rejected must hold",
+      "evidence_location": "evidence/final_suite/results.json"
+    },
+    {
+      "id": "UNIT::test_review3.Review3Tests.test_signup_login_logout_and_invalid_credentials",
+      "status": "PASS",
+      "duration_seconds": 0.29264070792123675,
+      "actual": "All assertions met",
+      "phase": "final",
+      "feature": "signup login logout and invalid credentials",
+      "expected": "All behavioral assertions in test_signup_login_logout_and_invalid_credentials must hold",
+      "evidence_location": "evidence/final_suite/results.json"
+    },
+    {
+      "id": "UNIT::test_review3.Review3Tests.test_stale_firing_generation_is_rejected",
+      "status": "PASS",
+      "duration_seconds": 0.12239695806056261,
+      "actual": "All assertions met",
+      "phase": "final",
+      "feature": "stale firing generation is rejected",
+      "expected": "All behavioral assertions in test_stale_firing_generation_is_rejected must hold",
+      "evidence_location": "evidence/final_suite/results.json"
+    },
+    {
+      "id": "UNIT::test_review3.Review3Tests.test_take_logs_exactly_once_and_updates_last_course_slot",
+      "status": "PASS",
+      "duration_seconds": 0.1227589170448482,
+      "actual": "All assertions met",
+      "phase": "final",
+      "feature": "take logs exactly once and updates last course slot",
+      "expected": "All behavioral assertions in test_take_logs_exactly_once_and_updates_last_course_slot must hold",
+      "evidence_location": "evidence/final_suite/results.json"
+    },
+    {
+      "id": "UNIT::test_review3.Review3Tests.test_tts_cache_reused_when_synthesis_unavailable",
+      "status": "PASS",
+      "duration_seconds": 0.12037250003777444,
+      "actual": "All assertions met",
+      "phase": "final",
+      "feature": "tts cache reused when synthesis unavailable",
+      "expected": "All behavioral assertions in test_tts_cache_reused_when_synthesis_unavailable must hold",
+      "evidence_location": "evidence/final_suite/results.json"
+    },
+    {
+      "id": "UNIT::test_review3.Review3Tests.test_tts_failure_is_atomic_and_visual_alarm_remains",
+      "status": "PASS",
+      "duration_seconds": 0.12117104092612863,
+      "actual": "All assertions met",
+      "phase": "final",
+      "feature": "tts failure is atomic and visual alarm remains",
+      "expected": "All behavioral assertions in test_tts_failure_is_atomic_and_visual_alarm_remains must hold",
+      "evidence_location": "evidence/final_suite/results.json"
+    },
+    {
+      "id": "UNIT::test_review3.Review3Tests.test_wrong_json_field_types_rejected",
+      "status": "PASS",
+      "duration_seconds": 0.11985583300702274,
+      "actual": "All assertions met",
+      "phase": "final",
+      "feature": "wrong json field types rejected",
+      "expected": "All behavioral assertions in test_wrong_json_field_types_rejected must hold",
+      "evidence_location": "evidence/final_suite/results.json"
+    },
+    {
+      "id": "UI01",
+      "feature": "Signup, register two times, clock workflow",
+      "expected": "Signup, register two times, clock workflow",
+      "actual": {
+        "rows": 2,
+        "clock": "2:38AM"
+      },
+      "status": "PASS",
+      "duration_seconds": 1.3885713331401348,
+      "evidence": "screenshots/UI01.png",
+      "page_errors": [],
+      "phase": "final",
+      "evidence_location": "evidence/browser_final/screenshots/UI01.png"
+    },
+    {
+      "id": "UI02",
+      "feature": "Taken button and history persistence",
+      "expected": "Taken button and history persistence",
+      "actual": {
+        "dose_logs": 1
+      },
+      "status": "PASS",
+      "duration_seconds": 2.041553916875273,
+      "evidence": "screenshots/UI02.png",
+      "page_errors": [],
+      "phase": "final",
+      "evidence_location": "evidence/browser_final/screenshots/UI02.png"
+    },
+    {
+      "id": "UI03",
+      "feature": "Snooze button persists deadline without Taken log",
+      "expected": "Snooze button persists deadline without Taken log",
+      "actual": {
+        "deadline": "2026-10-23T02:43:25.868138",
+        "logs": 0
+      },
+      "status": "PASS",
+      "duration_seconds": 1.1280343749094754,
+      "evidence": "screenshots/UI03.png",
+      "page_errors": [],
+      "phase": "final",
+      "evidence_location": "evidence/browser_final/screenshots/UI03.png"
+    },
+    {
+      "id": "UI04",
+      "feature": "Space selects highlighted Taken",
+      "expected": "Space selects highlighted Taken",
+      "actual": {
+        "selection": "Taken",
+        "space_key": true
+      },
+      "status": "PASS",
+      "duration_seconds": 0.6881625410169363,
+      "evidence": "screenshots/UI04.png",
+      "page_errors": [],
+      "phase": "final",
+      "evidence_location": "evidence/browser_final/screenshots/UI04.png"
+    },
+    {
+      "id": "UI05",
+      "feature": "Single-switch scanning highlights Snooze and Space selects it",
+      "expected": "Single-switch scanning highlights Snooze and Space selects it",
+      "actual": {
+        "selection": "Snooze",
+        "space_key": true
+      },
+      "status": "PASS",
+      "duration_seconds": 2.8766230000182986,
+      "evidence": "screenshots/UI05.png",
+      "page_errors": [],
+      "phase": "final",
+      "evidence_location": "evidence/browser_final/screenshots/UI05.png"
+    },
+    {
+      "id": "UI06",
+      "feature": "Network failure cannot falsely acknowledge Taken; recovery",
+      "expected": "Network failure cannot falsely acknowledge Taken; recovery",
+      "actual": {
+        "failure": {
+          "alarm_visible": true,
+          "success_visible": false,
+          "toast": "Could not record your response. Please try again.",
+          "logs": 0,
+          "is_due": 1
+        },
+        "recovered_after_network_restored": true
+      },
+      "status": "PASS",
+      "duration_seconds": 1.423951875185594,
+      "evidence": "screenshots/UI06.png",
+      "page_errors": [],
+      "phase": "final",
+      "evidence_location": "evidence/browser_final/screenshots/UI06.png"
+    },
+    {
+      "id": "UI07",
+      "feature": "Network failure cannot falsely report Snooze; recovery",
+      "expected": "Network failure cannot falsely report Snooze; recovery",
+      "actual": {
+        "failure": {
+          "alarm_visible": true,
+          "success_visible": false,
+          "toast": "Could not record your response. Please try again.",
+          "logs": 0,
+          "is_due": 1
+        },
+        "recovered_after_network_restored": true
+      },
+      "status": "PASS",
+      "duration_seconds": 1.443256667116657,
+      "evidence": "screenshots/UI07.png",
+      "page_errors": [],
+      "phase": "final",
+      "evidence_location": "evidence/browser_final/screenshots/UI07.png"
+    },
+    {
+      "id": "UI08",
+      "feature": "HTTP rejection cannot falsely acknowledge Taken",
+      "expected": "HTTP rejection cannot falsely acknowledge Taken",
+      "actual": {
+        "failure": {
+          "alarm_visible": true,
+          "success_visible": false,
+          "toast": "Could not record your response. Please try again.",
+          "logs": 0,
+          "is_due": 1
+        },
+        "recovered_after_network_restored": true
+      },
+      "status": "PASS",
+      "duration_seconds": 1.4100005829241127,
+      "evidence": "screenshots/UI08.png",
+      "page_errors": [],
+      "phase": "final",
+      "evidence_location": "evidence/browser_final/screenshots/UI08.png"
+    },
+    {
+      "id": "UI09",
+      "feature": "External device action reconciles visible browser alarm",
+      "expected": "External device action reconciles visible browser alarm",
+      "actual": {
+        "hardware_message": "SIMULATED ESP32 COMMUNICATION",
+        "HTTP": 200,
+        "browser_reconciled_without_refresh": true
+      },
+      "status": "PASS",
+      "duration_seconds": 17.383535958826542,
+      "evidence": "screenshots/UI09.png",
+      "page_errors": [],
+      "phase": "final",
+      "evidence_location": "evidence/browser_final/screenshots/UI09.png"
+    },
+    {
+      "id": "UI10",
+      "feature": "Autoplay blocked before gesture; real MP3 retained and paused on Snooze",
+      "expected": "Autoplay blocked before gesture; real MP3 retained and paused on Snooze",
+      "actual": {
+        "autoplay_before_gesture": "paused before user gesture",
+        "after_gesture": {
+          "src": "/static/audio/en_review-dummy_3a367197a1.mp3",
+          "duration": 2.592,
+          "paused": false
+        },
+        "paused_after_snooze": true,
+        "human_listening": false
+      },
+      "status": "PASS",
+      "duration_seconds": 0.8943171249702573,
+      "evidence": "screenshots/UI10.png",
+      "page_errors": [],
+      "phase": "final",
+      "evidence_location": "evidence/browser_final/screenshots/UI10.png"
+    },
+    {
+      "id": "UI11",
+      "feature": "Unavailable speech leaves visual reminder and Taken usable",
+      "expected": "Unavailable speech leaves visual reminder and Taken usable",
+      "actual": {
+        "audio_src": null,
+        "visual_alarm_and_taken_usable": true
+      },
+      "status": "PASS",
+      "duration_seconds": 1.067992917029187,
+      "evidence": "screenshots/UI11.png",
+      "page_errors": [],
+      "phase": "final",
+      "evidence_location": "evidence/browser_final/screenshots/UI11.png"
+    },
+    {
+      "id": "B05-1",
+      "feature": "Initial reminder visibility <=20 seconds; real scheduler and browser poll",
+      "expected": "Initial reminder visibility <=20 seconds; real scheduler and browser poll",
+      "actual": {
+        "visible_seconds_after_scheduled_fixture": 17.0191174170468,
+        "scheduled_time": "02:38",
+        "clock_before": "2:38AM",
+        "clock_after": "2:39AM"
+      },
+      "status": "PASS",
+      "duration_seconds": 17.416995249921456,
+      "evidence": "screenshots/B05-1.png",
+      "page_errors": [],
+      "phase": "final",
+      "evidence_location": "evidence/browser_final/screenshots/B05-1.png"
+    },
+    {
+      "id": "B05-2",
+      "feature": "Initial reminder visibility <=20 seconds; real scheduler and browser poll",
+      "expected": "Initial reminder visibility <=20 seconds; real scheduler and browser poll",
+      "actual": {
+        "visible_seconds_after_scheduled_fixture": 17.088812374975532,
+        "scheduled_time": "02:39",
+        "clock_before": "2:39AM",
+        "clock_after": "2:39AM"
+      },
+      "status": "PASS",
+      "duration_seconds": 17.5690395841375,
+      "evidence": "screenshots/B05-2.png",
+      "page_errors": [],
+      "phase": "final",
+      "evidence_location": "evidence/browser_final/screenshots/B05-2.png"
+    },
+    {
+      "id": "B05-3",
+      "feature": "Initial reminder visibility <=20 seconds; real scheduler and browser poll",
+      "expected": "Initial reminder visibility <=20 seconds; real scheduler and browser poll",
+      "actual": {
+        "visible_seconds_after_scheduled_fixture": 17.10301462514326,
+        "scheduled_time": "02:39",
+        "clock_before": "2:39AM",
+        "clock_after": "2:39AM"
+      },
+      "status": "PASS",
+      "duration_seconds": 17.868516084039584,
+      "evidence": "screenshots/B05-3.png",
+      "page_errors": [],
+      "phase": "final",
+      "evidence_location": "evidence/browser_final/screenshots/B05-3.png"
+    },
+    {
+      "id": "B05-4",
+      "feature": "Initial reminder visibility <=20 seconds; real scheduler and browser poll",
+      "expected": "Initial reminder visibility <=20 seconds; real scheduler and browser poll",
+      "actual": {
+        "visible_seconds_after_scheduled_fixture": 17.08164120814763,
+        "scheduled_time": "02:39",
+        "clock_before": "2:39AM",
+        "clock_after": "2:40AM"
+      },
+      "status": "PASS",
+      "duration_seconds": 17.896121124969795,
+      "evidence": "screenshots/B05-4.png",
+      "page_errors": [],
+      "phase": "final",
+      "evidence_location": "evidence/browser_final/screenshots/B05-4.png"
+    },
+    {
+      "id": "B05-5",
+      "feature": "Initial reminder visibility <=20 seconds; real scheduler and browser poll",
+      "expected": "Initial reminder visibility <=20 seconds; real scheduler and browser poll",
+      "actual": {
+        "visible_seconds_after_scheduled_fixture": 17.0769172499422,
+        "scheduled_time": "02:40",
+        "clock_before": "2:40AM",
+        "clock_after": "2:40AM"
+      },
+      "status": "PASS",
+      "duration_seconds": 17.912782875122502,
+      "evidence": "screenshots/B05-5.png",
+      "page_errors": [],
+      "phase": "final",
+      "evidence_location": "evidence/browser_final/screenshots/B05-5.png"
+    },
+    {
+      "id": "UI-VOICE",
+      "feature": "Real spoken acknowledgment",
+      "expected": "Actual microphone/transcription and action",
+      "actual": "No participant/microphone or recorded utterance available; speech handler not counted as real voice verification.",
+      "status": "NOT TESTED",
+      "duration_seconds": 0,
+      "evidence": "results.json",
+      "phase": "final",
+      "evidence_location": "evidence/browser_final/results.json"
+    },
+    {
+      "id": "B01",
+      "feature": "Taken correctness over real HTTP",
+      "expected": "10/10, exactly one new log per fresh due reminder",
+      "actual": [
+        {
+          "trial": 1,
+          "http_status": 200,
+          "logs_before": 0,
+          "logs_after": 1
+        },
+        {
+          "trial": 2,
+          "http_status": 200,
+          "logs_before": 1,
+          "logs_after": 2
+        },
+        {
+          "trial": 3,
+          "http_status": 200,
+          "logs_before": 2,
+          "logs_after": 3
+        },
+        {
+          "trial": 4,
+          "http_status": 200,
+          "logs_before": 3,
+          "logs_after": 4
+        },
+        {
+          "trial": 5,
+          "http_status": 200,
+          "logs_before": 4,
+          "logs_after": 5
+        },
+        {
+          "trial": 6,
+          "http_status": 200,
+          "logs_before": 5,
+          "logs_after": 6
+        },
+        {
+          "trial": 7,
+          "http_status": 200,
+          "logs_before": 6,
+          "logs_after": 7
+        },
+        {
+          "trial": 8,
+          "http_status": 200,
+          "logs_before": 7,
+          "logs_after": 8
+        },
+        {
+          "trial": 9,
+          "http_status": 200,
+          "logs_before": 8,
+          "logs_after": 9
+        },
+        {
+          "trial": 10,
+          "http_status": 200,
+          "logs_before": 9,
+          "logs_after": 10
+        }
+      ],
+      "status": "PASS",
+      "duration_seconds": 0,
+      "evidence": "results.json",
+      "phase": "final",
+      "evidence_location": "evidence/live/results.json"
+    },
+    {
+      "id": "B02",
+      "feature": "Invalid-token isolation",
+      "expected": "10/10 HTTP 401 and unchanged whole-database digest",
+      "actual": [
+        {
+          "trial": 1,
+          "http_status": 401,
+          "database_digest_before": "385a955091c6fe3f2b9c217b7d519022eafa349423e1fd92d48a2967d5adda81",
+          "database_digest_after": "385a955091c6fe3f2b9c217b7d519022eafa349423e1fd92d48a2967d5adda81"
+        },
+        {
+          "trial": 2,
+          "http_status": 401,
+          "database_digest_before": "385a955091c6fe3f2b9c217b7d519022eafa349423e1fd92d48a2967d5adda81",
+          "database_digest_after": "385a955091c6fe3f2b9c217b7d519022eafa349423e1fd92d48a2967d5adda81"
+        },
+        {
+          "trial": 3,
+          "http_status": 401,
+          "database_digest_before": "385a955091c6fe3f2b9c217b7d519022eafa349423e1fd92d48a2967d5adda81",
+          "database_digest_after": "385a955091c6fe3f2b9c217b7d519022eafa349423e1fd92d48a2967d5adda81"
+        },
+        {
+          "trial": 4,
+          "http_status": 401,
+          "database_digest_before": "385a955091c6fe3f2b9c217b7d519022eafa349423e1fd92d48a2967d5adda81",
+          "database_digest_after": "385a955091c6fe3f2b9c217b7d519022eafa349423e1fd92d48a2967d5adda81"
+        },
+        {
+          "trial": 5,
+          "http_status": 401,
+          "database_digest_before": "385a955091c6fe3f2b9c217b7d519022eafa349423e1fd92d48a2967d5adda81",
+          "database_digest_after": "385a955091c6fe3f2b9c217b7d519022eafa349423e1fd92d48a2967d5adda81"
+        },
+        {
+          "trial": 6,
+          "http_status": 401,
+          "database_digest_before": "385a955091c6fe3f2b9c217b7d519022eafa349423e1fd92d48a2967d5adda81",
+          "database_digest_after": "385a955091c6fe3f2b9c217b7d519022eafa349423e1fd92d48a2967d5adda81"
+        },
+        {
+          "trial": 7,
+          "http_status": 401,
+          "database_digest_before": "385a955091c6fe3f2b9c217b7d519022eafa349423e1fd92d48a2967d5adda81",
+          "database_digest_after": "385a955091c6fe3f2b9c217b7d519022eafa349423e1fd92d48a2967d5adda81"
+        },
+        {
+          "trial": 8,
+          "http_status": 401,
+          "database_digest_before": "385a955091c6fe3f2b9c217b7d519022eafa349423e1fd92d48a2967d5adda81",
+          "database_digest_after": "385a955091c6fe3f2b9c217b7d519022eafa349423e1fd92d48a2967d5adda81"
+        },
+        {
+          "trial": 9,
+          "http_status": 401,
+          "database_digest_before": "385a955091c6fe3f2b9c217b7d519022eafa349423e1fd92d48a2967d5adda81",
+          "database_digest_after": "385a955091c6fe3f2b9c217b7d519022eafa349423e1fd92d48a2967d5adda81"
+        },
+        {
+          "trial": 10,
+          "http_status": 401,
+          "database_digest_before": "385a955091c6fe3f2b9c217b7d519022eafa349423e1fd92d48a2967d5adda81",
+          "database_digest_after": "385a955091c6fe3f2b9c217b7d519022eafa349423e1fd92d48a2967d5adda81"
+        }
+      ],
+      "status": "PASS",
+      "duration_seconds": 0,
+      "evidence": "results.json",
+      "phase": "final",
+      "evidence_location": "evidence/live/results.json"
+    },
+    {
+      "id": "B03-LOCAL",
+      "feature": "Loopback HTTP response time (LAN variant not measured)",
+      "expected": "30 successful requests; median <=500 ms, nearest-rank p95 <=1000 ms",
+      "actual": {
+        "requests": 30,
+        "successes": 30,
+        "median_ms": 2.0861248485744,
+        "p95_ms": 10.820374824106693,
+        "scope": "127.0.0.1 loopback, not LAN",
+        "timer": "perf_counter: POST start through complete body; LED time excluded"
+      },
+      "status": "PASS",
+      "duration_seconds": 0,
+      "evidence": "results.json",
+      "phase": "final",
+      "evidence_location": "evidence/live/results.json"
+    },
+    {
+      "id": "B03-LAN",
+      "feature": "Genuine ESP32/LAN response time",
+      "expected": "Same target measured across independent LAN devices",
+      "actual": "No ESP32 or second independent LAN client; loopback values are not substituted",
+      "status": "NOT TESTED",
+      "duration_seconds": 0,
+      "evidence": "results.json",
+      "phase": "final",
+      "evidence_location": "evidence/live/results.json"
+    },
+    {
+      "id": "SIM-NO-DUE",
+      "feature": "Paired token without due row",
+      "expected": "HTTP 404",
+      "actual": {
+        "label": "SIMULATED ESP32 COMMUNICATION",
+        "transport": "real HTTP; caller must identify loopback versus LAN",
+        "action": "taken",
+        "token": "<redacted>",
+        "http_status": 404,
+        "response": {
+          "error": "no reminder is currently due"
+        },
+        "transport_error": null,
+        "duration_ms": 1.0615000501275063
+      },
+      "status": "PASS",
+      "duration_seconds": 0,
+      "evidence": "results.json",
+      "phase": "final",
+      "evidence_location": "evidence/live/results.json"
+    },
+    {
+      "id": "SIM-MISSING",
+      "feature": "Missing device token",
+      "expected": "HTTP 401",
+      "actual": {
+        "label": "SIMULATED ESP32 COMMUNICATION",
+        "transport": "real HTTP; caller must identify loopback versus LAN",
+        "action": "taken",
+        "token": "<omitted>",
+        "http_status": 401,
+        "response": {
+          "error": "unknown or missing device token"
+        },
+        "transport_error": null,
+        "duration_ms": 0.538333086296916
+      },
+      "status": "PASS",
+      "duration_seconds": 0,
+      "evidence": "results.json",
+      "phase": "final",
+      "evidence_location": "evidence/live/results.json"
+    },
+    {
+      "id": "SIM-ACTION",
+      "feature": "Unsupported action",
+      "expected": "HTTP 400",
+      "actual": {
+        "label": "SIMULATED ESP32 COMMUNICATION",
+        "transport": "real HTTP; caller must identify loopback versus LAN",
+        "action": "unsupported",
+        "token": "<redacted>",
+        "http_status": 400,
+        "response": {
+          "error": "action must be 'taken' or 'snooze'"
+        },
+        "transport_error": null,
+        "duration_ms": 1.4380000066012144
+      },
+      "status": "PASS",
+      "duration_seconds": 0,
+      "evidence": "results.json",
+      "phase": "final",
+      "evidence_location": "evidence/live/results.json"
+    },
+    {
+      "id": "SIM-DUPLICATE",
+      "feature": "Sequential repeated single-due request",
+      "expected": "First 200; repeat 404; one log",
+      "actual": {
+        "statuses": [
+          200,
+          404
+        ],
+        "logs": 1
+      },
+      "status": "PASS",
+      "duration_seconds": 0,
+      "evidence": "results.json",
+      "phase": "final",
+      "evidence_location": "evidence/live/results.json"
+    },
+    {
+      "id": "SIM-ISOLATION",
+      "feature": "Paired device owner isolation",
+      "expected": "A cannot acknowledge B; 404 and B state unchanged",
+      "actual": {
+        "http_status": 404,
+        "other_account_state_unchanged": true
+      },
+      "status": "PASS",
+      "duration_seconds": 0,
+      "evidence": "results.json",
+      "phase": "final",
+      "evidence_location": "evidence/live/results.json"
+    },
+    {
+      "id": "SIM-CONCURRENT",
+      "feature": "Real concurrent duplicate HTTP requests",
+      "expected": "Exactly one 200; other 404/409; one log",
+      "actual": {
+        "statuses": [
+          200,
+          404
+        ],
+        "logs": 1
+      },
+      "status": "PASS",
+      "duration_seconds": 0,
+      "evidence": "results.json",
+      "phase": "final",
+      "evidence_location": "evidence/live/results.json"
+    },
+    {
+      "id": "SIM-REPLAY-LIMIT",
+      "feature": "Documented multiple-due selection limitation",
+      "expected": "Identical id-less body may select two different due rows",
+      "actual": {
+        "statuses": [
+          200,
+          200
+        ],
+        "logs": 2,
+        "retry_safe": false
+      },
+      "status": "PASS",
+      "duration_seconds": 0,
+      "evidence": "results.json",
+      "phase": "final",
+      "evidence_location": "evidence/live/results.json"
+    },
+    {
+      "id": "OUTAGE-HTTP",
+      "feature": "Six real backend-stop/restart trials",
+      "expected": "No success or new log while stopped; intended action succeeds after restart",
+      "actual": [
+        {
+          "trial": 1,
+          "offline_http_status": null,
+          "transport_error": "<urlopen error [Errno 61] Connection refused>",
+          "logs_unchanged_during_outage": true,
+          "recovery_http_status": 200
+        },
+        {
+          "trial": 2,
+          "offline_http_status": null,
+          "transport_error": "<urlopen error [Errno 61] Connection refused>",
+          "logs_unchanged_during_outage": true,
+          "recovery_http_status": 200
+        },
+        {
+          "trial": 3,
+          "offline_http_status": null,
+          "transport_error": "<urlopen error [Errno 61] Connection refused>",
+          "logs_unchanged_during_outage": true,
+          "recovery_http_status": 200
+        },
+        {
+          "trial": 4,
+          "offline_http_status": null,
+          "transport_error": "<urlopen error [Errno 61] Connection refused>",
+          "logs_unchanged_during_outage": true,
+          "recovery_http_status": 200
+        },
+        {
+          "trial": 5,
+          "offline_http_status": null,
+          "transport_error": "<urlopen error [Errno 61] Connection refused>",
+          "logs_unchanged_during_outage": true,
+          "recovery_http_status": 200
+        },
+        {
+          "trial": 6,
+          "offline_http_status": null,
+          "transport_error": "<urlopen error [Errno 61] Connection refused>",
+          "logs_unchanged_during_outage": true,
+          "recovery_http_status": 200
+        }
+      ],
+      "status": "PASS",
+      "duration_seconds": 0,
+      "evidence": "results.json",
+      "phase": "final",
+      "evidence_location": "evidence/live/results.json"
+    },
+    {
+      "id": "RESTART-SESSION",
+      "feature": "Browser session and device credential survive process restart",
+      "expected": "Existing cookie works; existing token authenticated",
+      "actual": {
+        "session_http_status": 200,
+        "token_authenticated_after_restart": true
+      },
+      "status": "PASS",
+      "duration_seconds": 0,
+      "evidence": "results.json",
+      "phase": "final",
+      "evidence_location": "evidence/live/results.json"
+    },
+    {
+      "id": "B06-HARDWARE",
+      "feature": "Physical press classification",
+      "expected": "30 physical short/hold/intermediate trials",
+      "actual": "Teammate reports it works; independent GPIO/button/LED evidence not supplied",
+      "status": "NOT TESTED",
+      "duration_seconds": 0,
+      "evidence": "results.json",
+      "phase": "final",
+      "evidence_location": "evidence/live/results.json"
+    },
+    {
+      "id": "B07-HARDWARE",
+      "feature": "ESP32 Wi-Fi/backend outage LED feedback",
+      "expected": "3 Wi-Fi-loss plus 3 backend-loss physical trials",
+      "actual": "Six backend HTTP-outage simulations were run, but ESP32 Wi-Fi and LED feedback require physical evidence",
+      "status": "NOT TESTED",
+      "duration_seconds": 0,
+      "evidence": "results.json",
+      "phase": "final",
+      "evidence_location": "evidence/live/results.json"
+    },
+    {
+      "id": "B04-2",
+      "feature": "Real 300-second Snooze and restart recovery",
+      "expected": "Deadline 300 s; backend due observed within 2 s; no Taken log",
+      "actual": {
+        "real_elapsed_seconds": 300.17160470806994,
+        "stored_deadline": "2026-10-23T02:38:57.654487",
+        "observed_at": "2026-10-23T02:38:57.824793",
+        "observed_delay_seconds": 0.170306,
+        "server_firing_delay_seconds": 0.168049,
+        "taken_logs": 0,
+        "request": {
+          "label": "SIMULATED ESP32 COMMUNICATION",
+          "transport": "real HTTP; caller must identify loopback versus LAN",
+          "action": "snooze",
+          "token": "<redacted>",
+          "http_status": 200,
+          "response": {
+            "medicine_name": "Review dummy",
+            "success": true
+          },
+          "transport_error": null,
+          "duration_ms": 1.7658330034464598
+        },
+        "clock_mocking": false,
+        "backend_restarted_during_wait": true
+      },
+      "status": "PASS",
+      "duration_seconds": 300.17160470806994,
+      "evidence": "results.json",
+      "phase": "final",
+      "evidence_location": "evidence/live/results.json"
+    },
+    {
+      "id": "B04-3",
+      "feature": "Real 300-second Snooze and restart recovery",
+      "expected": "Deadline 300 s; backend due observed within 2 s; no Taken log",
+      "actual": {
+        "real_elapsed_seconds": 300.0277362088673,
+        "stored_deadline": "2026-10-23T02:38:57.803009",
+        "observed_at": "2026-10-23T02:38:57.829339",
+        "observed_delay_seconds": 0.02633,
+        "server_firing_delay_seconds": 0.021078,
+        "taken_logs": 0,
+        "request": {
+          "label": "SIMULATED ESP32 COMMUNICATION",
+          "transport": "real HTTP; caller must identify loopback versus LAN",
+          "action": "snooze",
+          "token": "<redacted>",
+          "http_status": 200,
+          "response": {
+            "medicine_name": "Review dummy",
+            "success": true
+          },
+          "transport_error": null,
+          "duration_ms": 2.4247909896075726
+        },
+        "clock_mocking": false,
+        "backend_restarted_during_wait": true
+      },
+      "status": "PASS",
+      "duration_seconds": 300.0277362088673,
+      "evidence": "results.json",
+      "phase": "final",
+      "evidence_location": "evidence/live/results.json"
+    },
+    {
+      "id": "B04-1",
+      "feature": "Real 300-second Snooze and restart recovery",
+      "expected": "Deadline 300 s; backend due observed within 2 s; no Taken log",
+      "actual": {
+        "real_elapsed_seconds": 300.48114633304067,
+        "stored_deadline": "2026-10-23T02:38:57.508480",
+        "observed_at": "2026-10-23T02:38:57.988379",
+        "observed_delay_seconds": 0.479899,
+        "server_firing_delay_seconds": 0.310382,
+        "taken_logs": 0,
+        "request": {
+          "label": "SIMULATED ESP32 COMMUNICATION",
+          "transport": "real HTTP; caller must identify loopback versus LAN",
+          "action": "snooze",
+          "token": "<redacted>",
+          "http_status": 200,
+          "response": {
+            "medicine_name": "Review dummy",
+            "success": true
+          },
+          "transport_error": null,
+          "duration_ms": 1.9189589656889439
+        },
+        "clock_mocking": false,
+        "backend_restarted_during_wait": true
+      },
+      "status": "PASS",
+      "duration_seconds": 300.48114633304067,
+      "evidence": "results.json",
+      "phase": "final",
+      "evidence_location": "evidence/live/results.json"
+    },
+    {
+      "id": "AUDIO-en",
+      "feature": "English audio generation and MP3 validity",
+      "expected": "Nonempty parsable MP3 with positive duration",
+      "actual": {
+        "language_code": "en",
+        "bytes": 20736,
+        "duration_seconds": 2.592,
+        "sample_rate": 24000,
+        "sha256": "630cbd9642263e066c60dc49ee54acfbe6b49b9c44a4fde80e36b82415d59f02",
+        "spoken_template": "It's time to take your Review dummy.",
+        "human_pronunciation_verified": false
+      },
+      "status": "PASS",
+      "duration_seconds": 1.0000965418294072,
+      "evidence": "en_review-dummy_3a367197a1.mp3",
+      "phase": "final",
+      "evidence_location": "evidence/audio/en_review-dummy_3a367197a1.mp3"
+    },
+    {
+      "id": "CACHE-en",
+      "feature": "English cached reuse with synthesis unavailable",
+      "expected": "Same file/hash/mtime without a synthesis call",
+      "actual": {
+        "unchanged": true,
+        "gTTS_calls": 0,
+        "scope": "synthesis disabled by controlled injection; not a physical network outage"
+      },
+      "status": "PASS",
+      "duration_seconds": 0.00047320895828306675,
+      "evidence": "en_review-dummy_3a367197a1.mp3",
+      "phase": "final",
+      "evidence_location": "evidence/audio/en_review-dummy_3a367197a1.mp3"
+    },
+    {
+      "id": "AUDIO-hi",
+      "feature": "Hindi audio generation and MP3 validity",
+      "expected": "Nonempty parsable MP3 with positive duration",
+      "actual": {
+        "language_code": "hi",
+        "bytes": 21504,
+        "duration_seconds": 2.688,
+        "sample_rate": 24000,
+        "sha256": "f312acb9a74dbfb0eba7646c14f70561b191ee0fbc78ac9dc5feffda621f65af",
+        "spoken_template": "It's time to take your Review dummy.",
+        "human_pronunciation_verified": false
+      },
+      "status": "PASS",
+      "duration_seconds": 0.43811241700313985,
+      "evidence": "hi_review-dummy_82d9d2858f.mp3",
+      "phase": "final",
+      "evidence_location": "evidence/audio/hi_review-dummy_82d9d2858f.mp3"
+    },
+    {
+      "id": "CACHE-hi",
+      "feature": "Hindi cached reuse with synthesis unavailable",
+      "expected": "Same file/hash/mtime without a synthesis call",
+      "actual": {
+        "unchanged": true,
+        "gTTS_calls": 0,
+        "scope": "synthesis disabled by controlled injection; not a physical network outage"
+      },
+      "status": "PASS",
+      "duration_seconds": 0.0009589588735252619,
+      "evidence": "hi_review-dummy_82d9d2858f.mp3",
+      "phase": "final",
+      "evidence_location": "evidence/audio/hi_review-dummy_82d9d2858f.mp3"
+    },
+    {
+      "id": "AUDIO-ta",
+      "feature": "Tamil audio generation and MP3 validity",
+      "expected": "Nonempty parsable MP3 with positive duration",
+      "actual": {
+        "language_code": "ta",
+        "bytes": 24768,
+        "duration_seconds": 3.096,
+        "sample_rate": 24000,
+        "sha256": "34ad7e8600cf63848bc1ce0ae4e9f94cfda3521b827cd56497c3f5b1a7cd1ec1",
+        "spoken_template": "It's time to take your Review dummy.",
+        "human_pronunciation_verified": false
+      },
+      "status": "PASS",
+      "duration_seconds": 1.0052076249849051,
+      "evidence": "ta_review-dummy_e051e9fdcc.mp3",
+      "phase": "final",
+      "evidence_location": "evidence/audio/ta_review-dummy_e051e9fdcc.mp3"
+    },
+    {
+      "id": "CACHE-ta",
+      "feature": "Tamil cached reuse with synthesis unavailable",
+      "expected": "Same file/hash/mtime without a synthesis call",
+      "actual": {
+        "unchanged": true,
+        "gTTS_calls": 0,
+        "scope": "synthesis disabled by controlled injection; not a physical network outage"
+      },
+      "status": "PASS",
+      "duration_seconds": 0.0008770420681685209,
+      "evidence": "ta_review-dummy_e051e9fdcc.mp3",
+      "phase": "final",
+      "evidence_location": "evidence/audio/ta_review-dummy_e051e9fdcc.mp3"
+    },
+    {
+      "id": "AUDIO-te",
+      "feature": "Telugu audio generation and MP3 validity",
+      "expected": "Nonempty parsable MP3 with positive duration",
+      "actual": {
+        "language_code": "te",
+        "bytes": 22848,
+        "duration_seconds": 2.856,
+        "sample_rate": 24000,
+        "sha256": "c131651db74a2e7970442c7b9ea9137071dabf1f529aa3a0ecf522cab7dd317f",
+        "spoken_template": "It's time to take your Review dummy.",
+        "human_pronunciation_verified": false
+      },
+      "status": "PASS",
+      "duration_seconds": 0.4457030422054231,
+      "evidence": "te_review-dummy_197d794b78.mp3",
+      "phase": "final",
+      "evidence_location": "evidence/audio/te_review-dummy_197d794b78.mp3"
+    },
+    {
+      "id": "CACHE-te",
+      "feature": "Telugu cached reuse with synthesis unavailable",
+      "expected": "Same file/hash/mtime without a synthesis call",
+      "actual": {
+        "unchanged": true,
+        "gTTS_calls": 0,
+        "scope": "synthesis disabled by controlled injection; not a physical network outage"
+      },
+      "status": "PASS",
+      "duration_seconds": 0.0007967499550431967,
+      "evidence": "te_review-dummy_197d794b78.mp3",
+      "phase": "final",
+      "evidence_location": "evidence/audio/te_review-dummy_197d794b78.mp3"
+    },
+    {
+      "id": "AUDIO-kn",
+      "feature": "Kannada audio generation and MP3 validity",
+      "expected": "Nonempty parsable MP3 with positive duration",
+      "actual": {
+        "language_code": "kn",
+        "bytes": 23424,
+        "duration_seconds": 2.928,
+        "sample_rate": 24000,
+        "sha256": "adc023867d7dae56f9375b7bde5a88a565a83a6a4d69b0cb4caeb3b591fde2bb",
+        "spoken_template": "It's time to take your Review dummy.",
+        "human_pronunciation_verified": false
+      },
+      "status": "PASS",
+      "duration_seconds": 0.5932322919834405,
+      "evidence": "kn_review-dummy_b796331fa7.mp3",
+      "phase": "final",
+      "evidence_location": "evidence/audio/kn_review-dummy_b796331fa7.mp3"
+    },
+    {
+      "id": "CACHE-kn",
+      "feature": "Kannada cached reuse with synthesis unavailable",
+      "expected": "Same file/hash/mtime without a synthesis call",
+      "actual": {
+        "unchanged": true,
+        "gTTS_calls": 0,
+        "scope": "synthesis disabled by controlled injection; not a physical network outage"
+      },
+      "status": "PASS",
+      "duration_seconds": 0.0008849170990288258,
+      "evidence": "kn_review-dummy_b796331fa7.mp3",
+      "phase": "final",
+      "evidence_location": "evidence/audio/kn_review-dummy_b796331fa7.mp3"
+    },
+    {
+      "id": "AUDIO-bn",
+      "feature": "Bengali audio generation and MP3 validity",
+      "expected": "Nonempty parsable MP3 with positive duration",
+      "actual": {
+        "language_code": "bn",
+        "bytes": 22272,
+        "duration_seconds": 2.784,
+        "sample_rate": 24000,
+        "sha256": "630990f5568e4a45e2d7b2b86f8841631f7d4306fd13e75d709e5764ec223c3b",
+        "spoken_template": "It's time to take your Review dummy.",
+        "human_pronunciation_verified": false
+      },
+      "status": "PASS",
+      "duration_seconds": 0.7709582920651883,
+      "evidence": "bn_review-dummy_f209e32c62.mp3",
+      "phase": "final",
+      "evidence_location": "evidence/audio/bn_review-dummy_f209e32c62.mp3"
+    },
+    {
+      "id": "CACHE-bn",
+      "feature": "Bengali cached reuse with synthesis unavailable",
+      "expected": "Same file/hash/mtime without a synthesis call",
+      "actual": {
+        "unchanged": true,
+        "gTTS_calls": 0,
+        "scope": "synthesis disabled by controlled injection; not a physical network outage"
+      },
+      "status": "PASS",
+      "duration_seconds": 0.00040904106572270393,
+      "evidence": "bn_review-dummy_f209e32c62.mp3",
+      "phase": "final",
+      "evidence_location": "evidence/audio/bn_review-dummy_f209e32c62.mp3"
+    },
+    {
+      "id": "HUMAN-SPEECH",
+      "phase": "final",
+      "feature": "Six-language pronunciation/intelligibility",
+      "expected": "Independent human listening in each language",
+      "actual": "Valid audio was generated for six voice codes, but no native-speaker listening assessment was available. Current message text remains English.",
+      "status": "NOT TESTED",
+      "duration_seconds": null,
+      "evidence_location": "evidence/audio/results.json"
+    }
+  ]
+}

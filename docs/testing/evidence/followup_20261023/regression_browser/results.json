@@ -1,0 +1,386 @@
+{
+  "metadata": {
+    "recorded_at": "2026-10-23T14:49:00.935406+05:30",
+    "validation_stage": "23 October 2026 follow-up after initial Review 3",
+    "browser": "156.0.8078.4",
+    "mode": "headless Chromium; loopback Flask; disposable SQLite",
+    "microphone": "not available for independent spoken-command validation",
+    "autoplay_policy": "document-user-activation-required"
+  },
+  "records": [
+    {
+      "id": "UI01",
+      "feature": "Signup, register two times, clock workflow",
+      "expected": "Signup, register two times, clock workflow",
+      "actual": {
+        "rows": 2,
+        "clock": "2:49PM"
+      },
+      "status": "PASS",
+      "duration_seconds": 1.358174999943003,
+      "evidence": "screenshots/UI01.png",
+      "page_errors": []
+    },
+    {
+      "id": "UI02",
+      "feature": "Taken button and history persistence",
+      "expected": "Taken button and history persistence",
+      "actual": {
+        "dose_logs": 1
+      },
+      "status": "PASS",
+      "duration_seconds": 1.9974787500686944,
+      "evidence": "screenshots/UI02.png",
+      "page_errors": []
+    },
+    {
+      "id": "UI03",
+      "feature": "Snooze button persists deadline without Taken log",
+      "expected": "Snooze button persists deadline without Taken log",
+      "actual": {
+        "deadline": "2026-10-23T14:54:04.996083",
+        "logs": 0
+      },
+      "status": "PASS",
+      "duration_seconds": 1.068128458922729,
+      "evidence": "screenshots/UI03.png",
+      "page_errors": []
+    },
+    {
+      "id": "UI04",
+      "feature": "Space selects highlighted Taken",
+      "expected": "Space selects highlighted Taken",
+      "actual": {
+        "selection": "Taken",
+        "space_key": true
+      },
+      "status": "PASS",
+      "duration_seconds": 0.7041802909225225,
+      "evidence": "screenshots/UI04.png",
+      "page_errors": []
+    },
+    {
+      "id": "UI05",
+      "feature": "Single-switch scanning highlights Snooze and Space selects it",
+      "expected": "Single-switch scanning highlights Snooze and Space selects it",
+      "actual": {
+        "selection": "Snooze",
+        "space_key": true
+      },
+      "status": "PASS",
+      "duration_seconds": 2.9370064169634134,
+      "evidence": "screenshots/UI05.png",
+      "page_errors": []
+    },
+    {
+      "id": "UI06",
+      "feature": "Network failure cannot falsely acknowledge Taken; recovery",
+      "expected": "Network failure cannot falsely acknowledge Taken; recovery",
+      "actual": {
+        "failure": {
+          "alarm_visible": true,
+          "success_visible": false,
+          "toast": "Could not record your response. Please try again.",
+          "logs": 0,
+          "is_due": 1
+        },
+        "recovered_after_network_restored": true
+      },
+      "status": "PASS",
+      "duration_seconds": 1.4335884579923004,
+      "evidence": "screenshots/UI06.png",
+      "page_errors": []
+    },
+    {
+      "id": "UI07",
+      "feature": "Network failure cannot falsely report Snooze; recovery",
+      "expected": "Network failure cannot falsely report Snooze; recovery",
+      "actual": {
+        "failure": {
+          "alarm_visible": true,
+          "success_visible": false,
+          "toast": "Could not record your response. Please try again.",
+          "logs": 0,
+          "is_due": 1
+        },
+        "recovered_after_network_restored": true
+      },
+      "status": "PASS",
+      "duration_seconds": 1.402741416124627,
+      "evidence": "screenshots/UI07.png",
+      "page_errors": []
+    },
+    {
+      "id": "UI08",
+      "feature": "HTTP rejection cannot falsely acknowledge Taken",
+      "expected": "HTTP rejection cannot falsely acknowledge Taken",
+      "actual": {
+        "failure": {
+          "alarm_visible": true,
+          "success_visible": false,
+          "toast": "Could not record your response. Please try again.",
+          "logs": 0,
+          "is_due": 1
+        },
+        "recovered_after_network_restored": true
+      },
+      "status": "PASS",
+      "duration_seconds": 1.4239713749848306,
+      "evidence": "screenshots/UI08.png",
+      "page_errors": []
+    },
+    {
+      "id": "UI09",
+      "feature": "External device action reconciles visible browser alarm",
+      "expected": "External device action reconciles visible browser alarm",
+      "actual": {
+        "hardware_message": "SIMULATED ESP32 COMMUNICATION",
+        "HTTP": 200,
+        "browser_reconciled_without_refresh": true
+      },
+      "status": "PASS",
+      "duration_seconds": 17.40209583309479,
+      "evidence": "screenshots/UI09.png",
+      "page_errors": []
+    },
+    {
+      "id": "UI10",
+      "feature": "Fresh-profile no-gesture play rejects; trusted audio prompt click plays and advances MP3; Snooze stops progression",
+      "expected": "Fresh-profile no-gesture play rejects; trusted audio prompt click plays and advances MP3; Snooze stops progression",
+      "actual": {
+        "autoplay_before_gesture": {
+          "at": 31.299999952316284,
+          "before": {
+            "src": "/static/audio/en_review-dummy_3a367197a1.mp3",
+            "currentSrc": "",
+            "currentTime": 0,
+            "duration": null,
+            "paused": true,
+            "ended": false,
+            "muted": false,
+            "volume": 1,
+            "readyState": 0,
+            "error": null,
+            "decodedBytes": 0,
+            "activation": {
+              "isActive": false,
+              "hasBeenActive": false
+            }
+          },
+          "result": "rejected",
+          "error": {
+            "name": "NotAllowedError",
+            "message": "play() failed because the user didn't interact with the document first. https://goo.gl/xX8pDD"
+          },
+          "after": {
+            "src": "/static/audio/en_review-dummy_3a367197a1.mp3",
+            "currentSrc": "",
+            "currentTime": 0,
+            "duration": null,
+            "paused": true,
+            "ended": false,
+            "muted": false,
+            "volume": 1,
+            "readyState": 0,
+            "error": null,
+            "decodedBytes": 0,
+            "activation": {
+              "isActive": false,
+              "hasBeenActive": false
+            }
+          }
+        },
+        "explicit_no_gesture_probe": {
+          "result": "rejected",
+          "name": "NotAllowedError",
+          "message": "play() failed because the user didn't interact with the document first. https://goo.gl/xX8pDD"
+        },
+        "playing_samples": [
+          {
+            "src": "/static/audio/en_review-dummy_3a367197a1.mp3",
+            "currentSrc": "http://127.0.0.1:61895/static/audio/en_review-dummy_3a367197a1.mp3",
+            "currentTime": 0.025409,
+            "duration": 2.592,
+            "paused": false,
+            "ended": false,
+            "muted": false,
+            "volume": 1,
+            "readyState": 4,
+            "error": null,
+            "decodedBytes": 2304,
+            "activation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "src": "/static/audio/en_review-dummy_3a367197a1.mp3",
+            "currentSrc": "http://127.0.0.1:61895/static/audio/en_review-dummy_3a367197a1.mp3",
+            "currentTime": 0.320206,
+            "duration": 2.592,
+            "paused": false,
+            "ended": false,
+            "muted": false,
+            "volume": 1,
+            "readyState": 4,
+            "error": null,
+            "decodedBytes": 6144,
+            "activation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ],
+        "stopped_samples": [
+          {
+            "src": "/static/audio/en_review-dummy_3a367197a1.mp3",
+            "currentSrc": "http://127.0.0.1:61895/static/audio/en_review-dummy_3a367197a1.mp3",
+            "currentTime": 0.392055,
+            "duration": 2.592,
+            "paused": true,
+            "ended": false,
+            "muted": false,
+            "volume": 1,
+            "readyState": 4,
+            "error": null,
+            "decodedBytes": 6912,
+            "activation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          },
+          {
+            "src": "/static/audio/en_review-dummy_3a367197a1.mp3",
+            "currentSrc": "http://127.0.0.1:61895/static/audio/en_review-dummy_3a367197a1.mp3",
+            "currentTime": 0.392055,
+            "duration": 2.592,
+            "paused": true,
+            "ended": false,
+            "muted": false,
+            "volume": 1,
+            "readyState": 4,
+            "error": null,
+            "decodedBytes": 6912,
+            "activation": {
+              "isActive": true,
+              "hasBeenActive": true
+            }
+          }
+        ],
+        "trusted_gestures": [
+          {
+            "type": "click",
+            "trusted": true,
+            "target": "mic-indicator",
+            "at": 564.3999998569489,
+            "active": true
+          }
+        ],
+        "profile_initially_empty": true,
+        "human_listening": false,
+        "detail": "UI10-clean-profile/results.json"
+      },
+      "status": "PASS",
+      "duration_seconds": 2.272051875013858,
+      "evidence": "screenshots/UI10.png",
+      "page_errors": []
+    },
+    {
+      "id": "UI11",
+      "feature": "Unavailable speech leaves visual reminder and Taken usable",
+      "expected": "Unavailable speech leaves visual reminder and Taken usable",
+      "actual": {
+        "audio_src": null,
+        "visual_alarm_and_taken_usable": true
+      },
+      "status": "PASS",
+      "duration_seconds": 1.0315935828257352,
+      "evidence": "screenshots/UI11.png",
+      "page_errors": []
+    },
+    {
+      "id": "B05-1",
+      "feature": "Initial reminder visibility <=20 seconds; real scheduler and browser poll",
+      "expected": "Initial reminder visibility <=20 seconds; real scheduler and browser poll",
+      "actual": {
+        "visible_seconds_after_scheduled_fixture": 17.021322207991034,
+        "scheduled_time": "14:49",
+        "clock_before": "2:49PM",
+        "clock_after": "2:49PM"
+      },
+      "status": "PASS",
+      "duration_seconds": 17.40686074993573,
+      "evidence": "screenshots/B05-1.png",
+      "page_errors": []
+    },
+    {
+      "id": "B05-2",
+      "feature": "Initial reminder visibility <=20 seconds; real scheduler and browser poll",
+      "expected": "Initial reminder visibility <=20 seconds; real scheduler and browser poll",
+      "actual": {
+        "visible_seconds_after_scheduled_fixture": 17.09127595787868,
+        "scheduled_time": "14:49",
+        "clock_before": "2:49PM",
+        "clock_after": "2:50PM"
+      },
+      "status": "PASS",
+      "duration_seconds": 17.577062458964065,
+      "evidence": "screenshots/B05-2.png",
+      "page_errors": []
+    },
+    {
+      "id": "B05-3",
+      "feature": "Initial reminder visibility <=20 seconds; real scheduler and browser poll",
+      "expected": "Initial reminder visibility <=20 seconds; real scheduler and browser poll",
+      "actual": {
+        "visible_seconds_after_scheduled_fixture": 17.09340204182081,
+        "scheduled_time": "14:50",
+        "clock_before": "2:50PM",
+        "clock_after": "2:50PM"
+      },
+      "status": "PASS",
+      "duration_seconds": 17.979073125170544,
+      "evidence": "screenshots/B05-3.png",
+      "page_errors": []
+    },
+    {
+      "id": "B05-4",
+      "feature": "Initial reminder visibility <=20 seconds; real scheduler and browser poll",
+      "expected": "Initial reminder visibility <=20 seconds; real scheduler and browser poll",
+      "actual": {
+        "visible_seconds_after_scheduled_fixture": 16.98343304079026,
+        "scheduled_time": "14:50",
+        "clock_before": "2:50PM",
+        "clock_after": "2:50PM"
+      },
+      "status": "PASS",
+      "duration_seconds": 18.01922016707249,
+      "evidence": "screenshots/B05-4.png",
+      "page_errors": []
+    },
+    {
+      "id": "B05-5",
+      "feature": "Initial reminder visibility <=20 seconds; real scheduler and browser poll",
+      "expected": "Initial reminder visibility <=20 seconds; real scheduler and browser poll",
+      "actual": {
+        "visible_seconds_after_scheduled_fixture": 16.99345870804973,
+        "scheduled_time": "14:50",
+        "clock_before": "2:50PM",
+        "clock_after": "2:51PM"
+      },
+      "status": "PASS",
+      "duration_seconds": 17.438002499984577,
+      "evidence": "screenshots/B05-5.png",
+      "page_errors": []
+    },
+    {
+      "id": "UI-VOICE",
+      "feature": "Real spoken acknowledgment",
+      "expected": "Actual microphone/transcription and action",
+      "actual": "No participant/microphone or recorded utterance available; speech handler not counted as real voice verification.",
+      "status": "NOT TESTED",
+      "duration_seconds": 0,
+      "evidence": "results.json"
+    }
+  ]
+}

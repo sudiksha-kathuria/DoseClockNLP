@@ -1,0 +1,70 @@
+[
+  {
+    "path": "backend/database.py",
+    "change": "modified from pre-resolution snapshot"
+  },
+  {
+    "path": "backend/tts.py",
+    "change": "modified from pre-resolution snapshot"
+  },
+  {
+    "path": "backend/app.py",
+    "change": "modified from pre-resolution snapshot"
+  },
+  {
+    "path": "tests/build_resolution_report.py",
+    "change": "new source/test file"
+  },
+  {
+    "path": "tests/test_resolution.py",
+    "change": "new source/test file"
+  },
+  {
+    "path": "tests/run_review3_audio.py",
+    "change": "modified from pre-resolution snapshot"
+  },
+  {
+    "path": "tests/review3_media.py",
+    "change": "modified from pre-resolution snapshot"
+  },
+  {
+    "path": "tests/run_review3_browser.py",
+    "change": "modified from pre-resolution snapshot"
+  },
+  {
+    "path": "tests/test_review3.py",
+    "change": "modified from pre-resolution snapshot"
+  },
+  {
+    "path": "tests/reproduce_resolution.py",
+    "change": "new source/test file"
+  },
+  {
+    "path": "tests/audit_review3_tree.py",
+    "change": "new source/test file"
+  },
+  {
+    "path": "tests/run_review3_live.py",
+    "change": "modified from pre-resolution snapshot"
+  },
+  {
+    "path": "tests/run_review3_suite.py",
+    "change": "modified from pre-resolution snapshot"
+  },
+  {
+    "path": "tests/test_hardware.py",
+    "change": "modified from pre-resolution snapshot"
+  },
+  {
+    "path": "tests/esp32_simulator.py",
+    "change": "modified from pre-resolution snapshot"
+  },
+  {
+    "path": "hardware/switch_hub.ino",
+    "change": "modified from pre-resolution snapshot"
+  },
+  {
+    "path": "hardware/README.md",
+    "change": "modified from pre-resolution snapshot"
+  }
+]

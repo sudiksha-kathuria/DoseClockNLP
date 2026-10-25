@@ -1,0 +1,15 @@
+{
+  "source_private_path": "/private/tmp/doseclock-original-product-reproduction.protocol.log",
+  "source_sha256": "15e80b8be832b8d5f9030ee4b4426a0172432551a48916e8e1d078a178b92f23",
+  "scope": "Actual outgoing Runtime/Input/navigation calls; HTTP credentials excluded. Last navigation to first browser input per session.",
+  "sessions": [
+    {
+      "sessionId": "0DE02BD7133161E58B66106752547B48",
+      "navigation": "http://127.0.0.1:61619/clock",
+      "runtime_before_first_input": 7,
+      "userGesture_true": 0,
+      "userGesture_false": 7,
+      "userGesture_omitted": 0
+    }
+  ]
+}

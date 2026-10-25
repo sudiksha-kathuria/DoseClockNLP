@@ -1,0 +1,15 @@
+{
+  "source_private_path": "/private/tmp/doseclock-synthetic-control.protocol.log",
+  "source_sha256": "5f46e627e1703e236eb91abbf30e9aece6fa31e9b5d58f49c04e8dadddce1695",
+  "scope": "Actual outgoing Runtime/Input/navigation calls; HTTP credentials excluded. Last navigation to first browser input per session.",
+  "sessions": [
+    {
+      "sessionId": "E63660AAA68BEEA43A99A59EB2AF1B1E",
+      "navigation": "http://127.0.0.1:61625/clock",
+      "runtime_before_first_input": 11,
+      "userGesture_true": 1,
+      "userGesture_false": 10,
+      "userGesture_omitted": 0
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "python": "3.12.14 (main, Aug 25 2026, 13:50:33) [Clang 22.1.3 ]",
+  "platform": "macOS-26.6.2-arm64-arm-64bit",
+  "processor": "arm",
+  "host_timezone": [
+    "IST",
+    "IST"
+  ],
+  "local_test_addresses": "127.0.0.1 only; ephemeral ports",
+  "load_average_at_capture": [
+    2.23583984375,
+    2.64501953125,
+    2.806640625
+  ],
+  "branch": "validation/review3-20261023",
+  "base_commit": "a1230c928a0471aa2a05e0af6b32ee2a64a0cd05",
+  "committed": false,
+  "physical_esp32_access": false
+}

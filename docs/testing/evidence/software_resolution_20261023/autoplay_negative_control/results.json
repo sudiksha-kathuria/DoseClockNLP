@@ -1,0 +1,29 @@
+{
+  "validation_date": "23 October 2026",
+  "type": "Injected negative control, not a product defect",
+  "old_assertion": {
+    "id": "UI10",
+    "feature": "Autoplay blocked before gesture; real MP3 retained and paused on Snooze",
+    "expected": "Autoplay blocked before gesture; real MP3 retained and paused on Snooze",
+    "actual": {
+      "autoplay_before_gesture": "paused before user gesture",
+      "after_gesture": {
+        "src": "/static/audio/en_review-dummy_9ba543bfedc08875.mp3",
+        "duration": 2.592,
+        "paused": true
+      },
+      "paused_after_snooze": true,
+      "human_listening": false
+    },
+    "status": "PASS",
+    "duration_seconds": 1.3996344581246376,
+    "evidence": "screenshots/UI10.png",
+    "page_errors": []
+  },
+  "corrected_assertion_status": "FAIL",
+  "exit_codes": [
+    0,
+    1
+  ],
+  "status": "PASS"
+}

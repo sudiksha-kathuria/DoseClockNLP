@@ -1,0 +1,32 @@
+{
+  "metadata": {
+    "browser": "156.0.8078.4",
+    "mode": "headless Chromium; loopback Flask; disposable SQLite",
+    "microphone": "not available for independent spoken-command validation",
+    "autoplay_policy": "document-user-activation-required"
+  },
+  "records": [
+    {
+      "id": "UI10",
+      "feature": "Autoplay blocked before gesture; real MP3 retained and paused on Snooze",
+      "expected": "Autoplay blocked before gesture; real MP3 retained and paused on Snooze",
+      "actual": {
+        "error": "{'src': 'data:audio/wav;base64,UklGRiUAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQEAAACA', 'duration': 0.000125, 'paused': True}",
+        "traceback": "Traceback (most recent call last):\n  File \"/Users/pranav/Documents/DoseClock/DoseClockNLP/tests/run_review3_browser.py\", line 30, in case\n    actual=fn(page);status='PASS'\n           ^^^^^^^^\n  File \"/Users/pranav/Documents/DoseClock/DoseClockNLP/tests/run_review3_browser.py\", line 95, in autoplay\n    assert media['src'].endswith('.mp3') and media['duration']>1,media\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: {'src': 'data:audio/wav;base64,UklGRiUAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQEAAACA', 'duration': 0.000125, 'paused': True}\n"
+      },
+      "status": "FAIL",
+      "duration_seconds": 0.989434708841145,
+      "evidence": "screenshots/UI10.png",
+      "page_errors": []
+    },
+    {
+      "id": "UI-VOICE",
+      "feature": "Real spoken acknowledgment",
+      "expected": "Actual microphone/transcription and action",
+      "actual": "No participant/microphone or recorded utterance available; speech handler not counted as real voice verification.",
+      "status": "NOT TESTED",
+      "duration_seconds": 0,
+      "evidence": "results.json"
+    }
+  ]
+}

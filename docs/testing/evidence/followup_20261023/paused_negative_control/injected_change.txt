@@ -1,0 +1,1 @@
+Temporary fixture only: pause immediately after successful audio unlock.

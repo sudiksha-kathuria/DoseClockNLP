@@ -1,0 +1,134 @@
+{
+  "metadata": {
+    "browser": "156.0.8078.4",
+    "mode": "headless Chromium; loopback Flask; disposable SQLite",
+    "microphone": "not available for independent spoken-command validation"
+  },
+  "records": [
+    {
+      "id": "UI01",
+      "feature": "Signup, register two times, clock workflow",
+      "expected": "Signup, register two times, clock workflow",
+      "actual": {
+        "rows": 2,
+        "clock": "2:28AM"
+      },
+      "status": "PASS",
+      "duration_seconds": 1.815380707848817,
+      "evidence": "screenshots/UI01.png",
+      "page_errors": []
+    },
+    {
+      "id": "UI02",
+      "feature": "Taken button and history persistence",
+      "expected": "Taken button and history persistence",
+      "actual": {
+        "dose_logs": 1
+      },
+      "status": "PASS",
+      "duration_seconds": 1.9891744169872254,
+      "evidence": "screenshots/UI02.png",
+      "page_errors": []
+    },
+    {
+      "id": "UI03",
+      "feature": "Snooze button persists deadline without Taken log",
+      "expected": "Snooze button persists deadline without Taken log",
+      "actual": {
+        "deadline": "2026-10-23T02:33:19.811544",
+        "logs": 0
+      },
+      "status": "PASS",
+      "duration_seconds": 1.0775761250406504,
+      "evidence": "screenshots/UI03.png",
+      "page_errors": []
+    },
+    {
+      "id": "UI04",
+      "feature": "Space selects highlighted Taken",
+      "expected": "Space selects highlighted Taken",
+      "actual": {
+        "selection": "Taken",
+        "space_key": true
+      },
+      "status": "PASS",
+      "duration_seconds": 0.6988105000928044,
+      "evidence": "screenshots/UI04.png",
+      "page_errors": []
+    },
+    {
+      "id": "UI05",
+      "feature": "Single-switch scanning highlights Snooze and Space selects it",
+      "expected": "Single-switch scanning highlights Snooze and Space selects it",
+      "actual": {
+        "selection": "Snooze",
+        "space_key": true
+      },
+      "status": "PASS",
+      "duration_seconds": 2.907463625073433,
+      "evidence": "screenshots/UI05.png",
+      "page_errors": []
+    },
+    {
+      "id": "UI06",
+      "feature": "Network failure cannot falsely acknowledge Taken; recovery",
+      "expected": "Network failure cannot falsely acknowledge Taken; recovery",
+      "actual": {
+        "error": "{'alarm_visible': False, 'success_visible': True, 'toast': '', 'logs': 0, 'is_due': 1}",
+        "traceback": "Traceback (most recent call last):\n  File \"/Users/pranav/Documents/DoseClock/DoseClockNLP/tests/run_review3_browser.py\", line 27, in case\n    actual=fn(page);status='PASS'\n           ^^^^^^^^\n  File \"/Users/pranav/Documents/DoseClock/DoseClockNLP/tests/run_review3_browser.py\", line 84, in <lambda>\n    case('UI06','Network failure cannot falsely acknowledge Taken; recovery',lambda p:failed_action(p,'taken'))\n                                                                                      ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/pranav/Documents/DoseClock/DoseClockNLP/tests/run_review3_browser.py\", line 70, in failed_action\n    assert actual['alarm_visible'] and not actual['success_visible'] and 'Snoozed' not in actual['toast'],actual\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: {'alarm_visible': False, 'success_visible': True, 'toast': '', 'logs': 0, 'is_due': 1}\n"
+      },
+      "status": "FAIL",
+      "duration_seconds": 1.0360605830792338,
+      "evidence": "screenshots/UI06.png",
+      "page_errors": []
+    },
+    {
+      "id": "UI07",
+      "feature": "Network failure cannot falsely report Snooze; recovery",
+      "expected": "Network failure cannot falsely report Snooze; recovery",
+      "actual": {
+        "error": "{'alarm_visible': False, 'success_visible': False, 'toast': 'Snoozed for 5 minutes', 'logs': 0, 'is_due': 1}",
+        "traceback": "Traceback (most recent call last):\n  File \"/Users/pranav/Documents/DoseClock/DoseClockNLP/tests/run_review3_browser.py\", line 27, in case\n    actual=fn(page);status='PASS'\n           ^^^^^^^^\n  File \"/Users/pranav/Documents/DoseClock/DoseClockNLP/tests/run_review3_browser.py\", line 85, in <lambda>\n    case('UI07','Network failure cannot falsely report Snooze; recovery',lambda p:failed_action(p,'snooze'))\n                                                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/pranav/Documents/DoseClock/DoseClockNLP/tests/run_review3_browser.py\", line 70, in failed_action\n    assert actual['alarm_visible'] and not actual['success_visible'] and 'Snoozed' not in actual['toast'],actual\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: {'alarm_visible': False, 'success_visible': False, 'toast': 'Snoozed for 5 minutes', 'logs': 0, 'is_due': 1}\n"
+      },
+      "status": "FAIL",
+      "duration_seconds": 1.0536422079894692,
+      "evidence": "screenshots/UI07.png",
+      "page_errors": []
+    },
+    {
+      "id": "UI08",
+      "feature": "HTTP rejection cannot falsely acknowledge Taken",
+      "expected": "HTTP rejection cannot falsely acknowledge Taken",
+      "actual": {
+        "error": "{'alarm_visible': False, 'success_visible': True, 'toast': '', 'logs': 0, 'is_due': 1}",
+        "traceback": "Traceback (most recent call last):\n  File \"/Users/pranav/Documents/DoseClock/DoseClockNLP/tests/run_review3_browser.py\", line 27, in case\n    actual=fn(page);status='PASS'\n           ^^^^^^^^\n  File \"/Users/pranav/Documents/DoseClock/DoseClockNLP/tests/run_review3_browser.py\", line 86, in <lambda>\n    case('UI08','HTTP rejection cannot falsely acknowledge Taken',lambda p:failed_action(p,'taken',True))\n                                                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/pranav/Documents/DoseClock/DoseClockNLP/tests/run_review3_browser.py\", line 70, in failed_action\n    assert actual['alarm_visible'] and not actual['success_visible'] and 'Snoozed' not in actual['toast'],actual\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: {'alarm_visible': False, 'success_visible': True, 'toast': '', 'logs': 0, 'is_due': 1}\n"
+      },
+      "status": "FAIL",
+      "duration_seconds": 1.0464951249305159,
+      "evidence": "screenshots/UI08.png",
+      "page_errors": []
+    },
+    {
+      "id": "UI09",
+      "feature": "External device action reconciles visible browser alarm",
+      "expected": "External device action reconciles visible browser alarm",
+      "actual": {
+        "error": "Page.wait_for_function: Timeout 19000ms exceeded.",
+        "traceback": "Traceback (most recent call last):\n  File \"/Users/pranav/Documents/DoseClock/DoseClockNLP/tests/run_review3_browser.py\", line 27, in case\n    actual=fn(page);status='PASS'\n           ^^^^^^^^\n  File \"/Users/pranav/Documents/DoseClock/DoseClockNLP/tests/run_review3_browser.py\", line 77, in external\n    page.wait_for_function(\"!document.querySelector('#alarm-view').classList.contains('visible')\",timeout=19000)\n  File \"/private/tmp/doseclock-review3-validation-20261023/venv/lib/python3.12/site-packages/playwright/sync_api/_generated.py\", line 21235, in wait_for_function\n    self._sync(\n  File \"/private/tmp/doseclock-review3-validation-20261023/venv/lib/python3.12/site-packages/playwright/_impl/_sync_base.py\", line 111, in _sync\n    return task.result()\n           ^^^^^^^^^^^^^\n  File \"/private/tmp/doseclock-review3-validation-20261023/venv/lib/python3.12/site-packages/playwright/_impl/_page.py\", line 1158, in wait_for_function\n    return await self._main_frame.wait_for_function(**locals_to_params(locals()))\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/private/tmp/doseclock-review3-validation-20261023/venv/lib/python3.12/site-packages/playwright/_impl/_frame.py\", line 945, in wait_for_function\n    await self._channel.send(\"waitForFunction\", self._timeout, params)\n  File \"/private/tmp/doseclock-review3-validation-20261023/venv/lib/python3.12/site-packages/playwright/_impl/_connection.py\", line 78, in send\n    return await self._connection.wrap_api_call(\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/private/tmp/doseclock-review3-validation-20261023/venv/lib/python3.12/site-packages/playwright/_impl/_connection.py\", line 636, in wrap_api_call\n    raise rewrite_error(error, f\"{parsed_st['apiName']}: {error}\") from None\nplaywright._impl._errors.TimeoutError: Page.wait_for_function: Timeout 19000ms exceeded.\n"
+      },
+      "status": "FAIL",
+      "duration_seconds": 19.374557917006314,
+      "evidence": "screenshots/UI09.png",
+      "page_errors": []
+    },
+    {
+      "id": "UI-VOICE",
+      "feature": "Real spoken acknowledgment",
+      "expected": "Actual microphone/transcription and action",
+      "actual": "No participant/microphone or recorded utterance available; speech handler not counted as real voice verification.",
+      "status": "NOT TESTED",
+      "duration_seconds": 0,
+      "evidence": "results.json"
+    }
+  ]
+}

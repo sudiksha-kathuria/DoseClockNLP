@@ -1,0 +1,10 @@
+{"event": "ready", "host": "127.0.0.1", "port": 63876, "fixture_route": "test-harness only", "physical_hardware": false}
+127.0.0.1 - - [23/Oct/2026 16:18:48] "GET /login HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2026 16:18:49] "POST /__review3/fixture HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2026 16:18:49] "[32mPOST /login HTTP/1.1[0m" 302 -
+127.0.0.1 - - [23/Oct/2026 16:18:49] "GET /clock HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2026 16:18:49] "GET /clock HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2026 16:18:49] "GET /static/css/style.css HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2026 16:18:49] "GET /static/js/clock.js HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2026 16:18:49] "GET /check_reminders HTTP/1.1" 200 -
+127.0.0.1 - - [23/Oct/2026 16:18:49] "[35m[1mGET /static/audio/en_review-dummy_9ba543bfedc08875.mp3 HTTP/1.1[0m" 206 -

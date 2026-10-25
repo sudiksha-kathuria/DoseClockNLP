@@ -6,7 +6,7 @@ English, Hindi, Tamil, Telugu, Kannada, or Bengali) when it's due.
 Answer with a tap, a spoken word, or a single button press (see
 [`HARDWARE.md`](HARDWARE.md) for why that matters).
 
-DoseClock only ever says: **"It's time to take your [medicine name]."**
+DoseClock speaks a translated reminder meaning **"It's time to take your [medicine name]."**
 It does not diagnose, recommend dosages, or check drug interactions.
 See [Out of scope](#out-of-scope).
 
@@ -113,8 +113,8 @@ to set up by hand. None of the three are committed to git.
   recovers eligible overdue times from today, and re-fires expired snoozes.
   `fire_reminder` marks the row due immediately and uses an already cached
   audio path when available. `init_scheduler` warms audio for schedules
-  present at startup; adding a new schedule does not itself enqueue speech
-  generation in the current implementation. Verify audio readiness before
+  present at startup; adding or editing a schedule also enqueues speech
+  generation off the request thread. Verify audio readiness before
   demonstrating a spoken reminder.
 - The `/check_reminders` endpoint, polled by the browser, returns
   whichever reminder is currently ringing **for the logged-in account
@@ -245,106 +245,63 @@ authentication or encryption mechanism.
 
 ### Device request and backend state changes
 
-The sketch sends `POST /api/device/action` with
-`Content-Type: application/json` and one of these bodies:
+The 23 October 2026 software-resolution update uses an occurrence-bound
+protocol. Upgrade the firmware and backend together. Legacy token/action-only
+requests receive HTTP 400 and cannot acknowledge a different pending medicine.
+
+1. `POST /api/device/reminder` with `{"token":"<paired-device-token>"}`
+   returns `due:false`, or the account's oldest pending `id`, `fired_at` and
+   medicine label. Selection does not acknowledge or reserve it.
+2. The device saves that identity, action and a unique `request_id` before
+   transmission, then sends `POST /api/device/action`:
 
 ```json
-{"token":"<paired-device-token>","action":"taken"}
+{"token":"<paired-device-token>","action":"taken","id":42,"fired_at":"<exact value from selection>","request_id":"<unique ID for this intentional action>"}
 ```
 
-```json
-{"token":"<paired-device-token>","action":"snooze"}
-```
+Use `snooze` for Snooze. Every retry reuses all five fields. A new intentional
+action gets a new request ID and selection. The firmware retains the selected
+request in ESP32 Preferences across restart, with the credential supplied from
+its private configuration. It never stores the token in the pending JSON.
+While a result is uncertain, new switch gestures are ignored and automatic
+retries keep the original pending action. After blocking work, the switch
+requires a fresh debounced release and press; an overlapping gesture does not
+choose another reminder. An HTTP 200 with `success:true` confirms
+the result; a definite 4xx rejection clears that pending action. Transport/5xx
+failures retain it and retry every five seconds.
 
-The device does not send a medicine ID or a browser session cookie.
-`device_action` in `backend/app.py` calls
-`database.get_user_id_for_token` to resolve the registered token's owner,
-then `database.get_due_reminder` to select that user's oldest due row.
-A valid token also updates `devices.last_seen_at`; this is an action-time
-record, not a periodic device heartbeat.
+`database.apply_device_action` checks the device's account, target and firing
+inside `BEGIN IMMEDIATE`. It commits Taken/Snooze and a durable retry receipt
+in the same transaction. Exact duplicate requests return the original success
+without another log, course decrement or Snooze deadline extension. Reusing a
+key for a different target/action, or sending a fresh key for a stale firing,
+returns 409. Failed transactions roll back both the transition and receipt.
 
-For Taken, `_perform_mark_taken` calls `database.acknowledge_due`. Its
-`BEGIN IMMEDIATE` transaction checks ownership/due state, clears `is_due`
-and `snoozed_until`, and inserts a timestamp into `dose_log`. Acknowledging
-the group's latest stored time also decrements its `days_remaining`.
-This check is based on the time slot, not proof that every earlier dose
-was acknowledged. Browser `/mark_taken` uses the same internal helper.
+Taken and browser actions share the dose/course update helper. Snooze stores
+one five-minute deadline and adds no Taken log. Browser action bodies require
+`id` and `fired_at` from `/check_reminders`; the shipped frontend already sends
+them. Firing identity prevents a delayed action from answering a later alarm.
 
-For Snooze, `scheduler.schedule_snooze` calls `database.snooze_due`, which
-clears `is_due` and persists the five-minute deadline. It adds no Taken
-log. The scheduler later marks the row due again. Both paths use SQLite;
-there is no database connection opened by the ESP32.
-
-### Response and browser visibility
-
-A successful device request returns HTTP 200 and JSON such as:
-
-```json
-{"success":true,"medicine_name":"Demo medicine"}
-```
-
-| HTTP status | Backend meaning |
+| HTTP status | Device action meaning |
 |---:|---|
-| 200 | Selected due reminder was acknowledged or snoozed. |
-| 400 | `action` is neither `taken` nor `snooze`, after token validation. |
-| 401 | Token is absent or unknown. |
-| 404 | No reminder is currently due for the token's owner. |
-| 409 | The selected firing changed or was resolved before its update. |
+| 200 | One selected action succeeded, or its exact success receipt was replayed. |
+| 400 | Invalid action or missing/invalid occurrence identity or request ID. |
+| 401 | Missing or unknown token. |
+| 404 | Selected target does not belong to that account or does not exist. |
+| 409 | Stale/resolved target, or request ID reused with another binding. |
+| 503 | Database transaction unavailable; retry the identical request. |
 
-The firmware checks HTTP status and logs it at 115200 baud. It does not
-parse `medicine_name` from the response. Two slow LED blinks indicate 200;
-five fast blinks indicate a rejected request or HTTP transport failure;
-eight fast blinks indicate Wi-Fi is disconnected and no request was sent.
-Three boot blinks indicate that Wi-Fi connected.
+The browser polls every 17 seconds and reconciles external changes. The
+firmware uses the existing success/error LED patterns, but physical LED,
+GPIO, NVS power-loss/reboot and ESP32 Wi-Fi behavior still require board tests.
+See [the protocol contract](docs/DEVICE_PROTOCOL.md) and the dated testing
+report for compatibility, retained evidence and verification limits.
 
-The database changes immediately on success, but the browser does not
-receive a pushed update. `clock.js` normally polls `/check_reminders` every
-17 seconds and skips polling while its own alarm is visible. After an
-external device action, refresh the clock/logs to verify the persisted
-state; do not assume the displayed alarm was automatically reconciled.
-
-```mermaid
-sequenceDiagram
-    actor Patient
-    participant Hub as ESP32 Switch Hub
-    participant API as Flask device_action
-    participant DB as SQLite helpers
-    participant Scheduler as One-second scheduler
-    participant Browser as Clock / Logs
-    Patient->>Hub: Close then release switch
-    Hub->>Hub: Debounce and classify duration
-    Hub->>API: Wi-Fi / TCP / HTTP POST {token, action}
-    API->>DB: Resolve token owner and oldest due row
-    alt Taken
-        API->>DB: acknowledge_due (atomic claim and dose_log insert)
-    else Snooze
-        API->>DB: snooze_due (clear due, store now + 5 min)
-        Scheduler->>DB: Re-fire after persisted deadline
-    end
-    API-->>Hub: HTTP status + JSON result
-    Hub-->>Patient: Status-dependent LED pattern
-    Note over DB,Browser: Database is authoritative; no pushed browser update
-    Browser->>API: User refresh / next eligible reminder poll
-    API->>DB: Read reminder or history for browser account
-    API-->>Browser: Updated persisted state
-```
-
-### Integration boundaries
-
-- Token pairing identifies an account-authorized device; it is not a
-  cryptographic attestation of a particular physical board. Tokens are
-  long-lived, stored in the database and configured in the sketch.
-- The example uses plaintext HTTP on a local network. Treat the token as
-  a bearer secret, use disposable review accounts, and redact it from
-  recordings. Secure transport and token revocation are future work.
-- The API always chooses the oldest due medicine. Repeating the same
-  request when several medicines are due can acknowledge the next one;
-  the request has no occurrence/request ID for replay-safe retries.
-- Disconnected actions are not queued. The hub stores no local reminder
-  schedule and has no speaker output in the current firmware.
-- Firmware, endpoint and wiring inspection establish implemented paths.
-  Actual assembly, timing, network recovery and patient usability require
-  physical test evidence; documentation commits do not establish those tests.
+Tokens are bearer credentials. The example still uses local-network HTTP;
+TLS, token revocation and receipt-retention policy remain future work. The
+hub has no local schedule or speaker. Server receipts are retained so exact
+retries survive backend restart. Two deliberately new actions may address two
+reminders; a retry of one action cannot silently become the other action.
 
 ## Hardware setup and device pairing
 
@@ -415,14 +372,14 @@ port-5050 access. The IP can change after moving networks or renewing DHCP.
 Pairing here means issuing a credential, not Bluetooth discovery or an
 automatic Wi-Fi provisioning handshake. A paired device has no browser
 login cookie. Choosing the wrong account at pairing time directs all its
-actions to that account's oldest due reminder.
+selections to that account's pending reminders; every action is then bound to one firing.
 
 ### 4. Configure and upload a private sketch copy
 
 Use the Arduino IDE with the Espressif ESP32 board package and select the
 board/USB port matching the actual hardware (for a WROOM-32 DevKit, an
 appropriate ESP32 Dev Module configuration). The package supplies
-`WiFi.h` and `HTTPClient.h`; this sketch does not require ArduinoJson.
+`WiFi.h`, `HTTPClient.h` and `Preferences.h`. Install **ArduinoJson 7** through Library Manager as well.
 
 Keep the upload copy outside the repository in a sketch folder named
 `switch_hub`. Configure these existing constants in that copy only:
@@ -446,16 +403,16 @@ Create a clearly labeled dummy medicine with a time a few minutes ahead
 of the backend clock. Use one due medicine per account for an unambiguous
 first test. Open `/clock`; enable audio through a real user gesture and
 verify that cached speech exists if spoken output is part of the demo.
-Startup warms existing schedule audio, but a newly added label is not
-automatically warmed, and the current TTS text remains a fixed English
-sentence even when a regional voice code is selected. Report the actual
-audio observed rather than assuming translation or offline fallback.
+Startup and schedule creation/editing warm audio in the background. The
+current TTS text uses a translated template for the selected language.
+Medicine labels remain unchanged. Human pronunciation/intelligibility and
+independent native-speaker review remain unverified; report the actual audio observed.
 
 When the dummy reminder is due:
 
 1. **Taken:** make a deliberate short closure longer than debounce but
    below the short-press threshold, then release. Expect Serial Monitor
-   to show action `taken` and HTTP 200, followed by two slow blinks. Refresh
+   to show the bound action and HTTP 200, followed by two slow blinks. Refresh
    Logs and verify one new acknowledgment for the intended account.
 2. **Snooze:** use a separate due reminder, hold until the LED becomes
    steady, then release. Expect `snooze` and HTTP 200. No Taken log should
@@ -470,8 +427,10 @@ test plan below before testing repeated presses or network failures.
 
 ## Communication testing and troubleshooting
 
-The following checks are **proposed validation**, not completed physical
-test results. Record the date, actual board/core version, host, network,
+Actual software validation, measured loopback benchmarks, failure evidence and
+retests are recorded in [`docs/testing/TEST_REPORT.md`](docs/testing/TEST_REPORT.md).
+Physical GPIO, switch, LED and ESP32 Wi-Fi checks remain separate from simulated HTTP.
+The following checklist describes the validation criteria. Record the date, actual board/core version, host, network,
 trial count, HTTP status, database before/after state and evidence filename
 when performing them. Use disposable accounts and dummy medicines. Keep
 one due medicine per account unless the test explicitly concerns multiple
@@ -490,7 +449,7 @@ They have not been measured and are not product performance guarantees.
 | Snooze persistence/timing | 3 fresh reminders | No Taken log; stored deadline approximately 300 s after request; due re-fires within 2 s of deadline on an idle awake host | Record persisted timestamp and backend due state; include actual scheduler delay. |
 | Browser initial reminder visibility | 5 fresh page/due cycles | Visible within 20 s under an active foreground page and healthy LAN | Scheduler interval is 1 s and browser polling is 17 s; overhead makes this a target, not a proven bound. |
 | Press classification | 10 short, 10 confirmed hold, 10 intermediate-release trials | Correct action for each deliberate short/hold; no POST for intermediate releases | Observe switch waveform/timing where available, Serial action and database state. |
-| Outage feedback | 3 Wi-Fi loss and 3 backend-loss trials | No success feedback for a failed send; no fabricated Taken record | Record LED/Serial behavior and state; queued recovery is not implemented. |
+| Outage feedback | 3 Wi-Fi loss and 3 backend-loss trials | No success feedback for a failed send; no fabricated Taken record | Record LED/Serial behavior and state; a selected pending action is retained for retry, but physical recovery remains unverified. |
 
 Use one consistent timer for HTTP duration. State whether the reported
 time includes LED feedback (the response-time target above does not).
@@ -503,19 +462,19 @@ are not executed-trial counts: until run, record `0 executed / Not Tested`.
 
 | ID | Setup and input | Expected current behavior | Observed result |
 |---|---|---|---|
-| C01 | Valid token; one due row; `taken` | 200, success JSON, one dose log, due/snooze cleared | Not Tested |
-| C02 | Unknown or absent token | 401; no acknowledgment | Not Tested |
-| C03 | Valid token; `action: "unknown"` | 400; no dose transition (token use may update last-seen) | Not Tested |
-| C04 | Physical short closure then release | Firmware sends `taken`; outcome follows C01 | Not Tested |
-| C05 | Physical hold until steady LED, then release | Firmware sends `snooze`; 200 if due, deadline persisted, no Taken log | Not Tested |
-| C06 | Backend stopped while Wi-Fi is connected | HTTP transport failure/non-200; five fast blinks; no successful log | Not Tested |
-| C07 | Wi-Fi disconnected before actuation | Eight fast blinks; no POST, no queued action | Not Tested |
-| C08 | Repeat Taken with only one due reminder | First succeeds; later sequential request normally returns 404; an overlapping selected action can return 409 | Not Tested |
-| C09 | Valid token but no currently due reminder | 404, including when active schedules exist but are not yet due | Not Tested |
-| C10 | Token for account A; only B has a due reminder | 404 for A; B's reminder/history unchanged | Not Tested |
-| C11 | Two due medicines; repeat identical token/action body | The next request may select the next medicine; occurrence-bound idempotency is not implemented | Not Tested |
-| C12 | Snooze, then restart backend before deadline | Persisted deadline remains and regular checks re-fire when reached | Not Tested |
-| C13 | Hardware Taken while browser alarm is showing | Database/log changes; manually refresh browser to reconcile current display | Not Tested |
+| C01 | Valid token; one due row; `taken` | 200, success JSON, one dose log, due/snooze cleared | PASS: simulated device HTTP and SQLite |
+| C02 | Unknown or absent token | 401; no acknowledgment | PASS: simulated HTTP; unchanged database digest |
+| C03 | Valid token; `action: "unknown"` | 400; no dose transition (token use may update last-seen) | PASS: API validation |
+| C04 | Physical short closure then release | Firmware sends `taken`; outcome follows C01 | NOT TESTED: physical GPIO input |
+| C05 | Physical hold until steady LED, then release | Firmware sends `snooze`; 200 if due, deadline persisted, no Taken log | HTTP Snooze verified; physical hold NOT TESTED |
+| C06 | Backend stopped while Wi-Fi is connected | HTTP transport failure/non-200; five fast blinks; no successful log | HTTP outage/recovery verified; LEDs NOT TESTED |
+| C07 | Wi-Fi disconnected before actuation | Eight fast blinks; no new selection; an existing pending action remains queued | NOT TESTED: physical ESP32 Wi-Fi |
+| C08 | Repeat exact occurrence/request ID | First and exact retry return 200 with one effect; a new key for a resolved firing returns 409 | PASS: sequential and actual concurrent HTTP checks |
+| C09 | Valid token but no currently due reminder | Selection returns 200 and due=false; no action submitted | PASS: API/HTTP no-due checks |
+| C10 | Token for account A; only B has a due reminder | A selection reports due=false; an explicit B target returns 404; B unchanged | PASS: simulated HTTP account isolation |
+| C11 | Two due medicines; repeat identical bound request | One effect, same receipt; second medicine remains due. Id-less actions fail with 400. | PASS: unit, concurrent and real HTTP checks; historical unsafe behavior retained separately |
+| C12 | Snooze, then restart backend before deadline | Persisted deadline remains and regular checks re-fire when reached | PASS: real 300-second waits with process restarts |
+| C13 | Hardware Taken while browser alarm is showing | Database/log changes; browser reconciles on next successful poll | PASS: simulated device HTTP + Chromium polling |
 
 Keep failure diagnosis separate from application changes. A documentation
 correction is not a firmware/backend fix, and a test plan is not a pass
@@ -529,16 +488,14 @@ GPIO, debounce, Wi-Fi association, uploaded firmware or LEDs. Run only on
 a disposable local demo account with the intended due reminder:
 
 ```bash
-curl -i -X POST http://<host-lan-ip>:5050/api/device/action \
-  -H 'Content-Type: application/json' \
-  -d '{"token":"<replace-with-private-demo-token>","action":"taken"}'
+# Set DOSECLOCK_DEVICE_TOKEN privately in the environment first.
+python3 tests/esp32_simulator.py --host http://<host-lan-ip>:5050 --action taken --request-file /private/tmp/doseclock-demo-request.json
 ```
 
-To test Snooze, create another due dummy reminder and replace the action
-with `snooze`. To test invalid authentication, use a made-up token. The
-angle-bracket values are placeholders, not working credentials. Avoid
-recording a terminal command containing a real token; redact secrets from
-evidence and use locally prepared demo credentials.
+Repeat that command with the same file to demonstrate a safe retry. Use a new
+file for a deliberately new action; use `--action snooze` with its own new
+request file to demonstrate Snooze. Files contain firing identity, not the
+token. Never record a terminal containing real credentials.
 
 After a successful Taken, refresh `/logs` under the paired account. For
 an optional read-only SQLite check, if the SQLite CLI is installed:
@@ -557,8 +514,9 @@ inspect that account's `medicines.is_due` and `snoozed_until`; a dose-log
 row is not the expected Snooze outcome. Do not edit or delete the database
 to manufacture test results.
 
-The existing software suite contains two database tests and seven
-hardware-API tests. It requires the declared Python dependencies. Since
+The original suite contains two database tests and seven hardware-API tests.
+The validation branch adds 23 database/API/scheduler regressions, plus live
+HTTP, audio and Chromium checks. See `docs/testing/TEST_REPORT.md` for actual results. It requires the declared Python dependencies. Since
 importing `app` can create a session-key file, run it in an exported
 temporary checkout when preserving the original workspace:
 
@@ -571,9 +529,9 @@ git archive HEAD | tar -x -C "$DOSECLOCK_TEST_COPY"
 
 The suite uses Flask's test client and disposable SQLite; it is not a
 physical ESP32 test. A missing dependency is a blocked run, not a pass.
-The current audio-failure test patches generation while firing reads only
-the cache, and the conflict test mocks a failed claim; neither establishes
-real synthesis failure recovery or real request-race coverage.
+The retained older audio-failure check patches generation while firing reads
+only cache. Stronger provider-failure, real concurrency and retry regressions
+are in `tests/test_resolution.py`; use the full suite for those claims.
 
 ### Troubleshooting by layer
 
@@ -583,16 +541,61 @@ real synthesis failure recovery or real request-race coverage.
 | Local browser works; hub cannot connect | LAN IP, port 5050, guest/client isolation, firewall, host awake | `localhost` on the ESP32 is not the laptop. Confirm access from another LAN client. |
 | Negative HTTP result in Serial | Host process/address and network route | Transport failed before a normal HTTP response. Record the library error text. |
 | HTTP 401 | Token copied from the intended pairing response | Authentication failed; do not diagnose it as a GPIO fault. |
-| HTTP 400 | Exact lower-case action and valid JSON payload | Valid actions are `taken` and `snooze`; spelling/case matter. |
-| HTTP 404 | Due state and paired account | An active future schedule is not a due reminder; verify the backend clock and account. |
-| HTTP 409 | Another client/device resolving the selected firing | Re-read state before acting; blind retry is unsafe when other medicines are due. |
+| HTTP 400 | Action, JSON, id/fired_at and request_id | Legacy id-less bodies are rejected; update the client and use the selected firing. |
+| HTTP 404 | Selected target and paired account | Target absent or outside the paired account; selection with no due row instead returns due=false. |
+| HTTP 409 | Another client/device resolving the selected firing | Keep the old binding on retries. A new intentional action may select current state; never retarget an uncertain request. |
 | LED does not match Serial success | Actual GPIO2 LED wiring/polarity, resistor, visible placement | Serial/HTTP and database state can distinguish feedback wiring from an API problem. |
 | Hold never sends | Switch still closed or no confirmed hold | Actions are sent on release; an intermediate duration intentionally sends nothing. |
-| One press changes a different medicine | Multiple pending rows or wrong token owner | The API selects the oldest due row; isolate one pending medicine for the demo. |
-| Successful hardware action leaves browser alarm | Clock's current-alarm polling guard | Refresh Clock/Logs; database acknowledgment does not imply automatic browser reconciliation. |
+| One press changes a different medicine | Multiple pending rows or wrong token owner | Inspect the selected id/fired_at and pairing owner; an exact retry cannot select another medicine. |
+| Successful hardware action leaves browser alarm | Polling interval or failed network request | Allow the next successful 17-second poll; inspect HTTP and database state if the display remains stale. |
 | No spoken audio | User gesture, cached path, actual file, TTS/network readiness | Do not treat missing audio as an HTTP/device fault. No generic offline speech fallback is included. |
 
 Evidence for a completed integration test should combine the HTTP/Serial
 result with an account-scoped state change. A photo establishes assembly;
 a screen showing a curl request establishes a simulated API exchange.
 Neither alone proves physical switch timing or independent medication use.
+
+## Executed Review 3 software validation
+
+Run the complete unit suite in a disposable exported source tree:
+
+```bash
+python3 -m pip install -r tests/requirements-review3.txt
+python3 -m playwright install chromium
+python3 -B tests/run_review3_suite.py --source . --output /private/tmp/doseclock-unit-new-run
+```
+
+See [TEST_REPORT](docs/testing/TEST_REPORT.md), [review results](docs/testing/REVIEW3_RESULTS.md)
+and [bug/retest evidence](docs/testing/BUG_REPORT.md). Live test helpers bind only
+to loopback and use temporary databases. The Python simulator exercises the real
+device endpoint; it does not validate physical switch classification or LEDs.
+The new device protocol requires occurrence identity and a durable request ID;
+exact retries preserve their target. Six translated TTS templates are verified
+as provider inputs and MP3/cache handling; human intelligibility is unverified.
+The ESP32 target build and physical retry behavior still require validation.
+
+## Multilingual reminder content (23 October 2026 update)
+
+English, Hindi, Tamil, Telugu, Kannada and Bengali each have a translated
+reminder template. The medicine label is inserted unchanged; time slots,
+course counters and dose instructions are not translated or inferred. Audio
+cache names include the actual sentence and language, preventing reuse of the
+old English-only non-English files. Existing cache files are preserved; new
+speech requires connectivity. Empty/failed generation is not published, and
+visual reminders remain usable when speech is unavailable. Provider inputs,
+MP3 handling and cache reuse are tested; human pronunciation/intelligibility
+and independent native-speaker review remain unverified.
+
+October 23 testing is a later validation, distinct from the original October 9
+Review 3. See [current results](docs/testing/REVIEW3_RESULTS.md) and
+[software-resolution evidence](docs/testing/SOFTWARE_RESOLUTION_20261023.md).
+
+
+## Firmware validation (25 October 2026)
+
+The complete software suite has 115 passing checks, no failures and five
+unexecuted physical/human/LAN cases. A separate clean ESP32 target compilation
+passed and generated firmware.bin, bringing the combined count to 116 passes.
+Compilation and host simulations do not establish physical hardware acceptance.
+See [the dated firmware report](docs/testing/FIRMWARE_RESOLUTION_20261025.md) and
+[Ayush's private-build and physical checklist](docs/testing/AYUSH_FIRMWARE_CHECKLIST_20261025.md).

@@ -1,0 +1,71 @@
+--- original/run_review3_browser.py
++++ followup/run_review3_browser.py
+@@ -2,6 +2,9 @@
+ import argparse,json,os,secrets,shutil,socket,subprocess,sys,tempfile,time,traceback
+ from pathlib import Path
+ from playwright.sync_api import sync_playwright
++from review3_media import verify_autoplay
++from datetime import datetime
++from zoneinfo import ZoneInfo
+ 
+ p=argparse.ArgumentParser();p.add_argument('--source',required=True);p.add_argument('--output',required=True);p.add_argument('--visibility',action='store_true');p.add_argument('--audio-cache');p.add_argument('--only');a=p.parse_args()
+ out=Path(a.output).resolve();out.mkdir(parents=True,exist_ok=True);(out/'screenshots').mkdir(exist_ok=True)
+@@ -21,7 +24,7 @@
+    try:urllib.request.urlopen(base+'/login',timeout=.3);break
+    except Exception:time.sleep(.1)
+   with sync_playwright() as pw:
+-   browser=pw.chromium.launch(args=['--autoplay-policy=document-user-activation-required']);metadata={'browser':browser.version,'mode':'headless Chromium; loopback Flask; disposable SQLite','microphone':'not available for independent spoken-command validation','autoplay_policy':'document-user-activation-required'}
++   browser=pw.chromium.launch(args=['--autoplay-policy=document-user-activation-required'], ignore_default_args=['--mute-audio']);metadata={'recorded_at':datetime.now(ZoneInfo('Asia/Kolkata')).isoformat(),'validation_stage':'23 October 2026 follow-up after initial Review 3','browser':browser.version,'mode':'headless Chromium; loopback Flask; disposable SQLite','microphone':'not available for independent spoken-command validation','autoplay_policy':'document-user-activation-required'}
+    def case(cid,feature,fn):
+     if a.only and cid not in a.only.split(','):return
+     started=time.perf_counter();ctx=browser.new_context(viewport={'width':1440,'height':1000});page=ctx.new_page();page.set_default_timeout(5000)
+@@ -80,22 +83,18 @@
+     page.wait_for_function("!document.querySelector('#alarm-view').classList.contains('visible')",timeout=19000)
+     return {'hardware_message':'SIMULATED ESP32 COMMUNICATION','HTTP':200,'browser_reconciled_without_refresh':True}
+    def autoplay(page):
+-    user='review_autoplay';fixture(page,user,'due')
+-    page.request.post(base+'/login',form={'username':user,'password':'dummy-password'})
+-    page.goto(base+'/clock');page.wait_for_function("document.querySelector('#alarm-view').classList.contains('visible')")
+-    # Observe the app's own autoplay attempt. Calling play() through evaluate
+-    # would run with a CDP user gesture and invalidate this experiment.
+-    page.wait_for_timeout(300)
+-    paused_before=page.locator('#reminder-audio').evaluate('(a) => a.paused')
+-    blocked='paused before user gesture' if paused_before else 'playing before user gesture'
+-    assert paused_before,{'fresh_context_app_playback':blocked}
+-    page.locator('#alarm-medicine-name').click()
+-    page.wait_for_function("document.querySelector('#reminder-audio').readyState >= 2")
+-    media=page.evaluate("() => {const a=document.querySelector('#reminder-audio');return {src:a.getAttribute('src'),duration:a.duration,paused:a.paused};}")
+-    assert media['src'].endswith('.mp3') and media['duration']>1,media
+-    page.locator('#snooze-btn').click();page.wait_for_timeout(200)
+-    paused=page.locator('#reminder-audio').evaluate('(a) => a.paused');assert paused
+-    return {'autoplay_before_gesture':blocked,'after_gesture':media,'paused_after_snooze':paused,'human_listening':False}
++    # Separate empty disk profile; no Playwright evaluation/locator calls in
++    # its acceptance path. HTTP authentication does not activate the page.
++    def media_fixture(user,operation='state'):
++     return fixture(page,user,operation)
++    result=verify_autoplay(pw,base,media_fixture,out/'UI10-clean-profile')
++    return {'autoplay_before_gesture':result['initial']['audit']['calls'][0],
++            'explicit_no_gesture_probe':result['explicit_probe'],
++            'playing_samples':[s['media'] for s in result['playing_samples']],
++            'stopped_samples':[s['media'] for s in result['stopped_samples']],
++            'trusted_gestures':result['trusted_gestures'],
++            'profile_initially_empty':result['profile_initially_empty'],
++            'human_listening':False,'detail':'UI10-clean-profile/results.json'}
+    def unavailable_audio(page):
+     user='review_missing_audio';fixture(page,user,'due',name='Uncached visual-only dummy');login(page,user,due=False)
+     page.wait_for_function("document.querySelector('#alarm-view').classList.contains('visible')")
+@@ -111,7 +110,7 @@
+    case('UI07','Network failure cannot falsely report Snooze; recovery',lambda p:failed_action(p,'snooze'))
+    case('UI08','HTTP rejection cannot falsely acknowledge Taken',lambda p:failed_action(p,'taken',True))
+    case('UI09','External device action reconciles visible browser alarm',external)
+-   case('UI10','Autoplay blocked before gesture; real MP3 retained and paused on Snooze',autoplay)
++   case('UI10','Fresh-profile no-gesture play rejects; trusted audio prompt click plays and advances MP3; Snooze stops progression',autoplay)
+    case('UI11','Unavailable speech leaves visual reminder and Taken usable',unavailable_audio)
+    if a.visibility:
+     for i in range(1,6):
+@@ -127,3 +126,5 @@
+    (out/'results.json').write_text(json.dumps({'metadata':metadata,'records':records},indent=2));browser.close()
+  finally:
+   proc.terminate();proc.wait(timeout=10);log.close()
++
++sys.exit(1 if any(r['status']=='FAIL' for r in records) else 0)

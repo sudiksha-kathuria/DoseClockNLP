@@ -1,0 +1,135 @@
+{
+  "source_private_path": "/private/tmp/doseclock-firmware-20261025-browser.protocol.log",
+  "source_sha256": "e7217bafc5e879b6309be24f7b6c68812a4794f8b78951f12fce23e5e2768394",
+  "scope": "Actual outgoing Runtime/Input/navigation calls; HTTP credentials excluded. Last navigation to first browser input per session.",
+  "sessions": [
+    {
+      "sessionId": "FD198B1CD2F095215BC296F935106E29",
+      "navigation": "http://127.0.0.1:58333/signup",
+      "runtime_before_first_input": 24,
+      "userGesture_true": 22,
+      "userGesture_false": 0,
+      "userGesture_omitted": 2
+    },
+    {
+      "sessionId": "257352B26E5246F2B566AEEA1DC29FAB",
+      "navigation": "http://127.0.0.1:58333/logs",
+      "runtime_before_first_input": 8,
+      "userGesture_true": 6,
+      "userGesture_false": 0,
+      "userGesture_omitted": 2
+    },
+    {
+      "sessionId": "417F170B15721AE04BB71BF8A9B90664",
+      "navigation": "http://127.0.0.1:58333/login",
+      "runtime_before_first_input": 19,
+      "userGesture_true": 17,
+      "userGesture_false": 0,
+      "userGesture_omitted": 2
+    },
+    {
+      "sessionId": "8CBE8090F172776B2498B70A96F6665F",
+      "navigation": "http://127.0.0.1:58333/login",
+      "runtime_before_first_input": 19,
+      "userGesture_true": 17,
+      "userGesture_false": 0,
+      "userGesture_omitted": 2
+    },
+    {
+      "sessionId": "C2FD201B41CB270207A9566AAC40C4BF",
+      "navigation": "http://127.0.0.1:58333/login",
+      "runtime_before_first_input": 19,
+      "userGesture_true": 17,
+      "userGesture_false": 0,
+      "userGesture_omitted": 2
+    },
+    {
+      "sessionId": "BA3A480BE8A9DCC5DB1CC5CEE435796E",
+      "navigation": "http://127.0.0.1:58333/login",
+      "runtime_before_first_input": 19,
+      "userGesture_true": 17,
+      "userGesture_false": 0,
+      "userGesture_omitted": 2
+    },
+    {
+      "sessionId": "A2B40D555869C305F35B42778ABCD594",
+      "navigation": "http://127.0.0.1:58333/login",
+      "runtime_before_first_input": 19,
+      "userGesture_true": 17,
+      "userGesture_false": 0,
+      "userGesture_omitted": 2
+    },
+    {
+      "sessionId": "32E1990112004596360F82B2B37F3FE9",
+      "navigation": "http://127.0.0.1:58333/login",
+      "runtime_before_first_input": 19,
+      "userGesture_true": 17,
+      "userGesture_false": 0,
+      "userGesture_omitted": 2
+    },
+    {
+      "sessionId": "B7DF3E7E792CFE3ABCE78415207FCC2C",
+      "navigation": "http://127.0.0.1:58333/login",
+      "runtime_before_first_input": 19,
+      "userGesture_true": 17,
+      "userGesture_false": 0,
+      "userGesture_omitted": 2
+    },
+    {
+      "sessionId": "13179BAE196D262FC9D70864A5B74787",
+      "navigation": "http://127.0.0.1:58333/clock",
+      "runtime_before_first_input": 7,
+      "userGesture_true": 0,
+      "userGesture_false": 7,
+      "userGesture_omitted": 0
+    },
+    {
+      "sessionId": "D018B7067CF1CD1EEDE520099B8019D2",
+      "navigation": "http://127.0.0.1:58333/login",
+      "runtime_before_first_input": 19,
+      "userGesture_true": 17,
+      "userGesture_false": 0,
+      "userGesture_omitted": 2
+    },
+    {
+      "sessionId": "D6FC12C635E89762127F81AE3E433BA9",
+      "navigation": "http://127.0.0.1:58333/login",
+      "runtime_before_first_input": 19,
+      "userGesture_true": 17,
+      "userGesture_false": 0,
+      "userGesture_omitted": 2
+    },
+    {
+      "sessionId": "93B8D129446477DBE4C9B4CE12A39E5C",
+      "navigation": "http://127.0.0.1:58333/login",
+      "runtime_before_first_input": 19,
+      "userGesture_true": 17,
+      "userGesture_false": 0,
+      "userGesture_omitted": 2
+    },
+    {
+      "sessionId": "E6807B62A3522F7A73ECE2A26439DE45",
+      "navigation": "http://127.0.0.1:58333/login",
+      "runtime_before_first_input": 19,
+      "userGesture_true": 17,
+      "userGesture_false": 0,
+      "userGesture_omitted": 2
+    },
+    {
+      "sessionId": "85E69B586211AAE293DC96E2475FBE06",
+      "navigation": "http://127.0.0.1:58333/login",
+      "runtime_before_first_input": 19,
+      "userGesture_true": 17,
+      "userGesture_false": 0,
+      "userGesture_omitted": 2
+    },
+    {
+      "sessionId": "B1D15886B0A8544A19B9117186B967C2",
+      "navigation": "http://127.0.0.1:58333/login",
+      "runtime_before_first_input": 19,
+      "userGesture_true": 17,
+      "userGesture_false": 0,
+      "userGesture_omitted": 2
+    }
+  ]
+}

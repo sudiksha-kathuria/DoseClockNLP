@@ -1,0 +1,16 @@
+{
+  "started_at": "2026-10-24T01:17:51.425839+05:30",
+  "finished_at": "2026-10-24T01:26:58.712664+05:30",
+  "command": [
+    "/private/tmp/doseclock-compatibility-audit-20261024/venv/bin/pio",
+    "run",
+    "--project-dir",
+    "/private/tmp/doseclock-compatibility-audit-20261024/firmware",
+    "--environment",
+    "esp32dev"
+  ],
+  "exit_code": -15,
+  "timed_out": false,
+  "source_sha256": "fefab673f834b5c3486f14cf726b2e5cb7a7f5cc400f095be5e44f09d35261af",
+  "scope": "ESP32 Dev Module cross-compilation; no flashing or physical testing"
+}

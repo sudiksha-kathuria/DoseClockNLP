@@ -1,0 +1,192 @@
+{
+  "recorded_at_utc": "2026-10-25T09:14:50.686251+00:00",
+  "text_scope": "Six translated templates; exact provider inputs and valid MP3s checked; no human pronunciation/intelligibility verification",
+  "records": [
+    {
+      "id": "AUDIO-en",
+      "feature": "English audio generation and MP3 validity",
+      "expected": "Nonempty parsable MP3 with positive duration",
+      "actual": {
+        "language_code": "en",
+        "bytes": 20736,
+        "duration_seconds": 2.592,
+        "sample_rate": 24000,
+        "sha256": "9918915b1f064c5a027a9fa24c3f55375f66c7014e62bbffd22bb84cd6eabd55",
+        "spoken_template": "It's time to take your Review dummy.",
+        "provider_calls": 1,
+        "human_pronunciation_verified": false
+      },
+      "status": "PASS",
+      "duration_seconds": 3.6182373331394047,
+      "evidence": "en_review-dummy_9ba543bfedc08875.mp3"
+    },
+    {
+      "id": "CACHE-en",
+      "feature": "English cached reuse with synthesis unavailable",
+      "expected": "Same file/hash/mtime without a synthesis call",
+      "actual": {
+        "unchanged": true,
+        "gTTS_calls": 0,
+        "scope": "synthesis disabled by controlled injection; not a physical network outage"
+      },
+      "status": "PASS",
+      "duration_seconds": 0.00035908399149775505,
+      "evidence": "en_review-dummy_9ba543bfedc08875.mp3"
+    },
+    {
+      "id": "AUDIO-hi",
+      "feature": "Hindi audio generation and MP3 validity",
+      "expected": "Nonempty parsable MP3 with positive duration",
+      "actual": {
+        "language_code": "hi",
+        "bytes": 30528,
+        "duration_seconds": 3.816,
+        "sample_rate": 24000,
+        "sha256": "2b10bfee627a17f66f7bfe13af004910a5516a4b198b2f543c713d4a66ff4106",
+        "spoken_template": "आपकी दवा Review dummy लेने का समय हो गया है।",
+        "provider_calls": 1,
+        "human_pronunciation_verified": false
+      },
+      "status": "PASS",
+      "duration_seconds": 3.875426125014201,
+      "evidence": "hi_review-dummy_0445123d52112803.mp3"
+    },
+    {
+      "id": "CACHE-hi",
+      "feature": "Hindi cached reuse with synthesis unavailable",
+      "expected": "Same file/hash/mtime without a synthesis call",
+      "actual": {
+        "unchanged": true,
+        "gTTS_calls": 0,
+        "scope": "synthesis disabled by controlled injection; not a physical network outage"
+      },
+      "status": "PASS",
+      "duration_seconds": 0.0004939169157296419,
+      "evidence": "hi_review-dummy_0445123d52112803.mp3"
+    },
+    {
+      "id": "AUDIO-ta",
+      "feature": "Tamil audio generation and MP3 validity",
+      "expected": "Nonempty parsable MP3 with positive duration",
+      "actual": {
+        "language_code": "ta",
+        "bytes": 36096,
+        "duration_seconds": 4.512,
+        "sample_rate": 24000,
+        "sha256": "bf5e494dbab0bcb1c6a1db19365cf8809867d7389914207d5506469df78da897",
+        "spoken_template": "உங்கள் Review dummy மருந்தை எடுத்துக்கொள்ள வேண்டிய நேரம் இது.",
+        "provider_calls": 1,
+        "human_pronunciation_verified": false
+      },
+      "status": "PASS",
+      "duration_seconds": 3.948213000083342,
+      "evidence": "ta_review-dummy_99e8b43d09c117c3.mp3"
+    },
+    {
+      "id": "CACHE-ta",
+      "feature": "Tamil cached reuse with synthesis unavailable",
+      "expected": "Same file/hash/mtime without a synthesis call",
+      "actual": {
+        "unchanged": true,
+        "gTTS_calls": 0,
+        "scope": "synthesis disabled by controlled injection; not a physical network outage"
+      },
+      "status": "PASS",
+      "duration_seconds": 0.0005588331259787083,
+      "evidence": "ta_review-dummy_99e8b43d09c117c3.mp3"
+    },
+    {
+      "id": "AUDIO-te",
+      "feature": "Telugu audio generation and MP3 validity",
+      "expected": "Nonempty parsable MP3 with positive duration",
+      "actual": {
+        "language_code": "te",
+        "bytes": 31104,
+        "duration_seconds": 3.888,
+        "sample_rate": 24000,
+        "sha256": "956743cb1f7be06871c966fe80840cce4e1bc65c34ba43011eb556d11f8f98f2",
+        "spoken_template": "మీ Review dummy మందు తీసుకునే సమయం అయింది.",
+        "provider_calls": 1,
+        "human_pronunciation_verified": false
+      },
+      "status": "PASS",
+      "duration_seconds": 3.45860516699031,
+      "evidence": "te_review-dummy_5b01eee8ee49f247.mp3"
+    },
+    {
+      "id": "CACHE-te",
+      "feature": "Telugu cached reuse with synthesis unavailable",
+      "expected": "Same file/hash/mtime without a synthesis call",
+      "actual": {
+        "unchanged": true,
+        "gTTS_calls": 0,
+        "scope": "synthesis disabled by controlled injection; not a physical network outage"
+      },
+      "status": "PASS",
+      "duration_seconds": 0.0002466249279677868,
+      "evidence": "te_review-dummy_5b01eee8ee49f247.mp3"
+    },
+    {
+      "id": "AUDIO-kn",
+      "feature": "Kannada audio generation and MP3 validity",
+      "expected": "Nonempty parsable MP3 with positive duration",
+      "actual": {
+        "language_code": "kn",
+        "bytes": 38208,
+        "duration_seconds": 4.776,
+        "sample_rate": 24000,
+        "sha256": "6409df09b1ff44879e59d0471acba74d495eb52fd472d68f1b30b828a7f3fdb3",
+        "spoken_template": "ನಿಮ್ಮ Review dummy ಔಷಧಿ ತೆಗೆದುಕೊಳ್ಳುವ ಸಮಯವಾಗಿದೆ.",
+        "provider_calls": 1,
+        "human_pronunciation_verified": false
+      },
+      "status": "PASS",
+      "duration_seconds": 3.674698791000992,
+      "evidence": "kn_review-dummy_c97e6beaf071eeaf.mp3"
+    },
+    {
+      "id": "CACHE-kn",
+      "feature": "Kannada cached reuse with synthesis unavailable",
+      "expected": "Same file/hash/mtime without a synthesis call",
+      "actual": {
+        "unchanged": true,
+        "gTTS_calls": 0,
+        "scope": "synthesis disabled by controlled injection; not a physical network outage"
+      },
+      "status": "PASS",
+      "duration_seconds": 0.0006150831468403339,
+      "evidence": "kn_review-dummy_c97e6beaf071eeaf.mp3"
+    },
+    {
+      "id": "AUDIO-bn",
+      "feature": "Bengali audio generation and MP3 validity",
+      "expected": "Nonempty parsable MP3 with positive duration",
+      "actual": {
+        "language_code": "bn",
+        "bytes": 33600,
+        "duration_seconds": 4.2,
+        "sample_rate": 24000,
+        "sha256": "1db435b03d27cee159c3bee92fcbe8a5d0d569bbdc21fac640967c1096c23b60",
+        "spoken_template": "আপনার Review dummy ওষুধ খাওয়ার সময় হয়েছে।",
+        "provider_calls": 1,
+        "human_pronunciation_verified": false
+      },
+      "status": "PASS",
+      "duration_seconds": 5.204352667089552,
+      "evidence": "bn_review-dummy_6066d3f1e23d7bb6.mp3"
+    },
+    {
+      "id": "CACHE-bn",
+      "feature": "Bengali cached reuse with synthesis unavailable",
+      "expected": "Same file/hash/mtime without a synthesis call",
+      "actual": {
+        "unchanged": true,
+        "gTTS_calls": 0,
+        "scope": "synthesis disabled by controlled injection; not a physical network outage"
+      },
+      "status": "PASS",
+      "duration_seconds": 0.000828874995931983,
+      "evidence": "bn_review-dummy_6066d3f1e23d7bb6.mp3"
+    }
+  ]
+}

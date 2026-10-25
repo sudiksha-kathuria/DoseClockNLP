@@ -1,0 +1,19 @@
+{
+  "recorded_at": "2026-10-23T16:23:47.850367+05:30",
+  "id": "FW-BUILD",
+  "status": "NOT TESTED",
+  "exit_code": null,
+  "command": [
+    "/private/tmp/doseclock-firmware-validation-20261023/arduino-cli",
+    "--config-file",
+    "/private/tmp/doseclock-firmware-validation-20261023/arduino-cli.yaml",
+    "compile",
+    "--fqbn",
+    "esp32:esp32:esp32",
+    "--build-path",
+    "/private/tmp/doseclock-firmware-validation-20261023/build",
+    "/private/tmp/doseclock-firmware-validation-20261023/switch_hub"
+  ],
+  "scope": "ESP32 target compile only; no flash/GPIO/Wi-Fi/NVS hardware test",
+  "reason": "ESP32 target/toolchain and ArduinoJson are not installed; see initialization/build log. No successful target compilation is claimed."
+}

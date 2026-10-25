@@ -1,0 +1,13 @@
+{
+  "recorded_at": "2026-10-23T15:00:07.671406+05:30",
+  "python": "3.12.14 (main, Aug 25 2026, 13:50:33) [Clang 22.1.3 ]",
+  "platform": "macOS-26.6.2-arm64-arm-64bit",
+  "packages": {
+    "playwright": "1.64.1",
+    "Flask": "3.1.3",
+    "gTTS": "2.5.4",
+    "mutagen": "1.48.1"
+  },
+  "browser": "headless Chromium 156.0.8078.4",
+  "human_listening": false
+}

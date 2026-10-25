@@ -1,0 +1,10 @@
+{
+  "recorded_at": "2026-10-23T14:46:51.213863+05:30",
+  "policy": "default",
+  "scenario": "pending",
+  "human_listening": false,
+  "profile_initially_empty": true,
+  "status": "FAIL",
+  "error": "CDPSession.send: Protocol error (Browser.getBrowserCommandLine): Command line not returned because --enable-automation not set.",
+  "failure_state": null
+}

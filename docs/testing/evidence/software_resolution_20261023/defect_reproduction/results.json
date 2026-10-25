@@ -1,0 +1,124 @@
+{
+  "recorded_at": "2026-10-23T16:02:59.125911+05:30",
+  "chronology": "New reproduction from pre-fix snapshot; not an October 9 execution",
+  "records": [
+    {
+      "id": "REPRO-IDLESS-taken",
+      "status": "REPRODUCED",
+      "requests_identical": true,
+      "http_statuses": [
+        200,
+        200
+      ],
+      "selected_medicines": [
+        "Pending A",
+        "Pending B"
+      ],
+      "taken_logs": 2,
+      "due_states": [
+        0,
+        0
+      ],
+      "snoozed_rows": 0,
+      "token": "<redacted>"
+    },
+    {
+      "id": "REPRO-IDLESS-snooze",
+      "status": "REPRODUCED",
+      "requests_identical": true,
+      "http_statuses": [
+        200,
+        200
+      ],
+      "selected_medicines": [
+        "Pending A",
+        "Pending B"
+      ],
+      "taken_logs": 0,
+      "due_states": [
+        0,
+        0
+      ],
+      "snoozed_rows": 2,
+      "token": "<redacted>"
+    },
+    {
+      "id": "REPRO-TEXT-en",
+      "status": "REPRODUCED",
+      "provider_arguments": {
+        "text": "It's time to take your Review dummy.",
+        "lang": "en",
+        "timeout": [
+          3,
+          8
+        ]
+      },
+      "audio_scope": "provider mocked for input-text observation"
+    },
+    {
+      "id": "REPRO-TEXT-hi",
+      "status": "REPRODUCED",
+      "provider_arguments": {
+        "text": "It's time to take your Review dummy.",
+        "lang": "hi",
+        "timeout": [
+          3,
+          8
+        ]
+      },
+      "audio_scope": "provider mocked for input-text observation"
+    },
+    {
+      "id": "REPRO-TEXT-ta",
+      "status": "REPRODUCED",
+      "provider_arguments": {
+        "text": "It's time to take your Review dummy.",
+        "lang": "ta",
+        "timeout": [
+          3,
+          8
+        ]
+      },
+      "audio_scope": "provider mocked for input-text observation"
+    },
+    {
+      "id": "REPRO-TEXT-te",
+      "status": "REPRODUCED",
+      "provider_arguments": {
+        "text": "It's time to take your Review dummy.",
+        "lang": "te",
+        "timeout": [
+          3,
+          8
+        ]
+      },
+      "audio_scope": "provider mocked for input-text observation"
+    },
+    {
+      "id": "REPRO-TEXT-kn",
+      "status": "REPRODUCED",
+      "provider_arguments": {
+        "text": "It's time to take your Review dummy.",
+        "lang": "kn",
+        "timeout": [
+          3,
+          8
+        ]
+      },
+      "audio_scope": "provider mocked for input-text observation"
+    },
+    {
+      "id": "REPRO-TEXT-bn",
+      "status": "REPRODUCED",
+      "provider_arguments": {
+        "text": "It's time to take your Review dummy.",
+        "lang": "bn",
+        "timeout": [
+          3,
+          8
+        ]
+      },
+      "audio_scope": "provider mocked for input-text observation"
+    }
+  ]
+}

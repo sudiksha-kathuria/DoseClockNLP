@@ -1,0 +1,14 @@
+test_pre_account_database_migrates_without_assigning_old_records (test_database.DatabaseTests.test_pre_account_database_migrates_without_assigning_old_records) ... ok
+test_taken_is_atomic_and_rejects_repeated_or_wrong_owner_actions (test_database.DatabaseTests.test_taken_is_atomic_and_rejects_repeated_or_wrong_owner_actions) ... ok
+test_audio_failure_does_not_block_hardware (test_hardware.HardwareTests.test_audio_failure_does_not_block_hardware) ... ok
+test_hardware_snooze_survives_a_scheduler_restart (test_hardware.HardwareTests.test_hardware_snooze_survives_a_scheduler_restart) ... ok
+test_hardware_taken_logs_once (test_hardware.HardwareTests.test_hardware_taken_logs_once) ... ok
+test_invalid_token_action_and_no_due_statuses (test_hardware.HardwareTests.test_invalid_token_action_and_no_due_statuses) ... ok
+test_overlapping_device_action_returns_conflict (test_hardware.HardwareTests.test_overlapping_device_action_returns_conflict) ... ok
+test_pairing_token_is_owned_and_displayed_once (test_hardware.HardwareTests.test_pairing_token_is_owned_and_displayed_once) ... ok
+test_token_cannot_answer_another_users_reminder (test_hardware.HardwareTests.test_token_cannot_answer_another_users_reminder) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.956s
+
+OK

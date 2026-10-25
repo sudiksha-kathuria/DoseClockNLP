@@ -1,0 +1,386 @@
+[
+  {
+    "id": 27,
+    "method": "Runtime.evaluate",
+    "userGesture": "omitted",
+    "expression": "\n        (() => {\n        \n        const module = {};\n        \nvar __commonJS = obj => {\n  let required = false;\n  let result;\n  return function __require() {\n ",
+    "functionDeclaration": "",
+    "values": "[]"
+  },
+  {
+    "id": 28,
+    "method": "Runtime.evaluate",
+    "userGesture": "omitted",
+    "expression": "\n      (() => {\n        \n        const module = {};\n        \nvar __commonJS = obj => {\n  let required = false;\n  let result;\n  return function __require() {\n   ",
+    "functionDeclaration": "",
+    "values": "[]"
+  },
+  {
+    "id": 29,
+    "method": "Runtime.callFunctionOn",
+    "userGesture": true,
+    "expression": "",
+    "functionDeclaration": "(utilityScript, ...args) => utilityScript.evaluate(...args)",
+    "values": "[{'objectId': '8154449082165729321.3.2'}, {'value': True}, {'value': False}, {'value': '(injected, { expression: expression3, isFunction: isFunction3, polling, arg: arg3 }) => {\\n            let evaledExpression;\\n            const predicate = () => {\\n              let result3 = evaledExpression ??"
+  },
+  {
+    "id": 30,
+    "method": "Runtime.callFunctionOn",
+    "userGesture": true,
+    "expression": "",
+    "functionDeclaration": "(utilityScript, ...args) => utilityScript.evaluate(...args)",
+    "values": "[{'objectId': '8154449082165729321.3.2'}, {'value': True}, {'value': False}, {'value': '(h) => h.result'}, {'value': 2}, {'value': {'h': 0}}, {'value': {'v': 'undefined'}}, {'objectId': '8154449082165729321.3.3'}]"
+  },
+  {
+    "id": 32,
+    "method": "Runtime.evaluate",
+    "userGesture": "omitted",
+    "expression": "\n        (() => {\n        \n        const module = {};\n        \nvar __commonJS = obj => {\n  let required = false;\n  let result;\n  return function __require() {\n ",
+    "functionDeclaration": "",
+    "values": "[]"
+  },
+  {
+    "id": 33,
+    "method": "Runtime.evaluate",
+    "userGesture": "omitted",
+    "expression": "\n      (() => {\n        \n        const module = {};\n        \nvar __commonJS = obj => {\n  let required = false;\n  let result;\n  return function __require() {\n   ",
+    "functionDeclaration": "",
+    "values": "[]"
+  },
+  {
+    "id": 34,
+    "method": "Runtime.callFunctionOn",
+    "userGesture": true,
+    "expression": "",
+    "functionDeclaration": "(utilityScript, ...args) => utilityScript.evaluate(...args)",
+    "values": "[{'objectId': '8154449082165729321.4.2'}, {'value': True}, {'value': False}, {'value': '(injected2, params2) => {\\n              const elements = injected2.querySelectorAll(params2.info.parsed, params2.scope || document);\\n              if (params2.markTargets === \"all\")\\n                injected2.m"
+  },
+  {
+    "id": 35,
+    "method": "Runtime.callFunctionOn",
+    "userGesture": true,
+    "expression": "",
+    "functionDeclaration": "(utilityScript, ...args) => utilityScript.evaluate(...args)",
+    "values": "[{'objectId': '8154449082165729321.4.2'}, {'value': True}, {'value': True}, {'value': '(r) => ({ log: r.log, visible: r.visible, attached: r.attached })'}, {'value': 2}, {'value': {'h': 0}}, {'value': {'v': 'undefined'}}, {'objectId': '8154449082165729321.4.3'}]"
+  },
+  {
+    "id": 36,
+    "method": "Runtime.callFunctionOn",
+    "userGesture": true,
+    "expression": "",
+    "functionDeclaration": "(utilityScript, ...args) => utilityScript.evaluate(...args)",
+    "values": "[{'objectId': '8154449082165729321.4.2'}, {'value': True}, {'value': False}, {'value': '(r) => r.element'}, {'value': 2}, {'value': {'h': 0}}, {'value': {'v': 'undefined'}}, {'objectId': '8154449082165729321.4.3'}]"
+  },
+  {
+    "id": 37,
+    "method": "Runtime.callFunctionOn",
+    "userGesture": true,
+    "expression": "",
+    "functionDeclaration": "(utilityScript, ...args) => utilityScript.evaluate(...args)",
+    "values": "[{'objectId': '8154449082165729321.4.2'}, {'value': True}, {'value': True}, {'value': '(injected, e) => \"JSHandle@\" + injected.previewNode(e)'}, {'value': 2}, {'value': {'h': 0}}, {'value': {'h': 1}}, {'objectId': '8154449082165729321.4.1'}, {'objectId': '8154449082165729321.4.4'}]"
+  },
+  {
+    "id": 42,
+    "method": "Runtime.callFunctionOn",
+    "userGesture": true,
+    "expression": "",
+    "functionDeclaration": "(utilityScript, ...args) => utilityScript.evaluate(...args)",
+    "values": "[{'objectId': '8154449082165729321.3.2'}, {'value': True}, {'value': True}, {'value': '(injected, e) => \"JSHandle@\" + injected.previewNode(e)'}, {'value': 2}, {'value': {'h': 0}}, {'value': {'h': 1}}, {'objectId': '8154449082165729321.3.1'}, {'objectId': '8154449082165729321.3.4'}]"
+  },
+  {
+    "id": 43,
+    "method": "Runtime.callFunctionOn",
+    "userGesture": true,
+    "expression": "",
+    "functionDeclaration": "(utilityScript, ...args) => utilityScript.evaluate(...args)",
+    "values": "[{'objectId': '8154449082165729321.3.2'}, {}, {'value': True}, {'value': '(a) => a.paused'}, {'value': 2}, {'value': {'h': 0}}, {'value': {'v': 'null'}}, {'objectId': '8154449082165729321.3.4'}]"
+  },
+  {
+    "id": 45,
+    "method": "Runtime.callFunctionOn",
+    "userGesture": true,
+    "expression": "",
+    "functionDeclaration": "(utilityScript, ...args) => utilityScript.evaluate(...args)",
+    "values": "[{'objectId': '8154449082165729321.4.2'}, {'value': True}, {'value': False}, {'value': '(injected2, params2) => {\\n              const elements = injected2.querySelectorAll(params2.info.parsed, params2.scope || document);\\n              if (params2.markTargets === \"all\")\\n                injected2.m"
+  },
+  {
+    "id": 46,
+    "method": "Runtime.callFunctionOn",
+    "userGesture": true,
+    "expression": "",
+    "functionDeclaration": "(utilityScript, ...args) => utilityScript.evaluate(...args)",
+    "values": "[{'objectId': '8154449082165729321.4.2'}, {'value': True}, {'value': True}, {'value': '(r) => ({ log: r.log, success: r.success, box: r.box })'}, {'value': 2}, {'value': {'h': 0}}, {'value': {'v': 'undefined'}}, {'objectId': '8154449082165729321.4.5'}]"
+  },
+  {
+    "id": 47,
+    "method": "Runtime.callFunctionOn",
+    "userGesture": true,
+    "expression": "",
+    "functionDeclaration": "(utilityScript, ...args) => utilityScript.evaluate(...args)",
+    "values": "[{'objectId': '8154449082165729321.4.2'}, {'value': True}, {'value': False}, {'value': '(r) => r.element'}, {'value': 2}, {'value': {'h': 0}}, {'value': {'v': 'undefined'}}, {'objectId': '8154449082165729321.4.5'}]"
+  },
+  {
+    "id": 48,
+    "method": "Runtime.callFunctionOn",
+    "userGesture": true,
+    "expression": "",
+    "functionDeclaration": "(utilityScript, ...args) => utilityScript.evaluate(...args)",
+    "values": "[{'objectId': '8154449082165729321.4.2'}, {'value': True}, {'value': True}, {'value': '(injected, e) => \"JSHandle@\" + injected.previewNode(e)'}, {'value': 2}, {'value': {'h': 0}}, {'value': {'h': 1}}, {'objectId': '8154449082165729321.4.1'}, {'objectId': '8154449082165729321.4.6'}]"
+  },
+  {
+    "id": 50,
+    "method": "Runtime.callFunctionOn",
+    "userGesture": true,
+    "expression": "",
+    "functionDeclaration": "(utilityScript, ...args) => utilityScript.evaluate(...args)",
+    "values": "[{'objectId': '8154449082165729321.4.2'}, {'value': True}, {'value': True}, {'value': 'async ([injected, node, { elementStates: elementStates2, frameVisible: frameVisible2 }]) => {\\n            return await injected.checkElementStates(node, elementStates2, frameVisible2);\\n          }'}, {'value': 1"
+  },
+  {
+    "id": 53,
+    "method": "Runtime.callFunctionOn",
+    "userGesture": true,
+    "expression": "",
+    "functionDeclaration": "(utilityScript, ...args) => utilityScript.evaluate(...args)",
+    "values": "[{'objectId': '8154449082165729321.4.2'}, {'value': True}, {'value': True}, {'value': '() => ({ width: innerWidth, height: innerHeight })'}, {'value': 1}, {'value': {'v': 'undefined'}}]"
+  },
+  {
+    "id": 54,
+    "method": "Runtime.callFunctionOn",
+    "userGesture": true,
+    "expression": "",
+    "functionDeclaration": "(utilityScript, ...args) => utilityScript.evaluate(...args)",
+    "values": "[{'objectId': '8154449082165729321.4.2'}, {'value': True}, {'value': False}, {'value': '([injected, node, { actionType: actionType2, hitPoint: hitPoint2, trial }]) => injected.setupHitTargetInterceptor(node, actionType2, hitPoint2, trial)'}, {'value': 1}, {'value': {'a': [{'h': 0}, {'h': 1}, {'o': ["
+  },
+  {
+    "id": 55,
+    "method": "Input.dispatchMouseEvent",
+    "userGesture": "omitted",
+    "expression": "",
+    "functionDeclaration": "",
+    "values": "[]"
+  },
+  {
+    "id": 56,
+    "method": "Input.dispatchMouseEvent",
+    "userGesture": "omitted",
+    "expression": "",
+    "functionDeclaration": "",
+    "values": "[]"
+  },
+  {
+    "id": 57,
+    "method": "Input.dispatchMouseEvent",
+    "userGesture": "omitted",
+    "expression": "",
+    "functionDeclaration": "",
+    "values": "[]"
+  },
+  {
+    "id": 58,
+    "method": "Runtime.callFunctionOn",
+    "userGesture": true,
+    "expression": "",
+    "functionDeclaration": "(utilityScript, ...args) => utilityScript.evaluate(...args)",
+    "values": "[{'objectId': '8154449082165729321.4.2'}, {'value': True}, {'value': True}, {'value': '(h) => h.stop()'}, {'value': 2}, {'value': {'h': 0}}, {'value': {'v': 'undefined'}}, {'objectId': '8154449082165729321.4.7'}]"
+  },
+  {
+    "id": 62,
+    "method": "Runtime.callFunctionOn",
+    "userGesture": true,
+    "expression": "",
+    "functionDeclaration": "(utilityScript, ...args) => utilityScript.evaluate(...args)",
+    "values": "[{'objectId': '8154449082165729321.3.2'}, {'value': True}, {'value': False}, {'value': '(injected, { expression: expression3, isFunction: isFunction3, polling, arg: arg3 }) => {\\n            let evaledExpression;\\n            const predicate = () => {\\n              let result3 = evaledExpression ??"
+  },
+  {
+    "id": 63,
+    "method": "Runtime.callFunctionOn",
+    "userGesture": true,
+    "expression": "",
+    "functionDeclaration": "(utilityScript, ...args) => utilityScript.evaluate(...args)",
+    "values": "[{'objectId': '8154449082165729321.3.2'}, {'value': True}, {'value': False}, {'value': '(h) => h.result'}, {'value': 2}, {'value': {'h': 0}}, {'value': {'v': 'undefined'}}, {'objectId': '8154449082165729321.3.5'}]"
+  },
+  {
+    "id": 65,
+    "method": "Runtime.callFunctionOn",
+    "userGesture": true,
+    "expression": "",
+    "functionDeclaration": "(utilityScript, ...args) => utilityScript.evaluate(...args)",
+    "values": "[{'objectId': '8154449082165729321.3.2'}, {}, {'value': True}, {'value': \"() => {const a=document.querySelector('#reminder-audio');return {src:a.getAttribute('src'),duration:a.duration,paused:a.paused};}\"}, {'value': 1}, {'value': {'v': 'null'}}]"
+  },
+  {
+    "id": 66,
+    "method": "Runtime.callFunctionOn",
+    "userGesture": true,
+    "expression": "",
+    "functionDeclaration": "(utilityScript, ...args) => utilityScript.evaluate(...args)",
+    "values": "[{'objectId': '8154449082165729321.4.2'}, {'value': True}, {'value': False}, {'value': '(injected2, params2) => {\\n              const elements = injected2.querySelectorAll(params2.info.parsed, params2.scope || document);\\n              if (params2.markTargets === \"all\")\\n                injected2.m"
+  },
+  {
+    "id": 67,
+    "method": "Runtime.callFunctionOn",
+    "userGesture": true,
+    "expression": "",
+    "functionDeclaration": "(utilityScript, ...args) => utilityScript.evaluate(...args)",
+    "values": "[{'objectId': '8154449082165729321.4.2'}, {'value': True}, {'value': True}, {'value': '(r) => ({ log: r.log, success: r.success, box: r.box })'}, {'value': 2}, {'value': {'h': 0}}, {'value': {'v': 'undefined'}}, {'objectId': '8154449082165729321.4.8'}]"
+  },
+  {
+    "id": 68,
+    "method": "Runtime.callFunctionOn",
+    "userGesture": true,
+    "expression": "",
+    "functionDeclaration": "(utilityScript, ...args) => utilityScript.evaluate(...args)",
+    "values": "[{'objectId': '8154449082165729321.4.2'}, {'value': True}, {'value': False}, {'value': '(r) => r.element'}, {'value': 2}, {'value': {'h': 0}}, {'value': {'v': 'undefined'}}, {'objectId': '8154449082165729321.4.8'}]"
+  },
+  {
+    "id": 69,
+    "method": "Runtime.callFunctionOn",
+    "userGesture": true,
+    "expression": "",
+    "functionDeclaration": "(utilityScript, ...args) => utilityScript.evaluate(...args)",
+    "values": "[{'objectId': '8154449082165729321.4.2'}, {'value': True}, {'value': True}, {'value': '(injected, e) => \"JSHandle@\" + injected.previewNode(e)'}, {'value': 2}, {'value': {'h': 0}}, {'value': {'h': 1}}, {'objectId': '8154449082165729321.4.1'}, {'objectId': '8154449082165729321.4.9'}]"
+  },
+  {
+    "id": 71,
+    "method": "Runtime.callFunctionOn",
+    "userGesture": true,
+    "expression": "",
+    "functionDeclaration": "(utilityScript, ...args) => utilityScript.evaluate(...args)",
+    "values": "[{'objectId': '8154449082165729321.4.2'}, {'value': True}, {'value': True}, {'value': 'async ([injected, node, { elementStates: elementStates2, frameVisible: frameVisible2 }]) => {\\n            return await injected.checkElementStates(node, elementStates2, frameVisible2);\\n          }'}, {'value': 1"
+  },
+  {
+    "id": 74,
+    "method": "Runtime.callFunctionOn",
+    "userGesture": true,
+    "expression": "",
+    "functionDeclaration": "(utilityScript, ...args) => utilityScript.evaluate(...args)",
+    "values": "[{'objectId': '8154449082165729321.4.2'}, {'value': True}, {'value': True}, {'value': '() => ({ width: innerWidth, height: innerHeight })'}, {'value': 1}, {'value': {'v': 'undefined'}}]"
+  },
+  {
+    "id": 75,
+    "method": "Runtime.callFunctionOn",
+    "userGesture": true,
+    "expression": "",
+    "functionDeclaration": "(utilityScript, ...args) => utilityScript.evaluate(...args)",
+    "values": "[{'objectId': '8154449082165729321.4.2'}, {'value': True}, {'value': False}, {'value': '([injected, node, { actionType: actionType2, hitPoint: hitPoint2, trial }]) => injected.setupHitTargetInterceptor(node, actionType2, hitPoint2, trial)'}, {'value': 1}, {'value': {'a': [{'h': 0}, {'h': 1}, {'o': ["
+  },
+  {
+    "id": 76,
+    "method": "Input.dispatchMouseEvent",
+    "userGesture": "omitted",
+    "expression": "",
+    "functionDeclaration": "",
+    "values": "[]"
+  },
+  {
+    "id": 77,
+    "method": "Input.dispatchMouseEvent",
+    "userGesture": "omitted",
+    "expression": "",
+    "functionDeclaration": "",
+    "values": "[]"
+  },
+  {
+    "id": 78,
+    "method": "Input.dispatchMouseEvent",
+    "userGesture": "omitted",
+    "expression": "",
+    "functionDeclaration": "",
+    "values": "[]"
+  },
+  {
+    "id": 79,
+    "method": "Runtime.callFunctionOn",
+    "userGesture": true,
+    "expression": "",
+    "functionDeclaration": "(utilityScript, ...args) => utilityScript.evaluate(...args)",
+    "values": "[{'objectId': '8154449082165729321.4.2'}, {'value': True}, {'value': True}, {'value': '(h) => h.stop()'}, {'value': 2}, {'value': {'h': 0}}, {'value': {'v': 'undefined'}}, {'objectId': '8154449082165729321.4.10'}]"
+  },
+  {
+    "id": 83,
+    "method": "Runtime.callFunctionOn",
+    "userGesture": true,
+    "expression": "",
+    "functionDeclaration": "(utilityScript, ...args) => utilityScript.evaluate(...args)",
+    "values": "[{'objectId': '8154449082165729321.4.2'}, {'value': True}, {'value': False}, {'value': '(injected2, params2) => {\\n              const elements = injected2.querySelectorAll(params2.info.parsed, params2.scope || document);\\n              if (params2.markTargets === \"all\")\\n                injected2.m"
+  },
+  {
+    "id": 84,
+    "method": "Runtime.callFunctionOn",
+    "userGesture": true,
+    "expression": "",
+    "functionDeclaration": "(utilityScript, ...args) => utilityScript.evaluate(...args)",
+    "values": "[{'objectId': '8154449082165729321.4.2'}, {'value': True}, {'value': True}, {'value': '(r) => ({ log: r.log, visible: r.visible, attached: r.attached })'}, {'value': 2}, {'value': {'h': 0}}, {'value': {'v': 'undefined'}}, {'objectId': '8154449082165729321.4.11'}]"
+  },
+  {
+    "id": 85,
+    "method": "Runtime.callFunctionOn",
+    "userGesture": true,
+    "expression": "",
+    "functionDeclaration": "(utilityScript, ...args) => utilityScript.evaluate(...args)",
+    "values": "[{'objectId': '8154449082165729321.4.2'}, {'value': True}, {'value': False}, {'value': '(r) => r.element'}, {'value': 2}, {'value': {'h': 0}}, {'value': {'v': 'undefined'}}, {'objectId': '8154449082165729321.4.11'}]"
+  },
+  {
+    "id": 86,
+    "method": "Runtime.callFunctionOn",
+    "userGesture": true,
+    "expression": "",
+    "functionDeclaration": "(utilityScript, ...args) => utilityScript.evaluate(...args)",
+    "values": "[{'objectId': '8154449082165729321.4.2'}, {'value': True}, {'value': True}, {'value': '(injected, e) => \"JSHandle@\" + injected.previewNode(e)'}, {'value': 2}, {'value': {'h': 0}}, {'value': {'h': 1}}, {'objectId': '8154449082165729321.4.1'}, {'objectId': '8154449082165729321.4.12'}]"
+  },
+  {
+    "id": 91,
+    "method": "Runtime.callFunctionOn",
+    "userGesture": true,
+    "expression": "",
+    "functionDeclaration": "(utilityScript, ...args) => utilityScript.evaluate(...args)",
+    "values": "[{'objectId': '8154449082165729321.3.2'}, {'value': True}, {'value': True}, {'value': '(injected, e) => \"JSHandle@\" + injected.previewNode(e)'}, {'value': 2}, {'value': {'h': 0}}, {'value': {'h': 1}}, {'objectId': '8154449082165729321.3.1'}, {'objectId': '8154449082165729321.3.6'}]"
+  },
+  {
+    "id": 92,
+    "method": "Runtime.callFunctionOn",
+    "userGesture": true,
+    "expression": "",
+    "functionDeclaration": "(utilityScript, ...args) => utilityScript.evaluate(...args)",
+    "values": "[{'objectId': '8154449082165729321.3.2'}, {}, {'value': True}, {'value': '(a) => a.paused'}, {'value': 2}, {'value': {'h': 0}}, {'value': {'v': 'null'}}, {'objectId': '8154449082165729321.3.6'}]"
+  },
+  {
+    "id": 94,
+    "method": "Runtime.callFunctionOn",
+    "userGesture": true,
+    "expression": "",
+    "functionDeclaration": "(utilityScript, ...args) => utilityScript.evaluate(...args)",
+    "values": "[{'objectId': '8154449082165729321.4.2'}, {'value': False}, {'value': True}, {'value': '(function inPagePrepareForScreenshots(screenshotStyle, hideCaret, disableAnimations, syncAnimations) {\\n  if (syncAnimations) {\\n    const style = document.createElement(\"style\");\\n    style.textContent = \"body {"
+  },
+  {
+    "id": 95,
+    "method": "Runtime.callFunctionOn",
+    "userGesture": true,
+    "expression": "",
+    "functionDeclaration": "(utilityScript, ...args) => utilityScript.evaluate(...args)",
+    "values": "[{'objectId': '8154449082165729321.4.2'}, {'value': False}, {'value': True}, {'value': 'document.fonts.ready'}, {'value': 1}, {'value': {'v': 'undefined'}}]"
+  },
+  {
+    "id": 96,
+    "method": "Runtime.callFunctionOn",
+    "userGesture": true,
+    "expression": "",
+    "functionDeclaration": "(utilityScript, ...args) => utilityScript.evaluate(...args)",
+    "values": "[{'objectId': '8154449082165729321.4.2'}, {'value': True}, {'value': False}, {'value': '(injected, { expression: expression3, isFunction: isFunction3, polling, arg: arg3 }) => {\\n            let evaledExpression;\\n            const predicate = () => {\\n              let result3 = evaledExpression ??"
+  },
+  {
+    "id": 97,
+    "method": "Runtime.callFunctionOn",
+    "userGesture": true,
+    "expression": "",
+    "functionDeclaration": "(utilityScript, ...args) => utilityScript.evaluate(...args)",
+    "values": "[{'objectId': '8154449082165729321.4.2'}, {'value': True}, {'value': False}, {'value': '(h) => h.result'}, {'value': 2}, {'value': {'h': 0}}, {'value': {'v': 'undefined'}}, {'objectId': '8154449082165729321.4.13'}]"
+  },
+  {
+    "id": 101,
+    "method": "Runtime.callFunctionOn",
+    "userGesture": true,
+    "expression": "",
+    "functionDeclaration": "(utilityScript, ...args) => utilityScript.evaluate(...args)",
+    "values": "[{'objectId': '8154449082165729321.4.2'}, {'value': False}, {'value': True}, {'value': 'window.__pwCleanupScreenshot && window.__pwCleanupScreenshot()'}, {'value': 1}, {'value': {'v': 'undefined'}}]"
+  }
+]

@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}DoseClock: Dashboard{% endblock %}
+
+{% block content %}
+<div class="dash-shell">
+
+  <!-- Header -->
+  <header class="dash-header">
+    <h1 class="dash-title">Your adherence</h1>
+    <p class="dash-date">{{ today }}</p>
+  </header>
+
+  <!-- 4 stat cards in a row -->
+  <div class="dash-stat-row">
+    <div class="dash-stat-card">
+      <span class="dash-stat-value">{{ active_count }}</span>
+      <span class="dash-stat-label">Medicines active</span>
+    </div>
+    <div class="dash-stat-card">
+      <span class="dash-stat-value">{{ doses_this_week }}</span>
+      <span class="dash-stat-label">Doses taken this week</span>
+    </div>
+    <div class="dash-stat-card">
+      <span class="dash-stat-value">{{ adherence_pct }}%</span>
+      <span class="dash-stat-label">Overall adherence</span>
+    </div>
+    <div class="dash-stat-card">
+      <span class="dash-stat-value">{{ streak }}</span>
+      <span class="dash-stat-label">Current streak (days)</span>
+    </div>
+  </div>
+
+  <!-- Per-medicine progress bars -->
+  <div class="dash-meds">
+    {% if per_med %}
+      {% for m in per_med %}
+      <div class="dash-med-row">
+        <div class="dash-med-top">
+          <div class="dash-med-info">
+            <a class="dash-med-name" href="{{ url_for('medicine_detail', group_id=m.group_id) }}">{{ m.name }}</a>
+            <span class="dash-med-meta">{{ m.days_remaining }} day{{ 's' if m.days_remaining != 1 }} remaining &middot; {{ m.times | join(', ') }}</span>
+          </div>
+          <span class="dash-med-pct">{{ m.pct }}%</span>
+        </div>
+        <div class="dash-bar-track">
+          <div class="dash-bar-fill" data-pct="{{ m.pct }}"></div>
+        </div>
+      </div>
+      {% endfor %}
+    {% else %}
+      <p class="dash-empty">No medicines added yet. <a href="{{ url_for('index') }}">Add your first reminder.</a></p>
+    {% endif %}
+  </div>
+
+</div>
+
+<script>
+  document.querySelectorAll('.dash-bar-fill[data-pct]').forEach(function(el) {
+    el.style.width = Math.min(Math.max(parseFloat(el.dataset.pct) || 0, 0), 100) + '%';
+  });
+</script>
+{% endblock %}

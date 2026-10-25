@@ -1,0 +1,316 @@
+{
+  "scope": "Fresh autoplay profiles only; ordinary UI helper calls are not autoplay evidence",
+  "profiles": [
+    {
+      "source": "autoplay_wire/summary.json",
+      "private_source_sha256": "dab7fbce053dce41a855a0d76fcbb9c605b2b00c7e554ccd45631f00bba558e4",
+      "sessionId": "00D19F86F7007EB77BE6419C37F9E372",
+      "navigation": "http://127.0.0.1:58332/clock",
+      "runtime_before_first_input": 6,
+      "userGesture_true": 0,
+      "userGesture_false": 6,
+      "userGesture_omitted": 0,
+      "requests_before_first_input": [
+        {
+          "id": 33,
+          "method": "Page.navigate",
+          "params": {
+            "url": "http://127.0.0.1:58332/clock"
+          },
+          "sessionId": "00D19F86F7007EB77BE6419C37F9E372"
+        },
+        {
+          "id": 34,
+          "method": "Runtime.evaluate",
+          "params": {
+            "expression": "window.__mediaSnapshot?.() ?? null",
+            "userGesture": false,
+            "returnByValue": true,
+            "awaitPromise": true
+          },
+          "sessionId": "00D19F86F7007EB77BE6419C37F9E372"
+        },
+        {
+          "id": 35,
+          "method": "Runtime.evaluate",
+          "params": {
+            "expression": "window.__mediaSnapshot?.() ?? null",
+            "userGesture": false,
+            "returnByValue": true,
+            "awaitPromise": true
+          },
+          "sessionId": "00D19F86F7007EB77BE6419C37F9E372"
+        },
+        {
+          "id": 36,
+          "method": "Runtime.evaluate",
+          "params": {
+            "expression": "window.__mediaSnapshot?.() ?? null",
+            "userGesture": false,
+            "returnByValue": true,
+            "awaitPromise": true
+          },
+          "sessionId": "00D19F86F7007EB77BE6419C37F9E372"
+        },
+        {
+          "id": 37,
+          "method": "Runtime.evaluate",
+          "params": {
+            "expression": "document.querySelector('#reminder-audio').play().then(() => ({result:'resolved'}),e => ({result:'rejected',name:e.name,message:e.message}))",
+            "userGesture": false,
+            "returnByValue": true,
+            "awaitPromise": true
+          },
+          "sessionId": "00D19F86F7007EB77BE6419C37F9E372"
+        },
+        {
+          "id": 38,
+          "method": "Runtime.evaluate",
+          "params": {
+            "expression": "window.__mediaSnapshot?.() ?? null",
+            "userGesture": false,
+            "returnByValue": true,
+            "awaitPromise": true
+          },
+          "sessionId": "00D19F86F7007EB77BE6419C37F9E372"
+        },
+        {
+          "id": 39,
+          "method": "Runtime.evaluate",
+          "params": {
+            "expression": "(() => {const r=document.querySelector(\"#mic-indicator\").getBoundingClientRect(); return {x:r.x+r.width/2,y:r.y+r.height/2};})()",
+            "userGesture": false,
+            "returnByValue": true,
+            "awaitPromise": true
+          },
+          "sessionId": "00D19F86F7007EB77BE6419C37F9E372"
+        }
+      ]
+    },
+    {
+      "source": "autoplay_wire/summary.json",
+      "private_source_sha256": "dab7fbce053dce41a855a0d76fcbb9c605b2b00c7e554ccd45631f00bba558e4",
+      "sessionId": "FCE1F587391BB7540DB4850B5AF33203",
+      "navigation": "http://127.0.0.1:58332/clock",
+      "runtime_before_first_input": 6,
+      "userGesture_true": 0,
+      "userGesture_false": 6,
+      "userGesture_omitted": 0,
+      "requests_before_first_input": [
+        {
+          "id": 33,
+          "method": "Page.navigate",
+          "params": {
+            "url": "http://127.0.0.1:58332/clock"
+          },
+          "sessionId": "FCE1F587391BB7540DB4850B5AF33203"
+        },
+        {
+          "id": 34,
+          "method": "Runtime.evaluate",
+          "params": {
+            "expression": "window.__mediaSnapshot?.() ?? null",
+            "userGesture": false,
+            "returnByValue": true,
+            "awaitPromise": true
+          },
+          "sessionId": "FCE1F587391BB7540DB4850B5AF33203"
+        },
+        {
+          "id": 35,
+          "method": "Runtime.evaluate",
+          "params": {
+            "expression": "window.__mediaSnapshot?.() ?? null",
+            "userGesture": false,
+            "returnByValue": true,
+            "awaitPromise": true
+          },
+          "sessionId": "FCE1F587391BB7540DB4850B5AF33203"
+        },
+        {
+          "id": 36,
+          "method": "Runtime.evaluate",
+          "params": {
+            "expression": "window.__mediaSnapshot?.() ?? null",
+            "userGesture": false,
+            "returnByValue": true,
+            "awaitPromise": true
+          },
+          "sessionId": "FCE1F587391BB7540DB4850B5AF33203"
+        },
+        {
+          "id": 37,
+          "method": "Runtime.evaluate",
+          "params": {
+            "expression": "document.querySelector('#reminder-audio').play().then(() => ({result:'resolved'}),e => ({result:'rejected',name:e.name,message:e.message}))",
+            "userGesture": false,
+            "returnByValue": true,
+            "awaitPromise": true
+          },
+          "sessionId": "FCE1F587391BB7540DB4850B5AF33203"
+        },
+        {
+          "id": 38,
+          "method": "Runtime.evaluate",
+          "params": {
+            "expression": "window.__mediaSnapshot?.() ?? null",
+            "userGesture": false,
+            "returnByValue": true,
+            "awaitPromise": true
+          },
+          "sessionId": "FCE1F587391BB7540DB4850B5AF33203"
+        },
+        {
+          "id": 39,
+          "method": "Runtime.evaluate",
+          "params": {
+            "expression": "(() => {const r=document.querySelector(\"#mic-indicator\").getBoundingClientRect(); return {x:r.x+r.width/2,y:r.y+r.height/2};})()",
+            "userGesture": false,
+            "returnByValue": true,
+            "awaitPromise": true
+          },
+          "sessionId": "FCE1F587391BB7540DB4850B5AF33203"
+        }
+      ]
+    },
+    {
+      "source": "autoplay_wire/summary.json",
+      "private_source_sha256": "dab7fbce053dce41a855a0d76fcbb9c605b2b00c7e554ccd45631f00bba558e4",
+      "sessionId": "2BD5EEA0E929A52A86C4AFD559AC2E8D",
+      "navigation": "http://127.0.0.1:58332/clock",
+      "runtime_before_first_input": 2,
+      "userGesture_true": 0,
+      "userGesture_false": 2,
+      "userGesture_omitted": 0,
+      "requests_before_first_input": [
+        {
+          "id": 33,
+          "method": "Page.navigate",
+          "params": {
+            "url": "http://127.0.0.1:58332/clock"
+          },
+          "sessionId": "2BD5EEA0E929A52A86C4AFD559AC2E8D"
+        },
+        {
+          "id": 34,
+          "method": "Runtime.evaluate",
+          "params": {
+            "expression": "window.__mediaSnapshot?.() ?? null",
+            "userGesture": false,
+            "returnByValue": true,
+            "awaitPromise": true
+          },
+          "sessionId": "2BD5EEA0E929A52A86C4AFD559AC2E8D"
+        },
+        {
+          "id": 35,
+          "method": "Runtime.evaluate",
+          "params": {
+            "expression": "(() => {const r=document.querySelector(\"#sound-hint\").getBoundingClientRect(); return {x:r.x+r.width/2,y:r.y+r.height/2};})()",
+            "userGesture": false,
+            "returnByValue": true,
+            "awaitPromise": true
+          },
+          "sessionId": "2BD5EEA0E929A52A86C4AFD559AC2E8D"
+        }
+      ]
+    },
+    {
+      "source": "browser_wire/summary.json",
+      "private_source_sha256": "e7217bafc5e879b6309be24f7b6c68812a4794f8b78951f12fce23e5e2768394",
+      "sessionId": "13179BAE196D262FC9D70864A5B74787",
+      "navigation": "http://127.0.0.1:58333/clock",
+      "runtime_before_first_input": 7,
+      "userGesture_true": 0,
+      "userGesture_false": 7,
+      "userGesture_omitted": 0,
+      "requests_before_first_input": [
+        {
+          "id": 33,
+          "method": "Page.navigate",
+          "params": {
+            "url": "http://127.0.0.1:58333/clock"
+          },
+          "sessionId": "13179BAE196D262FC9D70864A5B74787"
+        },
+        {
+          "id": 34,
+          "method": "Runtime.evaluate",
+          "params": {
+            "expression": "window.__mediaSnapshot?.() ?? null",
+            "userGesture": false,
+            "returnByValue": true,
+            "awaitPromise": true
+          },
+          "sessionId": "13179BAE196D262FC9D70864A5B74787"
+        },
+        {
+          "id": 35,
+          "method": "Runtime.evaluate",
+          "params": {
+            "expression": "window.__mediaSnapshot?.() ?? null",
+            "userGesture": false,
+            "returnByValue": true,
+            "awaitPromise": true
+          },
+          "sessionId": "13179BAE196D262FC9D70864A5B74787"
+        },
+        {
+          "id": 36,
+          "method": "Runtime.evaluate",
+          "params": {
+            "expression": "window.__mediaSnapshot?.() ?? null",
+            "userGesture": false,
+            "returnByValue": true,
+            "awaitPromise": true
+          },
+          "sessionId": "13179BAE196D262FC9D70864A5B74787"
+        },
+        {
+          "id": 37,
+          "method": "Runtime.evaluate",
+          "params": {
+            "expression": "window.__mediaSnapshot?.() ?? null",
+            "userGesture": false,
+            "returnByValue": true,
+            "awaitPromise": true
+          },
+          "sessionId": "13179BAE196D262FC9D70864A5B74787"
+        },
+        {
+          "id": 38,
+          "method": "Runtime.evaluate",
+          "params": {
+            "expression": "document.querySelector('#reminder-audio').play().then(() => ({result:'resolved'}),e => ({result:'rejected',name:e.name,message:e.message}))",
+            "userGesture": false,
+            "returnByValue": true,
+            "awaitPromise": true
+          },
+          "sessionId": "13179BAE196D262FC9D70864A5B74787"
+        },
+        {
+          "id": 39,
+          "method": "Runtime.evaluate",
+          "params": {
+            "expression": "window.__mediaSnapshot?.() ?? null",
+            "userGesture": false,
+            "returnByValue": true,
+            "awaitPromise": true
+          },
+          "sessionId": "13179BAE196D262FC9D70864A5B74787"
+        },
+        {
+          "id": 40,
+          "method": "Runtime.evaluate",
+          "params": {
+            "expression": "(() => {const r=document.querySelector(\"#mic-indicator\").getBoundingClientRect(); return {x:r.x+r.width/2,y:r.y+r.height/2};})()",
+            "userGesture": false,
+            "returnByValue": true,
+            "awaitPromise": true
+          },
+          "sessionId": "13179BAE196D262FC9D70864A5B74787"
+        }
+      ]
+    }
+  ]
+}

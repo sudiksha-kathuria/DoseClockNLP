@@ -1,0 +1,14 @@
+{
+  "source_private_path": "/private/tmp/doseclock-resolution-browser-final.protocol.log",
+  "source_sha256": "b91f6b59306bcbb1ca2f7dae4eb082ff0e3d40d0f2b69ba2f33d21150e49a1fa",
+  "checks": [
+    {
+      "session": "729C849545DC265DBA91E7F885F1E203",
+      "runtime_calls_before_first_input": 6,
+      "true": 0,
+      "false": 6
+    }
+  ],
+  "acceptance_userGesture_true": 0,
+  "scope": "Across all sessions after audited navigation and before first browser input; acceptance transcripts retained separately"
+}

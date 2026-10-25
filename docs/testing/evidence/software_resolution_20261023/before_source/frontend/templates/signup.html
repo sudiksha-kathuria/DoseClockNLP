@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}DoseClock: Create an account{% endblock %}
+{% block content %}
+<div class="auth-shell">
+  <section class="auth-hero">
+    <a class="tv-brand" href="{{ url_for('login') }}">
+      <span class="dot"></span>
+      <span class="wordmark">DoseClock</span>
+    </a>
+    <div class="hero-ring">
+      <span class="hero-glyph">Dc</span>
+    </div>
+    <div>
+      <p class="hero-copy">One account per person: everyone's reminders and history stay their own, even when sharing one clock.</p>
+      <p class="hero-tag" style="margin-top: 0.75rem;">Season 1 · Pilot episode</p>
+    </div>
+  </section>
+
+  <section class="auth-panel">
+    <div class="auth-form-wrap">
+      <span class="eyebrow">First time here</span>
+      <h1>Create your account</h1>
+      <p class="subhead">Takes a few seconds. No email required.</p>
+
+      <form method="post" action="{{ url_for('signup') }}">
+        <div class="field-group">
+          <label for="display_name">Your name</label>
+          <input class="big-input" type="text" id="display_name" name="display_name" placeholder="e.g. Grandma Reeta" autocomplete="name" required autofocus />
+        </div>
+        <div class="field-group">
+          <label for="username">Choose a username</label>
+          <input class="big-input" type="text" id="username" name="username" autocomplete="username" required />
+        </div>
+        <div class="field-group">
+          <label for="password">Choose a password</label>
+          <input class="big-input" type="password" id="password" name="password" autocomplete="new-password" minlength="4" required />
+        </div>
+
+        <button type="submit" class="pink-btn auth-submit">Create account</button>
+        {% if error %}<p class="form-error">{{ error }}</p>{% endif %}
+      </form>
+
+      <p class="auth-switch">Already have an account? <a href="{{ url_for('login') }}">Log in</a></p>
+    </div>
+  </section>
+</div>
+{% endblock %}

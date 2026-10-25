@@ -1,0 +1,186 @@
+{
+  "recorded_at_utc": "2026-10-22T21:00:42.162576+00:00",
+  "text_scope": "Existing fixed English sentence with six language codes; not verified translated speech",
+  "records": [
+    {
+      "id": "AUDIO-en",
+      "feature": "English audio generation and MP3 validity",
+      "expected": "Nonempty parsable MP3 with positive duration",
+      "actual": {
+        "language_code": "en",
+        "bytes": 20736,
+        "duration_seconds": 2.592,
+        "sample_rate": 24000,
+        "sha256": "630cbd9642263e066c60dc49ee54acfbe6b49b9c44a4fde80e36b82415d59f02",
+        "spoken_template": "It's time to take your Review dummy.",
+        "human_pronunciation_verified": false
+      },
+      "status": "PASS",
+      "duration_seconds": 1.0000965418294072,
+      "evidence": "en_review-dummy_3a367197a1.mp3"
+    },
+    {
+      "id": "CACHE-en",
+      "feature": "English cached reuse with synthesis unavailable",
+      "expected": "Same file/hash/mtime without a synthesis call",
+      "actual": {
+        "unchanged": true,
+        "gTTS_calls": 0,
+        "scope": "synthesis disabled by controlled injection; not a physical network outage"
+      },
+      "status": "PASS",
+      "duration_seconds": 0.00047320895828306675,
+      "evidence": "en_review-dummy_3a367197a1.mp3"
+    },
+    {
+      "id": "AUDIO-hi",
+      "feature": "Hindi audio generation and MP3 validity",
+      "expected": "Nonempty parsable MP3 with positive duration",
+      "actual": {
+        "language_code": "hi",
+        "bytes": 21504,
+        "duration_seconds": 2.688,
+        "sample_rate": 24000,
+        "sha256": "f312acb9a74dbfb0eba7646c14f70561b191ee0fbc78ac9dc5feffda621f65af",
+        "spoken_template": "It's time to take your Review dummy.",
+        "human_pronunciation_verified": false
+      },
+      "status": "PASS",
+      "duration_seconds": 0.43811241700313985,
+      "evidence": "hi_review-dummy_82d9d2858f.mp3"
+    },
+    {
+      "id": "CACHE-hi",
+      "feature": "Hindi cached reuse with synthesis unavailable",
+      "expected": "Same file/hash/mtime without a synthesis call",
+      "actual": {
+        "unchanged": true,
+        "gTTS_calls": 0,
+        "scope": "synthesis disabled by controlled injection; not a physical network outage"
+      },
+      "status": "PASS",
+      "duration_seconds": 0.0009589588735252619,
+      "evidence": "hi_review-dummy_82d9d2858f.mp3"
+    },
+    {
+      "id": "AUDIO-ta",
+      "feature": "Tamil audio generation and MP3 validity",
+      "expected": "Nonempty parsable MP3 with positive duration",
+      "actual": {
+        "language_code": "ta",
+        "bytes": 24768,
+        "duration_seconds": 3.096,
+        "sample_rate": 24000,
+        "sha256": "34ad7e8600cf63848bc1ce0ae4e9f94cfda3521b827cd56497c3f5b1a7cd1ec1",
+        "spoken_template": "It's time to take your Review dummy.",
+        "human_pronunciation_verified": false
+      },
+      "status": "PASS",
+      "duration_seconds": 1.0052076249849051,
+      "evidence": "ta_review-dummy_e051e9fdcc.mp3"
+    },
+    {
+      "id": "CACHE-ta",
+      "feature": "Tamil cached reuse with synthesis unavailable",
+      "expected": "Same file/hash/mtime without a synthesis call",
+      "actual": {
+        "unchanged": true,
+        "gTTS_calls": 0,
+        "scope": "synthesis disabled by controlled injection; not a physical network outage"
+      },
+      "status": "PASS",
+      "duration_seconds": 0.0008770420681685209,
+      "evidence": "ta_review-dummy_e051e9fdcc.mp3"
+    },
+    {
+      "id": "AUDIO-te",
+      "feature": "Telugu audio generation and MP3 validity",
+      "expected": "Nonempty parsable MP3 with positive duration",
+      "actual": {
+        "language_code": "te",
+        "bytes": 22848,
+        "duration_seconds": 2.856,
+        "sample_rate": 24000,
+        "sha256": "c131651db74a2e7970442c7b9ea9137071dabf1f529aa3a0ecf522cab7dd317f",
+        "spoken_template": "It's time to take your Review dummy.",
+        "human_pronunciation_verified": false
+      },
+      "status": "PASS",
+      "duration_seconds": 0.4457030422054231,
+      "evidence": "te_review-dummy_197d794b78.mp3"
+    },
+    {
+      "id": "CACHE-te",
+      "feature": "Telugu cached reuse with synthesis unavailable",
+      "expected": "Same file/hash/mtime without a synthesis call",
+      "actual": {
+        "unchanged": true,
+        "gTTS_calls": 0,
+        "scope": "synthesis disabled by controlled injection; not a physical network outage"
+      },
+      "status": "PASS",
+      "duration_seconds": 0.0007967499550431967,
+      "evidence": "te_review-dummy_197d794b78.mp3"
+    },
+    {
+      "id": "AUDIO-kn",
+      "feature": "Kannada audio generation and MP3 validity",
+      "expected": "Nonempty parsable MP3 with positive duration",
+      "actual": {
+        "language_code": "kn",
+        "bytes": 23424,
+        "duration_seconds": 2.928,
+        "sample_rate": 24000,
+        "sha256": "adc023867d7dae56f9375b7bde5a88a565a83a6a4d69b0cb4caeb3b591fde2bb",
+        "spoken_template": "It's time to take your Review dummy.",
+        "human_pronunciation_verified": false
+      },
+      "status": "PASS",
+      "duration_seconds": 0.5932322919834405,
+      "evidence": "kn_review-dummy_b796331fa7.mp3"
+    },
+    {
+      "id": "CACHE-kn",
+      "feature": "Kannada cached reuse with synthesis unavailable",
+      "expected": "Same file/hash/mtime without a synthesis call",
+      "actual": {
+        "unchanged": true,
+        "gTTS_calls": 0,
+        "scope": "synthesis disabled by controlled injection; not a physical network outage"
+      },
+      "status": "PASS",
+      "duration_seconds": 0.0008849170990288258,
+      "evidence": "kn_review-dummy_b796331fa7.mp3"
+    },
+    {
+      "id": "AUDIO-bn",
+      "feature": "Bengali audio generation and MP3 validity",
+      "expected": "Nonempty parsable MP3 with positive duration",
+      "actual": {
+        "language_code": "bn",
+        "bytes": 22272,
+        "duration_seconds": 2.784,
+        "sample_rate": 24000,
+        "sha256": "630990f5568e4a45e2d7b2b86f8841631f7d4306fd13e75d709e5764ec223c3b",
+        "spoken_template": "It's time to take your Review dummy.",
+        "human_pronunciation_verified": false
+      },
+      "status": "PASS",
+      "duration_seconds": 0.7709582920651883,
+      "evidence": "bn_review-dummy_f209e32c62.mp3"
+    },
+    {
+      "id": "CACHE-bn",
+      "feature": "Bengali cached reuse with synthesis unavailable",
+      "expected": "Same file/hash/mtime without a synthesis call",
+      "actual": {
+        "unchanged": true,
+        "gTTS_calls": 0,
+        "scope": "synthesis disabled by controlled injection; not a physical network outage"
+      },
+      "status": "PASS",
+      "duration_seconds": 0.00040904106572270393,
+      "evidence": "bn_review-dummy_f209e32c62.mp3"
+    }
+  ]
+}

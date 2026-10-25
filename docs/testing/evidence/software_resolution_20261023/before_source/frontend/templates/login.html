@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}DoseClock: Log in{% endblock %}
+{% block content %}
+<div class="auth-shell">
+  <section class="auth-hero">
+    <a class="tv-brand" href="{{ url_for('login') }}">
+      <span class="dot"></span>
+      <span class="wordmark">DoseClock</span>
+    </a>
+    <div class="hero-ring">
+      <span class="hero-glyph">Dc</span>
+    </div>
+    <div>
+      <p class="hero-copy">A talking, multilingual medicine reminder, now tuned in.</p>
+      <p class="hero-tag" style="margin-top: 0.75rem;">Season 1 · Every dose, on time</p>
+    </div>
+  </section>
+
+  <section class="auth-panel">
+    <div class="auth-form-wrap">
+      <span class="eyebrow">Welcome back</span>
+      <h1>Log in to your clock</h1>
+      <p class="subhead">Your medicines and dose history pick up right where you left them.</p>
+
+      <form method="post" action="{{ url_for('login') }}">
+        <div class="field-group">
+          <label for="username">Username</label>
+          <input class="big-input" type="text" id="username" name="username" autocomplete="username" required autofocus />
+        </div>
+        <div class="field-group">
+          <label for="password">Password</label>
+          <input class="big-input" type="password" id="password" name="password" autocomplete="current-password" required />
+        </div>
+
+        <button type="submit" class="pink-btn auth-submit">Log in</button>
+        {% if error %}<p class="form-error">{{ error }}</p>{% endif %}
+      </form>
+
+      <p class="auth-switch">New here? <a href="{{ url_for('signup') }}">Create an account</a></p>
+    </div>
+  </section>
+</div>
+{% endblock %}

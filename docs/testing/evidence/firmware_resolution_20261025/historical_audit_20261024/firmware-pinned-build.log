@@ -1,0 +1,96 @@
+********************************************************************************
+If you like PlatformIO, please:
+- star it on GitHub > https://github.com/platformio/platformio-core
+- follow us on LinkedIn to stay up-to-date on the latest project news > https://www.linkedin.com/company/platformio/
+- try PlatformIO IDE for embedded development > https://platformio.org/platformio-ide
+********************************************************************************
+
+Processing esp32dev (platform: espressif32@6.9.0; board: esp32dev; framework: arduino)
+--------------------------------------------------------------------------------
+Platform Manager: Installing espressif32 @ 6.9.0
+Downloading 0% 10% 20% 30% 40% 50% 60% 70% 80% 90% 100%
+Unpacking 0% 10% 20% 30% 40% 50% 60% 70% 80% 90% 100%
+Platform Manager: espressif32@6.9.0 has been installed!
+Tool Manager: Installing espressif/toolchain-xtensa-esp32 @ 8.4.0+2021r2-patch5
+Tool Manager: Error: Please read https://bit.ly/package-manager-ioerror
+Tool Manager: Warning! Package Mirror: HTTPSConnectionPool(host='sin1.contabostorage.com', port=443): Max retries exceeded with url: /fd833e6c4db04192b0ad7e561907b935:pioregmirrorsg/tools/e6/af/42ddea4205d3011bfb593e60e9a73daa93920998e81311036491046b81a9/toolchain-xtensa-esp32-darwin_arm64-8.4.0+2021r2-patch5.tar.gz (Caused by SSLError(SSLCertVerificationError(1, "[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'sin1.contabostorage.com'. (_ssl.c:1010)")))
+Tool Manager: Looking for another mirror...
+Downloading 0% 10% 20% 30% 40% 50% 60% 70% 80% 90% 100%
+Unpacking 0% 10% 20% 30% 40% 50% 60% 70% 80% 90% 100%
+Tool Manager: toolchain-xtensa-esp32@8.4.0+2021r2-patch5 has been installed!
+Tool Manager: Installing platformio/framework-arduinoespressif32 @ ~3.20017.0
+Downloading 0% 10% 20% 30% 40% 50% 60% 70% 80% 90% 100%
+Unpacking 0% 10% 20% 30% 40% 50% 60% 70% 80% 90% 100%
+Tool Manager: framework-arduinoespressif32@3.20017.241212+sha.dcc1105b has been installed!
+Tool Manager: Installing platformio/tool-esptoolpy @ ~1.40501.0
+Downloading 0% 10% 20% 30% 40% 50% 60% 70% 80% 90% 100%
+Unpacking 0% 10% 20% 30% 40% 50% 60% 70% 80% 90% 100%
+Tool Manager: tool-esptoolpy@1.40501.0 has been installed!
+Tool Manager: Installing platformio/tool-scons @ ~4.41101.0
+Tool Manager: Error: Please read https://bit.ly/package-manager-ioerror
+Tool Manager: Warning! Package Mirror: HTTPSConnectionPool(host='sin1.contabostorage.com', port=443): Max retries exceeded with url: /fd833e6c4db04192b0ad7e561907b935:pioregmirrorsg/tools/14/07/3c2dfa5acfdc2eb26c8921272764ed4c1c090e7a65ee9e4d58e197b2e6a1/tool-scons-4.41101.0.tar.gz (Caused by SSLError(SSLCertVerificationError(1, "[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'sin1.contabostorage.com'. (_ssl.c:1010)")))
+Tool Manager: Looking for another mirror...
+Downloading 0% 10% 20% 30% 40% 50% 60% 70% 80% 90% 100%
+Unpacking 0% 10% 20% 30% 40% 50% 60% 70% 80% 90% 100%
+Tool Manager: tool-scons@4.41101.0 has been installed!
+Library Manager: Installing bblanchon/ArduinoJson @ 7.4.3
+Downloading 0% 10% 20% 30% 40% 50% 60% 70% 80% 90%
+Unpacking 0% 10% 20% 30% 40% 50% 60% 70% 80% 90% 100%
+Library Manager: ArduinoJson@7.4.3 has been installed!
+Verbose mode can be enabled via `-v, --verbose` option
+CONFIGURATION: https://docs.platformio.org/page/boards/espressif32/esp32dev.html
+PLATFORM: Espressif 32 (6.9.0) > Espressif ESP32 Dev Module
+HARDWARE: ESP32 240MHz, 320KB RAM, 4MB Flash
+DEBUG: Current (cmsis-dap) External (cmsis-dap, esp-bridge, esp-prog, iot-bus-jtag, jlink, minimodule, olimex-arm-usb-ocd, olimex-arm-usb-ocd-h, olimex-arm-usb-tiny-h, olimex-jtag-tiny, tumpa)
+PACKAGES: 
+ - framework-arduinoespressif32 @ 3.20017.241212+sha.dcc1105b 
+ - tool-esptoolpy @ 1.40501.0 (4.5.1) 
+ - toolchain-xtensa-esp32 @ 8.4.0+2021r2-patch5
+Converting switch_hub.ino
+LDF: Library Dependency Finder -> https://bit.ly/configure-pio-ldf
+LDF Modes: Finder ~ chain, Compatibility ~ soft
+Found 34 compatible libraries
+Scanning dependencies...
+Dependency Graph
+|-- ArduinoJson @ 7.4.3
+|-- HTTPClient @ 2.0.0
+|-- Preferences @ 2.0.0
+|-- WiFi @ 2.0.0
+Building in release mode
+Compiling .pio/build/esp32dev/src/switch_hub.ino.cpp.o
+Building .pio/build/esp32dev/bootloader.bin
+Generating partitions .pio/build/esp32dev/partitions.bin
+Compiling .pio/build/esp32dev/lib46a/WiFi/WiFi.cpp.o
+Compiling .pio/build/esp32dev/lib46a/WiFi/WiFiAP.cpp.o
+esptool.py v4.5.1
+Creating esp32 image...
+Merged 1 ELF section
+Successfully created esp32 image.
+Compiling .pio/build/esp32dev/lib46a/WiFi/WiFiClient.cpp.o
+Compiling .pio/build/esp32dev/lib46a/WiFi/WiFiGeneric.cpp.o
+Compiling .pio/build/esp32dev/lib46a/WiFi/WiFiMulti.cpp.o
+Compiling .pio/build/esp32dev/lib46a/WiFi/WiFiSTA.cpp.o
+Compiling .pio/build/esp32dev/lib46a/WiFi/WiFiScan.cpp.o
+/private/tmp/doseclock-compatibility-audit-20261024/firmware-pinned/src/switch_hub.ino: In function 'void sendAction(const char*)':
+/private/tmp/doseclock-compatibility-audit-20261024/firmware-pinned/src/switch_hub.ino:153:82: error: 'ArduinoJson::V743PB22::detail::MemberProxy< <template-parameter-1-1>, <template-parameter-1-2> >::MemberProxy(const ArduinoJson::V743PB22::detail::MemberProxy< <template-parameter-1-1>, <template-parameter-1-2> >&) [with TUpstream = ArduinoJson::V743PB22::JsonDocument&; AdaptedString = ArduinoJson::V743PB22::detail::RamString]' is private within this context
+   if (status != 200 || deserializeJson(selected, response) || selected["due"] != true ||
+                                                                                  ^~~~
+In file included from .pio/libdeps/esp32dev/ArduinoJson/src/ArduinoJson/Object/JsonObject.hpp:8,
+                 from .pio/libdeps/esp32dev/ArduinoJson/src/ArduinoJson.hpp:39,
+                 from .pio/libdeps/esp32dev/ArduinoJson/src/ArduinoJson.h:9,
+                 from /private/tmp/doseclock-compatibility-audit-20261024/firmware-pinned/src/switch_hub.ino:35:
+.pio/libdeps/esp32dev/ArduinoJson/src/ArduinoJson/Object/MemberProxy.hpp:50:3: note: declared private here
+   MemberProxy(const MemberProxy& src) // Error here? See https://arduinojson.org/v7/proxy-non-copyable/
+   ^~~~~~~~~~~
+In file included from .pio/libdeps/esp32dev/ArduinoJson/src/ArduinoJson/Variant/JsonVariantConst.hpp:15,
+                 from .pio/libdeps/esp32dev/ArduinoJson/src/ArduinoJson/Variant/VariantRefBase.hpp:9,
+                 from .pio/libdeps/esp32dev/ArduinoJson/src/ArduinoJson/Array/ElementProxy.hpp:7,
+                 from .pio/libdeps/esp32dev/ArduinoJson/src/ArduinoJson/Array/JsonArray.hpp:7,
+                 from .pio/libdeps/esp32dev/ArduinoJson/src/ArduinoJson.hpp:38,
+                 from .pio/libdeps/esp32dev/ArduinoJson/src/ArduinoJson.h:9,
+                 from /private/tmp/doseclock-compatibility-audit-20261024/firmware-pinned/src/switch_hub.ino:35:
+.pio/libdeps/esp32dev/ArduinoJson/src/ArduinoJson/Variant/VariantOperators.hpp:99:15: note:   initializing argument 1 of 'bool ArduinoJson::V743PB22::detail::operator!=(TVariant, const T&) [with T = bool; typename ArduinoJson::V743PB22::detail::enable_if<(! ArduinoJson::V743PB22::detail::is_base_of<ArduinoJson::V743PB22::detail::VariantOperatorTag, T>::value), int>::type <anonymous> = 0; TVariant = ArduinoJson::V743PB22::detail::MemberProxy<ArduinoJson::V743PB22::JsonDocument&, ArduinoJson::V743PB22::detail::RamString>]'
+   friend bool operator!=(TVariant lhs, const T& rhs) {
+               ^~~~~~~~
+*** [.pio/build/esp32dev/src/switch_hub.ino.cpp.o] Error 1
+========================= [FAILED] Took 756.86 seconds =========================

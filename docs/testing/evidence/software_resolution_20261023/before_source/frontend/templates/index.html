@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% block title %}DoseClock: Add a medicine{% endblock %}
+{% block content %}
+<div class="add-shell">
+  <section class="add-form-pane">
+    <div class="add-form-inner">
+      <span class="eyebrow">New reminder</span>
+      <h1>Add a medicine</h1>
+      <p class="subhead">We'll call it out loud, in your language, right on time.</p>
+
+      <form id="medicine-form">
+        <div class="field-group">
+          <label for="medicine_name">Medicine name</label>
+          <input
+            class="big-input"
+            type="text"
+            id="medicine_name"
+            name="medicine_name"
+            placeholder="e.g. Vitamin D"
+            autocomplete="off"
+            required
+          />
+        </div>
+
+        <div class="field-group">
+          <label>Time(s) of day</label>
+          <div class="times-list" id="times-list">
+            <div class="time-row">
+              <input class="big-input" type="time" name="times" value="08:00" required />
+              <button type="button" class="remove-time" aria-label="Remove time" title="Remove">&times;</button>
+            </div>
+          </div>
+          <button type="button" class="add-time" id="add-time-btn">+ Add another time</button>
+        </div>
+
+        <div class="field-group">
+          <label for="days">Course length (days)</label>
+          <input class="big-input" type="number" id="days" name="days" min="1" value="7" required />
+        </div>
+
+        <div class="field-group">
+          <label for="language">Voice reminder language</label>
+          <select class="big-input" id="language" name="language" required>
+            {% for code, label in languages %}
+              <option value="{{ code }}">{{ label }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <button type="submit" class="pink-btn auth-submit">Save reminder</button>
+        <p class="form-error" id="form-error" style="display:none;"></p>
+      </form>
+    </div>
+  </section>
+
+  <aside class="add-preview-pane">
+    <span class="eyebrow">Up next</span>
+    <h2>Today's line-up</h2>
+    <ul class="preview-list" id="preview-list">
+      {% for item in schedule %}
+        <li data-group="{{ item.group_id }}">
+          <a class="med-name" href="{{ url_for('medicine_detail', group_id=item.group_id) }}">{{ item.medicine_name }}</a>
+          <span class="med-time">{{ item.times | join(', ') }}</span>
+          <button
+            type="button"
+            class="remove-med-btn"
+            data-group="{{ item.group_id }}"
+            aria-label="Remove {{ item.medicine_name }}"
+          >Remove</button>
+        </li>
+      {% else %}
+        <li class="preview-empty" style="display:list-item;">Nothing scheduled yet. Add your first reminder.</li>
+      {% endfor %}
+    </ul>
+  </aside>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/index.js') }}"></script>
+<script>
+  document.getElementById('preview-list').addEventListener('click', async function(e) {
+    const btn = e.target.closest('.remove-med-btn');
+    if (!btn) return;
+    const groupId = btn.dataset.group;
+    if (!groupId) return;
+    btn.disabled = true;
+    try {
+      const resp = await fetch('/delete_medicine', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: groupId }),
+      });
+      if (resp.ok) {
+        const li = document.querySelector(`li[data-group="${groupId}"]`);
+        if (li) li.remove();
+        // If list is now empty, show the empty message
+        const list = document.getElementById('preview-list');
+        if (list && list.querySelectorAll('li:not(.preview-empty)').length === 0) {
+          const empty = document.createElement('li');
+          empty.className = 'preview-empty';
+          empty.style.display = 'list-item';
+          empty.textContent = 'Nothing scheduled yet. Add your first reminder.';
+          list.appendChild(empty);
+        }
+      } else {
+        btn.disabled = false;
+      }
+    } catch (_) {
+      btn.disabled = false;
+    }
+  });
+</script>
+{% endblock %}

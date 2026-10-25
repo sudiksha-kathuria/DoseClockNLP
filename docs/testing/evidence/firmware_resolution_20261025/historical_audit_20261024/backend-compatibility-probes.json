@@ -1,0 +1,72 @@
+{
+  "recorded_at": "2026-10-24T01:19:17.809401+05:30",
+  "scope": "Fresh isolated dummy SQLite and Flask test client; not hardware or live network",
+  "records": [
+    {
+      "action": "taken",
+      "legacy_status": 400,
+      "legacy_error": {
+        "error": "id, fired_at and unique request_id required; select /api/device/reminder first"
+      },
+      "selected": {
+        "due": true,
+        "fired_at": "2026-10-24T01:19:17.730309",
+        "id": 1,
+        "medicine_name": "Pending A"
+      },
+      "first_status": 200,
+      "first_result": {
+        "medicine_name": "Pending A",
+        "success": true
+      },
+      "retry_status": 200,
+      "retry_result": {
+        "medicine_name": "Pending A",
+        "success": true
+      },
+      "rows_unchanged_by_retry": true,
+      "other_reminder_due": 1,
+      "log_count": 1,
+      "changed_binding_status": 409,
+      "snooze_deadline_unchanged": true,
+      "browser": {
+        "old_payload_status": 400,
+        "current_payload_status": 200,
+        "repeat_status": 409
+      }
+    },
+    {
+      "action": "snooze",
+      "legacy_status": 400,
+      "legacy_error": {
+        "error": "id, fired_at and unique request_id required; select /api/device/reminder first"
+      },
+      "selected": {
+        "due": true,
+        "fired_at": "2026-10-24T01:19:17.800423",
+        "id": 3,
+        "medicine_name": "Pending A"
+      },
+      "first_status": 200,
+      "first_result": {
+        "medicine_name": "Pending A",
+        "success": true
+      },
+      "retry_status": 200,
+      "retry_result": {
+        "medicine_name": "Pending A",
+        "success": true
+      },
+      "rows_unchanged_by_retry": true,
+      "other_reminder_due": 1,
+      "log_count": 0,
+      "changed_binding_status": 409,
+      "snooze_deadline_unchanged": true,
+      "browser": {
+        "old_payload_status": 400,
+        "current_payload_status": 200,
+        "repeat_status": 409
+      }
+    }
+  ]
+}

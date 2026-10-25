@@ -1,0 +1,41 @@
+{
+  "recorded_at": "2026-10-23T16:29:11.766164+05:30",
+  "validation_date": "23 October 2026",
+  "original_review_date": "9 October 2026 (user-provided); no testing backdated to that review",
+  "software_suite": {
+    "PASS": 99,
+    "FAIL": 0,
+    "SKIP": 0,
+    "NOT TESTED": 5
+  },
+  "including_firmware_build_check": {
+    "PASS": 99,
+    "FAIL": 0,
+    "SKIP": 0,
+    "NOT TESTED": 6
+  },
+  "case_count": 105,
+  "targeted_autoplay_repeats": {
+    "PASS": 3,
+    "counted_again": false
+  },
+  "baseline_methods": {
+    "executed": 54,
+    "PASS": 33,
+    "FAIL": 21,
+    "failing_assertions": 58
+  },
+  "fixed_issues": [
+    "Multilingual TTS template/content cache identity",
+    "Occurrence-bound, durable device retry handling"
+  ],
+  "firmware": "Updated source; target build NOT TESTED because initialization/toolchain setup did not complete; physical behavior unverified",
+  "not_tested": [
+    "UI-VOICE",
+    "HUMAN-SPEECH",
+    "B03-LAN",
+    "B06-HARDWARE",
+    "B07-HARDWARE",
+    "FW-BUILD"
+  ]
+}

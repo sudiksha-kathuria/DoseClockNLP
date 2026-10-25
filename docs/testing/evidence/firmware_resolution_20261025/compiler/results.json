@@ -1,0 +1,27 @@
+{
+  "started_at": "2026-10-25T14:44:27.842335+05:30",
+  "finished_at": "2026-10-25T14:44:31.005346+05:30",
+  "command": [
+    "/private/tmp/doseclock-compatibility-audit-20261024/venv/bin/pio",
+    "run",
+    "--project-dir",
+    "/Users/pranav/Documents/DoseClock/DoseClockNLP/hardware",
+    "--environment",
+    "esp32dev"
+  ],
+  "exit_code": 1,
+  "status": "FAIL",
+  "board": "esp32dev (generic ESP32/WROOM-32; physical board not available)",
+  "platformio_core": "6.2.0",
+  "platform": "espressif32@6.9.0",
+  "arduino_core": "2.0.17",
+  "arduinojson": "7.4.3",
+  "flashed": false,
+  "source_hashes": {
+    "switch_input.h": "bd7168cb20b177b18590ddbb376421c1e139e1c1214af0dcbfbe5ef110eaa620",
+    "platformio.ini": "43f49c8a93ac6c47a888216877bc4bf57b66a3dea5a474d6948fe6bfbfc32ac5",
+    "switch_hub.ino": "e3c9ac250433283cda8f614144df8864d6a91bb7c2855c12318f80b1c11b6ace",
+    "README.md": "4615541d9f7205adf74a6d3a93be97f6738c1cce244f5466814e16faa0ad099b"
+  },
+  "firmware_bin_exists": false
+}

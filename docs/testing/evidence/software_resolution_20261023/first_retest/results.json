@@ -1,0 +1,334 @@
+{
+  "recorded_at_utc": "2026-10-23T10:34:32.193496+00:00",
+  "environment": "temporary exported source; disposable SQLite and audio caches",
+  "tests_run": 54,
+  "passed": 40,
+  "failed": 14,
+  "skipped": 0,
+  "records": [
+    {
+      "id": "test_database.DatabaseTests.test_pre_account_database_migrates_without_assigning_old_records",
+      "status": "PASS",
+      "duration_seconds": 0.008685040986165404,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_database.DatabaseTests.test_taken_is_atomic_and_rejects_repeated_or_wrong_owner_actions",
+      "status": "PASS",
+      "duration_seconds": 0.06498099979944527,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_hardware.HardwareTests.test_audio_failure_does_not_block_hardware",
+      "status": "FAIL",
+      "duration_seconds": 0.1262699591461569,
+      "actual": "Traceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-tmizfpl_/tests/test_hardware.py\", line 96, in test_audio_failure_does_not_block_hardware\n    self.assertEqual(self.action('taken').status_code, 200)\nAssertionError: 400 != 200\n"
+    },
+    {
+      "id": "test_hardware.HardwareTests.test_hardware_snooze_survives_a_scheduler_restart",
+      "status": "FAIL",
+      "duration_seconds": 0.1172720838803798,
+      "actual": "Traceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-tmizfpl_/tests/test_hardware.py\", line 66, in test_hardware_snooze_survives_a_scheduler_restart\n    self.assertEqual(self.action('snooze').status_code, 200)\nAssertionError: 400 != 200\n"
+    },
+    {
+      "id": "test_hardware.HardwareTests.test_hardware_taken_logs_once",
+      "status": "FAIL",
+      "duration_seconds": 0.11665754113346338,
+      "actual": "Traceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-tmizfpl_/tests/test_hardware.py\", line 55, in test_hardware_taken_logs_once\n    self.assertEqual(response.status_code, 200)\nAssertionError: 400 != 200\n"
+    },
+    {
+      "id": "test_hardware.HardwareTests.test_invalid_token_action_and_no_due_statuses",
+      "status": "FAIL",
+      "duration_seconds": 0.11829641694203019,
+      "actual": "Traceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-tmizfpl_/tests/test_hardware.py\", line 50, in test_invalid_token_action_and_no_due_statuses\n    self.assertEqual(self.action('taken').status_code, 404)\nAssertionError: 400 != 404\n"
+    },
+    {
+      "id": "test_hardware.HardwareTests.test_overlapping_device_action_returns_conflict",
+      "status": "FAIL",
+      "duration_seconds": 0.11998020811006427,
+      "actual": "Traceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-tmizfpl_/tests/test_hardware.py\", line 90, in test_overlapping_device_action_returns_conflict\n    self.assertEqual(self.action('taken').status_code, 409)\nAssertionError: 400 != 409\n"
+    },
+    {
+      "id": "test_hardware.HardwareTests.test_pairing_token_is_owned_and_displayed_once",
+      "status": "PASS",
+      "duration_seconds": 0.12339804181829095,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_hardware.HardwareTests.test_token_cannot_answer_another_users_reminder",
+      "status": "FAIL",
+      "duration_seconds": 0.1279917920473963,
+      "actual": "Traceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-tmizfpl_/tests/test_hardware.py\", line 84, in test_token_cannot_answer_another_users_reminder\n    self.assertEqual(self.action('taken').status_code, 404)\nAssertionError: 400 != 404\n"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_archived_or_deleted_target_does_not_redirect_to_another_due_row",
+      "status": "PASS",
+      "duration_seconds": 0.12293270812369883,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_browser_actions_require_generation_and_reject_stale_requests",
+      "status": "PASS",
+      "duration_seconds": 0.118078124942258,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_current_due_audio_does_not_expose_legacy_english_cache",
+      "status": "PASS",
+      "duration_seconds": 0.12747537484392524,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_database_failure_rolls_back_effect_and_receipt_then_retry_succeeds",
+      "status": "PASS",
+      "duration_seconds": 0.11960512516088784,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_distinct_requests_for_same_occurrence_cannot_both_apply",
+      "status": "PASS",
+      "duration_seconds": 0.12076300010085106,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_invalid_identity_types_and_missing_fields_are_rejected",
+      "status": "PASS",
+      "duration_seconds": 0.12627224996685982,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_invalid_language_rejected_before_provider_or_file_creation",
+      "status": "PASS",
+      "duration_seconds": 0.11413758294656873,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_legacy_english_cache_not_reused_for_translated_templates",
+      "status": "PASS",
+      "duration_seconds": 0.11505562509410083,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_legacy_idless_taken_and_snooze_requests_fail_closed",
+      "status": "PASS",
+      "duration_seconds": 0.1263999999500811,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_receipts_survive_database_restart_and_are_scoped_to_device",
+      "status": "PASS",
+      "duration_seconds": 0.12920733401551843,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_request_id_reuse_with_different_target_or_action_conflicts",
+      "status": "PASS",
+      "duration_seconds": 0.12132399994879961,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_same_request_concurrent_retries_have_one_durable_effect",
+      "status": "PASS",
+      "duration_seconds": 0.12082141707651317,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_selection_is_authenticated_and_account_scoped",
+      "status": "PASS",
+      "duration_seconds": 0.11974654183723032,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_six_cache_entries_are_distinct_and_reusable_offline",
+      "status": "PASS",
+      "duration_seconds": 0.12283400003798306,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_six_synthesis_calls_use_translated_text_and_matching_language",
+      "status": "PASS",
+      "duration_seconds": 0.12080566701479256,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_snooze_retry_does_not_extend_deadline_or_snooze_second_reminder",
+      "status": "PASS",
+      "duration_seconds": 0.12147020804695785,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_stale_firing_rejected_while_exact_successful_retry_replays_receipt",
+      "status": "PASS",
+      "duration_seconds": 0.12163708289153874,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_synthesis_failures_cleanup_and_can_retry_all_languages",
+      "status": "PASS",
+      "duration_seconds": 0.12123279110528529,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_taken_response_loss_retry_does_not_acknowledge_second_reminder",
+      "status": "PASS",
+      "duration_seconds": 0.11965533415786922,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_taken_snooze_race_has_only_one_transition",
+      "status": "PASS",
+      "duration_seconds": 0.12060808297246695,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_translated_text_preserves_opaque_unicode_name",
+      "status": "PASS",
+      "duration_seconds": 0.1145070418715477,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_resolution.ResolutionTests.test_wrong_owner_target_never_mutates_either_account",
+      "status": "PASS",
+      "duration_seconds": 0.11712237517349422,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_actual_concurrent_taken_requests_log_once",
+      "status": "FAIL",
+      "duration_seconds": 0.11729054083116353,
+      "actual": "Traceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-tmizfpl_/tests/test_review3.py\", line 123, in test_actual_concurrent_taken_requests_log_once\n    self.assertEqual(sorted(statuses),[200,409])\nAssertionError: Lists differ: [400, 400] != [200, 409]\n\nFirst differing element 0:\n400\n200\n\n- [400, 400]\n?  ^      ^\n\n+ [200, 409]\n?  ^      ^\n\n"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_authenticated_routes_and_account_isolation",
+      "status": "FAIL",
+      "duration_seconds": 0.12418466596864164,
+      "actual": "Traceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-tmizfpl_/tests/test_review3.py\", line 69, in test_authenticated_routes_and_account_isolation\n    self.assertEqual(self.client.post(route,json={'id':rows[0]['id']}).status_code,404)\nAssertionError: 400 != 404\n"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_background_synthesis_failure_is_observed",
+      "status": "PASS",
+      "duration_seconds": 0.11570916697382927,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_creation_multiple_times_and_audio_warming",
+      "status": "PASS",
+      "duration_seconds": 0.11672520800493658,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_deleting_due_medicine_clears_alarm_and_preserves_history",
+      "status": "FAIL",
+      "duration_seconds": 0.11827829200774431,
+      "actual": "Traceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-tmizfpl_/tests/test_review3.py\", line 138, in test_deleting_due_medicine_clears_alarm_and_preserves_history\n    self.assertEqual(len(database.get_dose_history(self.owner['id'])),1)\nAssertionError: 0 != 1\n"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_device_multiple_due_selection_is_documented_not_replay_safe",
+      "status": "FAIL",
+      "duration_seconds": 0.11918804189190269,
+      "actual": "Traceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-tmizfpl_/tests/test_review3.py\", line 234, in test_device_multiple_due_selection_is_documented_not_replay_safe\n    for _ in ids:self.assertEqual(self.client.post('/api/device/action',json={'token':token,'action':'taken'}).status_code,200)\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: 400 != 200\n"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_edit_after_taken_preserves_historical_details",
+      "status": "PASS",
+      "duration_seconds": 0.11839408287778497,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_existing_account_history_survives_archive_schema_migration",
+      "status": "PASS",
+      "duration_seconds": 0.11811699997633696,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_invalid_creation_fields_rejected",
+      "status": "PASS",
+      "duration_seconds": 0.11534545780159533,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_invalid_time_values_rejected",
+      "status": "PASS",
+      "duration_seconds": 0.1153371250256896,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_non_object_json_rejected",
+      "status": "PASS",
+      "duration_seconds": 0.11455591605044901,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_pairing_missing_invalid_token_and_account_isolation",
+      "status": "FAIL",
+      "duration_seconds": 0.11895649996586144,
+      "actual": "Traceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-tmizfpl_/tests/test_review3.py\", line 227, in test_pairing_missing_invalid_token_and_account_isolation\n    self.assertEqual(self.client.post('/api/device/action',json={'token':token,'action':'taken'}).status_code,404)\nAssertionError: 400 != 404\n"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_repeated_snooze_unit_clock_and_no_taken_logs",
+      "status": "FAIL",
+      "duration_seconds": 0.11609637504443526,
+      "actual": "Traceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-tmizfpl_/tests/test_review3.py\", line 211, in test_repeated_snooze_unit_clock_and_no_taken_logs\n    self.assertEqual(self.client.post('/mark_snooze',json={'id':mid}).status_code,200)\nAssertionError: 400 != 200\n"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_restart_database_retains_accounts_tokens_logs_and_snooze",
+      "status": "PASS",
+      "duration_seconds": 0.17348891589790583,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_scheduler_multiple_simultaneous_and_restart_recovery",
+      "status": "FAIL",
+      "duration_seconds": 0.11914183292537928,
+      "actual": "Traceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-tmizfpl_/tests/test_review3.py\", line 202, in test_scheduler_multiple_simultaneous_and_restart_recovery\n    self.assertEqual(self.client.post('/mark_taken',json={'id':ids[0]}).status_code,200)\nAssertionError: 400 != 200\n"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_scheduler_scheduled_time_overdue_and_same_day_guard",
+      "status": "PASS",
+      "duration_seconds": 0.1170742919202894,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_signup_duplicate_and_short_password_rejected",
+      "status": "PASS",
+      "duration_seconds": 0.11592316604219377,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_signup_login_logout_and_invalid_credentials",
+      "status": "PASS",
+      "duration_seconds": 0.2832565000280738,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_stale_firing_generation_is_rejected",
+      "status": "PASS",
+      "duration_seconds": 0.11772316601127386,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_take_logs_exactly_once_and_updates_last_course_slot",
+      "status": "FAIL",
+      "duration_seconds": 0.11567170894704759,
+      "actual": "Traceback (most recent call last):\n  File \"/var/folders/p7/nd9zx5n55cx_y8cz8s_dtz5c0000gn/T/doseclock-unit-tmizfpl_/tests/test_review3.py\", line 110, in test_take_logs_exactly_once_and_updates_last_course_slot\n    self.assertEqual(response.status_code,200)\nAssertionError: 400 != 200\n"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_tts_cache_reused_when_synthesis_unavailable",
+      "status": "PASS",
+      "duration_seconds": 0.11492354096844792,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_tts_failure_is_atomic_and_visual_alarm_remains",
+      "status": "PASS",
+      "duration_seconds": 0.11703537497669458,
+      "actual": "All assertions met"
+    },
+    {
+      "id": "test_review3.Review3Tests.test_wrong_json_field_types_rejected",
+      "status": "PASS",
+      "duration_seconds": 0.11500179185532033,
+      "actual": "All assertions met"
+    }
+  ]
+}

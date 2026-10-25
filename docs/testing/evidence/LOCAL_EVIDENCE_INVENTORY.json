@@ -1,0 +1,1247 @@
+{
+  "scope": "Preserved locally; not proposed as committed payloads",
+  "files": [
+    {
+      "path": "docs/testing/evidence/browser_install.log",
+      "bytes": 6838,
+      "sha256": "4092a48bb9e01ce4db9b8150d9ed017123d96630d46a17730a67b060b1a57cf9",
+      "reason": "Download/install output; version metadata and genuine test/compiler failure logs retained"
+    },
+    {
+      "path": "docs/testing/evidence/dependencies_install.log",
+      "bytes": 5972,
+      "sha256": "e91ae4391bd84fc36ef58cfdc4f2b8f6c0573f3cba9e15821f4d5e926b4d91f3",
+      "reason": "Download/install output; version metadata and genuine test/compiler failure logs retained"
+    },
+    {
+      "path": "docs/testing/evidence/autoplay_retest/screenshots/UI10.png",
+      "bytes": 108648,
+      "sha256": "6f4e2c4e05116e428dc74c2fa3c86a1bee27dda5b40656bd6d710e2f8fb63a7f",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/software_resolution_20261023/autoplay_retest/default-idle/final.png",
+      "bytes": 90790,
+      "sha256": "bf72fac9caa120392c3a59b8c6d845f8e9c0d99f0e6c44fafd88a526adcdc29a",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/software_resolution_20261023/autoplay_retest/default-idle/cdp.jsonl",
+      "bytes": 1188725,
+      "sha256": "f175fbf3d7bcb5b3a527a3c92a1760aecd256c272a4985263de1f699b9eaf22b",
+      "reason": "Verbose protocol trace; retain original locally, commit compact acceptance/hash audit"
+    },
+    {
+      "path": "docs/testing/evidence/software_resolution_20261023/autoplay_retest/strict-pending/final.png",
+      "bytes": 107540,
+      "sha256": "ef92da5f4cbd896b570ad340ec8c5e096f83c2c253f969fe20830b76914772bd",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/software_resolution_20261023/autoplay_retest/strict-pending/cdp.jsonl",
+      "bytes": 94567,
+      "sha256": "cb4660fb2f4d2efc297a42ccc3a49fa4cafb10054190ca7178118461f9c60fdf",
+      "reason": "Verbose protocol trace; retain original locally, commit compact acceptance/hash audit"
+    },
+    {
+      "path": "docs/testing/evidence/software_resolution_20261023/autoplay_retest/default-pending/final.png",
+      "bytes": 107860,
+      "sha256": "dcbf937d978c72b3a42ac5e2d106c57cc802f99060029f1a7d6884fb280eceaf",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/software_resolution_20261023/autoplay_retest/default-pending/cdp.jsonl",
+      "bytes": 81703,
+      "sha256": "2ca46e8d71149464c163ee6ac60940161e016233ea0b777e73ceb57027971939",
+      "reason": "Verbose protocol trace; retain original locally, commit compact acceptance/hash audit"
+    },
+    {
+      "path": "docs/testing/evidence/software_resolution_20261023/autoplay_negative_control/old_assertion/screenshots/UI10.png",
+      "bytes": 106303,
+      "sha256": "bcf2859c8a18576b1787e76abfdc36f918aaef9e79ff4dbc75e79b60e2e81bba",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/software_resolution_20261023/autoplay_negative_control/corrected_assertion/strict-pending/final.png",
+      "bytes": 90250,
+      "sha256": "e96f91d0612b0e89a0137b6f03f78632966712faa719283b586db03011263be0",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/software_resolution_20261023/autoplay_negative_control/corrected_assertion/strict-pending/cdp.jsonl",
+      "bytes": 662795,
+      "sha256": "ffaa8fc34717523596cd32072e679cb785e0b6a6fd4f382e578601c231c8ef35",
+      "reason": "Verbose protocol trace; retain original locally, commit compact acceptance/hash audit"
+    },
+    {
+      "path": "docs/testing/evidence/software_resolution_20261023/regression_browser/screenshots/B05-4.png",
+      "bytes": 92347,
+      "sha256": "fb9d474ea116193ac000ae356ae5cb9780a9a5f923c379a931316e21f33d6b97",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/software_resolution_20261023/regression_browser/screenshots/B05-5.png",
+      "bytes": 98652,
+      "sha256": "fad6c5d08eeacd072c4b6a5b9c6500973c120394ea88fc6de53deed4cfca37fd",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/software_resolution_20261023/regression_browser/screenshots/B05-2.png",
+      "bytes": 98695,
+      "sha256": "f2fe880458cf5e72c49270d98b1e304c66cfb7f6c4976a9ad45ede265dffd673",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/software_resolution_20261023/regression_browser/screenshots/B05-3.png",
+      "bytes": 92480,
+      "sha256": "8223e4fb62e1bfe4d4086280e4c876a31bc7eed9dcba767e153aa19175fba4d8",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/software_resolution_20261023/regression_browser/screenshots/UI08.png",
+      "bytes": 54520,
+      "sha256": "49742a02609e0b7adc7fc86bfd7b096417d9fe7ab53b376640663085227b1374",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/software_resolution_20261023/regression_browser/screenshots/B05-1.png",
+      "bytes": 98354,
+      "sha256": "aa7b57014cc4da31e9d060a6c2dc3904dd44d333e7ca1fbcef746613eda091f5",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/software_resolution_20261023/regression_browser/screenshots/UI09.png",
+      "bytes": 106973,
+      "sha256": "c0cad0d4d26df0e3bae2fd2c062139fcefab4545bd6f2f248754028566c9677b",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/software_resolution_20261023/regression_browser/screenshots/observed_review_snooze_network_failure.png",
+      "bytes": 95899,
+      "sha256": "54e9bdbdf3f01e19ea1e1b9fa19ea822ebd5faffccf6955349c2497103bca8cf",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/software_resolution_20261023/regression_browser/screenshots/UI04.png",
+      "bytes": 45553,
+      "sha256": "1d0a77ac3e3564773e3b53337842ddeeb7e0e9571814fd87d076a8d592c49050",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/software_resolution_20261023/regression_browser/screenshots/UI10.png",
+      "bytes": 6489,
+      "sha256": "cb9c3b8047859412e8abcaed51ad9ecefb4bd820c8849af4992e593d500d1836",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/software_resolution_20261023/regression_browser/screenshots/observed_review_taken_network_failure.png",
+      "bytes": 95267,
+      "sha256": "ef49df513936a0848545070f239917557ce6d26695e0d3d014bb6f21565e902c",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/software_resolution_20261023/regression_browser/screenshots/UI11.png",
+      "bytes": 48151,
+      "sha256": "6e6b33fac5cf8358f8ed83dd60a2ac5568ee08542c8381a2194f0ee1f1e0edd9",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/software_resolution_20261023/regression_browser/screenshots/UI05.png",
+      "bytes": 108461,
+      "sha256": "0940a14aa0d710d2db33904f0c9e7a7e87e9111a41a3f2c7da278762e8a02b99",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/software_resolution_20261023/regression_browser/screenshots/UI07.png",
+      "bytes": 108298,
+      "sha256": "20b7824c3d00799fde64307854739acbff47f719ab0976a241d4746cbceab70c",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/software_resolution_20261023/regression_browser/screenshots/UI06.png",
+      "bytes": 54661,
+      "sha256": "93b855d50f5b05374893dbc0f4c721fd541e9c2603e8c2b06c2b64ff922d99dc",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/software_resolution_20261023/regression_browser/screenshots/UI02.png",
+      "bytes": 79345,
+      "sha256": "151d20b48d751f19ccd4728ac17f8f270938f25319591cee50787d2c2d90954d",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/software_resolution_20261023/regression_browser/screenshots/observed_review_taken_http_failure.png",
+      "bytes": 94564,
+      "sha256": "94d19abf92c1722f70e7b638816e0899cb8b5f4cc305d67db053f9d2784d8495",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/software_resolution_20261023/regression_browser/screenshots/UI03.png",
+      "bytes": 107206,
+      "sha256": "82c2ed4376848d6522e8731f8b0ab691ff174de423874ffa7de32edc02770051",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/software_resolution_20261023/regression_browser/screenshots/UI01.png",
+      "bytes": 108407,
+      "sha256": "d187bb596acae5134b01b147f6e7094aa22172083d6f3e0cd7cc42e4e436b214",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/software_resolution_20261023/regression_browser/UI10-clean-profile/final.png",
+      "bytes": 110951,
+      "sha256": "97259d3dae0a8cbf8c1d6651044430711fd3b2b74d700ea34aeb2a684a690398",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/software_resolution_20261023/regression_browser/UI10-clean-profile/cdp.jsonl",
+      "bytes": 70311,
+      "sha256": "31a711b08af22072aa166f3a5962a28808a40fde2bcb0e1f27111ff9f665ef09",
+      "reason": "Verbose protocol trace; retain original locally, commit compact acceptance/hash audit"
+    },
+    {
+      "path": "docs/testing/evidence/software_resolution_20261023/autoplay/default-idle/final.png",
+      "bytes": 90790,
+      "sha256": "bf72fac9caa120392c3a59b8c6d845f8e9c0d99f0e6c44fafd88a526adcdc29a",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/software_resolution_20261023/autoplay/default-idle/cdp.jsonl",
+      "bytes": 1181641,
+      "sha256": "034e4de7c8622b64f81f9b3eab3b52f772a5849b88490c3f8655688f82195625",
+      "reason": "Verbose protocol trace; retain original locally, commit compact acceptance/hash audit"
+    },
+    {
+      "path": "docs/testing/evidence/software_resolution_20261023/autoplay/strict-pending/final.png",
+      "bytes": 91592,
+      "sha256": "ce0af756f372a4ad6d114e16df4289c07d8bcf2c03653d88a046f5c2de5da39d",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/software_resolution_20261023/autoplay/strict-pending/cdp.jsonl",
+      "bytes": 53505,
+      "sha256": "5eedd857a6dceb0232fa9d48180708f4c646574c2d67893e802eacf1e657c13b",
+      "reason": "Verbose protocol trace; retain original locally, commit compact acceptance/hash audit"
+    },
+    {
+      "path": "docs/testing/evidence/software_resolution_20261023/autoplay/default-pending/final.png",
+      "bytes": 91730,
+      "sha256": "9bcef0ca06e5e8a86ea978227faf7c76bc0fff9f4dcf12416f9a051e0081c719",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/software_resolution_20261023/autoplay/default-pending/cdp.jsonl",
+      "bytes": 49105,
+      "sha256": "fec00f9d7d4b5a10de7361f6facade4b9b01bb47d8639f2b243e77613f308ebc",
+      "reason": "Verbose protocol trace; retain original locally, commit compact acceptance/hash audit"
+    },
+    {
+      "path": "docs/testing/evidence/software_resolution_20261023/audio/ta_review-dummy_99e8b43d09c117c3.mp3",
+      "bytes": 36096,
+      "sha256": "bf5e494dbab0bcb1c6a1db19365cf8809867d7389914207d5506469df78da897",
+      "reason": "Older generated audio retained locally; latest six dummy-language files selected"
+    },
+    {
+      "path": "docs/testing/evidence/software_resolution_20261023/audio/bn_review-dummy_6066d3f1e23d7bb6.mp3",
+      "bytes": 33600,
+      "sha256": "91d17f0232446f839f1158629e2e3d4a0e74439ec7e4a7699dd1395b16013514",
+      "reason": "Older generated audio retained locally; latest six dummy-language files selected"
+    },
+    {
+      "path": "docs/testing/evidence/software_resolution_20261023/audio/hi_review-dummy_0445123d52112803.mp3",
+      "bytes": 30528,
+      "sha256": "e975faef348ccb78603cf93024727e68894aca445d6bca2c8672ba2a77eed670",
+      "reason": "Older generated audio retained locally; latest six dummy-language files selected"
+    },
+    {
+      "path": "docs/testing/evidence/software_resolution_20261023/audio/te_review-dummy_5b01eee8ee49f247.mp3",
+      "bytes": 31104,
+      "sha256": "0a4ede24ff8b821890826a09472221546569287a47a9d73b825f3d01531a04d8",
+      "reason": "Older generated audio retained locally; latest six dummy-language files selected"
+    },
+    {
+      "path": "docs/testing/evidence/software_resolution_20261023/audio/kn_review-dummy_c97e6beaf071eeaf.mp3",
+      "bytes": 38208,
+      "sha256": "7ddfc55ddeaeaee042349abb60e61f80564f9a8c488b0b452c27329fc7359a4b",
+      "reason": "Older generated audio retained locally; latest six dummy-language files selected"
+    },
+    {
+      "path": "docs/testing/evidence/software_resolution_20261023/audio/en_review-dummy_9ba543bfedc08875.mp3",
+      "bytes": 20736,
+      "sha256": "9918915b1f064c5a027a9fa24c3f55375f66c7014e62bbffd22bb84cd6eabd55",
+      "reason": "Older generated audio retained locally; latest six dummy-language files selected"
+    },
+    {
+      "path": "docs/testing/evidence/software_resolution_20261023/regression_browser_final/screenshots/B05-4.png",
+      "bytes": 92347,
+      "sha256": "fb9d474ea116193ac000ae356ae5cb9780a9a5f923c379a931316e21f33d6b97",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/software_resolution_20261023/regression_browser_final/screenshots/B05-5.png",
+      "bytes": 92396,
+      "sha256": "e00cc0fc90f372dd7bdf4dc54a84d755d2390730dfbb5680278ce6fdaac0f54e",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/software_resolution_20261023/regression_browser_final/screenshots/B05-2.png",
+      "bytes": 90150,
+      "sha256": "24f00de3d235b484784bd485d66b5c689939fc682c976b577b7f5405f210fc18",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/software_resolution_20261023/regression_browser_final/screenshots/B05-3.png",
+      "bytes": 92480,
+      "sha256": "8223e4fb62e1bfe4d4086280e4c876a31bc7eed9dcba767e153aa19175fba4d8",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/software_resolution_20261023/regression_browser_final/screenshots/UI08.png",
+      "bytes": 54324,
+      "sha256": "07d3431178bb38c446e7b630885555ce03e6200be201d19c37035e709e6f8ebc",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/software_resolution_20261023/regression_browser_final/screenshots/B05-1.png",
+      "bytes": 92123,
+      "sha256": "d4b8195d7376525b872e04e25f4a26451708bf9ce4624835eb444bdbce181b96",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/software_resolution_20261023/regression_browser_final/screenshots/UI09.png",
+      "bytes": 104678,
+      "sha256": "42b0b82c4a2eb072d1af3adb20b1d38d52829f6221ce53a055a5de67131b6a36",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/software_resolution_20261023/regression_browser_final/screenshots/observed_review_snooze_network_failure.png",
+      "bytes": 95143,
+      "sha256": "16cc068975cc5ec2b57c8eabf394eb1c6b5730b6085993405646dbccaac0275b",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/software_resolution_20261023/regression_browser_final/screenshots/UI04.png",
+      "bytes": 45358,
+      "sha256": "e98bf3065e3a354c1c74277c77db938c84760eeedf5b5dc5c96fcc8a79e70461",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/software_resolution_20261023/regression_browser_final/screenshots/UI10.png",
+      "bytes": 6489,
+      "sha256": "cb9c3b8047859412e8abcaed51ad9ecefb4bd820c8849af4992e593d500d1836",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/software_resolution_20261023/regression_browser_final/screenshots/observed_review_taken_network_failure.png",
+      "bytes": 95072,
+      "sha256": "1e95e97757ada822855a96ebda560143df711750245da880f79f381969fd2fa3",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/software_resolution_20261023/regression_browser_final/screenshots/UI11.png",
+      "bytes": 47890,
+      "sha256": "ad07b6963fc64a9940166f350080de9520193c9d0e1a1e72ac0e04782d7dc758",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/software_resolution_20261023/regression_browser_final/screenshots/UI05.png",
+      "bytes": 106133,
+      "sha256": "4f94e276119bded8ab967bcf761f6fd5a63c5f3e67f11c1287902c28d2181c99",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/software_resolution_20261023/regression_browser_final/screenshots/UI07.png",
+      "bytes": 106089,
+      "sha256": "8660c70264bb49a869a4200a15fee57ced8b3d71406921d4a256b656ea07ca0d",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/software_resolution_20261023/regression_browser_final/screenshots/UI06.png",
+      "bytes": 54466,
+      "sha256": "a6cfbaa10029bebba6dcc6b07173902e109370aefe54fa204ff9c7a8fec70523",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/software_resolution_20261023/regression_browser_final/screenshots/UI02.png",
+      "bytes": 78836,
+      "sha256": "85a8b78b1c727086d426aa33789ea1617f7322db04baca0d5cecadf995edb7be",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/software_resolution_20261023/regression_browser_final/screenshots/observed_review_taken_http_failure.png",
+      "bytes": 94357,
+      "sha256": "a3405462643722f7015295d63fc0d4c198b5e442f8442d5edda3a4422b220c2d",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/software_resolution_20261023/regression_browser_final/screenshots/UI03.png",
+      "bytes": 105586,
+      "sha256": "98563c5b71110da5824c9577fd68dcb65aa3b7ffd29bf3a951d7a8c7904d3fb5",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/software_resolution_20261023/regression_browser_final/screenshots/UI01.png",
+      "bytes": 106353,
+      "sha256": "42da5696e5a056a73b7a4544d9dfb63a757f9d89c0c9c62c4b1d270a07464aff",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/software_resolution_20261023/regression_browser_final/UI10-clean-profile/final.png",
+      "bytes": 108584,
+      "sha256": "1186b674b8fa458e2e6f59d327e3069a590ea69924fbccbedca97d43318f8ad9",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/software_resolution_20261023/regression_browser_final/UI10-clean-profile/cdp.jsonl",
+      "bytes": 88705,
+      "sha256": "beee4fbb3616ad0f5b1932604e0305a4cae3552ff10499b9895fb470ad6710c6",
+      "reason": "Verbose protocol trace; retain original locally, commit compact acceptance/hash audit"
+    },
+    {
+      "path": "docs/testing/evidence/browser_audio_baseline/screenshots/UI10.png",
+      "bytes": 90119,
+      "sha256": "8e5158d205bbd19812b92b9760434d140c6f05dd220d2afc49398f1e58a5d141",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/browser_audio_baseline/screenshots/UI11.png",
+      "bytes": 111705,
+      "sha256": "922e3415f09bf7f2bde78888b38d497eeb9494d8f5f81d7e50069a7f923f50bc",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/firmware_resolution_20261025/browser_wire/requests.json",
+      "bytes": 18469558,
+      "sha256": "98022ceee12b61a4792e83f88e388c539835ae03da346fba2dc1a86befef49de",
+      "reason": "Verbose protocol trace; retain original locally, commit compact acceptance/hash audit"
+    },
+    {
+      "path": "docs/testing/evidence/firmware_resolution_20261025/autoplay/default-idle/cdp.jsonl",
+      "bytes": 1261966,
+      "sha256": "d8b16e49edc39b70df94342d25fcdc02dbf147f1a509794ec7b504fa5549618f",
+      "reason": "Verbose protocol trace; retain original locally, commit compact acceptance/hash audit"
+    },
+    {
+      "path": "docs/testing/evidence/firmware_resolution_20261025/autoplay/strict-pending/cdp.jsonl",
+      "bytes": 100420,
+      "sha256": "16038fb26f4c30f7047b5aee0ef68b30fd6a12164f44d2a024d721eb92e6fa85",
+      "reason": "Verbose protocol trace; retain original locally, commit compact acceptance/hash audit"
+    },
+    {
+      "path": "docs/testing/evidence/firmware_resolution_20261025/autoplay/default-pending/cdp.jsonl",
+      "bytes": 88902,
+      "sha256": "7f3309df31fc8b3587c968d0b2220dc4aead62efd3342b90ec52444b660301db",
+      "reason": "Verbose protocol trace; retain original locally, commit compact acceptance/hash audit"
+    },
+    {
+      "path": "docs/testing/evidence/firmware_resolution_20261025/browser/screenshots/B05-4.png",
+      "bytes": 92347,
+      "sha256": "fb9d474ea116193ac000ae356ae5cb9780a9a5f923c379a931316e21f33d6b97",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/firmware_resolution_20261025/browser/screenshots/B05-5.png",
+      "bytes": 90110,
+      "sha256": "6a4a7abbf8215924f1664111c796315280491446c4bd00a8a92f81e3bc252bf0",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/firmware_resolution_20261025/browser/screenshots/B05-2.png",
+      "bytes": 98695,
+      "sha256": "f2fe880458cf5e72c49270d98b1e304c66cfb7f6c4976a9ad45ede265dffd673",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/firmware_resolution_20261025/browser/screenshots/B05-3.png",
+      "bytes": 98756,
+      "sha256": "80fc776505b9b6b980d5bccdb6af7044b59017daca498dd249a24607d0e5d208",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/firmware_resolution_20261025/browser/screenshots/UI08.png",
+      "bytes": 54264,
+      "sha256": "cdd6e947a4c60d51f9a5e1558445978d4adcfe895de7083284c3fc4e9b9deae2",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/firmware_resolution_20261025/browser/screenshots/B05-1.png",
+      "bytes": 92123,
+      "sha256": "d4b8195d7376525b872e04e25f4a26451708bf9ce4624835eb444bdbce181b96",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/firmware_resolution_20261025/browser/screenshots/observed_review_snooze_network_failure.png",
+      "bytes": 95640,
+      "sha256": "52d0b318d66617e58247a9ecc98f434e65d9b02d371202d82c9de339c86df96c",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/firmware_resolution_20261025/browser/screenshots/UI04.png",
+      "bytes": 45299,
+      "sha256": "c4c5f040ec574d8421fa3a47517d9f34e5a6322d8a0d259b5afba0d91f2d7e70",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/firmware_resolution_20261025/browser/screenshots/observed_review_taken_network_failure.png",
+      "bytes": 94441,
+      "sha256": "a5b28d0f98ff9d2209a3013a4fd8b7969c05a6a9fc2a712e059ffcb055693bd3",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/firmware_resolution_20261025/browser/screenshots/UI11.png",
+      "bytes": 47903,
+      "sha256": "1e44ddb478a61c9465adf8ebdf1bd64642ed7f76ea7a2f70061e28481440ed07",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/firmware_resolution_20261025/browser/screenshots/UI05.png",
+      "bytes": 107993,
+      "sha256": "27996bd3e38355c129092034e3b19038b5d2287e0908a5601559f023c112af90",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/firmware_resolution_20261025/browser/screenshots/UI07.png",
+      "bytes": 108234,
+      "sha256": "711cff96766a881eff844154a13bf364768d0474360e5a44a162ad0a55ca5a04",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/firmware_resolution_20261025/browser/screenshots/UI06.png",
+      "bytes": 54404,
+      "sha256": "3f899c004cac72251f50e324209ee43a9c6fea8159a597ff4e8c841f2fa55ea6",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/firmware_resolution_20261025/browser/screenshots/UI02.png",
+      "bytes": 77973,
+      "sha256": "deef6c7fc7b3a1aadc1ed10728f4e5037096b1af8336c6a1e912734c25a3ba8a",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/firmware_resolution_20261025/browser/screenshots/observed_review_taken_http_failure.png",
+      "bytes": 94300,
+      "sha256": "3b9f089e123d3bd352671765fc1aa3b969641ce05e54a28823318fd82a56c39d",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/firmware_resolution_20261025/browser/screenshots/UI03.png",
+      "bytes": 107678,
+      "sha256": "9aba6fd4c95aac921536b0e385ecad085e976cee197be56f0211b423df597c3c",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/firmware_resolution_20261025/browser/screenshots/UI01.png",
+      "bytes": 108483,
+      "sha256": "8fe350b2090a41536f74efee38289359b8268a597a9539db1baea0212234b162",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/firmware_resolution_20261025/browser/UI10-clean-profile/cdp.jsonl",
+      "bytes": 94992,
+      "sha256": "fa7e284903cdedfd6c69ae7b7ef861a1f5f4ce0c8b53395d84b52d223f8679af",
+      "reason": "Verbose protocol trace; retain original locally, commit compact acceptance/hash audit"
+    },
+    {
+      "path": "docs/testing/evidence/firmware_resolution_20261025/autoplay_wire/requests.json",
+      "bytes": 1203263,
+      "sha256": "d649f21b6261f8d1a42841840f2f7c0afd2f97df3878e611968a83833c04136d",
+      "reason": "Verbose protocol trace; retain original locally, commit compact acceptance/hash audit"
+    },
+    {
+      "path": "docs/testing/evidence/browser_final/screenshots/B05-4.png",
+      "bytes": 100139,
+      "sha256": "cd42cc1ce1266df318847242f87185a045c4e1f4c210611ac5303cf218bbde3e",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/browser_final/screenshots/B05-5.png",
+      "bytes": 98652,
+      "sha256": "fad6c5d08eeacd072c4b6a5b9c6500973c120394ea88fc6de53deed4cfca37fd",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/browser_final/screenshots/B05-2.png",
+      "bytes": 98695,
+      "sha256": "f2fe880458cf5e72c49270d98b1e304c66cfb7f6c4976a9ad45ede265dffd673",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/browser_final/screenshots/B05-3.png",
+      "bytes": 98756,
+      "sha256": "80fc776505b9b6b980d5bccdb6af7044b59017daca498dd249a24607d0e5d208",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/browser_final/screenshots/UI08.png",
+      "bytes": 54681,
+      "sha256": "11a1999840706c3662376760385bcddbba35d343110e4c68cbf9d6d500cf7e1a",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/browser_final/screenshots/B05-1.png",
+      "bytes": 98354,
+      "sha256": "aa7b57014cc4da31e9d060a6c2dc3904dd44d333e7ca1fbcef746613eda091f5",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/browser_final/screenshots/UI09.png",
+      "bytes": 108638,
+      "sha256": "f9794edb2e18ec7941f60c2452b0d56ea6cfeac2a9d8e97a1b7a2e07f98b3865",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/browser_final/screenshots/observed_review_snooze_network_failure.png",
+      "bytes": 95490,
+      "sha256": "7571a890bd80474a17dae50970a81c48bf3184dae2367ce03f1a8b78e0282e09",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/browser_final/screenshots/UI04.png",
+      "bytes": 45708,
+      "sha256": "67c5e8997acdfa91964b2b2306dbd7678a75d82916d98b7857af9ef9d0c3f3a0",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/browser_final/screenshots/UI10.png",
+      "bytes": 109641,
+      "sha256": "1c8c67dddb713e6a2ef66d56dd230223455070db4b8b6ee31d5bccf4c9987bb7",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/browser_final/screenshots/observed_review_taken_network_failure.png",
+      "bytes": 94860,
+      "sha256": "d65d794e57ed1615bb7484ef109b7b7328f89bac8d6d1c88d9481de76ff62d27",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/browser_final/screenshots/UI11.png",
+      "bytes": 48350,
+      "sha256": "e0d24d718d17a993b31606b1e78252b73b069a2ac67a8827f7194846033d886c",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/browser_final/screenshots/UI05.png",
+      "bytes": 109635,
+      "sha256": "e07d811ea7b0bffcf54b1813f159d29ffe18ff303d899a0d0dbebcd1ca733789",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/browser_final/screenshots/UI07.png",
+      "bytes": 109972,
+      "sha256": "cf857c0fe6fa3cf39a8073a0685e4bc4a139b04de1acac62e3ca6042f88d12c2",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/browser_final/screenshots/UI06.png",
+      "bytes": 54822,
+      "sha256": "081b9f504be3450caeaf40ff9b5e3b928f1b98ab21c87e99d52dded7d2fd0430",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/browser_final/screenshots/UI02.png",
+      "bytes": 79513,
+      "sha256": "56d8b39e8c6fad4190899001a7413290125d800344b1b9f5eecd91b32de08540",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/browser_final/screenshots/observed_review_taken_http_failure.png",
+      "bytes": 95276,
+      "sha256": "0905ddf597aaa1a20ee104e4218740121c964788fb87fbdf69b6663a77119668",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/browser_final/screenshots/UI03.png",
+      "bytes": 109314,
+      "sha256": "64e4d37c13dd6dc0d4a0017063788e5629acf95988f72730693f64f1a6916b43",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/browser_final/screenshots/UI01.png",
+      "bytes": 109925,
+      "sha256": "fb3b5b5c2b92ee4a2d75b78562039e7c352f4c1d9cbeb529a90dac3e3f89701e",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/followup_20261023/autoplay_verified/default-idle/final.png",
+      "bytes": 90796,
+      "sha256": "db7a9255bd50a1b4d57431b6eac5cbcd081d41b16433334213a7f310517d845c",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/followup_20261023/autoplay_verified/default-idle/cdp.jsonl",
+      "bytes": 1242709,
+      "sha256": "5748af56f91110be9b1c6608da0088627394509ff45ece173ebff58141225a47",
+      "reason": "Verbose protocol trace; retain original locally, commit compact acceptance/hash audit"
+    },
+    {
+      "path": "docs/testing/evidence/followup_20261023/autoplay_verified/strict-pending/final.png",
+      "bytes": 108212,
+      "sha256": "115cdca46a5307d5892e9046b134b40d5258c8fdac919046c67b4760b72be20e",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/followup_20261023/autoplay_verified/strict-pending/cdp.jsonl",
+      "bytes": 76948,
+      "sha256": "e75ea0d8d0f2dd37e5ceb98b5d6d8a34cbce7b5f37ee75639271069b350f86c6",
+      "reason": "Verbose protocol trace; retain original locally, commit compact acceptance/hash audit"
+    },
+    {
+      "path": "docs/testing/evidence/followup_20261023/autoplay_verified/default-pending/final.png",
+      "bytes": 108322,
+      "sha256": "104e00cac373c54f69fc59b0b6d4d2f030eb4d158e3b479b47993e5724b205a3",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/followup_20261023/autoplay_verified/default-pending/cdp.jsonl",
+      "bytes": 76863,
+      "sha256": "184257b791a963e51f7ccf318e189a2d721b989dc1193bafe05d91e7b105862a",
+      "reason": "Verbose protocol trace; retain original locally, commit compact acceptance/hash audit"
+    },
+    {
+      "path": "docs/testing/evidence/followup_20261023/regression_browser_wire/requests.json",
+      "bytes": 18467421,
+      "sha256": "373f7005c86804f9b7b0d5edb1e00e12d05c45f7cef1b9f5ef9b4ec63d0de8b1",
+      "reason": "Verbose protocol trace; retain original locally, commit compact acceptance/hash audit"
+    },
+    {
+      "path": "docs/testing/evidence/followup_20261023/regression_audio/kn_review-dummy_b796331fa7.mp3",
+      "bytes": 23424,
+      "sha256": "0e189797e350d26e91be5d55341ff43fd752d3fd27485f0f202cca42488e772b",
+      "reason": "Older generated audio retained locally; latest six dummy-language files selected"
+    },
+    {
+      "path": "docs/testing/evidence/followup_20261023/regression_audio/bn_review-dummy_f209e32c62.mp3",
+      "bytes": 22272,
+      "sha256": "427a817c8f906a19c943d4f946ef1751f6223b525d9f1c042901ca882199e6cc",
+      "reason": "Older generated audio retained locally; latest six dummy-language files selected"
+    },
+    {
+      "path": "docs/testing/evidence/followup_20261023/regression_audio/hi_review-dummy_82d9d2858f.mp3",
+      "bytes": 21504,
+      "sha256": "bcbbdb76b9e7ef78214fba95153e83bd6061d3a235c368f7d96cf3b62d3dfc2d",
+      "reason": "Older generated audio retained locally; latest six dummy-language files selected"
+    },
+    {
+      "path": "docs/testing/evidence/followup_20261023/regression_audio/te_review-dummy_197d794b78.mp3",
+      "bytes": 22848,
+      "sha256": "0119ac4173615dac5794e96861da85fb40e6522171f268c9278103f202fbe3d1",
+      "reason": "Older generated audio retained locally; latest six dummy-language files selected"
+    },
+    {
+      "path": "docs/testing/evidence/followup_20261023/regression_audio/en_review-dummy_3a367197a1.mp3",
+      "bytes": 20736,
+      "sha256": "f327acba2d41d2d8eceb814f2dfac383f869bf129383060e15fb263b9fb82bef",
+      "reason": "Older generated audio retained locally; latest six dummy-language files selected"
+    },
+    {
+      "path": "docs/testing/evidence/followup_20261023/regression_audio/ta_review-dummy_e051e9fdcc.mp3",
+      "bytes": 24768,
+      "sha256": "a74d54d6f15174afe55c6a4b9fc553abcdf760c763a5bd8fe56278ac7defb97b",
+      "reason": "Older generated audio retained locally; latest six dummy-language files selected"
+    },
+    {
+      "path": "docs/testing/evidence/followup_20261023/original_harness_wire/requests.json",
+      "bytes": 791573,
+      "sha256": "5dadd80e33b35494b4fa13b304ef7868d914efecc8152eec0f6eb3acaf79c04e",
+      "reason": "Verbose protocol trace; retain original locally, commit compact acceptance/hash audit"
+    },
+    {
+      "path": "docs/testing/evidence/followup_20261023/synthetic_control_wire/requests.json",
+      "bytes": 372204,
+      "sha256": "232b8a90aba3d7c13901f78e38c1ecd0a168a9ab6bb7f5be020dcc27ad207932",
+      "reason": "Verbose protocol trace; retain original locally, commit compact acceptance/hash audit"
+    },
+    {
+      "path": "docs/testing/evidence/followup_20261023/original_product_reproduction/strict-pending/final.png",
+      "bytes": 91300,
+      "sha256": "ceb48fc4b10cd057dfd804e6f18be37e1861deb5e0aae166d66bd3286298f1cc",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/followup_20261023/original_product_reproduction/strict-pending/cdp.jsonl",
+      "bytes": 76123,
+      "sha256": "eb882b446a6198a13acfce1f7d778ca5320216b643c69bdf858656eb21eebfc3",
+      "reason": "Verbose protocol trace; retain original locally, commit compact acceptance/hash audit"
+    },
+    {
+      "path": "docs/testing/evidence/followup_20261023/autoplay_corrected/default-idle/final.png",
+      "bytes": 115212,
+      "sha256": "252b06e9c210e372105194585c6ee61a5419d6f73d45c39dd011c1ca32bd4140",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/followup_20261023/autoplay_corrected/default-idle/cdp.jsonl",
+      "bytes": 47746,
+      "sha256": "27a817cc10c919d56a994371ba9600c18559fd980ffbc08f91957050279c2e0e",
+      "reason": "Verbose protocol trace; retain original locally, commit compact acceptance/hash audit"
+    },
+    {
+      "path": "docs/testing/evidence/followup_20261023/autoplay_corrected/strict-pending/final.png",
+      "bytes": 91172,
+      "sha256": "17bb88f5bcdf24e663987f826a886ad1c60a9196c639070492fa794e966b5be2",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/followup_20261023/autoplay_corrected/strict-pending/cdp.jsonl",
+      "bytes": 48323,
+      "sha256": "9440d932d2ef5eacdf0a4cdeae5d187ffbd026a73a5a02a1a1ab8a15924cfe05",
+      "reason": "Verbose protocol trace; retain original locally, commit compact acceptance/hash audit"
+    },
+    {
+      "path": "docs/testing/evidence/followup_20261023/autoplay_corrected/default-pending/final.png",
+      "bytes": 91321,
+      "sha256": "b9a6ec4c0774cf60697d563d47089ffae555083d8d5d590d8640b7bb07b91abb",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/followup_20261023/autoplay_corrected/default-pending/cdp.jsonl",
+      "bytes": 49072,
+      "sha256": "ba74c6f544d46bbb29d1b23cea95a3d63af6191b40a7c00bdc5b80719e578c2e",
+      "reason": "Verbose protocol trace; retain original locally, commit compact acceptance/hash audit"
+    },
+    {
+      "path": "docs/testing/evidence/followup_20261023/regression_browser/screenshots/B05-4.png",
+      "bytes": 98592,
+      "sha256": "430b913005da2fcf3672524e880ef581cc0d7ce4769e4f36a345a785c2a74718",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/followup_20261023/regression_browser/screenshots/B05-5.png",
+      "bytes": 90110,
+      "sha256": "6a4a7abbf8215924f1664111c796315280491446c4bd00a8a92f81e3bc252bf0",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/followup_20261023/regression_browser/screenshots/B05-2.png",
+      "bytes": 98695,
+      "sha256": "f2fe880458cf5e72c49270d98b1e304c66cfb7f6c4976a9ad45ede265dffd673",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/followup_20261023/regression_browser/screenshots/B05-3.png",
+      "bytes": 98756,
+      "sha256": "80fc776505b9b6b980d5bccdb6af7044b59017daca498dd249a24607d0e5d208",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/followup_20261023/regression_browser/screenshots/UI08.png",
+      "bytes": 54276,
+      "sha256": "151dc6291dec4c4e6ea20423dc1c459fe69fc348e6e883958c7fe7b93ef93685",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/followup_20261023/regression_browser/screenshots/B05-1.png",
+      "bytes": 98354,
+      "sha256": "aa7b57014cc4da31e9d060a6c2dc3904dd44d333e7ca1fbcef746613eda091f5",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/followup_20261023/regression_browser/screenshots/UI09.png",
+      "bytes": 106057,
+      "sha256": "6ccf4dfed915afa7a2b9afc4bcab02eeb4ae0535cfaf02a8551c4ed5323b5124",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/followup_20261023/regression_browser/screenshots/observed_review_snooze_network_failure.png",
+      "bytes": 95650,
+      "sha256": "65ab17d2d922d5aa4d8e9720904197ce360cb44aa5d4b6f8be7e5e0608988455",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/followup_20261023/regression_browser/screenshots/UI04.png",
+      "bytes": 45309,
+      "sha256": "8cda6ff0e9549430d6f6b0998ab7098d6a16257834004868509f7d69eb5b1e81",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/followup_20261023/regression_browser/screenshots/UI10.png",
+      "bytes": 6489,
+      "sha256": "cb9c3b8047859412e8abcaed51ad9ecefb4bd820c8849af4992e593d500d1836",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/followup_20261023/regression_browser/screenshots/observed_review_taken_network_failure.png",
+      "bytes": 94450,
+      "sha256": "c478f278bff766738c265332f4c2481187f17adca61dd658b0e10a1068afd795",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/followup_20261023/regression_browser/screenshots/UI11.png",
+      "bytes": 47893,
+      "sha256": "39e7d96446d11503b16ac4c332aa042d16f2dadbea897aa8a8798d1afba11285",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/followup_20261023/regression_browser/screenshots/UI05.png",
+      "bytes": 107895,
+      "sha256": "d4e0a4e5e1ba262f6f0d40005492195a8400ce9fd3658a2af96a374b39176612",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/followup_20261023/regression_browser/screenshots/UI07.png",
+      "bytes": 107573,
+      "sha256": "645d769e030c1e049ec7a74d9feb2774b2761c68c244291f76bd38e86d5505ed",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/followup_20261023/regression_browser/screenshots/UI06.png",
+      "bytes": 54415,
+      "sha256": "9bd03402510c6e5ca86c26e543d532a9136f394a43d75b60e034c224c1cc095e",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/followup_20261023/regression_browser/screenshots/UI02.png",
+      "bytes": 78616,
+      "sha256": "10b6af7a3fcd84bd9d85765ccd526bd2395fa7a9eefd8c5c45d205b49acdf45f",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/followup_20261023/regression_browser/screenshots/observed_review_taken_http_failure.png",
+      "bytes": 94311,
+      "sha256": "dd3473f195d8482e89451ce30738b3732faa7aaec55b6f3d6fcd79107df5298b",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/followup_20261023/regression_browser/screenshots/UI03.png",
+      "bytes": 107078,
+      "sha256": "74de59c987ed306a08510b23a88e7edf96f8f2209f6b754bb38b2acb0bb7bdd8",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/followup_20261023/regression_browser/screenshots/UI01.png",
+      "bytes": 107780,
+      "sha256": "6528db84a6d8735f1815efa24a0828966d478fa91a89f12ea16308d39cecea67",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/followup_20261023/regression_browser/UI10-clean-profile/final.png",
+      "bytes": 109881,
+      "sha256": "f80596fe7b24907d2a30a2dd537462d3750e7dbb48fc5c8f773b65d0b0b93ad9",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/followup_20261023/regression_browser/UI10-clean-profile/cdp.jsonl",
+      "bytes": 73375,
+      "sha256": "ef36f756efba07cb866c8d38b3748b398edd3ecfed54ec63eed7308546c01314",
+      "reason": "Verbose protocol trace; retain original locally, commit compact acceptance/hash audit"
+    },
+    {
+      "path": "docs/testing/evidence/followup_20261023/original_product_wire/requests.json",
+      "bytes": 373254,
+      "sha256": "bee52609f3b17ed0fc6a71c8f0eb4b144efe013a5a9c7850bb3b0a067a75d7dc",
+      "reason": "Verbose protocol trace; retain original locally, commit compact acceptance/hash audit"
+    },
+    {
+      "path": "docs/testing/evidence/followup_20261023/autoplay_before/default-idle/final.png",
+      "bytes": 6489,
+      "sha256": "cb9c3b8047859412e8abcaed51ad9ecefb4bd820c8849af4992e593d500d1836",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/followup_20261023/autoplay_before/default-idle/cdp.jsonl",
+      "bytes": 460,
+      "sha256": "584ba67185767786643759940f3e2211fcfdf83189d3d071fcfe45e81b67a521",
+      "reason": "Verbose protocol trace; retain original locally, commit compact acceptance/hash audit"
+    },
+    {
+      "path": "docs/testing/evidence/followup_20261023/autoplay_before/strict-pending/final.png",
+      "bytes": 6489,
+      "sha256": "cb9c3b8047859412e8abcaed51ad9ecefb4bd820c8849af4992e593d500d1836",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/followup_20261023/autoplay_before/strict-pending/cdp.jsonl",
+      "bytes": 460,
+      "sha256": "584ba67185767786643759940f3e2211fcfdf83189d3d071fcfe45e81b67a521",
+      "reason": "Verbose protocol trace; retain original locally, commit compact acceptance/hash audit"
+    },
+    {
+      "path": "docs/testing/evidence/followup_20261023/autoplay_before/default-pending/final.png",
+      "bytes": 6489,
+      "sha256": "cb9c3b8047859412e8abcaed51ad9ecefb4bd820c8849af4992e593d500d1836",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/followup_20261023/autoplay_before/default-pending/cdp.jsonl",
+      "bytes": 460,
+      "sha256": "584ba67185767786643759940f3e2211fcfdf83189d3d071fcfe45e81b67a521",
+      "reason": "Verbose protocol trace; retain original locally, commit compact acceptance/hash audit"
+    },
+    {
+      "path": "docs/testing/evidence/followup_20261023/original_harness_replay/screenshots/UI10.png",
+      "bytes": 104372,
+      "sha256": "a1d1a1585e4f68b46e0c94f65b0dbbdf5a30cc4faf5d0ac1c1192b26a53acc17",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/followup_20261023/autoplay_wire/requests.json",
+      "bytes": 1201944,
+      "sha256": "e2220f6807a83fe41c84936112ab80aaf0c151136b3b8996910e9353e089ee18",
+      "reason": "Verbose protocol trace; retain original locally, commit compact acceptance/hash audit"
+    },
+    {
+      "path": "docs/testing/evidence/followup_20261023/synthetic_gesture_control/strict-pending/final.png",
+      "bytes": 110315,
+      "sha256": "1dc096b58e0c2a4b58a8509127046a820610e234ad606c55b57bf142f779349b",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/followup_20261023/synthetic_gesture_control/strict-pending/cdp.jsonl",
+      "bytes": 46475,
+      "sha256": "4883d7f538fe05f18eec79f8bae9cd9d1d6f7c16b76cc01107e3514e641752e7",
+      "reason": "Verbose protocol trace; retain original locally, commit compact acceptance/hash audit"
+    },
+    {
+      "path": "docs/testing/evidence/followup_20261023/paused_negative_control/old_assertion/screenshots/UI10.png",
+      "bytes": 107115,
+      "sha256": "dda94c21a587f68f06ade4927ebee1d6ac0262b5fad101e2897c628d7bb2eb6b",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/followup_20261023/paused_negative_control/corrected_assertion/strict-pending/final.png",
+      "bytes": 91307,
+      "sha256": "8eac10d4282d6bf146eec3cd6c1d37fd45797997774b325fde4085999b3fb029",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/followup_20261023/paused_negative_control/corrected_assertion/strict-pending/cdp.jsonl",
+      "bytes": 60142,
+      "sha256": "a5f0e631d0be362ff009452d3a466a9d19e82e4153144cbce7ce758d58bebdf2",
+      "reason": "Verbose protocol trace; retain original locally, commit compact acceptance/hash audit"
+    },
+    {
+      "path": "docs/testing/evidence/audio/kn_review-dummy_b796331fa7.mp3",
+      "bytes": 23424,
+      "sha256": "adc023867d7dae56f9375b7bde5a88a565a83a6a4d69b0cb4caeb3b591fde2bb",
+      "reason": "Older generated audio retained locally; latest six dummy-language files selected"
+    },
+    {
+      "path": "docs/testing/evidence/audio/bn_review-dummy_f209e32c62.mp3",
+      "bytes": 22272,
+      "sha256": "630990f5568e4a45e2d7b2b86f8841631f7d4306fd13e75d709e5764ec223c3b",
+      "reason": "Older generated audio retained locally; latest six dummy-language files selected"
+    },
+    {
+      "path": "docs/testing/evidence/audio/hi_review-dummy_82d9d2858f.mp3",
+      "bytes": 21504,
+      "sha256": "f312acb9a74dbfb0eba7646c14f70561b191ee0fbc78ac9dc5feffda621f65af",
+      "reason": "Older generated audio retained locally; latest six dummy-language files selected"
+    },
+    {
+      "path": "docs/testing/evidence/audio/te_review-dummy_197d794b78.mp3",
+      "bytes": 22848,
+      "sha256": "c131651db74a2e7970442c7b9ea9137071dabf1f529aa3a0ecf522cab7dd317f",
+      "reason": "Older generated audio retained locally; latest six dummy-language files selected"
+    },
+    {
+      "path": "docs/testing/evidence/audio/en_review-dummy_3a367197a1.mp3",
+      "bytes": 20736,
+      "sha256": "630cbd9642263e066c60dc49ee54acfbe6b49b9c44a4fde80e36b82415d59f02",
+      "reason": "Older generated audio retained locally; latest six dummy-language files selected"
+    },
+    {
+      "path": "docs/testing/evidence/audio/ta_review-dummy_e051e9fdcc.mp3",
+      "bytes": 24768,
+      "sha256": "34ad7e8600cf63848bc1ce0ae4e9f94cfda3521b827cd56497c3f5b1a7cd1ec1",
+      "reason": "Older generated audio retained locally; latest six dummy-language files selected"
+    },
+    {
+      "path": "docs/testing/evidence/browser_first_attempt/screenshots/B05-4.png",
+      "bytes": 98592,
+      "sha256": "430b913005da2fcf3672524e880ef581cc0d7ce4769e4f36a345a785c2a74718",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/browser_first_attempt/screenshots/B05-5.png",
+      "bytes": 90110,
+      "sha256": "6a4a7abbf8215924f1664111c796315280491446c4bd00a8a92f81e3bc252bf0",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/browser_first_attempt/screenshots/B05-2.png",
+      "bytes": 92429,
+      "sha256": "1d0ddc1325383c996d959ebe403e8bb88ac2071604dd93ef33619f765dafe5b2",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/browser_first_attempt/screenshots/B05-3.png",
+      "bytes": 92480,
+      "sha256": "8223e4fb62e1bfe4d4086280e4c876a31bc7eed9dcba767e153aa19175fba4d8",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/browser_first_attempt/screenshots/UI08.png",
+      "bytes": 54530,
+      "sha256": "3c0cc27cc3fe1cf80b4ca13054632fd29a760453e65fa95ebe32f6165bf4de26",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/browser_first_attempt/screenshots/B05-1.png",
+      "bytes": 99910,
+      "sha256": "3f47045f710fbb86a0561df6311e676b79a946dc0bba08a5ec104225c5cf6f9e",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/browser_first_attempt/screenshots/UI09.png",
+      "bytes": 106324,
+      "sha256": "d49c7ac98224faebf9ad43250329d82711000e5b6ce5672b38775af2860f6a37",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/browser_first_attempt/screenshots/observed_review_snooze_network_failure.png",
+      "bytes": 95344,
+      "sha256": "be0dc323fb25ae541d4303c5cb40773fa3f5ace4914ade45e5821c82d76ae087",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/browser_first_attempt/screenshots/UI04.png",
+      "bytes": 45561,
+      "sha256": "b84ee698636359835214bdbbdc8ff9c73f2a5d375774b5809e7c3aea827e674a",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/browser_first_attempt/screenshots/UI10.png",
+      "bytes": 92112,
+      "sha256": "45176d55050ba39f381f394b764dc2f4f5edd0504ad45c6a6d33dc0f0c5daaa4",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/browser_first_attempt/screenshots/observed_review_taken_network_failure.png",
+      "bytes": 94711,
+      "sha256": "6232cd61a160018b6f1fb77f0e02498d82181c753e876456263e34c41d74a31e",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/browser_first_attempt/screenshots/UI11.png",
+      "bytes": 48178,
+      "sha256": "7a496c110be2d3772ec1e967d629f3050aba0d24b5601e6e45566fed74f54c56",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/browser_first_attempt/screenshots/UI05.png",
+      "bytes": 107794,
+      "sha256": "1a1924dc886fcedbb5818337fa076cc7d1ddc1e4ec5b3537dad4327f3bc7054d",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/browser_first_attempt/screenshots/UI07.png",
+      "bytes": 107766,
+      "sha256": "ae7b256855712d6eaa51b9f0e9cfa9cf2af7f55ebb18b93d4979c5a5a531ce6d",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/browser_first_attempt/screenshots/UI06.png",
+      "bytes": 54669,
+      "sha256": "bbe34c497f3c3d859e58f45faf942f553582cf0adb26e00b60fa7c09504470d8",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/browser_first_attempt/screenshots/UI02.png",
+      "bytes": 79248,
+      "sha256": "61b7268c79119c6c5c5c1093c7f001196e38ca3baaa11a790701c17bcb1e9ba4",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/browser_first_attempt/screenshots/observed_review_taken_http_failure.png",
+      "bytes": 94566,
+      "sha256": "b2c050b7c1042f7ee26f77556a8181180b73e48b24aa3626adfe7d54359150fa",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/browser_first_attempt/screenshots/UI03.png",
+      "bytes": 106653,
+      "sha256": "bc428efdb213e531b4c3c7b921131c65a379cc812458ab0015094ad3f9187a57",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/browser_first_attempt/screenshots/UI01.png",
+      "bytes": 107758,
+      "sha256": "fe6e413485149ff0fe99334bce8849c279c67873707bde4fee753d9a03a10620",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/autoplay_baseline_corrected/screenshots/UI10.png",
+      "bytes": 90611,
+      "sha256": "8df3b356314af914fbd77f796b5c577ac57de0320ad67901626b2ae419aacca0",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/browser_baseline/screenshots/UI08.png",
+      "bytes": 45950,
+      "sha256": "6526a51df28f506b0a7949376a96e9fb5bc5dfd1795d893a65a2a9c54b378522",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/browser_baseline/screenshots/UI09.png",
+      "bytes": 90499,
+      "sha256": "41217e0975542f7954b571a236080b701337a73df152fd57cb7b8ad7e9621e70",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/browser_baseline/screenshots/observed_review_snooze_network_failure.png",
+      "bytes": 109189,
+      "sha256": "d9c72621958fa66e78aadb5b2dec3fc00935e4e70491b9b4fb843d20ff9959ed",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/browser_baseline/screenshots/UI04.png",
+      "bytes": 45646,
+      "sha256": "1bef503baf117845783999cfcbf64237e99042b58720fa9ac07fab48c4a58901",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/browser_baseline/screenshots/observed_review_taken_network_failure.png",
+      "bytes": 46058,
+      "sha256": "a3bea63e16c1c7c18b45c89478cf4354c5ca341c6f1a84c861f9759c101d4af5",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/browser_baseline/screenshots/UI05.png",
+      "bytes": 109167,
+      "sha256": "152423c75649df02c95c5759e588c6d75887061d6edc4834ebda3bafb5d6cffd",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/browser_baseline/screenshots/UI07.png",
+      "bytes": 109510,
+      "sha256": "370f30983df332974fb1f3a4e448a52c8d0aad0a023a2e8f18a6df1d19dd63a0",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/browser_baseline/screenshots/UI06.png",
+      "bytes": 46093,
+      "sha256": "6bcc075f7a70b283c7c0dd3dae3bdab878ccb91c1a5db34c5972a7cb9b41a054",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/browser_baseline/screenshots/UI02.png",
+      "bytes": 78490,
+      "sha256": "6548085c2ac45bedfc880b339ff8a1594d022794b1f23e4eb0f1b62863a754b6",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/browser_baseline/screenshots/observed_review_taken_http_failure.png",
+      "bytes": 45916,
+      "sha256": "3525222d14aa346c9c5038cf1cf51eda20f131acd06d901a2aa92b8cf3f84e22",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/browser_baseline/screenshots/UI03.png",
+      "bytes": 108407,
+      "sha256": "a2431b2dc25b335b189d442efcfb58b95748c2eff886ada35361cc493a8f7923",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/browser_baseline/screenshots/UI01.png",
+      "bytes": 108889,
+      "sha256": "ad710f0e1f9a8473b46f20d73cc394e637499222dc8cb0d667a4296cb0a34477",
+      "reason": "Redundant historical/visibility screenshot retained locally; selected latest screenshots cover the current evidence"
+    },
+    {
+      "path": "docs/testing/evidence/firmware_resolution_20261025/browser/screenshots/UI10.png",
+      "bytes": 6489,
+      "sha256": "cb9c3b8047859412e8abcaed51ad9ecefb4bd820c8849af4992e593d500d1836",
+      "reason": "Blank unused outer-page screenshot; actual autoplay screenshot and JSON are under UI10-clean-profile"
+    }
+  ]
+}

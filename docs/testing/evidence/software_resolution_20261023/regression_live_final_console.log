@@ -1,0 +1,30 @@
+B01 PASS
+B02 PASS
+B03-LOCAL PASS
+B03-LAN NOT TESTED
+SIM-NO-DUE PASS
+SIM-MISSING PASS
+SIM-ACTION PASS
+SIM-DUPLICATE PASS
+SIM-ISOLATION PASS
+SIM-CONCURRENT PASS
+SIM-REPLAY-TAKEN PASS
+SIM-REPLAY-SNOOZE PASS
+SIM-LOST-RESPONSE PASS
+OUTAGE-HTTP PASS
+RESTART-SESSION PASS
+B06-HARDWARE NOT TESTED
+B07-HARDWARE NOT TESTED
+Snooze real-time wait 30.1 seconds
+Snooze real-time wait 60.2 seconds
+Snooze real-time wait 90.3 seconds
+Snooze real-time wait 120.3 seconds
+Snooze real-time wait 150.4 seconds
+Snooze real-time wait 180.5 seconds
+Snooze real-time wait 210.5 seconds
+Snooze real-time wait 240.6 seconds
+Snooze real-time wait 270.8 seconds
+B04-1 PASS
+Snooze real-time wait 300.8 seconds
+B04-2 PASS
+B04-3 PASS

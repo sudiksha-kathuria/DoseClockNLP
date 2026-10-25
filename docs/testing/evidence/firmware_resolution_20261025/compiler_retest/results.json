@@ -1,0 +1,40 @@
+{
+  "started_at": "2026-10-25T14:49:48.857018+05:30",
+  "finished_at": "2026-10-25T14:49:59.338248+05:30",
+  "commands": [
+    [
+      "/private/tmp/doseclock-compatibility-audit-20261024/venv/bin/pio",
+      "run",
+      "--project-dir",
+      "/Users/pranav/Documents/DoseClock/DoseClockNLP/hardware",
+      "--environment",
+      "esp32dev",
+      "--target",
+      "clean"
+    ],
+    [
+      "/private/tmp/doseclock-compatibility-audit-20261024/venv/bin/pio",
+      "run",
+      "--project-dir",
+      "/Users/pranav/Documents/DoseClock/DoseClockNLP/hardware",
+      "--environment",
+      "esp32dev"
+    ]
+  ],
+  "exit_codes": [
+    0,
+    0
+  ],
+  "status": "PASS",
+  "scope": "Clean ESP32 cross-compilation; no upload or physical validation",
+  "platformio_core_dir": "/private/tmp/doseclock-compatibility-audit-20261024/platformio-core-pinned",
+  "source_sha256": {
+    "switch_hub.ino": "e3c9ac250433283cda8f614144df8864d6a91bb7c2855c12318f80b1c11b6ace",
+    "switch_input.h": "bd7168cb20b177b18590ddbb376421c1e139e1c1214af0dcbfbe5ef110eaa620",
+    "platformio.ini": "4dcd5d5c67363ca547bfc4220750f93701b01d61eb1d76aef32f09ee5c6a5ddf"
+  },
+  "firmware_bin_exists": true,
+  "firmware_bin": "/Users/pranav/Documents/DoseClock/DoseClockNLP/hardware/.pio/build/esp32dev/firmware.bin",
+  "firmware_bin_bytes": 942784,
+  "firmware_bin_sha256": "8230c11ee9deb02a8aa277a251c23bff6ec12beddff616db395862bfe28f0c3d"
+}

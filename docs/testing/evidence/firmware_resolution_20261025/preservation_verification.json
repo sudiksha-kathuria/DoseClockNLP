@@ -1,0 +1,46 @@
+{
+  "recorded_at": "2026-10-25T15:08:23.417803+05:30",
+  "branch": "validation/review3-20261023",
+  "head": "a1230c928a0471aa2a05e0af6b32ee2a64a0cd05",
+  "prior_evidence_files_verified": 408,
+  "prior_evidence_changed": [],
+  "historical_csv_byte_prefix_preserved": true,
+  "backend_frontend_application_unchanged": true,
+  "final_build_source_hashes_match": true,
+  "firmware_bin_hash_matches": true,
+  "changed_preexisting_paths_this_turn": [
+    "docs/DEVICE_PROTOCOL.md",
+    "docs/testing/BUG_REPORT.md",
+    "docs/testing/REVIEW3_RESULTS.md",
+    "docs/testing/TEST_REPORT.md",
+    "docs/testing/TEST_RESULTS.csv",
+    "tests/run_review3_autoplay.py",
+    "tests/run_review3_browser.py",
+    "tests/run_review3_suite.py",
+    "tests/test_resolution.py",
+    ".gitignore",
+    "hardware/README.md",
+    "hardware/switch_hub.ino"
+  ],
+  "new_nonignored_files": 91,
+  "new_files_over_1MB_review_before_commit": [
+    {
+      "path": "docs/testing/evidence/firmware_resolution_20261025/autoplay/default-idle/cdp.jsonl",
+      "bytes": 1261966
+    },
+    {
+      "path": "docs/testing/evidence/firmware_resolution_20261025/autoplay_wire/requests.json",
+      "bytes": 1203263
+    },
+    {
+      "path": "docs/testing/evidence/firmware_resolution_20261025/browser_wire/requests.json",
+      "bytes": 18469558
+    }
+  ],
+  "tracked_modifications": 10,
+  "untracked_files": 525,
+  "staged_paths": [],
+  "committed": false,
+  "pushed": false,
+  "flashed": false
+}
